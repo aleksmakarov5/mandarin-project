@@ -1,0 +1,98 @@
+<?php
+
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ImapController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\WorkController;
+use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\SparePartController;
+use Illuminate\Routing\Route as RoutingRoute;
+use Illuminate\Support\Facades\Route;
+
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+// Route::get('/', function () {
+//     return view('home');
+// });
+
+// Route::get('/about', function () {
+//     return view('about');
+// });
+
+
+Route::get('/', [MainController::class, 'home'])->name('home');
+
+Route::get('/about',  [MainController::class, 'about']);
+
+Route::get('/review',  [MainController::class, 'review'])->name('review');
+Route::get('/new_application',  [MainController::class, 'new_application'])->name('new_application');
+Route::post('/review/check',  [MainController::class, 'review_check']);
+Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_recive');
+
+
+
+
+
+Route::middleware("guest:web")->group(
+    function () {
+        Route::get('/login',  [AuthController::class, 'showLoginForm'])->name('login');
+        Route::post('/login_process',  [AuthController::class, 'login'])->name('login_process');
+    }
+);
+
+Route::middleware("auth:web")->group(
+    function () {
+        Route::get('/register',  [AuthController::class, 'showRegisterForm'])->name('register');
+        Route::post('/register_process',  [AuthController::class, 'register'])->name('register_process');
+
+        Route::get('/mail',  [MainController::class, 'message'])->name('mail');
+        Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
+        Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
+        Route::get('/applications',  [MainController::class, 'applications'])->name('applications');
+        Route::get('/application/{id}', [MainController::class, 'application'])->name('application');
+        Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
+            ->name('applications.edit');
+        Route::get('applications/create', [ApplicationController::class, 'create'])
+            ->name('applications.create');
+        Route::post('applications/store', [ApplicationController::class, 'store'])
+            ->name('applications.store');
+        Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
+        Route::delete('applications/{id}/delete', [ApplicationController::class, 'destroy'])
+            ->name('applications.destroy');
+
+        Route::get('/SparePart/{id}', [SparePartController::class, 'SparePart'])->name('SparePart');
+        Route::get('SparePart/{id}/edit', [SparePartController::class, 'edit'])
+            ->name('SparePart.edit');
+        Route::get('SparePart/{id}/create', [SparePartController::class, 'create'])
+            ->name('SparePart.create');
+        Route::post('SpareParts/store', [SparePartController::class, 'store'])
+            ->name('SparePart.store');
+        Route::post('SparePart/{id}/update', [SparePartController::class, 'update'])->name('SparePart.update');
+        Route::delete('SparePart/{id}/delete', [SparePartController::class, 'destroy'])
+            ->name('SparePart.destroy');
+
+        Route::get('/Work/{id}', [WorkController::class, 'Work'])->name('Work');
+        Route::get('Work/{id}/edit', [WorkController::class, 'edit'])
+            ->name('Work.edit');
+        Route::get('Work/{id}/create', [WorkController::class, 'create'])
+            ->name('Work.create');
+        Route::post('Works/store', [WorkController::class, 'store'])
+            ->name('Work.store');
+        Route::post('Work/{id}/update', [WorkController::class, 'update'])->name('Work.update');
+        Route::delete('Work/{id}/delete', [WorkController::class, 'destroy'])
+            ->name('Work.destroy');
+        Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+        Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
+    }
+);
