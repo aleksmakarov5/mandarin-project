@@ -93,7 +93,7 @@ class MainController extends Controller
 
                 $message->application_id = $applications->id;
 
-                $message->save();
+                $message->save()
             }
             $message->is_parsed = true;
             $message->save();
@@ -167,5 +167,18 @@ class MainController extends Controller
         include('storage/files/' . $html);
         // $array = XmlToArray::convert($html);
         // //var_dump($html);
+        $dom = new DOMDocument();
+
+        //examples
+
+        //methods to load HTML
+        $dom->loadHTML($html_string);
+        $dom->loadHTMLFile('path/to/htmlfile.html');
+
+        //methods to load XML
+        $dom->load('path/to/xmlfile.xml');
+        $dom->loadXML($xml_string);
+
+        $documentElement = $dom->documentElement; 
     }
 }
