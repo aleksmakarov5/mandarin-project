@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <?php echo $__env->yieldContent('title'); ?>
+    </title>
+    <script src="/docs/5.3/assets/js/color-modes.js"></script>
+ <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
+    <meta name="generator" content="Hugo 0.118.2">
+    <title>Carousel Template · Bootstrap v5.3</title>
+
+    <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
+
+    
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+
+<link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <!-- Favicons -->
+<link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
+<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
+<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
+<link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
+<link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+<link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
+<meta name="theme-color" content="#712cf9">
+    <!-- Custom styles for this template -->
+    <link href="carousel.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" href="<?php echo e(asset('css/styles.css')); ?>">
+</head>
+
+<body class="bg-dark text-white">
+<div class="container">
+    <?php if(auth()->guard("web")->check()): ?>
+    <p align=right> <?php echo e(Auth::user()->name); ?> </p>
+    
+<?php endif; ?>
+    <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
+       <?php if(auth()->guard('web')->check()): ?>
+          
+          <br>
+      <?php endif; ?>
+      <a class="tn-atom t-bgimg loaded" href="/" data-original="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png" style="background-image: url(&quot;https://optim.tildacdn.com/tild3035-3764-4461-a632-393433376239/-/cover/97x93/center/center/-/format/webp/c4628e96-a0e1-4301-b.png&quot;);"></a>
+      <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none" >
+        <img class="bi me-2" width="100" height="100" src="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png">
+     
+      </a>
+     
+      <ul class="nav nav-pills"> 
+       
+        <li class="nav-item"><a href="\" class="nav-link <?php echo e(request()->routeIs('home') ? 'tn-active' : ''); ?>" >Главная</a></li>
+        <li class="nav-item"><a href="\review" class="nav-link <?php echo e(request()->routeIs('review') ? 'tn-active' : ''); ?>">Отзывы</a></li>
+
+        
+        <?php if(auth()->guard("web")->check()): ?>
+        <li class="nav-item"><a href="\applications" class="nav-link <?php echo e(request()->routeIs('applications') ? 'tn-active' : ''); ?>">Заявки</a></li>
+        <li class="nav-item"><a href="\mail" class="nav-link <?php echo e(request()->routeIs('mail') ? 'tn-active' : ''); ?>">Почта</a></li>
+        &nbsp&nbsp&nbsp&nbsp
+               <li class="nav-item"><a href="\logout" class="nav-link <?php echo e(request()->routeIs('login') ? 'tn-active' : ''); ?>" >Выйти</a></li>
+               
+        <?php endif; ?>
+        <?php if(auth()->guard("web")->guest()): ?> 
+&nbsp&nbsp&nbsp&nbsp
+         <li class="nav-item"><a href="\login" class="nav-link <?php echo e(request()->routeIs('login') ? 'tn-active' : ''); ?>" >Войти</a></li>
+         <?php endif; ?>
+       </ul>
+    </header>
+  
+  <?php echo $__env->yieldContent('main_content'); ?>
+  </div>
+  <div class="container">
+    <footer class="py-3 my-4 text-white">
+     
+      <p class="text-center ">© 2023 Мандарин авто, Inc</p>
+    </footer>
+  </div>
+   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+
+ </body>
+</html>
+<?php /**PATH /Users/aleksejmakarov/Yandex.Disk-aleksmakarov5.localized/www/mandarin/mandarin/resources/views/layout.blade.php ENDPATH**/ ?>
