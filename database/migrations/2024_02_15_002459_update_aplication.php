@@ -12,13 +12,13 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('applications', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_MRK');
-            $table->unsignedBigInteger('id_spm');
-            $table->unsignedBigInteger('mileage');
-            $table->string('vehicle_passport');
-            $table->string('Color');
-            $table->string('ClientPasport');
-            $table->date('DTPdate');
+            $table->unsignedBigInteger('id_MRK')->nullable();
+            $table->unsignedBigInteger('id_spm')->nullable();
+            $table->unsignedBigInteger('mileage')->nullable();
+            $table->string('vehicle_passport')->nullable();
+            $table->string('Color')->nullable();
+            $table->string('ClientPasport')->nullable();
+            $table->date('DTPdate')->nullable();
         });
     }
 
