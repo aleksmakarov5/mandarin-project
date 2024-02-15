@@ -48,9 +48,33 @@
     </th>
   </tr>
   <tr>
-    <th>ВИН</th>
+    <th>ВИН/Кузов</th>
     <th>
       {{ $application-> vin }}
+    </th>
+  </tr>
+   <tr>
+    <th>ПТС/Свидетельство о регистрации</th>
+    <th>
+      {{ $application-> vehicle_passport }}
+    </th>
+  </tr>
+   <tr>
+    <th>Цвет</th>
+    <th>
+      {{ $application-> Color }}
+    </th>
+  </tr>
+   <tr>
+    <th>Пробег</th>
+    <th>
+      {{ $application-> mileage }}
+    </th>
+  </tr>
+   <tr>
+    <th>Дата ДТП</th>
+    <th>
+      {{ $application-> DTPdate}}
     </th>
   </tr>
   <tr>
@@ -65,73 +89,25 @@
       {{ $application->  ClientPhone }}
     </th>
   </tr>
- {{-- @foreach ($application as $key => $value)
-     <tr>
-      <th>{{$key}}</th>
-      <th>{{$value}}</th>
-     </tr>
- @endforeach --}}
- 
-  {{-- <thead>
-  
+
+  <tr>
+    <th>Паспорт РФ</th>
+    <th>
+      {{ $application->  ClientPasport }}
+    </th>
+  </tr>
     <tr>
-      <th scope="col">#</th>
-      <th scope="col">Дата заявки</th>
-      <th scope="col">Страховая компания</th>
-      <th scope="col">Номер заявки </th>
-      <th scope="col">Марка машины </th>
-      <th scope="col">ГНЗ </th>
-      <th scope="col">VIN</th>
-      <th scope="col">ФИО клиента</th>
-      <th scope="col">Телефон клиента</th>
-      <th scope="col">Остаток времени, час</th>
-      <th scope="col">Статус</th>
-
-    </tr>
-  </thead>
-  <tbody>
-
-   
- 
-
-
-   
-<tr >
-    
-      <th scope="col" >
-        
-       -
-    
-      </th> 
-      <th scope="col">{{date("d-m-Y ",strtotime($application->created_at))}}</th>
-      <th scope="col">{{$application->name}} </th>
-      <th scope="col">{{$application->numberInsuranceCompanyApplication}} </th>
-      <th scope="col">{{$application->CarModel}} </th>
-      <th scope="col">{{$application->gnz}}</th>
-      <th scope="col">{{$application->vin}}</th>
-      <th scope="col">{{$application->ClientName}}</th>
-      <th scope="col">{{$application->ClientPhone}}</th>
-      
-      @if (((48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)))>0)
-           <th scope="col">
-             {{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}
-             </th>
-            
-                 
-             @else
-                <th scope="col" class="alert alert-danger">
-                  Просрочено на 
-             {{(48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600))*(-1)}}
-             </th>
-             
-      @endif
-       
-      
-      
-        <th scope="col">-</th>
-    </tr>
-       --}}
-
+    <th>Менеджер по работе с клиентами</th>
+    <th>
+      {{ $application->  id_MRK }}
+    </th>
+  </tr>
+     <tr>
+    <th>Запчастист</th>
+    <th>
+      {{ $application->  id_spm }}
+    </th>
+  </tr>
  </tbody>
 </table>
 @endsection 
