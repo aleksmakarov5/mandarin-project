@@ -6,6 +6,8 @@ use App\Http\Controllers\ImapController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\ReviewController;
+
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SparePartController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
@@ -46,10 +48,16 @@ Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_rec
 
 Route::middleware("guest:web")->group(
     function () {
+        Route::get('/admin',  [AdminController::class, 'index'])->name('admin');
+    }
+);
+Route::middleware("administrator")->group(
+    function () {
         Route::get('/login',  [AuthController::class, 'showLoginForm'])->name('login');
         Route::post('/login_process',  [AuthController::class, 'login'])->name('login_process');
     }
 );
+
 
 Route::middleware("auth:web")->group(
     function () {
@@ -95,4 +103,5 @@ Route::middleware("auth:web")->group(
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
     }
+
 );
