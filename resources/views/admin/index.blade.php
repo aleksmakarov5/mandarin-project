@@ -1,3 +1,7 @@
-<div>
-    <!-- The only way to do great work is to love what you do. - Steve Jobs -->
-</div>
+@extends('admin.header_menu')
+@section('title')
+  Работы 
+@endsection
+@section('main') 
+Основная информация админ панели
+ @endsection 

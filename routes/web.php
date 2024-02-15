@@ -46,12 +46,14 @@ Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_rec
 
 
 
-Route::middleware("guest:web")->group(
+
+Route::middleware("can:administrator")->group(
     function () {
         Route::get('/admin',  [AdminController::class, 'index'])->name('admin');
     }
 );
-Route::middleware("administrator")->group(
+
+Route::middleware("guest:web")->group(
     function () {
         Route::get('/login',  [AuthController::class, 'showLoginForm'])->name('login');
         Route::post('/login_process',  [AuthController::class, 'login'])->name('login_process');

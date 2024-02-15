@@ -3,15 +3,14 @@
     Домашняя
 @endsection
 @section('main_content')
-<h1>Заявка № {{$id}}  </h1> 
+
 <header class="d-flex justify-content-center py-3">
       <ul class="nav nav-pills">
-        <li class="nav-item"><a href="/application/{{$id}}" class="nav-link {{ request()->routeIs('application') ? 'tn-active' : '' }}" aria-current="page">Основная информация</a></li>
-         <li class="nav-item"><a href="/SparePart/{{$id}}" class="nav-link  {{ request()->routeIs('SparePart') ? 'tn-active' : '' }}" aria-current="page">Запчасти</a></li>
-        <li class="nav-item"><a href="/Work/{{$id}}" class="nav-link  {{ request()->routeIs('Work') ? 'tn-active' : '' }}" aria-current="page">Работы</a></li>
-        <li class="nav-item"><a href="/mail/{{$id}}" class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}" aria-current="page">Чат</a></li>
-         <li class="nav-item"><a href="/document/{{$id}}" class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}" aria-current="page">Документы</a></li>
-       <li class="nav-item"><a href="#" class="nav-link">История</a></li>
+        <li class="nav-item"><a href="/admin" class="nav-link {{ request()->routeIs('admin') ? 'tn-active' : '' }}" aria-current="page">Основная информация</a></li>
+         <li class="nav-item"><a href="/users" class="nav-link {{ request()->routeIs('users') ? 'tn-active' : '' }}" aria-current="page">Пользователи</a></li>
+        <li class="nav-item"><a href="/statuses" class="nav-link {{ request()->routeIs('statuses') ? 'tn-active' : '' }}" aria-current="page">Статусы заявок</a></li>
+      <li class="nav-item"><a href="/insurance_companies" class="nav-link {{ request()->routeIs('insurance_companies') ? 'tn-active' : '' }}" aria-current="page">Страховые компании</a></li>
+     
       </ul>
     </header>
 @yield('main')

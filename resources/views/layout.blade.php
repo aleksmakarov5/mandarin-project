@@ -73,7 +73,7 @@
          <li class="nav-item"><a href="\login" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Войти</a></li>
          @endguest
          @can('administrator')
-             <li class="nav-item"><a href="\admin" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Админ панель</a></li>
+             <li class="nav-item"><a href="\admin" class="nav-link {{ request()->routeIs('admin') ? 'tn-active' : '' }}" >Админ панель</a></li>
          @endcan
        </ul>
     </header>
