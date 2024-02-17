@@ -50,6 +50,20 @@ Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_rec
 Route::middleware("can:administrator")->group(
     function () {
         Route::get('/admin',  [AdminController::class, 'index'])->name('admin');
+        Route::get('/users',  [AdminController::class, 'users_index'])->name('users');
+        Route::get('users/create', [AdminController::class, 'create_user'])
+            ->name('users.create');
+
+        Route::post('/user_register',  [AdminController::class, 'user_register'])->name('user_register');
+        Route::get('/user/{id}', [AdminController::class, 'user_edit'])->name('user_edit');
+        Route::post('/user/{id}/update', [AdminController::class, 'update_user'])->name('user_update');
+
+
+        Route::get('user/{id}/delete', [AdminController::class, 'destroy_user'])
+            ->name('user.destroy');
+
+        Route::get('/statuses',  [AdminController::class, 'statuses_index'])->name('statuses');
+        Route::get('/inscompanies',  [AdminController::class, 'inscompanies_index'])->name('inscompanies');
     }
 );
 
@@ -63,8 +77,6 @@ Route::middleware("guest:web")->group(
 
 Route::middleware("auth:web")->group(
     function () {
-        Route::get('/register',  [AuthController::class, 'showRegisterForm'])->name('register');
-        Route::post('/register_process',  [AuthController::class, 'register'])->name('register_process');
 
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');

@@ -1,6 +1,6 @@
 @extends('admin.header_menu')
 @section('title')
-  Работы 
+  Админ 
 @endsection
 @section('main') 
 Основная информация админ панели
