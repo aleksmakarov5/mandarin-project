@@ -84,6 +84,62 @@ class AdminController extends Controller
         $user->GroupId = $data["groupid"];
         $user->save();
 
-        return redirect()->route('user_edit', $user->id);
+        return redirect()->route('users');
+    }
+
+    public function usergroups_index()
+
+    {
+        $usergroups = new usergroup();
+        return view('admin.usergroups.index', ['usergroups' => $usergroups->all()]);
+    }
+
+    public function destroy_usergroup($id)
+    {
+        $usergroup = usergroup::findOrFail($id);
+        $usergroup->delete();
+        return redirect()
+            ->route('usergroups');
+    }
+    public function create_usergroup()
+    {
+        $usergroups = new usergroup();
+        return view('admin.usergroups.create', ['usergroups' => $usergroups->all()]);
+    }
+    public function usergroup_register(Request $request)
+    {
+        $data = $request->validate([
+            'groupname' => ["required", "string"],
+            'groupdescription' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $usergroup = UserGroup::create([
+            'groupname' => $data["groupname"],
+            'groupdescription' => $data["groupdescription"],
+        ]);
+
+        return redirect()->route('usergroups');
+    }
+
+    public function usergroup_edit($id)
+    {
+        $usergroup = UserGroup::findOrFail($id);
+        return view('admin.usergroups.edit', ['usergroup' => $usergroup]);
+    }
+    public function update_usergroup(Request $request, $id)
+    {
+        $usergroup = UserGroup::findOrFail($id);
+        $data = $request->validate([
+            'groupname' => ["required", "string"],
+            'groupdescription' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $usergroup->groupname = $data["groupname"];
+        $usergroup->groupdescription = $data["groupdescription"];
+        $usergroup->save();
+
+        return redirect()->route('usergroups');
     }
 }

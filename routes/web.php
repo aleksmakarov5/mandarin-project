@@ -53,14 +53,20 @@ Route::middleware("can:administrator")->group(
         Route::get('/users',  [AdminController::class, 'users_index'])->name('users');
         Route::get('users/create', [AdminController::class, 'create_user'])
             ->name('users.create');
-
         Route::post('/user_register',  [AdminController::class, 'user_register'])->name('user_register');
         Route::get('/user/{id}', [AdminController::class, 'user_edit'])->name('user_edit');
         Route::post('/user/{id}/update', [AdminController::class, 'update_user'])->name('user_update');
-
-
         Route::get('user/{id}/delete', [AdminController::class, 'destroy_user'])
             ->name('user.destroy');
+
+        Route::get('/usergroups',  [AdminController::class, 'usergroups_index'])->name('usergroups');
+        Route::get('usergroups/create', [AdminController::class, 'create_usergroup'])
+            ->name('usergroups.create');
+        Route::post('/usergroup_register',  [AdminController::class, 'usergroup_register'])->name('usergroup_register');
+        Route::get('/usergroup/{id}', [AdminController::class, 'usergroup_edit'])->name('usergroup_edit');
+        Route::post('/usergroup/{id}/update', [AdminController::class, 'update_usergroup'])->name('usergroup_update');
+        Route::get('usergroup/{id}/delete', [AdminController::class, 'destroy_usergroup'])
+            ->name('usergroup.destroy');
 
         Route::get('/statuses',  [AdminController::class, 'statuses_index'])->name('statuses');
         Route::get('/inscompanies',  [AdminController::class, 'inscompanies_index'])->name('inscompanies');
