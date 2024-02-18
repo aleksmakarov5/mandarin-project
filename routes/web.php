@@ -6,6 +6,8 @@ use App\Http\Controllers\ImapController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\ReviewController;
+
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SparePartController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
@@ -44,6 +46,33 @@ Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_rec
 
 
 
+
+Route::middleware("can:administrator")->group(
+    function () {
+        Route::get('/admin',  [AdminController::class, 'index'])->name('admin');
+        Route::get('/users',  [AdminController::class, 'users_index'])->name('users');
+        Route::get('users/create', [AdminController::class, 'create_user'])
+            ->name('users.create');
+        Route::post('/user_register',  [AdminController::class, 'user_register'])->name('user_register');
+        Route::get('/user/{id}', [AdminController::class, 'user_edit'])->name('user_edit');
+        Route::post('/user/{id}/update', [AdminController::class, 'update_user'])->name('user_update');
+        Route::get('user/{id}/delete', [AdminController::class, 'destroy_user'])
+            ->name('user.destroy');
+
+        Route::get('/usergroups',  [AdminController::class, 'usergroups_index'])->name('usergroups');
+        Route::get('usergroups/create', [AdminController::class, 'create_usergroup'])
+            ->name('usergroups.create');
+        Route::post('/usergroup_register',  [AdminController::class, 'usergroup_register'])->name('usergroup_register');
+        Route::get('/usergroup/{id}', [AdminController::class, 'usergroup_edit'])->name('usergroup_edit');
+        Route::post('/usergroup/{id}/update', [AdminController::class, 'update_usergroup'])->name('usergroup_update');
+        Route::get('usergroup/{id}/delete', [AdminController::class, 'destroy_usergroup'])
+            ->name('usergroup.destroy');
+
+        Route::get('/statuses',  [AdminController::class, 'statuses_index'])->name('statuses');
+        Route::get('/inscompanies',  [AdminController::class, 'inscompanies_index'])->name('inscompanies');
+    }
+);
+
 Route::middleware("guest:web")->group(
     function () {
         Route::get('/login',  [AuthController::class, 'showLoginForm'])->name('login');
@@ -51,10 +80,9 @@ Route::middleware("guest:web")->group(
     }
 );
 
+
 Route::middleware("auth:web")->group(
     function () {
-        Route::get('/register',  [AuthController::class, 'showRegisterForm'])->name('register');
-        Route::post('/register_process',  [AuthController::class, 'register'])->name('register_process');
 
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
@@ -95,4 +123,5 @@ Route::middleware("auth:web")->group(
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
     }
+
 );

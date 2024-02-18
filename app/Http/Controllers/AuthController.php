@@ -12,10 +12,7 @@ class AuthController extends Controller
         return view('auth.login');
     }
 
-    public function showRegisterForm()
-    {
-        return view('auth.register');
-    }
+
 
     public function login(Request $request)
     {
@@ -33,26 +30,7 @@ class AuthController extends Controller
         ]);
     }
 
-    public function register(Request $request)
-    {
-        $data = $request->validate([
-            'name' => ["required", "string"],
-            'email' => ["required", "email"],
-            'password' => ["required", "confirmed"]
-            // 'password' => ["required", "confirmed"]
-        ]);
 
-        //  dd($data);
-        $user = User::create([
-            'name' => $data["name"],
-            'email' => $data["email"],
-            'password' => bcrypt($data["password"])
-        ]);
-        if ($user) {
-            auth('web')->login($user);
-        }
-        return redirect()->route('home');
-    }
     public function logout(Request $request)
     {
         auth('web')->logout();
