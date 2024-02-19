@@ -13,6 +13,7 @@
       <th scope="col">ФИО</th>
       <th scope="col">email</th>
       <th scope="col">Номер телефона</th>
+      <th scope="col">Группа пользователя</th>
       <th scope="col"></th>
 
     </tr>
@@ -32,6 +33,7 @@
       <th scope="col" onclick="window.location.href='/user/{{$user->id}}'; return false">{{$user->name}} </th>
       <th scope="col" onclick="window.location.href='/user/{{$user->id}}'; return false">{{$user->email}} </th>
       <th scope="col" onclick="window.location.href='/user/{{$user->id}}'; return false">{{$user->phone}} </th>
+      <th scope="col" onclick="window.location.href='/user/{{$user->id}}'; return false">{{$user->GroupName}} </th>
     <th scope="col">
          <a onclick="if (!confirm('Точно удалить пользователя <{{$user->name}}?>')) return false" href="{{route('user.destroy', $user->id)}}" class="nav-link">Удалить</a>
      

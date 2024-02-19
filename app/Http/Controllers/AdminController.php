@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\usergroup;
+use Illuminate\Support\Facades\DB;
+
 
 class AdminController extends Controller
 {
@@ -14,8 +16,12 @@ class AdminController extends Controller
     }
     public function users_index()
     {
-        $users = new user();
-        return view('admin.users.index', ['users' => $users->all()]);
+        $users = DB::table('users')
+            ->join('user_groups', 'users.GroupId', '=', 'user_groups.id')
+            ->select('users.*', 'user_groups.GroupName')
+            ->get();
+
+        return view('admin.users.index', ['users' => $users]);
     }
     public function statuses_index()
     {
