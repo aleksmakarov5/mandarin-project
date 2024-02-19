@@ -19,7 +19,7 @@ class AdminController extends Controller
         $users = DB::table('users')
             ->join('user_groups', 'users.GroupId', '=', 'user_groups.id')
             ->select('users.*', 'user_groups.GroupName')
-            ->get();
+            ->paginate(5);
 
         return view('admin.users.index', ['users' => $users]);
     }
