@@ -50,7 +50,7 @@ class AdminController extends Controller
             'email' => ["required", "email", "unique:users"],
             'password' => ["required", "confirmed"],
             'phone' => ["required", "string"],
-            'groupid' => ["nullable", "integer"]
+            'GroupId' => ["required", "integer"]
         ]);
 
         // dd($data);
@@ -59,9 +59,9 @@ class AdminController extends Controller
             'email' => $data["email"],
             'password' => bcrypt($data["password"]),
             'phone' => $data["phone"],
-            'GroupId' => $data["groupid"]
+            'GroupId' => $data["GroupId"]
         ]);
-
+        //  dd($user);
         return redirect()->route('users');
     }
 
