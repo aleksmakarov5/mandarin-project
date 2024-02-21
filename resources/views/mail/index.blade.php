@@ -11,9 +11,10 @@
         {{ $message->subject }}
         </h3>
     <p>
-        @php
-        echo htmlspecialchars_decode($message->body_html);
-        @endphp
+        
+     {{$message->body_html
+     }}
+       
     </p>
     </div>    
 @endforeach

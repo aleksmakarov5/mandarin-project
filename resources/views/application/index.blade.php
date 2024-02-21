@@ -3,7 +3,9 @@
     Заявкa 
 @endsection
 @section('main')   
-<a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a>
+@can('admin')
+   <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
+@endcan
 <table class="table table-striped-columns table-hover table-group-divider table-responsive">
   <tr>
     <th>№ заявки</th>
@@ -99,13 +101,13 @@
     <tr>
     <th>Менеджер по работе с клиентами</th>
     <th>
-      {{ $application->  id_MRK }}
+      {{ ($mrk) }}
     </th>
   </tr>
      <tr>
     <th>Запчастист</th>
     <th>
-      {{ $application->  id_spm }}
+      {{ $spm}}
     </th>
   </tr>
  </tbody>

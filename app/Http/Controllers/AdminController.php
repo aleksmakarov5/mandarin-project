@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\usergroup;
 
+use App\Models\ApplicationStatus;
+use App\Models\InsuranceCompany;
+use Illuminate\Support\Facades\DB;
+
+
 class AdminController extends Controller
 {
     public function index()
@@ -14,8 +19,12 @@ class AdminController extends Controller
     }
     public function users_index()
     {
-        $users = new user();
-        return view('admin.users.index', ['users' => $users->all()]);
+        $users = DB::table('users')
+            ->join('user_groups', 'users.GroupId', '=', 'user_groups.id')
+            ->select('users.*', 'user_groups.GroupName')
+            ->paginate(5);
+
+        return view('admin.users.index', ['users' => $users]);
     }
     public function statuses_index()
     {
@@ -44,7 +53,7 @@ class AdminController extends Controller
             'email' => ["required", "email", "unique:users"],
             'password' => ["required", "confirmed"],
             'phone' => ["required", "string"],
-            'groupid' => ["nullable", "integer"]
+            'GroupId' => ["required", "integer"]
         ]);
 
         // dd($data);
@@ -53,9 +62,9 @@ class AdminController extends Controller
             'email' => $data["email"],
             'password' => bcrypt($data["password"]),
             'phone' => $data["phone"],
-            'GroupId' => $data["groupid"]
+            'GroupId' => $data["GroupId"]
         ]);
-
+        //  dd($user);
         return redirect()->route('users');
     }
 
@@ -141,5 +150,127 @@ class AdminController extends Controller
         $usergroup->save();
 
         return redirect()->route('usergroups');
+    }
+
+    public function application_statuses_index()
+
+    {
+        $application_statuses = new ApplicationStatus();
+        return view('admin.application_statuses.index', ['application_statuses' => $application_statuses->all()]);
+    }
+
+    public function destroy_application_status($id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        $application_status->delete();
+        return redirect()
+            ->route('application_statuses');
+    }
+    public function create_application_status()
+    {
+        $application_statuses = new ApplicationStatus();
+        return view('admin.application_statuses.create', ['application_statuses' => $application_statuses->all()]);
+    }
+    public function application_status_register(Request $request)
+    {
+        $data = $request->validate([
+            'StatusName' => ["required", "string"],
+
+        ]);
+
+        // dd($data);
+        $application_status = ApplicationStatus::create([
+            'StatusName' => $data["StatusName"]
+        ]);
+
+        return redirect()->route('application_statuses');
+    }
+
+    public function application_status_edit($id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        return view('admin.application_statuses.edit', ['application_status' => $application_status]);
+    }
+    public function update_application_status(Request $request, $id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        $data = $request->validate([
+            'StatusName' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $application_status->StatusName = $data["StatusName"];
+        $application_status->save();
+
+        return redirect()->route('application_statuses');
+    }
+
+    public function insurance_companies_index()
+
+    {
+        $insurance_companies = new InsuranceCompany();
+        return view('admin.insurance_companies.index', ['insurance_companies' => $insurance_companies->all()]);
+    }
+
+    public function destroy_insurance_company($id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        $insurance_company->delete();
+        return redirect()
+            ->route('insurance_companies');
+    }
+    public function create_insurance_company()
+    {
+        $insurance_companies = new InsuranceCompany();
+        return view('admin.insurance_companies.create', ['insurance_companies' => $insurance_companies->all()]);
+    }
+    public function insurance_company_register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ["required", "string"],
+            'email' => ["required", "email"],
+            'manager' => ["required", "string"],
+            'phone' => ["required", "string"],
+            'address' => ["required", "string"]
+
+        ]);
+
+        // dd($data);
+        $insurance_company = InsuranceCompany::create([
+            'name' => $data["name"],
+            'email' => $data["email"],
+            'manager' => $data["manager"],
+            'phone' => $data["phone"],
+            'address' => $data["address"]
+        ]);
+
+        return redirect()->route('insurance_companies');
+    }
+
+    public function insurance_company_edit($id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        return view('admin.insurance_companies.edit', ['insurance_company' => $insurance_company]);
+    }
+    public function update_insurance_company(Request $request, $id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        $data = $request->validate([
+            'name' => ["required", "string"],
+            'email' => ["required", "email"],
+            'manager' => ["required", "string"],
+            'phone' => ["required", "string"],
+            'address' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $insurance_company->name = $data["name"];
+        $insurance_company->email = $data["email"];
+        $insurance_company->manager = $data["manager"];
+        $insurance_company->phone = $data["phone"];
+        $insurance_company->address = $data["address"];
+        $insurance_company->save();
+
+        return redirect()->route('insurance_companies');
     }
 }

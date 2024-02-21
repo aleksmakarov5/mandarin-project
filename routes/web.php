@@ -68,8 +68,23 @@ Route::middleware("can:administrator")->group(
         Route::get('usergroup/{id}/delete', [AdminController::class, 'destroy_usergroup'])
             ->name('usergroup.destroy');
 
-        Route::get('/statuses',  [AdminController::class, 'statuses_index'])->name('statuses');
-        Route::get('/inscompanies',  [AdminController::class, 'inscompanies_index'])->name('inscompanies');
+        Route::get('/application_statuses',  [AdminController::class, 'application_statuses_index'])->name('application_statuses');
+        Route::get('application_statuses/create', [AdminController::class, 'create_application_status'])
+            ->name('application_statuses.create');
+        Route::post('/application_status_register',  [AdminController::class, 'application_status_register'])->name('application_status_register');
+        Route::get('/application_status/{id}', [AdminController::class, 'application_status_edit'])->name('application_status_edit');
+        Route::post('/application_status/{id}/update', [AdminController::class, 'update_application_status'])->name('application_status_update');
+        Route::get('application_status/{id}/delete', [AdminController::class, 'destroy_application_status'])
+            ->name('application_status.destroy');
+
+        Route::get('/insurance_companies',  [AdminController::class, 'insurance_companies_index'])->name('insurance_companies');
+        Route::get('insurance_companies/create', [AdminController::class, 'create_insurance_company'])
+            ->name('insurance_companies.create');
+        Route::post('/insurance_company_register',  [AdminController::class, 'insurance_company_register'])->name('insurance_company_register');
+        Route::get('/insurance_company/{id}', [AdminController::class, 'insurance_company_edit'])->name('insurance_company_edit');
+        Route::post('/insurance_company/{id}/update', [AdminController::class, 'update_insurance_company'])->name('insurance_company_update');
+        Route::get('insurance_company/{id}/delete', [AdminController::class, 'destroy_insurance_company'])
+            ->name('insurance_company.destroy');
     }
 );
 
@@ -87,8 +102,8 @@ Route::middleware("auth:web")->group(
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
-        Route::get('/applications',  [MainController::class, 'applications'])->name('applications');
-        Route::get('/application/{id}', [MainController::class, 'application'])->name('application');
+        Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
+        Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');
         Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
             ->name('applications.edit');
         Route::get('applications/create', [ApplicationController::class, 'create'])
