@@ -29,7 +29,7 @@
       </th> 
       <th scope="col" onclick="window.location.href='/application_status/{{$application_status->id}}'; return false">{{$application_status->StatusName}} </th>
      <th scope="col">
-         <a onclick="if (!confirm('Точно удалить статус <{{$application_status->StatusNamed}}?>')) return false" href="{{route('application_status.destroy', $application_status->id)}}" class="nav-link">Удалить</a>
+         <a onclick="if (!confirm('Точно удалить статус <{{$application_status->StatusName}}?>')) return false" href="{{route('application_status.destroy', $application_status->id)}}" class="nav-link">Удалить</a>
      
         </th>
     </tr>
