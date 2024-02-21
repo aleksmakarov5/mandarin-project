@@ -77,7 +77,14 @@ Route::middleware("can:administrator")->group(
         Route::get('application_status/{id}/delete', [AdminController::class, 'destroy_application_status'])
             ->name('application_status.destroy');
 
-        Route::get('/inscompanies',  [AdminController::class, 'inscompanies_index'])->name('inscompanies');
+        Route::get('/insurance_companies',  [AdminController::class, 'insurance_companies_index'])->name('insurance_companies');
+        Route::get('insurance_companies/create', [AdminController::class, 'create_insurance_company'])
+            ->name('insurance_companies.create');
+        Route::post('/insurance_company_register',  [AdminController::class, 'insurance_company_register'])->name('insurance_company_register');
+        Route::get('/insurance_company/{id}', [AdminController::class, 'insurance_company_edit'])->name('insurance_company_edit');
+        Route::post('/insurance_company/{id}/update', [AdminController::class, 'update_insurance_company'])->name('insurance_company_update');
+        Route::get('insurance_company/{id}/delete', [AdminController::class, 'destroy_insurance_company'])
+            ->name('insurance_company.destroy');
     }
 );
 

@@ -3,7 +3,7 @@
    <a href="/application_statuses" class="nav-link">Отмена</a>
  <form method="POST" action="/application_status_register">
 
-    <h1 class="h3 mb-3 fw-normal">Новый статус</h1>
+    <h1 class="h3 mb-3 fw-normal">Новая группа пользователей</h1>
      @csrf
       <div class="form-floating">
       <input type="text" name='StatusName' id="StatusName" class="form-control" id="floatingInput" placeholder="Группа" value={{old('StatusName')}}>

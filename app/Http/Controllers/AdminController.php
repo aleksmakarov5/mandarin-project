@@ -7,6 +7,7 @@ use App\Models\user;
 use App\Models\usergroup;
 
 use App\Models\ApplicationStatus;
+use App\Models\InsuranceCompany;
 use Illuminate\Support\Facades\DB;
 
 
@@ -202,5 +203,74 @@ class AdminController extends Controller
         $application_status->save();
 
         return redirect()->route('application_statuses');
+    }
+
+    public function insurance_companies_index()
+
+    {
+        $insurance_companies = new InsuranceCompany();
+        return view('admin.insurance_companies.index', ['insurance_companies' => $insurance_companies->all()]);
+    }
+
+    public function destroy_insurance_company($id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        $insurance_company->delete();
+        return redirect()
+            ->route('insurance_companies');
+    }
+    public function create_insurance_company()
+    {
+        $insurance_companies = new InsuranceCompany();
+        return view('admin.insurance_companies.create', ['insurance_companies' => $insurance_companies->all()]);
+    }
+    public function insurance_company_register(Request $request)
+    {
+        $data = $request->validate([
+            'name' => ["required", "string"],
+            'email' => ["required", "email"],
+            'manager' => ["required", "confirmed"],
+            'phone' => ["required", "string"],
+            'address' => ["required", "string"]
+
+        ]);
+
+        // dd($data);
+        $insurance_company = InsuranceCompany::create([
+            'name' => $data["name"],
+            'email' => $data["email"],
+            'manager' => $data["manager"],
+            'phone' => $data["phone"],
+            'address' => $data["address"]
+        ]);
+
+        return redirect()->route('insurance_companies');
+    }
+
+    public function insurance_company_edit($id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        return view('admin.insurance_companies.edit', ['insurance_company' => $insurance_company]);
+    }
+    public function update_insurance_company(Request $request, $id)
+    {
+        $insurance_company = InsuranceCompany::findOrFail($id);
+        $data = $request->validate([
+            'name' => ["required", "string"],
+            'email' => ["required", "email"],
+            'manager' => ["required", "confirmed"],
+            'phone' => ["required", "string"],
+            'address' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $insurance_company->name = $data["name"];
+        $insurance_company->email = $data["email"];
+        $insurance_company->manager = $data["manager"];
+        $insurance_company->phone = $data["phone"];
+        $insurance_company->address = $data["address"];
+        $insurance_company->save();
+
+        return redirect()->route('insurance_companies');
     }
 }

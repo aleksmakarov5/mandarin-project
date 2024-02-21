@@ -10,7 +10,7 @@
          <li class="nav-item"><a href="/users" class="nav-link {{ request()->routeIs('users') ? 'tn-active' : '' }}" aria-current="page">Пользователи</a></li>
         <li class="nav-item"><a href="/application_statuses" class="nav-link {{ request()->routeIs('application_statuses') ? 'tn-active' : '' }}" aria-current="page">Статусы заявок</a></li>
        <li class="nav-item"><a href="/usergroups" class="nav-link {{ request()->routeIs('usergroups') ? 'tn-active' : '' }}" aria-current="page">Группы пользователей</a></li>
-     <li class="nav-item"><a href="/inscompanies" class="nav-link {{ request()->routeIs('inscompanies') ? 'tn-active' : '' }}" aria-current="page">Страховые компании</a></li>
+     <li class="nav-item"><a href="/insurance_companies" class="nav-link {{ request()->routeIs('insurance_companies') ? 'tn-active' : '' }}" aria-current="page">Страховые компании</a></li>
      
       </ul>
     </header>
