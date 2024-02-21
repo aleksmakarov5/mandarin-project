@@ -118,25 +118,7 @@ class MainController extends Controller
         return redirect()->route('review');
     }
 
-    public function applications()
-    {
-        $applications = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->select('applications.*', 'insurance_companies.name')
-            ->get();
-        // dd($applications);
-        return view('applications', ['applications' => $applications],);
-    }
-    public function application($id)
-    {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->select('applications.*', 'insurance_companies.name')
-            ->where('applications.id', '=', $id)
-            ->first();
-        // dd($application);
-        return view('application.index', ['application' => $application], ['id' => $id]);
-    }
+
     public function message()
     {
         $messages = new message();

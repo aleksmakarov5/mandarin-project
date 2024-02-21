@@ -12,16 +12,55 @@ use App\Models\message;
 
 class ApplicationController extends Controller
 {
+    public function applications()
+    {
+        $applications = DB::table('applications')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->select('applications.*', 'insurance_companies.name')
+            ->get();
+        // dd($applications);
+        return view('applications', ['applications' => $applications],);
+    }
+    public function application($id)
+    {
+        $application = DB::table('applications')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->select('applications.*', 'insurance_companies.name')
+            ->where('applications.id', '=', $id)
+            ->first();
+        // dd($application);
+        $mrk = DB::table('users')
+            ->where('id', '=', $application->id_MRK)
+            ->first();
+        $spm
+            = DB::table('users')
+            ->where('id', '=', $application->id_spm)
+            ->first();
+        return view('application.index', ['application' => $application, 'id' => $id, 'mrk' => $mrk, 'spm' => $spm]);
+    }
     //
     public function edit($id)
     {
+        $mrks = DB::table('users')
+            ->where('GroupId', '=', 5)
+            ->get();
+        $spms = DB::table('users')
+            ->where('GroupId', '=', 6)
+            ->get();
         $InsuranceCompany = new InsuranceCompany;
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->select('applications.*', 'insurance_companies.name')
             ->where('applications.id', '=', $id)
             ->first();
-        return view('application.edit', ['application' => $application], ['InsuranceCompany' => $InsuranceCompany->all()]);
+        return view(
+            'application.edit',
+            [
+                'application' => $application, 'mrks' => $mrks,
+                'InsuranceCompany' => $InsuranceCompany->all(),
+                'spms' => $spms
+            ]
+        );
     }
     public function update(Request $request, $id)
     {
@@ -35,6 +74,13 @@ class ApplicationController extends Controller
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
             'ClientPhone' => 'nullable|string',
+            'id_MRK' => 'nullable|integer',
+            'id_spm' => 'nullable|integer',
+            'mileage' => 'nullable|integer',
+            'vehicle_passport' => 'nullable|string',
+            'Color' => 'nullable|string',
+            'ClientPassport' => 'nullable|string',
+            'DTPdate' => 'nullable|date'
 
         ]);
         // dd($data);
@@ -63,6 +109,13 @@ class ApplicationController extends Controller
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
             'ClientPhone' => 'nullable|string',
+            'id_MRK' => 'nullable|integer',
+            'id_spm' => 'nullable|integer',
+            'mileage' => 'nullable|integer',
+            'vehicle_passport' => 'nullable|string',
+            'Color' => 'nullable|string',
+            'ClientPassport' => 'nullable|string',
+            'DTPdate' => 'nullable|date'
 
         ]);
         $application = new application;

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\usergroup;
+
+use App\Models\ApplicationStatus;
 use Illuminate\Support\Facades\DB;
 
 
@@ -147,5 +149,58 @@ class AdminController extends Controller
         $usergroup->save();
 
         return redirect()->route('usergroups');
+    }
+
+    public function application_statuses_index()
+
+    {
+        $application_statuses = new ApplicationStatus();
+        return view('admin.application_statuses.index', ['application_statuses' => $application_statuses->all()]);
+    }
+
+    public function destroy_application_status($id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        $application_status->delete();
+        return redirect()
+            ->route('application_statuses');
+    }
+    public function create_application_status()
+    {
+        $application_statuses = new ApplicationStatus();
+        return view('admin.application_statuses.create', ['application_statuses' => $application_statuses->all()]);
+    }
+    public function application_status_register(Request $request)
+    {
+        $data = $request->validate([
+            'StatusName' => ["required", "string"],
+
+        ]);
+
+        // dd($data);
+        $application_status = ApplicationStatus::create([
+            'StatusName' => $data["StatusName"]
+        ]);
+
+        return redirect()->route('application_statuses');
+    }
+
+    public function application_status_edit($id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        return view('admin.application_statuses.edit', ['application_status' => $application_status]);
+    }
+    public function update_application_status(Request $request, $id)
+    {
+        $application_status = ApplicationStatus::findOrFail($id);
+        $data = $request->validate([
+            'StatusName' => ["required", "string"]
+        ]);
+
+        // dd($data);
+        $application_status->StatusName = $data["StatusName"];
+        $application_status->save();
+
+        return redirect()->route('application_statuses');
     }
 }

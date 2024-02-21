@@ -30,5 +30,26 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('administrator', function (User $user) {
             return $user->GroupId === 1;
         });
+        Gate::define('admin', function (User $user) {
+            return $user->GroupId === 2;
+        });
+        Gate::define('buh', function (User $user) {
+            return $user->GroupId === 3;
+        });
+        Gate::define('user', function (User $user) {
+            return $user->GroupId === 4;
+        });
+        Gate::define('mrk', function (User $user) {
+            return $user->GroupId === 5;
+        });
+        Gate::define('spm', function (User $user) {
+            return $user->GroupId === 6;
+        });
+        Gate::define('owner', function (User $user) {
+            return $user->GroupId === 7;
+        });
+        Gate::define('km', function (User $user) {
+            return $user->GroupId === 8;
+        });
     }
 }

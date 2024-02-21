@@ -4,7 +4,9 @@
 @endsection
 @section('main_content')   
 <h1>Все заявки</h1> 
-<a href="/applications/create" class="nav-link">Добавить заявку</a>
+@can('admin')
+    <a href="/applications/create" class="nav-link">Добавить заявку</a>
+@endcan
 <table class="table table-striped-columns table-hover table-group-divider table-responsive">
   <thead>
   
