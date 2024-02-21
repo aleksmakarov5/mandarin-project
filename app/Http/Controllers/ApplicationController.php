@@ -32,11 +32,22 @@ class ApplicationController extends Controller
         $mrk = DB::table('users')
             ->where('id', '=', $application->id_MRK)
             ->first();
+        $mrkname = '';
+        if (isset($mrk->name)) {
+            $mrkname = $mrk->name;
+        }
+
+
+
         $spm
             = DB::table('users')
             ->where('id', '=', $application->id_spm)
             ->first();
-        return view('application.index', ['application' => $application, 'id' => $id, 'mrk' => $mrk, 'spm' => $spm]);
+        $spmname = '';
+        if (isset($spm->name)) {
+            $spmname = $spm->name;
+        }
+        return view('application.index', ['application' => $application, 'id' => $id, 'mrk' => $mrkname, 'spm' => $spmname]);
     }
     //
     public function edit($id)
