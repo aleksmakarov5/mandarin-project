@@ -1,6 +1,6 @@
 @extends('admin.header_menu')
 @section('main_content')
-   <a href="/application_statuss" class="nav-link">Отмена</a>
+   <a href="/application_statuses" class="nav-link">Отмена</a>
  <form method="POST" action="/application_status_register">
 
     <h1 class="h3 mb-3 fw-normal">Новая группа</h1>
