@@ -229,7 +229,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'name' => ["required", "string"],
             'email' => ["required", "email"],
-            'manager' => ["required", "confirmed"],
+            'manager' => ["required", "string"],
             'phone' => ["required", "string"],
             'address' => ["required", "string"]
 
@@ -258,7 +258,7 @@ class AdminController extends Controller
         $data = $request->validate([
             'name' => ["required", "string"],
             'email' => ["required", "email"],
-            'manager' => ["required", "confirmed"],
+            'manager' => ["required", "string"],
             'phone' => ["required", "string"],
             'address' => ["required", "string"]
         ]);

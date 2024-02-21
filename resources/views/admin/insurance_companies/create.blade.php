@@ -42,6 +42,6 @@
     </div>
    
    
-    <button class="nav-link" type="submit">Создать Статус</button>
+    <button class="nav-link" type="submit">Создать СК</button>
   </form>
 @endsection

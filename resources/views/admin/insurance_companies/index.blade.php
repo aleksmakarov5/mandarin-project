@@ -36,7 +36,7 @@
       <th scope="col" onclick="window.location.href='/insurance_company/{{$insurance_company->id}}'; return false">{{$insurance_company->email}} </th>
     
      <th scope="col">
-         <a onclick="if (!confirm('Точно удалить группу <{{$insurance_company->StatusNamed}}?>')) return false" href="{{route('insurance_company.destroy', $insurance_company->id)}}" class="nav-link">Удалить</a>
+         <a onclick="if (!confirm('Точно удалить компанию <{{$insurance_company->name}}?>')) return false" href="{{route('insurance_company.destroy', $insurance_company->id)}}" class="nav-link">Удалить</a>
      
         </th>
     </tr>
