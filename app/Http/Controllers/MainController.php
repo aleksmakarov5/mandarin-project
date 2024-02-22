@@ -146,7 +146,77 @@ class MainController extends Controller
         exec('pdftohtml storage/files/' . $id . ' -p -i');
 
         $html = substr($id, 0, strlen($id) - 4) . 's.html';
-        include('/storage/files/' . $html);
+        //  include('storage/files/' . $html);
+        $file = file_get_contents('storage/files/' . $html);
+        $file = strip_tags($file, ['br']);
+        // echo $file;
+        $start_number = mb_strpos($file, 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ');
+        $number = mb_substr($file, $start_number + 35, 7);
+        echo 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ' . $start_number . '<br>' . $number . '<br>';
+        $inf_start = mb_strpos($file, 'Марка, модель');
+        echo $inf_start . '<br /><br />';
+        $inf_end = mb_strpos($file, 'Точное');
+        echo $inf_end . '<br /><br />';
+        $inf = mb_substr($file, $inf_start, $inf_end - $inf_start);
+        // echo $inf;
+        $inf_array = explode('<br/>', $inf);
+        echo '<table border=1>';
+        for ($i = 0; $i < count($inf_array) - 1; $i) {
+            echo '<tr><td>' . $inf_array[$i] . '</td><td>' . $inf_array[$i + 1] . '</td></tr>';
+            $i = $i + 2;
+            if ($i == 18) {
+                $i++;
+            }
+        }
+        echo '</table>';
+
+
+        //dd($inf_array);
+        $sparepart_start = mb_strpos($file, 'износом, Рубли');
+        echo $sparepart_start . ' ЗЧ_Старт<br /><br />';
+        $sparepart_end = mb_strpos($file, 'ИТОГО');
+        echo $sparepart_end . ' ЗЧ_Фин<br /><br />';
+        $sparepart = mb_substr($file, $sparepart_start + 14, $sparepart_end - $sparepart_start + 14);
+        //echo $sparepart;
+        $sparepart_array = explode('<br/>', $sparepart);
+        echo '<table border=1>';
+        for ($i = 1; $i < count($sparepart_array) - 8; $i) {
+            echo '<tr><td>' . $sparepart_array[$i] . '</td>
+            <td>' . $sparepart_array[$i + 1] . '</td>
+            <td>' . $sparepart_array[$i + 2] . '</td>
+            <td>' . $sparepart_array[$i + 3] . '</td>
+            <td>' . $sparepart_array[$i + 4] . '</td>
+            <td>' . $sparepart_array[$i + 5] . '</td>
+            <td>' . $sparepart_array[$i + 6] . '</td>
+            <td>' . $sparepart_array[$i + 7] . '</td>
+            </tr>';
+            $i = $i + 8;
+        }
+        echo '</table>';
+        $work_start = mb_strpos($file, 'н-час');
+        echo $work_start . 'Раб_Старт<br /><br />';
+        $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+        echo $work_end . 'Раб_фин<br /><br />';
+        $work = mb_substr($file, $work_start + 5, $work_end - $work_start - 18);
+
+        $work_array = explode('<br/>', $work);
+        // dd($work_array);
+        $iskl = [29, 74, 75, 76, 77, 78, 79];
+        echo '<table border=1>';
+        for ($i = 1; $i < count($work_array) - 4; $i) {
+            foreach ($iskl as $k) {
+                if ($i == $k) {
+                    $i++;
+                }
+            }
+            echo '<tr><td>' . $work_array[$i] . '</td>
+            <td>' . $work_array[$i + 1] . '</td>
+            <td>' . $work_array[$i + 2] . '</td>
+            <td>' . $work_array[$i + 3] . '</td>
+            </tr>';
+            $i = $i + 4;
+        }
+        echo '</table>';
 
         // $array = XmlToArray::convert($html);
         // //var_dump($html);

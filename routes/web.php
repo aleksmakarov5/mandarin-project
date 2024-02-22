@@ -130,11 +130,16 @@ Route::middleware("auth:web")->group(
             ->name('Work.edit');
         Route::get('Work/{id}/create', [WorkController::class, 'create'])
             ->name('Work.create');
+        Route::get('Work/{id}/doc_load', [WorkController::class, 'doc_load'])->name('Work.doc_load');
+        Route::post('Work/{id}/data_load', [WorkController::class, 'data_load'])->name('Work.data_load');
+        Route::post('Work/{id}/data_save', [WorkController::class, 'data_save'])->name('Work.data_save');
         Route::post('Works/store', [WorkController::class, 'store'])
             ->name('Work.store');
         Route::post('Work/{id}/update', [WorkController::class, 'update'])->name('Work.update');
-        Route::delete('Work/{id}/delete', [WorkController::class, 'destroy'])
+        Route::get('Work/{id}/delete', [WorkController::class, 'destroy'])
             ->name('Work.destroy');
+
+
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
     }

@@ -22,7 +22,11 @@
 </div>
 <div class="form-floating">
  <input type="text" name="summ" id="summ"  class="form-control"   value="{{$Work->summ}}">
-      <label for="summ">Цена оригинал</label>
+      <label for="summ">Сумма</label>
+     </div>
+     <div class="form-floating">
+ <input type="text" name="price_service" id="price_service"  class="form-control"   value="{{$Work->price_service}}">
+      <label for="summ">Цена сервиса</label>
      </div>
 
    <input type="submit" value="Обновить"    class="nav-link">
