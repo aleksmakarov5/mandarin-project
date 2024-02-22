@@ -108,6 +108,10 @@ Route::middleware("auth:web")->group(
             ->name('applications.edit');
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
+        Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
+        Route::post('application/{id}/data_load', [ApplicationController::class, 'data_load'])->name('application.data_load');
+        Route::post('application/{id}/data_save', [ApplicationController::class, 'data_save'])->name('application.data_save');
+
         Route::post('applications/store', [ApplicationController::class, 'store'])
             ->name('applications.store');
         Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');

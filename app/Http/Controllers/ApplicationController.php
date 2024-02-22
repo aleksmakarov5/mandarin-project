@@ -151,4 +151,59 @@ class ApplicationController extends Controller
         // dd($rewiew->all()) ;
         return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);
     }
+
+    public function doc_load($id)
+    {
+        $documents = DB::table('messages')
+            ->join('attachments', 'attachments.message_id', '=', 'messages.id')
+            ->select('attachments.*')
+            ->where('messages.application_id', '=', $id)
+            ->get();
+        return view('application.doc_load', ['id' => $id], ['documents' => $documents]);
+    }
+
+    public function data_load(Request $request, $id)
+    {
+
+        exec('pdftohtml storage/files/' . $request['location'] . ' -p -i');
+        $html = substr($request['location'], 0, strlen($request['location']) - 4) . 's.html';
+        $file = file_get_contents('storage/files/' . $html);
+        $file = html_entity_decode(strip_tags($file, ['br']));
+        $application_start = mb_strpos($file, 'Марка, модель');
+        $application_end = mb_strpos($file, 'Точное');
+        // echo $application_end . 'Раб_фин<br /><br />';
+        $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
+        $application_array = explode('<br/>', $application);
+        // dd($application_array);
+        return view('application.data_select', ['applications' => $application_array, 'id' => $id]);
+    }
+    public function data_save(Request $request, $id)
+    {
+
+        $application = application::findOrFail($id);
+
+        $data = $this->validate($request, [
+            'CarModel' => 'nullable|string',
+            'gnz' => 'nullable|string',
+            'vin' => 'nullable|string',
+            'ClientName' => 'nullable|string',
+            'ClientPhone' => 'nullable|string',
+            'mileage' => 'nullable|integer',
+            'vehicle_passport' => 'nullable|string',
+            'Color' => 'nullable|string',
+            'ClientPassport' => 'nullable|string',
+            'DTPdate' => 'nullable|date'
+
+        ]);
+        // dd($data);
+        foreach ($data as $key => $value) {
+            if ($key == 'DTPdate') {
+                $value = date('Y-m-d', strtotime($value));
+            }
+            $application->$key = $value;
+        }
+        $application->save();
+
+        return redirect()->route('application', $id);
+    }
 }
