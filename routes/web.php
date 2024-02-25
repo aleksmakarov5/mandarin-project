@@ -115,7 +115,7 @@ Route::middleware("auth:web")->group(
         Route::post('applications/store', [ApplicationController::class, 'store'])
             ->name('applications.store');
         Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
-        Route::delete('applications/{id}/delete', [ApplicationController::class, 'destroy'])
+        Route::get('applications/{id}/delete', [ApplicationController::class, 'destroy'])
             ->name('applications.destroy');
 
         Route::get('/SparePart/{id}', [SparePartController::class, 'SparePart'])->name('SparePart');
@@ -149,6 +149,9 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+        Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
+        Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
+         Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
     }
 

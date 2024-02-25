@@ -22,12 +22,26 @@
 </div>
  
    <div class="col-md-8">
-    <a href="{{$id}}/doc_edit/{{$doc->id}}" ><img src="/storage/img/edit.png" width="35" alt="edit">
+    <a href="/document/{{$id}}/doc_edit/{{$doc->id}}" ><img src="/storage/img/edit.png" width="35" alt="edit">
     </a>
-    <a href="/doc_delete/{{$doc->id}}" ><img src="/storage/img/delete.png" width="35" alt="delete">
+    <a  onclick="if (!confirm('Точно удалить документ <{{$doc->file_name}}?>')) return false"  href="/document/{{$id}}/doc_delete/{{$doc->id}}" ><img src="/storage/img/delete.png" width="35" alt="delete">
     </a>
   <div class="card-body">
-       <h5 class="card-title">{{$doc->file_name}}</h5>  
+@if (isset($document_edit->id))
+@if ($document_edit->id==$doc->id)
+<form action="/document/{{$id}}/doc_update/{{$doc->id}}" method="POST">
+@csrf
+<input type="text" name="file_name" value="{{$doc->file_name}}">
+<input type="submit" value="ок">
+</form> 
+@else 
+  <h5 class="card-title">{{$doc->file_name}}</h5>
+@endif            
+@else
+     <h5 class="card-title">{{$doc->file_name}}</h5>
+@endif
+
+      
   </div>
   
   </div>

@@ -154,10 +154,8 @@ class ApplicationController extends Controller
 
     public function doc_load($id)
     {
-        $documents = DB::table('messages')
-            ->join('attachments', 'attachments.message_id', '=', 'messages.id')
-            ->select('attachments.*')
-            ->where('messages.application_id', '=', $id)
+         $documents = DB::table('attachments')
+              ->where('id_application', '=', $id)
             ->get();
         return view('application.doc_load', ['id' => $id], ['documents' => $documents]);
     }

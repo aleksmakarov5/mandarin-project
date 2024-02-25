@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Contact;
 use App\Models\message;
 use App\Models\application;
+use App\Models\attachment;
+
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
 
@@ -94,8 +96,14 @@ class MainController extends Controller
                 $message->application_id = $applications->id;
 
                 $message->save();
+
             }
             $message->is_parsed = true;
+            $attachment=attachment::where('message_id', $message->id)->get();
+            foreach ($attachment->all() as $att) {
+                $att->id_application= $applications->id;
+                $att->save();
+            }
             $message->save();
         }
     }
@@ -127,10 +135,8 @@ class MainController extends Controller
     }
     public function document($id)
     {
-        $document = DB::table('messages')
-            ->join('attachments', 'attachments.message_id', '=', 'messages.id')
-            ->select('attachments.*')
-            ->where('messages.application_id', '=', $id)
+        $document = DB::table('attachments')
+              ->where('id_application', '=', $id)
             ->get();
         // dd($document);
         return view('document', ['document' => $document], ['id' => $id]);
@@ -218,20 +224,33 @@ class MainController extends Controller
         }
         echo '</table>';
 
-        // $array = XmlToArray::convert($html);
-        // //var_dump($html);
-        // $dom = new DOMDocument();
+       
+    }
 
-        //examples
-
-        //methods to load HTML
-        // $dom->loadHTML($html_string);
-        // $dom->loadHTMLFile('path/to/htmlfile.html');
-
-        // //methods to load XML
-        // $dom->load('path/to/xmlfile.xml');
-        // $dom->loadXML($xml_string);
-
-        // $documentElement = $dom->documentElement;
+    public function doc_edit(Request $request,$id,$doc_id)
+    {
+         $document = DB::table('attachments')
+              ->where('id_application', '=', $id)
+            ->get();
+        // dd($document);
+        $document_edit = DB::table('attachments')
+            ->where('attachments.id', '=', $doc_id)
+            ->first();
+        // dd($document);
+        //return view('doc_edit', ['document' => $document,'id' => $id, 'doc_id' => $doc_id]);
+        return view('document', ['document' => $document, 'document_edit'=> $document_edit], ['id' => $id]);
+    }
+    public function doc_update(Request $request,$id,$doc_id)
+    {   
+        $document = Attachment::findOrFail($doc_id);
+        $document->file_name = $request->input('file_name');
+        $document->save();
+        return redirect()->route('document', ['id' => $id]);
+    }
+    public function doc_delete(Request $request,$id,$doc_id)
+    {
+        $document = Attachment::findOrFail($doc_id);
+        $document->delete();
+        return redirect()->route('document', ['id' => $id]);
     }
 }
