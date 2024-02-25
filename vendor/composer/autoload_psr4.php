@@ -7,6 +7,7 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'voku\\' => array($vendorDir . '/voku/portable-ascii/src/voku'),
+    'phpseclib3\\' => array($vendorDir . '/phpseclib/phpseclib/phpseclib'),
     'ZBateson\\StreamDecorators\\' => array($vendorDir . '/zbateson/stream-decorators/src'),
     'ZBateson\\MbWrapper\\' => array($vendorDir . '/zbateson/mb-wrapper/src'),
     'ZBateson\\MailMimeParser\\' => array($vendorDir . '/zbateson/mail-mime-parser/src'),
@@ -67,6 +68,7 @@ return array(
     'PhpParser\\' => array($vendorDir . '/nikic/php-parser/lib/PhpParser'),
     'PhpOption\\' => array($vendorDir . '/phpoption/phpoption/src/PhpOption'),
     'Pdf2text\\' => array($vendorDir . '/cpierce/pdf2text/src/Pdf2text'),
+    'ParagonIE\\ConstantTime\\' => array($vendorDir . '/paragonie/constant_time_encoding/src'),
     'Ottosmops\\Pdftotext\\' => array($vendorDir . '/ottosmops/pdftotext/src'),
     'Orchestra\\Parser\\' => array($vendorDir . '/orchestra/parser/src'),
     'NunoMaduro\\Collision\\' => array($vendorDir . '/nunomaduro/collision/src'),
@@ -124,6 +126,8 @@ return array(
     'Carbon\\' => array($vendorDir . '/nesbot/carbon/src/Carbon'),
     'Brick\\Math\\' => array($vendorDir . '/brick/math/src'),
     'BeyondCode\\Mailbox\\' => array($vendorDir . '/beyondcode/laravel-mailbox/src'),
+    'Aspose\\Words\\Tests\\' => array($vendorDir . '/aspose-cloud/aspose-words-cloud/tests/Aspose/Words'),
+    'Aspose\\Words\\' => array($vendorDir . '/aspose-cloud/aspose-words-cloud/src/Aspose/Words'),
     'ArchTech\\Enums\\' => array($vendorDir . '/archtechx/enums/src'),
     'App\\' => array($baseDir . '/app', $vendorDir . '/laravel/pint/app'),
 );
