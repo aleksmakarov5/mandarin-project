@@ -17,7 +17,7 @@
    <a href="/storage/files/{{$doc->location}}"  target="_blank">
    
       
-  <img src="/storage/img/{{mb_substr($doc->mime_type,mb_strpos($doc->mime_type,'/'),strlen($doc->mime_type)-mb_strpos($doc->mime_type,'/'))}}.png" class="card-img-top" alt="{{mb_substr($doc->mime_type,mb_strpos($doc->mime_type,'/'),strlen($doc->mime_type)-mb_strpos($doc->mime_type,'/'))}}">
+  <img src="/storage/img/{{mb_substr($doc->file_name,mb_strripos($doc->file_name,'.')+1,mb_strlen($doc->file_name)-mb_strripos($doc->file_name,'.'))}}.png" class="card-img-top" alt="{{mb_substr($doc->mime_type,mb_strpos($doc->mime_type,'/'),strlen($doc->mime_type)-mb_strpos($doc->mime_type,'/'))}}">
   </a> 
 </div>
  
