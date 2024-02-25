@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Contact;
 use App\Models\message;
 use App\Models\application;
@@ -238,19 +239,50 @@ class MainController extends Controller
             ->first();
         // dd($document);
         //return view('doc_edit', ['document' => $document,'id' => $id, 'doc_id' => $doc_id]);
-        return view('document', ['document' => $document, 'document_edit'=> $document_edit], ['id' => $id]);
+        $filename=$document_edit->file_name;
+        $doc_ext=mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
+        $doc_name=mb_substr($filename, 0, mb_strlen($filename)-mb_strlen($doc_ext)-1);
+        return view('document', ['document' => $document, 'doc_name'=> $doc_name, 'doc_ext'=>$doc_ext, 'document_edit'=>$document_edit], ['id' => $id]);
     }
     public function doc_update(Request $request,$id,$doc_id)
     {   
         $document = Attachment::findOrFail($doc_id);
-        $document->file_name = $request->input('file_name');
+        $document->file_name = $request->input('file_name').'.'.$request->input('file_ext');
         $document->save();
         return redirect()->route('document', ['id' => $id]);
     }
     public function doc_delete(Request $request,$id,$doc_id)
     {
         $document = Attachment::findOrFail($doc_id);
+        Storage::delete('public/files/'.$document->location);
         $document->delete();
+        return redirect()->route('document', ['id' => $id]);
+    }
+    public function doc_load($id)
+    {
+        return view('doc_load', ['id' => $id]);
+    }
+    public function doc_add(Request $request,$id)
+    {
+        if ($request->isMethod('post') && $request->file('userfile')) {
+
+            $file = $request->file('userfile');
+            // dd($file);
+            $upload_folder = 'public/files';
+            $filename = $file->getClientOriginalName(); // 
+            $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
+            Storage::putFileAs($upload_folder, $file, $filename_new);
+            $document = new Attachment();
+            $document->file_name = $filename;
+            $document->message_id = 0;
+            $document->mime_type=$file->getMimeType();
+            $document->id_application = $id;
+            $document->file_size = $file->getSize();
+            $document->location = $filename_new;
+
+            $document->save();
+        }
+       
         return redirect()->route('document', ['id' => $id]);
     }
 }

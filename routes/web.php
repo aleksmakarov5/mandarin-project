@@ -149,6 +149,8 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+          Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
+            Route::post('documents/{id}/doc_add', [MainController::class, 'doc_add'])->name('doc_add');
         Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
         Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
          Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');

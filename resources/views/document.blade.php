@@ -3,7 +3,7 @@
   Документы 
 @endsection
 @section('main') 
-<a href="/applications/create" class="nav-link">Добавить документ</a>
+<a href="/documents/{{$id}}/doc_load" class="nav-link">Добавить документ</a>
 <div class="row">
  @foreach ($document as $doc)
  
@@ -31,7 +31,8 @@
 @if ($document_edit->id==$doc->id)
 <form action="/document/{{$id}}/doc_update/{{$doc->id}}" method="POST">
 @csrf
-<input type="text" name="file_name" value="{{$doc->file_name}}">
+<input type="text" name="file_name" value="{{$doc_name}}">
+<input type="hidden" name="file_ext" value="{{$doc_ext}}">
 <input type="submit" value="ок">
 </form> 
 @else 
