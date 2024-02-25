@@ -123,10 +123,14 @@ Route::middleware("auth:web")->group(
             ->name('SparePart.edit');
         Route::get('SparePart/{id}/create', [SparePartController::class, 'create'])
             ->name('SparePart.create');
+         Route::get('SparePart/{id}/doc_load', [SparePartController::class, 'doc_load'])->name('SparePart.doc_load');
+        Route::post('SparePart/{id}/data_load', [SparePartController::class, 'data_load'])->name('SparePart.data_load');
+        Route::post('SparePart/{id}/data_save', [SparePartController::class, 'data_save'])->name('SparePart.data_save');
+
         Route::post('SpareParts/store', [SparePartController::class, 'store'])
             ->name('SparePart.store');
         Route::post('SparePart/{id}/update', [SparePartController::class, 'update'])->name('SparePart.update');
-        Route::delete('SparePart/{id}/delete', [SparePartController::class, 'destroy'])
+        Route::get('SparePart/{id}/delete', [SparePartController::class, 'destroy'])
             ->name('SparePart.destroy');
 
         Route::get('/Work/{id}', [WorkController::class, 'Work'])->name('Work');
