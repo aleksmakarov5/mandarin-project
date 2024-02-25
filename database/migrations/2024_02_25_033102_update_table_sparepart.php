@@ -16,11 +16,11 @@ return new class extends Migration
           $table->dropColumn('price_original_selected'); 
             $table->dropColumn('price_analogue_selected');
             $table->dropColumn('price_used_selected');
-            $table->date('date_wait');
-            $table->string('price_ic_full');
-            $table->string('price_ic_half');
-            $table->string('selected_price');
-            $table->string('selected_mrk'); 
+            $table->date('date_wait')->nullable();
+            $table->string('price_ic_full')->nullable();
+            $table->string('price_ic_half')->nullable();
+            $table->string('selected_price')->nullable();
+            $table->string('selected_mrk')->nullable();
         });
        
     }
