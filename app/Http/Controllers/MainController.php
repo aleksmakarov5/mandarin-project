@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 use App\Models\Contact;
 use App\Models\message;
 use App\Models\application;
 use App\Models\attachment;
+use App\Models\User;
+ 
 
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
@@ -279,10 +282,10 @@ class MainController extends Controller
             $document->id_application = $id;
             $document->file_size = $file->getSize();
             $document->location = $filename_new;
-
             $document->save();
         }
        
         return redirect()->route('document', ['id' => $id]);
     }
+
 }

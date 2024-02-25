@@ -106,6 +106,8 @@ Route::middleware("auth:web")->group(
         Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');
         Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
             ->name('applications.edit');
+        Route::get('applications/{id}/send_mail', [ApplicationController::class, 'send_mail'])
+            ->name('applications.send_mail');
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');

@@ -4,8 +4,12 @@
 @endsection
 @section('main')   
 @can('admin')
-   <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
-   <a href="/application/{{$id}}/doc_load" class="nav-link">Загрузить данные из документа</a>
+<a href="/application/{{$id}}/doc_load" class="nav-link">Загрузить данные из документа</a>
+<br>  
+<a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
+   <br>
+ <a href="/applications/{{$application->id}}/send_mail" class="nav-link">Отправить уведомление</a> 
+   
 
 @endcan
 <table class="table table-striped-columns table-hover table-group-divider table-responsive">

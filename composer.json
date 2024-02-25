@@ -10,7 +10,7 @@
         "bryank-ac/pdftohtml-php": "^2.0",
         "cpierce/pdf2text": "^1.2",
         "escarter/poppler-wrapper-php": "^1.0",
-         "guzzlehttp/guzzle": "^7.2",
+        "guzzlehttp/guzzle": "^7.2",
         "ibnuhalimm/laravel-pdf-to-html": "^1.1",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
@@ -18,6 +18,8 @@
         "orchestra/parser": "^8.0",
         "ottosmops/pdftotext": "^2.0",
         "php-mail-client/client": "^3.2",
+        "symfony/http-client": "^7.0",
+        "symfony/mailgun-mailer": "^7.0",
         "webklex/laravel-imap": "^5.3"
     },
     "require-dev": {

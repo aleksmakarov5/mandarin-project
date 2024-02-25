@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\application;
+use App\Models\User;
 use App\Models\InsuranceCompany;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Models\message;
+use App\Mail\user\appnotify;
+
 
 
 
@@ -202,6 +206,12 @@ class ApplicationController extends Controller
         }
         $application->save();
 
+        return redirect()->route('application', $id);
+    }
+        public function send_mail($id)
+    {
+        $user=User::find(2);
+        Mail::to($user->email)->send(new appnotify($id)); 
         return redirect()->route('application', $id);
     }
 }
