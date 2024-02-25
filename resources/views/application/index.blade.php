@@ -9,7 +9,7 @@
 <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
    <br>
    @if ($application->id_status==2)
-     <a href="/applications/{{$application->id}}/send_mail" class="nav-link">Передать МРК</a> 
+     <a href="/applications/{{$application->id}}/send_mrk/{{$application->id_MRK}}" class="nav-link">Передать МРК</a> 
    @endif
    
 

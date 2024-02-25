@@ -9,7 +9,7 @@ use App\Models\InsuranceCompany;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
-use App\Mail\user\appnotify;
+use App\Mail\user\mrknotify;
 
 
 
@@ -217,8 +217,16 @@ if ($application->id_status < 2) {
 
         return redirect()->route('application', $id);
     }
-        public function send_mail($id)
+        public function send_mrk($id,$id_MRK)
     {
-        
+        $user=User::find($id_MRK);
+             Mail::to($user->email)->send(new mrknotify($id)); 
+ $application = application::findOrFail($id);
+ if ($application->id_status < 3) {
+            $application->id_status = 3;
+            $application ->save();
+        }
+            return redirect()->route('application', $id);
+          
     }
 }
