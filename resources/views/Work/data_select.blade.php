@@ -42,7 +42,7 @@
     <input type="hidden" name="price[{{$j}}]" value="{{$Works[$i+1]}}">
     <input type="hidden" name="count_hours[{{$j}}]" value="{{$Works[$i+2]}}">
     <input type="hidden" name="summ[{{$j}}]" value="{{$Works[$i+3]}}">
-   @endfor 
+     @endfor 
     <button class="nav-link" type="submit">Сохранить</button>
 </form>
 

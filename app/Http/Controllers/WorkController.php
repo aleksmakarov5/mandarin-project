@@ -13,7 +13,16 @@ class WorkController extends Controller
     {
         $Works = DB::table('works')->where('id_application', '=', $id)->get();
         // dd($rewiew->all()) ;
-        return view('Work.index', ['Works' => $Works->all()], ['id' => $id]);
+        $summ_ic = 0;
+        $summ_service = 0;
+        foreach ($Works as $work)
+        {
+            $summ_ic = $summ_ic + (int)str_replace(' ','',$work->summ);
+            $summ_service = $summ_service + (int)str_replace(' ','',$work->price_service);
+        }
+
+        return view('Work.index', ['Works' => $Works->all(),'id' => $id,
+    'summ_ic' => $summ_ic,'summ_service' => $summ_service]);
     }
 
     public function create($id)
@@ -129,7 +138,7 @@ class WorkController extends Controller
         $summ = $request['summ'];
         $id_application = $request['id_application'];
         //dd($request->name);
-        for ($i = 1; $i < count($name); $i++) {
+        for ($i = 1; $i <= count($name); $i++) {
             $Work = new Work;
             $Work->name = $name[$i];
             $Work->price = $price[$i];
