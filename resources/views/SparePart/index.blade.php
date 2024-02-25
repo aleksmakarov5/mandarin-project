@@ -3,10 +3,12 @@
     Запчасти 
 @endsection
 @section('main') 
+<a href="/SparePart/{{$id}}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
+<br>
 @can('spm')
     <a href="/SparePart/{{$id}}/create" class="nav-link">Добавить</a>
 @endcan
-<a href="/SparePart/{{$id}}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
+
 
 <table class="table table-striped-columns table-hover table-group-divider table-responsive">
   <thead>
@@ -84,7 +86,7 @@
       <th scope="col" onclick="window.location.href='/SparePart/{{$sparepart->id}}/edit'; return false">{{$sparepart->status}}</th>
       <th scope="col" onclick="window.location.href='/SparePart/{{$sparepart->id}}/edit'; return false">{{$sparepart->date_price}}</th>
       <th scope="col" onclick="window.location.href='/SparePart/{{$sparepart->id}}/edit'; return false">{{$sparepart->date_wait}}</th>
-      <th scope="col"> <a onclick="if (!confirm('Точно удалить запчасть <{{$sparepart->name}}?>')) return false"  href="{{route('SparePart.destroy', $sparepart->id)}}" class="nav-link">Удалить</a>
+      <th scope="col"> <a onclick="if (!confirm('Точно удалить запчасть <{{$sparepart->name}}?>')) return false"  href="{{route('SparePart.destroy', $sparepart->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>
       </th>
     </tr>
       

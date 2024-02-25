@@ -3,8 +3,10 @@
   Работы 
 @endsection
 @section('main') 
-<a href="/Work/{{$id}}/create" class="nav-link">Добавить</a>
 <a href="/Work/{{$id}}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
+<br>
+<a href="/Work/{{$id}}/create" class="nav-link">Добавить</a>
+
 <table class="table table-striped-columns table-hover table-group-divider table-responsive">
   <thead>
   
@@ -41,7 +43,7 @@
       <th scope="col" onclick="window.location.href='/Work/{{$Work->id}}/edit'; return false">{{$Work->name}}</th>
       <th scope="col" onclick="window.location.href='/Work/{{$Work->id}}/edit'; return false">{{$Work->summ}}</th>
       <th scope="col" onclick="window.location.href='/Work/{{$Work->id}}/edit'; return false">{{$Work->price_service}}</th>
-         <th scope="col"> <a onclick="if (!confirm('Точно удалить работу <{{$Work->name}}?>')) return false"  href="{{route('Work.destroy', $Work->id)}}" class="nav-link">Удалить</a>
+         <th scope="col"> <a onclick="if (!confirm('Точно удалить работу <{{$Work->name}}?>')) return false"  href="{{route('Work.destroy', $Work->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>
         </th>
     </tr>
       

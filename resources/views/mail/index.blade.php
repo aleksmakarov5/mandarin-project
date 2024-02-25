@@ -12,8 +12,14 @@
         </h3>
     <p>
         
-     {{$message->body_html
-     }}
+    @php
+       $body = $message->body_html;
+       $body_start=mb_strpos($body,'<body');
+       $body_end=mb_strpos($body,'</body>');
+       $body=mb_substr($body,$body_start,$body_end-$body_start);
+       echo $body;
+    @endphp
+     
        
     </p>
     </div>    

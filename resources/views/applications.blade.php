@@ -61,7 +61,7 @@
       @endif
         <th scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">-</th>
         <th scope="col">
-          <a href="{{route('applications.destroy', $application->id)}}" class="nav-link">Удалить</a>
+          <a href="{{route('applications.destroy', $application->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>
         </th>
     </tr>
       

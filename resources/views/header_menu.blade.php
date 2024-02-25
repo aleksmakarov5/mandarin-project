@@ -13,6 +13,6 @@
          <li class="nav-item"><a href="/document/{{$id}}" class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}" aria-current="page">Документы</a></li>
        <li class="nav-item"><a href="#" class="nav-link">История</a></li>
       </ul>
-    </header>
+</header>
 @yield('main')
 @endsection
