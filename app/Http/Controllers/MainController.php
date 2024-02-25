@@ -10,6 +10,7 @@ use App\Models\message;
 use App\Models\application;
 use App\Models\attachment;
 use App\Models\User;
+use App\Mail\user\appnotify;
  
 
 use Illuminate\Support\Facades\DB;
@@ -92,7 +93,8 @@ class MainController extends Controller
                         'numberInsuranceCompanyApplication' => $app_number,
                         'id_insuranceCompany' => 1,
                         'CarModel' => $model,
-                        'gnz' => $gnz
+                        'gnz' => $gnz,
+                        'id_status' => 1
 
                     ]
                 );
@@ -106,8 +108,11 @@ class MainController extends Controller
             $attachment=attachment::where('message_id', $message->id)->get();
             foreach ($attachment->all() as $att) {
                 $att->id_application= $applications->id;
+
                 $att->save();
             }
+            $user=User::find(2);
+             Mail::to($user->email)->send(new appnotify($applications->id)); 
             $message->save();
         }
     }

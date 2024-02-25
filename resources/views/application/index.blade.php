@@ -8,7 +8,9 @@
 <br>  
 <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
    <br>
- <a href="/applications/{{$application->id}}/send_mail" class="nav-link">Отправить уведомление</a> 
+   @if ($application->id_status==2)
+     <a href="/applications/{{$application->id}}/send_mail" class="nav-link">Передать МРК</a> 
+   @endif
    
 
 @endcan
@@ -114,6 +116,12 @@
     <th>Запчастист</th>
     <th>
       {{ $spm}}
+    </th>
+  </tr>
+     <tr>
+    <th>Текущий статус</th>
+    <th>
+      {{ $application->StatusName}}
     </th>
   </tr>
  </tbody>

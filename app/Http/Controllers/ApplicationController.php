@@ -20,7 +20,8 @@ class ApplicationController extends Controller
     {
         $applications = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->select('applications.*', 'insurance_companies.name')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
             ->get();
         // dd($applications);
         return view('applications', ['applications' => $applications],);
@@ -29,7 +30,9 @@ class ApplicationController extends Controller
     {
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->select('applications.*', 'insurance_companies.name')
+
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
             ->where('applications.id', '=', $id)
             ->first();
         // dd($application);
@@ -80,22 +83,24 @@ class ApplicationController extends Controller
     public function update(Request $request, $id)
     {
         $application = application::findOrFail($id);
-
+        if ($application->id_status < 2) {
+            $application->id_status = 2;
+        }
         $data = $this->validate($request, [
             'id_insuranceCompany' => 'required',
             'numberInsuranceCompanyApplication' => 'required',
-            'CarModel' => 'nullable|string',
-            'gnz' => 'nullable|string',
-            'vin' => 'nullable|string',
-            'ClientName' => 'nullable|string',
-            'ClientPhone' => 'nullable|string',
-            'id_MRK' => 'nullable|integer',
-            'id_spm' => 'nullable|integer',
-            'mileage' => 'nullable|integer',
-            'vehicle_passport' => 'nullable|string',
-            'Color' => 'nullable|string',
-            'ClientPassport' => 'nullable|string',
-            'DTPdate' => 'nullable|date'
+            'CarModel' => 'required|string',
+            'gnz' => 'required|string',
+            'vin' => 'required|string',
+            'ClientName' => 'required|string',
+            'ClientPhone' => 'required|string',
+            'id_MRK' => 'required|integer',
+            'id_spm' => 'required|integer',
+            'mileage' => 'required|integer',
+            'vehicle_passport' => 'required|string',
+            'Color' => 'required|string',
+            'ClientPasport' => 'required|string',
+            'DTPdate' => 'required|date'
 
         ]);
         // dd($data);
@@ -135,6 +140,8 @@ class ApplicationController extends Controller
         ]);
         $application = new application;
 
+        $application->id_status = 2;
+        
         foreach ($data as $key => $value) {
             $application->$key = $value;
         }
@@ -183,7 +190,9 @@ class ApplicationController extends Controller
     {
 
         $application = application::findOrFail($id);
-
+if ($application->id_status < 2) {
+            $application->id_status = 2;
+        } 
         $data = $this->validate($request, [
             'CarModel' => 'nullable|string',
             'gnz' => 'nullable|string',
@@ -210,8 +219,6 @@ class ApplicationController extends Controller
     }
         public function send_mail($id)
     {
-        $user=User::find(2);
-        Mail::to($user->email)->send(new appnotify($id)); 
-        return redirect()->route('application', $id);
+        
     }
 }
