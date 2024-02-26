@@ -8,7 +8,21 @@
         </ul>
     </div>
 @endif
-
+<div class="form-floating">
+    
+    <select class="form-control" id="ur" name="ur">
+        
+        <option value=0>Клиент не работает с автоюристом</option>    
+        <option value=1
+                @if ($application->id_status == 25)
+                    selected
+                @endif
+                >Клиент работает с автоюристом</option>
+        
+      
+    </select>
+    <label for="id_insuranceCompany">Страховая компания</label>
+  </div>
 <div class="form-floating">
     
     <select class="form-control" id="id_insuranceCompany" name="id_insuranceCompany">

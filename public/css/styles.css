@@ -20,7 +20,9 @@
 }
 .table{
     --bs-table-hover-bg: #eb6700;
-}
+    --bs-table-active-bg: #eb6700;
+    color: #eb6700;
+}   
 
 tr:hover {
     cursor: pointer;
@@ -191,5 +193,9 @@ th.zapmrk {
 .form_radio_btn input[type=radio]:disabled+label {
     background: #efefef;
     color: #666;
+}
+
+.grey{
+    color: #999;
 }
 

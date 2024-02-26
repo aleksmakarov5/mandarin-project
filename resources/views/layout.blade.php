@@ -38,7 +38,7 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
 
-<body class="bg-dark text-white">
+<body class="bg-dark text-white ">
 <div class="container">
     @auth("web")
     <p align=right> {{ Auth::user()->name }} </p>

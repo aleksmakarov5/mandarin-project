@@ -8,7 +8,7 @@
 <br>  
 <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
    <br>
-   @if ($application->id_status==2)
+   @if ($application->id_status==2&&!$empty)
      <a href="/applications/{{$application->id}}/send_mrk/{{$application->id_MRK}}" class="nav-link">Передать МРК</a> 
    @endif
    
