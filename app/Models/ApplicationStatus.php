@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class ApplicationStatus extends Model
 {
     use HasFactory;
-    protected $fillable = ['StatusName'];
+    protected $fillable = ['StatusName','current_group'];
 }

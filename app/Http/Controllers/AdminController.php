@@ -22,7 +22,7 @@ class AdminController extends Controller
         $users = DB::table('users')
             ->join('user_groups', 'users.GroupId', '=', 'user_groups.id')
             ->select('users.*', 'user_groups.GroupName')
-            ->paginate(5);
+            ->get();
 
         return view('admin.users.index', ['users' => $users]);
     }
@@ -155,8 +155,11 @@ class AdminController extends Controller
     public function application_statuses_index()
 
     {
-        $application_statuses = new ApplicationStatus();
-        return view('admin.application_statuses.index', ['application_statuses' => $application_statuses->all()]);
+        $application_statuses = DB::table('application_statuses')
+            ->join('user_groups', 'application_statuses.current_group', '=', 'user_groups.id')
+            ->select('application_statuses.*', 'user_groups.GroupName')
+            ->get();
+        return view('admin.application_statuses.index', ['application_statuses' => $application_statuses]);
     }
 
     public function destroy_application_status($id)
@@ -168,19 +171,22 @@ class AdminController extends Controller
     }
     public function create_application_status()
     {
+        $groups = new usergroup();
         $application_statuses = new ApplicationStatus();
-        return view('admin.application_statuses.create', ['application_statuses' => $application_statuses->all()]);
+        return view('admin.application_statuses.create', ['application_statuses' => $application_statuses->all(), 'groups' => $groups->all()]);
     }
     public function application_status_register(Request $request)
     {
         $data = $request->validate([
             'StatusName' => ["required", "string"],
+            'current_group' => ["required"]
 
         ]);
 
         // dd($data);
         $application_status = ApplicationStatus::create([
-            'StatusName' => $data["StatusName"]
+            'StatusName' => $data["StatusName"],
+             'current_group' => $data["current_group"]
         ]);
 
         return redirect()->route('application_statuses');
@@ -189,17 +195,21 @@ class AdminController extends Controller
     public function application_status_edit($id)
     {
         $application_status = ApplicationStatus::findOrFail($id);
-        return view('admin.application_statuses.edit', ['application_status' => $application_status]);
+        $groups = new usergroup();
+        return view('admin.application_statuses.edit', ['application_status' => $application_status, 'groups'=> $groups->all()]);
     }
     public function update_application_status(Request $request, $id)
     {
         $application_status = ApplicationStatus::findOrFail($id);
         $data = $request->validate([
-            'StatusName' => ["required", "string"]
+            'StatusName' => ["required", "string"],
+            'current_group' => ["required"]
+
         ]);
 
         // dd($data);
         $application_status->StatusName = $data["StatusName"];
+        $application_status->current_group = $data["current_group"];
         $application_status->save();
 
         return redirect()->route('application_statuses');

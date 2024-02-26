@@ -12,6 +12,17 @@
           <p class="text-red-500">{{$message}}</p>
       @enderror
     </div>
+    <div class="form-floating">
+    
+    <select class="form-control" id="current_group" name="current_group">
+        @foreach ($groups as $item)
+            <option value="{{$item->id}}"
+                >{{$item->GroupName}}</option>
+        @endforeach
+      
+    </select>
+    <label for="current_group">Текущая группа</label>
+  </div>
    
    
     <button class="nav-link" type="submit">Создать Статус</button>
