@@ -158,16 +158,16 @@ class MainController extends Controller
         //     ->setPdf('storage/files/' . $id)
         //     ->text();
         // echo $text;
-        // exec('pdftohtml storage/files/' . $id . ' -p -i -xml');
-        // exec('pdftohtml storage/files/' . $id . ' -p -i');
-ConvertApi::setApiSecret('Mrv6e6zPa9oTst7o');
-$result = ConvertApi::convert('pdf-extract', [
-        'File' => 'storage/files/'.$id,
-    ], 'pdf'
-);
-$result->saveFiles('storage/files/');
+        //  exec('pdftohtml storage/files/' . $id . ' -p -i -xml');
+         exec('pdftohtml storage/files/' . $id . ' -p -i');
+// ConvertApi::setApiSecret('Mrv6e6zPa9oTst7o');
+// $result = ConvertApi::convert('pdf-extract', [
+//         'File' => 'storage/files/'.$id,
+//     ], 'pdf'
+// );
+// $result->saveFiles('storage/files/');
 
-        $html = substr($id, 0, strlen($id) - 4) . '.html';
+        $html = substr($id, 0, strlen($id) - 4) . 's.html';
         //  include('storage/files/' . $html);
         $file = file_get_contents('storage/files/' . $html);
         $file = strip_tags($file, ['br']);

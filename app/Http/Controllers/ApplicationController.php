@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+
 use App\Models\application;
 use App\Models\User;
 use App\Models\InsuranceCompany;
@@ -10,21 +11,34 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
 use App\Mail\user\mrknotify;
-
-
-
-
+use Illuminate\Validation\Rules\Can;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Auth;
 class ApplicationController extends Controller
 {
     public function applications()
     {
-        $applications = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->get();
-        // dd($applications);
-        return view('applications', ['applications' => $applications],);
+       
+        if (Gate::allows('administrator')) {
+            $applications = DB::table('applications')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+                ->get();
+            // dd($applications);
+
+        } else
+        {
+           $applications = DB::table('applications')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+                ->where('applications.id_MRK', '=', Auth::user()->id)
+                ->orWhere('applications.id_spm', '=', Auth::user()->id)
+                ->get();
+        }
+             return view('applications', ['applications' => $applications],);
+       
     }
     public function application($id)
     {
