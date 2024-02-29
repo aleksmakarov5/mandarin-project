@@ -17,8 +17,8 @@ return new class extends Migration
             $table->unsignedInteger('id_application');
             $table->string('PartName');
             $table->string('Work');
-            $table->string('ExpertApinion');
-            $table->string('Сonclusion');
+            $table->string('ExpertApinion')->nullable();
+            $table->string('Сonclusion')->nullable();
 
         });
     }

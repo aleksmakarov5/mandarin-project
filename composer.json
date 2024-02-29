@@ -20,6 +20,7 @@
         "orchestra/parser": "^8.0",
         "ottosmops/pdftotext": "^2.0",
         "php-mail-client/client": "^3.2",
+        "phpoffice/phpword": "^1.2",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
         "webklex/laravel-imap": "^5.3"

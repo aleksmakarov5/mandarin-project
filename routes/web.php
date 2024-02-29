@@ -5,7 +5,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ImapController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\WorkController;
-use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\TroubleshootingController;
+use App\Http\Controllers\WordController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SparePartController;
@@ -149,6 +150,17 @@ Route::middleware("auth:web")->group(
         Route::get('Work/{id}/delete', [WorkController::class, 'destroy'])
             ->name('Work.destroy');
 
+        Route::get('/troubleshooting/{id}', [TroubleshootingController::class, 'troubleshooting'])->name('troubleshooting');
+        Route::get('troubleshooting/{id}/edit', [TroubleshootingController::class, 'edit'])
+            ->name('troubleshooting.edit');
+        Route::get('troubleshooting/{id}/create', [TroubleshootingController::class, 'create'])
+            ->name('troubleshooting.create');
+        Route::post('troubleshootings/store', [TroubleshootingController::class, 'store'])
+            ->name('troubleshooting.store');
+        Route::post('troubleshooting/{id}/update', [TroubleshootingController::class, 'update'])->name('troubleshooting.update');
+        Route::get('troubleshooting/{id}/delete', [TroubleshootingController::class, 'destroy'])
+            ->name('troubleshooting.destroy');
+
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
           Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
@@ -157,6 +169,9 @@ Route::middleware("auth:web")->group(
         Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
          Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
+        
+        Route::get('export_hda/{id}', [WordController::class, 'export_hda'])->name('export_hda');
+        
     }
 
 );
