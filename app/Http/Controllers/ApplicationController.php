@@ -32,7 +32,7 @@ class ApplicationController extends Controller
            $applications = DB::table('applications')
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->where('applications.id_MRK', '=', Auth::user()->id)
                 ->orWhere('applications.id_spm', '=', Auth::user()->id)
                 ->get();
