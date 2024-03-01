@@ -4,7 +4,7 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
+class ComposerStaticInit2cb711d2bcb60bc40101e2a84f026309
 {
     public static $files = array (
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
@@ -458,8 +458,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         ),
         'Psr\\Http\\Message\\' => 
         array (
-            0 => __DIR__ . '/..' . '/psr/http-factory/src',
-            1 => __DIR__ . '/..' . '/psr/http-message/src',
+            0 => __DIR__ . '/..' . '/psr/http-message/src',
+            1 => __DIR__ . '/..' . '/psr/http-factory/src',
         ),
         'Psr\\Http\\Client\\' => 
         array (
@@ -795,6 +795,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'App\\Http\\Controllers\\MainController' => __DIR__ . '/../..' . '/app/Http/Controllers/MainController.php',
         'App\\Http\\Controllers\\SparePartController' => __DIR__ . '/../..' . '/app/Http/Controllers/SparePartController.php',
         'App\\Http\\Controllers\\TroubleshootingController' => __DIR__ . '/../..' . '/app/Http/Controllers/TroubleshootingController.php',
+        'App\\Http\\Controllers\\WordController' => __DIR__ . '/../..' . '/app/Http/Controllers/WordController.php',
         'App\\Http\\Controllers\\WorkController' => __DIR__ . '/../..' . '/app/Http/Controllers/WorkController.php',
         'App\\Http\\Kernel' => __DIR__ . '/../..' . '/app/Http/Kernel.php',
         'App\\Http\\Middleware\\Authenticate' => __DIR__ . '/../..' . '/app/Http/Middleware/Authenticate.php',
@@ -3144,6 +3145,8 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Illuminate\\Database\\DeadlockException' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/DeadlockException.php',
         'Illuminate\\Database\\DetectsConcurrencyErrors' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/DetectsConcurrencyErrors.php',
         'Illuminate\\Database\\DetectsLostConnections' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/DetectsLostConnections.php',
+        'Illuminate\\Database\\Eloquent\\Attributes\\ObservedBy' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Attributes/ObservedBy.php',
+        'Illuminate\\Database\\Eloquent\\Attributes\\ScopedBy' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/Attributes/ScopedBy.php',
         'Illuminate\\Database\\Eloquent\\BroadcastableModelEventOccurred' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastableModelEventOccurred.php',
         'Illuminate\\Database\\Eloquent\\BroadcastsEvents' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastsEvents.php',
         'Illuminate\\Database\\Eloquent\\BroadcastsEventsAfterCommit' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Eloquent/BroadcastsEventsAfterCommit.php',
@@ -3265,6 +3268,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Illuminate\\Database\\Query\\Grammars\\SqlServerGrammar' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/Grammars/SqlServerGrammar.php',
         'Illuminate\\Database\\Query\\IndexHint' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/IndexHint.php',
         'Illuminate\\Database\\Query\\JoinClause' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/JoinClause.php',
+        'Illuminate\\Database\\Query\\JoinLateralClause' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/JoinLateralClause.php',
         'Illuminate\\Database\\Query\\Processors\\MySqlProcessor' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/Processors/MySqlProcessor.php',
         'Illuminate\\Database\\Query\\Processors\\PostgresProcessor' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/Processors/PostgresProcessor.php',
         'Illuminate\\Database\\Query\\Processors\\Processor' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Database/Query/Processors/Processor.php',
@@ -3439,6 +3443,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithExceptionHandling' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithExceptionHandling.php',
         'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithRedis' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithRedis.php',
         'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithSession' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithSession.php',
+        'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithTestCaseLifecycle' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTestCaseLifecycle.php',
         'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithTime' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithTime.php',
         'Illuminate\\Foundation\\Testing\\Concerns\\InteractsWithViews' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/InteractsWithViews.php',
         'Illuminate\\Foundation\\Testing\\Concerns\\MakesHttpRequests' => __DIR__ . '/..' . '/laravel/framework/src/Illuminate/Foundation/Testing/Concerns/MakesHttpRequests.php',
@@ -4112,6 +4117,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Laravel\\Prompts\\Output\\BufferedConsoleOutput' => __DIR__ . '/..' . '/laravel/prompts/src/Output/BufferedConsoleOutput.php',
         'Laravel\\Prompts\\Output\\ConsoleOutput' => __DIR__ . '/..' . '/laravel/prompts/src/Output/ConsoleOutput.php',
         'Laravel\\Prompts\\PasswordPrompt' => __DIR__ . '/..' . '/laravel/prompts/src/PasswordPrompt.php',
+        'Laravel\\Prompts\\PausePrompt' => __DIR__ . '/..' . '/laravel/prompts/src/PausePrompt.php',
         'Laravel\\Prompts\\Progress' => __DIR__ . '/..' . '/laravel/prompts/src/Progress.php',
         'Laravel\\Prompts\\Prompt' => __DIR__ . '/..' . '/laravel/prompts/src/Prompt.php',
         'Laravel\\Prompts\\SearchPrompt' => __DIR__ . '/..' . '/laravel/prompts/src/SearchPrompt.php',
@@ -4129,6 +4135,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Laravel\\Prompts\\Themes\\Default\\MultiSelectPromptRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/MultiSelectPromptRenderer.php',
         'Laravel\\Prompts\\Themes\\Default\\NoteRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/NoteRenderer.php',
         'Laravel\\Prompts\\Themes\\Default\\PasswordPromptRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/PasswordPromptRenderer.php',
+        'Laravel\\Prompts\\Themes\\Default\\PausePromptRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/PausePromptRenderer.php',
         'Laravel\\Prompts\\Themes\\Default\\ProgressRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/ProgressRenderer.php',
         'Laravel\\Prompts\\Themes\\Default\\Renderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/Renderer.php',
         'Laravel\\Prompts\\Themes\\Default\\SearchPromptRenderer' => __DIR__ . '/..' . '/laravel/prompts/src/Themes/Default/SearchPromptRenderer.php',
@@ -7771,6 +7778,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Symfony\\Component\\Mailer\\Exception\\RuntimeException' => __DIR__ . '/..' . '/symfony/mailer/Exception/RuntimeException.php',
         'Symfony\\Component\\Mailer\\Exception\\TransportException' => __DIR__ . '/..' . '/symfony/mailer/Exception/TransportException.php',
         'Symfony\\Component\\Mailer\\Exception\\TransportExceptionInterface' => __DIR__ . '/..' . '/symfony/mailer/Exception/TransportExceptionInterface.php',
+        'Symfony\\Component\\Mailer\\Exception\\UnexpectedResponseException' => __DIR__ . '/..' . '/symfony/mailer/Exception/UnexpectedResponseException.php',
         'Symfony\\Component\\Mailer\\Exception\\UnsupportedSchemeException' => __DIR__ . '/..' . '/symfony/mailer/Exception/UnsupportedSchemeException.php',
         'Symfony\\Component\\Mailer\\Header\\MetadataHeader' => __DIR__ . '/..' . '/symfony/mailer/Header/MetadataHeader.php',
         'Symfony\\Component\\Mailer\\Header\\TagHeader' => __DIR__ . '/..' . '/symfony/mailer/Header/TagHeader.php',
@@ -8152,6 +8160,7 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
         'Symfony\\Component\\VarDumper\\Cloner\\Cursor' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Cursor.php',
         'Symfony\\Component\\VarDumper\\Cloner\\Data' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Data.php',
         'Symfony\\Component\\VarDumper\\Cloner\\DumperInterface' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/DumperInterface.php',
+        'Symfony\\Component\\VarDumper\\Cloner\\Internal\\NoDefault' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Internal/NoDefault.php',
         'Symfony\\Component\\VarDumper\\Cloner\\Stub' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/Stub.php',
         'Symfony\\Component\\VarDumper\\Cloner\\VarCloner' => __DIR__ . '/..' . '/symfony/var-dumper/Cloner/VarCloner.php',
         'Symfony\\Component\\VarDumper\\Command\\Descriptor\\CliDescriptor' => __DIR__ . '/..' . '/symfony/var-dumper/Command/Descriptor/CliDescriptor.php',
@@ -8814,10 +8823,10 @@ class ComposerStaticInit9c491b8531eec05ba41a11d9276a5749
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixDirsPsr4;
-            $loader->prefixesPsr0 = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$prefixesPsr0;
-            $loader->classMap = ComposerStaticInit9c491b8531eec05ba41a11d9276a5749::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInit2cb711d2bcb60bc40101e2a84f026309::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInit2cb711d2bcb60bc40101e2a84f026309::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInit2cb711d2bcb60bc40101e2a84f026309::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInit2cb711d2bcb60bc40101e2a84f026309::$classMap;
 
         }, null, ClassLoader::class);
     }

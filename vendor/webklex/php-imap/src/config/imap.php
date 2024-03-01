@@ -14,18 +14,6 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | IMAP default account
-    |--------------------------------------------------------------------------
-    |
-    | The default account identifier. It will be used as default for any missing account parameters.
-    | If however the default account is missing a parameter the package default will be used.
-    | Set to 'false' [boolean] to disable this functionality.
-    |
-    */
-    'default' => env('IMAP_DEFAULT_ACCOUNT', 'default'),
-
-    /*
-    |--------------------------------------------------------------------------
     | Default date format
     |--------------------------------------------------------------------------
     |
@@ -37,7 +25,19 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | Available IMAP accounts
+    | Default account
+    |--------------------------------------------------------------------------
+    |
+    | The default account identifier. It will be used as default for any missing account parameters.
+    | If however the default account is missing a parameter the package default will be used.
+    | Set to 'false' [boolean] to disable this functionality.
+    |
+    */
+    'default' => 'default',
+
+    /*
+    |--------------------------------------------------------------------------
+    | Available accounts
     |--------------------------------------------------------------------------
     |
     | Please list all IMAP accounts which you are planning to use within the
@@ -46,15 +46,15 @@ return [
     */
     'accounts' => [
 
-        'default' => [ // account identifier
-            'host'  => env('IMAP_HOST', 'imap.yandex.ru'),
-            'port'  => env('IMAP_PORT', 993),
-            'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
-            'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
-            'validate_cert' => env('IMAP_VALIDATE_CERT', true),
-            'username' => env('IMAP_USERNAME', 'mandarin.portal'),
-            'password' => env('IMAP_PASSWORD', 'faebqrmuwhmhyqmi'),
-            'authentication' => env('IMAP_AUTHENTICATION', null),
+        'default' => [// account identifier
+            'host'  => 'localhost',
+            'port'  => 993,
+            'protocol'  => 'imap', //might also use imap, [pop3 or nntp (untested)]
+            'encryption'    => 'ssl', // Supported: false, 'ssl', 'tls'
+            'validate_cert' => true,
+            'username' => 'root@example.com',
+            'password' => '',
+            'authentication' => null,
             'proxy' => [
                 'socket' => null,
                 'request_fulluri' => false,
@@ -65,17 +65,17 @@ return [
             "extensions" => []
         ],
 
-
-        'yandex' => [ // account identifier
-            'host' => 'mail.mandarin-portal.ru',
-            'port' => 143,
-            'encryption' => 'null',
-            'validate_cert' => true,
-            'username' => 'robot@mandarin-portal.ru',
-            'password' => 'eR7cE4dE6ntH9zQ8',
-            // 'authentication' => 'oauth',
-        ],
         /*
+        'gmail' => [ // account identifier
+            'host' => 'imap.gmail.com',
+            'port' => 993,
+            'encryption' => 'ssl',
+            'validate_cert' => true,
+            'username' => 'example@gmail.com',
+            'password' => 'PASSWORD',
+            'authentication' => 'oauth',
+        ],
+
         'another' => [ // account identifier
             'host' => '',
             'port' => 993,
@@ -186,23 +186,23 @@ return [
     | Available events
     |--------------------------------------------------------------------------
     |
-    */
+     */
     'events' => [
         "message" => [
-            'new' => \Webklex\IMAP\Events\MessageNewEvent::class,
-            'moved' => \Webklex\IMAP\Events\MessageMovedEvent::class,
-            'copied' => \Webklex\IMAP\Events\MessageCopiedEvent::class,
-            'deleted' => \Webklex\IMAP\Events\MessageDeletedEvent::class,
-            'restored' => \Webklex\IMAP\Events\MessageRestoredEvent::class,
+            'new' => \Webklex\PHPIMAP\Events\MessageNewEvent::class,
+            'moved' => \Webklex\PHPIMAP\Events\MessageMovedEvent::class,
+            'copied' => \Webklex\PHPIMAP\Events\MessageCopiedEvent::class,
+            'deleted' => \Webklex\PHPIMAP\Events\MessageDeletedEvent::class,
+            'restored' => \Webklex\PHPIMAP\Events\MessageRestoredEvent::class,
         ],
         "folder" => [
-            'new' => \Webklex\IMAP\Events\FolderNewEvent::class,
-            'moved' => \Webklex\IMAP\Events\FolderMovedEvent::class,
-            'deleted' => \Webklex\IMAP\Events\FolderDeletedEvent::class,
+            'new' => \Webklex\PHPIMAP\Events\FolderNewEvent::class,
+            'moved' => \Webklex\PHPIMAP\Events\FolderMovedEvent::class,
+            'deleted' => \Webklex\PHPIMAP\Events\FolderDeletedEvent::class,
         ],
         "flag" => [
-            'new' => \Webklex\IMAP\Events\FlagNewEvent::class,
-            'deleted' => \Webklex\IMAP\Events\FlagDeletedEvent::class,
+            'new' => \Webklex\PHPIMAP\Events\FlagNewEvent::class,
+            'deleted' => \Webklex\PHPIMAP\Events\FlagDeletedEvent::class,
         ],
     ],
 
@@ -218,7 +218,7 @@ return [
     | for a quick start.
     |
     | The provided masks below are used as the default masks.
-    */
+     */
     'masks' => [
         'message' => \Webklex\PHPIMAP\Support\Masks\MessageMask::class,
         'attachment' => \Webklex\PHPIMAP\Support\Masks\AttachmentMask::class

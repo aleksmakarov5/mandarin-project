@@ -19,4 +19,4 @@ yarn-error.log
 /.vscode
 public/storage
 storage/logs/laravel.log
-
+vendor

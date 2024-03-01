@@ -10,15 +10,13 @@
 *  -
 */
 
-class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask
-{
+class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask {
 
     /**
      * New custom method which can be called through a mask
      * @return string
      */
-    public function token(): string
-    {
+    public function token(): string {
         return implode('-', [$this->id, $this->getMessage()->getUid(), $this->name]);
     }
 
@@ -26,13 +24,13 @@ class CustomAttachmentMask extends \Webklex\PHPIMAP\Support\Masks\AttachmentMask
      * Custom attachment saving method
      * @return bool
      */
-    public function custom_save(): bool
-    {
-        $path = "foo" . DIRECTORY_SEPARATOR . "bar" . DIRECTORY_SEPARATOR;
+    public function custom_save(): bool {
+        $path = "foo".DIRECTORY_SEPARATOR."bar".DIRECTORY_SEPARATOR;
         $filename = $this->token();
 
-        return file_put_contents($path . $filename, $this->getContent()) !== false;
+        return file_put_contents($path.$filename, $this->getContent()) !== false;
     }
+
 }
 
 /** @var \Webklex\PHPIMAP\Client $client */
@@ -53,6 +51,6 @@ $attachment = $message->getAttachments()->first();
 /** @var CustomAttachmentMask $masked_attachment */
 $masked_attachment = $attachment->mask();
 
-echo 'Token for uid [' . $masked_attachment->getMessage()->getUid() . ']: ' . $masked_attachment->token();
+echo 'Token for uid ['.$masked_attachment->getMessage()->getUid().']: '.$masked_attachment->token();
 
 $masked_attachment->custom_save();
