@@ -126,6 +126,8 @@ Route::middleware("auth:web")->group(
         Route::get('/SparePart/{id}', [SparePartController::class, 'SparePart'])->name('SparePart');
         Route::get('SparePart/{id}/edit', [SparePartController::class, 'edit'])
             ->name('SparePart.edit');
+        Route::get('SparePart/{id}/price_select', [SparePartController::class, 'price_select'])
+            ->name('SparePart.price_select');
         Route::get('SparePart/{id}/create', [SparePartController::class, 'create'])
             ->name('SparePart.create');
          Route::get('SparePart/{id}/doc_load', [SparePartController::class, 'doc_load'])->name('SparePart.doc_load');
@@ -135,6 +137,7 @@ Route::middleware("auth:web")->group(
         Route::post('SpareParts/store', [SparePartController::class, 'store'])
             ->name('SparePart.store');
         Route::post('SparePart/{id}/update', [SparePartController::class, 'update'])->name('SparePart.update');
+       Route::post('SparePart/{id}/update_price', [SparePartController::class, 'update_price'])->name('SparePart.update_price');
         Route::get('SparePart/{id}/delete', [SparePartController::class, 'destroy'])
             ->name('SparePart.destroy');
 

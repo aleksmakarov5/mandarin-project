@@ -55,8 +55,8 @@
         {{$application->id}}
     
       </td> 
-      <td @if (Auth::user()->GroupId!=$application->current_group) class="" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false" >{{date("d-m-Y",strtotime($application->created_at))}}</td>
-      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->name}} </td>
+      <td  scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false" >{{date("d-m-Y",strtotime($application->created_at))}}</td>
+      <td scope="col" >{{$application->name}} </td>
       <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->numberInsuranceCompanyApplication}} </td>
       <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->CarModel}} </td>
       <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->gnz}}</td>

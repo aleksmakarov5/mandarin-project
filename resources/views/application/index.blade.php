@@ -14,7 +14,7 @@
    
 
 @endcan
-<table class="table table-striped-columns table-hover table-group-divider table-responsive">
+<table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
   <tr>
     <th>№ заявки</th>
     <th>

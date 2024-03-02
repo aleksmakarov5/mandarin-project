@@ -49,18 +49,20 @@ class SparePartController extends Controller
         $sparepart = new SparePart;
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'name' => 'nullable',
+            'name' => 'required',
             'part_number' => 'nullable',
             'order_number' => 'nullable',
-            'price_original' => 'nullable',
-            'price_original_selected' => 'nullable',
+            'price_ic_full' => 'nullable',
             'price_analogue' => 'nullable',
-            'price_analogue_selected' => 'nullable',
+            'price_original' => 'nullable',
+            'price_ic_half' => 'nullable',
             'price_used' => 'nullable',
-            'price_used_selected' => 'nullable',
-            'status' => 'nullable',
+             'status' => 'nullable',
             'date_price' => 'nullable',
+            'author'=> 'integer',
+            'date_wait' => 'nullable'
         ]);
+        $request->flash();
 
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;
@@ -72,35 +74,61 @@ class SparePartController extends Controller
 
     public function edit($id)
     {
-        $sparepart = SparePart::findOrFail($id);
-
-        return view('SparePart.edit', ['sparepart' => $sparepart]);
+         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
+      
+        return view('SparePart.edit', ['spareparts' => $spareparts->all(),
+        'id' => $id]);
     }
     public function update(Request $request, $id)
     {
-        $sparepart = SparePart::findOrFail($id);
+        
+        // dd($request);
+            
+          
 
-        $data = $this->validate($request, [
-            'id_application' => 'required',
-            'name' => 'nullable',
-            'part_number' => 'nullable',
-            'order_number' => 'nullable',
-            'price_original' => 'nullable',
-             'price_analogue' => 'nullable',
-            'price_used' => 'nullable',
-            'status' => 'nullable',
-            'date_price' => 'nullable',
-            'selected_price'=> 'nullable',
-            'selected_mrk'=> 'nullable',
-            'comment'=> 'nullable',
-            'date_wait'=> 'nullable'
-        ]);
-        foreach ($data as $key => $val) {
-            $sparepart->$key = $val;
+                 $data = $this->validate($request, [
+                'id_application' => 'required',
+                'id' => 'array|required',
+                'name' => 'array|required',
+                'name.*'    => 'required',
+                'part_number' => 'array|nullable',
+                'order_number' => 'array|nullable',
+                'price_original' => 'array|nullable',
+                'price_analogue' => 'array|nullable',
+                'price_used' => 'array|nullable',
+                'status' => 'array|nullable',
+                'date_price' => 'array|nullable',
+                   'date_wait' => 'array|nullable'
+            ]);
+            //  dd($data);
+        $id = $request->id;
+        $name=$request->name;
+        $part_number=$request->part_number;
+        $order_number=$request->order_number;
+        $price_original=$request->price_original;
+        $price_analogue=$request->price_analogue;
+        $price_used=$request->price_used;
+        $status=$request->status;
+        $date_price=$request->date_price;
+        $comment=$request->comment;
+        $date_wait=$request->date_wait;
+        foreach ($id as $key => $val)
+        {$sparepart = SparePart::findOrFail($val);
+           $sparepart->name=$name[$key];
+        $sparepart->part_number=$part_number[$key];
+           $sparepart->order_number=$order_number[$key];
+           $sparepart->price_original=$price_original[$key];
+           $sparepart->price_analogue=$price_analogue[$key];
+           $sparepart->price_used=$price_used[$key];
+           $sparepart->status=$status[$key];    
+           $sparepart->date_price=$date_price[$key];
+            $sparepart->date_wait=$date_wait[$key];
+           $sparepart->save();
         }
-        $sparepart->save();
+            
+        
         return redirect()
-            ->route('SparePart', $sparepart->id_application);
+            ->route('SparePart', $request->id_application);
     }
       public function doc_load($id)
     {
@@ -177,4 +205,42 @@ class SparePartController extends Controller
         return redirect()
             ->route('SparePart', $SparePart->id_application);
     }
+
+    public function price_select($id)
+    {
+        $SpareParts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
+        return view('SparePart.price_select', ['spareparts' => $SpareParts->all(), 'id' => $id]);
+    }
+
+    public function update_price(Request $request, $id)
+    {
+        
+        // dd($request);
+            
+          
+
+                 $data = $this->validate($request, [
+                'id_application' => 'required',
+                'id' => 'array|required',
+                'selected_price' => 'array|nullable',
+                'selected_mrk' => 'array|nullable',    
+            ]);
+            //  dd($data);
+        $id = $request->id;
+        $selected_price = $request->selected_price;
+        $selected_mrk = $request->selected_mrk;
+        foreach ($id as $key => $val)
+        {$sparepart = SparePart::findOrFail($val);
+            if (isset($selected_price[$key]))
+            $sparepart->selected_price = $selected_price[$key];
+        if (isset($selected_mrk[$key]))
+            $sparepart->selected_mrk = $selected_mrk[$key];
+           $sparepart->save();
+        }
+            
+        
+        return redirect()
+            ->route('SparePart', $request->id_application);
+    }
+
 }

@@ -23,10 +23,11 @@
     --bs-table-active-bg: #eb6700;
     color: #eb6700;
 }   
-
+tr.pink {
+    background-color: #00a1eb6e;
+}
 tr:hover {
-    cursor: pointer;
-    background-color: #eb6700;
+    background-color: #eb6600;
 }
 
 .tn-active {
@@ -216,11 +217,11 @@ td.zapmrk {
 }
 
 .editable th {
-    color: #fff;
+    color: #ffffff;
     background: #000;
 }
 
 .editable td.edit {
-    background: #ffe7e7;
-    color:#000;
+    text-align: center;
 }
+
