@@ -299,5 +299,9 @@ class MainController extends Controller
        
         return redirect()->route('document', ['id' => $id]);
     }
+    public function test(request $request)
+    {
+        dd($request);
+    }
 
 }

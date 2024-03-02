@@ -175,13 +175,13 @@ div.container {
     background: #06e70a;
 }
 
-th.zap {
+td.zap {
     background: #06e70a;
 }
-th.mrk {
+td.mrk {
    background: #0a07e8;
 }
-th.zapmrk {
+td.zapmrk {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, rgba(10, 7, 232, 1) 100%);
 }
 /* Hover */
@@ -196,6 +196,31 @@ th.zapmrk {
 }
 
 .grey{
-    color: #999;
+    color: #363535;
+}
+/* вся страница */
+* {
+    font-family: arial, sans-serif;
+    box-sizing: border-box;
 }
 
+/* РЕДАКТИРУЕМАЯ ТАБЛИЦА */
+.editable {
+    border-collapse: collapse;
+}
+
+.editable th,
+.editable td {
+    border: 1px solid #000;
+    padding: 10px;
+}
+
+.editable th {
+    color: #fff;
+    background: #000;
+}
+
+.editable td.edit {
+    background: #ffe7e7;
+    color:#000;
+}

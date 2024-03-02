@@ -101,6 +101,8 @@ Route::middleware("auth:web")->group(
     function () {
 
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
+        Route::post('/test',  [MainController::class, 'test'])->name('test');
+     
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');

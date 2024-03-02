@@ -7,7 +7,7 @@
 @can('admin')
     <a href="/applications/create" class="nav-link">Добавить заявку</a>
 @endcan
-<table class="table table-striped-columns table-hover table-group-divider">
+<table id ="applications" class="editable">
   <thead>
   
     <tr>
@@ -25,6 +25,22 @@
       <th scope="col"></th>
 
     </tr>
+      <tr>
+      <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0" onkeyup="tableSearch(0,'applications')">
+</th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Дата заявки" id="search-text1" onkeyup="tableSearch(1,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Страховая компания" id="search-text2" onkeyup="tableSearch(2,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Номер заявки " id="search-text3" onkeyup="tableSearch(3,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Марка машины " id="search-text4" onkeyup="tableSearch(4,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="ГНЗ" id="search-text5" onkeyup="tableSearch(5,'applications')"> </th>
+      <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text6" onkeyup="tableSearch(6,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента" id="search-text7" onkeyup="tableSearch(7,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Телефон клиента" id="search-text8" onkeyup="tableSearch(8,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Остаток времени, час" id="search-text9" onkeyup="tableSearch(9,'applications')"></th>
+      <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10" onkeyup="tableSearch(10,'applications')"></th>
+      <th scope="col"></th>
+
+    </tr>
   </thead>
   <tbody>
 
@@ -32,38 +48,38 @@
  
 @foreach ($applications->all() as $application)
 
-<tr >
+<tr  @if (Auth::user()->GroupId!=$application->current_group) class="grey" @endif>
    
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif>
+      <td>
         
         {{$application->id}}
     
-      </th> 
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false" >{{date("d-m-Y",strtotime($application->created_at))}}</th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->name}} </th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->numberInsuranceCompanyApplication}} </th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->CarModel}} </th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->gnz}}</th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->vin}}</th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif  onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->ClientName}}</th>
-      <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif  onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->ClientPhone}}</th>
+      </td> 
+      <td @if (Auth::user()->GroupId!=$application->current_group) class="" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false" >{{date("d-m-Y",strtotime($application->created_at))}}</td>
+      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->name}} </td>
+      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->numberInsuranceCompanyApplication}} </td>
+      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->CarModel}} </td>
+      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->gnz}}</td>
+      <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->vin}}</td>
+      <td  onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->ClientName}}</td>
+      <td  onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->ClientPhone}}</td>
     @if (((48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)))>0)
-           <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col"  onclick="window.location.href='/application/{{$application->id}}'; return false">
+           <td scope="col"  onclick="window.location.href='/application/{{$application->id}}'; return false">
              {{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}
-             </th>
+             </td>
             
                  
              @else
-                <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" class="alert alert-danger"  onclick="window.location.href='/application/{{$application->id}}'; return false">
+                <td scope="col" class="alert alert-danger"  onclick="window.location.href='/application/{{$application->id}}'; return false">
                   Просрочено на 
              {{(48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600))*(-1)}}
-             </th>
+             </td>
              
       @endif
-        <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->StatusName}}</th>
-        <th @if (Auth::user()->GroupId!=$application->current_group) class="text-secondary" @endif scope="col">
+        <td scope="col" onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->StatusName}}</td>
+        <td scope="col">
           <a href="{{route('applications.destroy', $application->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>
-        </th>
+        </td>
       
     </tr>
       
