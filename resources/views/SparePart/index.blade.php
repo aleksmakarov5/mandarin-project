@@ -7,7 +7,9 @@
 <header class="d-flex justify-content-left py-3">
       <ul class="nav nav-pills">
         <li class="nav-item"><a href="/SparePart/{{$id}}/doc_load" class="nav-link">Загрузить данные из калькуляции</a></li>
+        @can('spm')
          <li class="nav-item"><a href="/SparePart/{{$id}}/edit" class="nav-link">Редактировать</a></li>
+        @endcan
         <li class="nav-item"><a href="/SparePart/{{$id}}/price_select" class="nav-link">Выбрать запчасти</a></li>
           </ul>
 </header>
