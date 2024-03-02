@@ -11,7 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('spare_parts', function (Blueprint $table) {
+           $table->unsignedBigInteger('author')->nullable();
+        });
     }
 
     /**
