@@ -20,4 +20,4 @@ yarn-error.log
 public/storage
 storage/logs/laravel.log
 vendor
-.DS_Store
+*.DS_Store
