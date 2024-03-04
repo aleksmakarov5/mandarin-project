@@ -16,7 +16,8 @@
        $body = $message->body_html;
        $body_start=mb_strpos($body,'<body');
        $body_end=mb_strpos($body,'</body>');
-       $body=mb_substr($body,$body_start,$body_end-$body_start);
+       if ($body_start){
+       $body=mb_substr($body,$body_start,$body_end-$body_start);}
        echo $body;
     @endphp
      

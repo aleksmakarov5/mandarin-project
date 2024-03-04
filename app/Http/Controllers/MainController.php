@@ -58,7 +58,7 @@ class MainController extends Controller
         return view('review', ['reviews' => $rewiews->all()]);
     }
     public function new_application()
-    {
+    { 
         $messages = message::where('is_parsed', null)->get();
         foreach ($messages->all() as $message) {
             $subject = $message->subject;
