@@ -112,8 +112,8 @@ class MainController extends Controller
 
                 $att->save();
             }
-            $user=User::find(2);
-             Mail::to($user->email)->send(new appnotify($applications->id)); 
+            //$user=User::find(2);
+          //   Mail::to($user->email)->send(new appnotify($applications->id)); 
             $message->save();
         }
     }
