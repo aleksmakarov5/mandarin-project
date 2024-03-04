@@ -30,9 +30,9 @@
       <th scope="col">Заказанный номер</th>
       <th scope="col">Цена СК</th>
       <th scope="col">Цена СК с износом</th>
-      <th scope="col">Цена оригинал</th>
-      <th scope="col">Цена аналог</th>
-      <th scope="col">Цена б/у</th>
+      <th scope="col" colspan="2">Цена оригинал</th>
+      <th scope="col" colspan="2">Цена аналог</th>
+      <th scope="col" colspan="2">Цена б/у</th>
       <th scope="col">Статус</th>
       <th scope="col">Дата заказа</th>
       <th scope="col">Ожидаемая дата получения</th>
@@ -48,9 +48,9 @@
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3" onkeyup="tableSearch(3,'demo')"></th>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text4" onkeyup="tableSearch(4,'demo')"></th>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text5" onkeyup="tableSearch(5,'demo')"> </th>
-      <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
-      <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text7" onkeyup="tableSearch(7,'demo')"></th>
-      <th scope="col"><input class="form-control" type="text" placeholder=" " id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
+      <th scope="col" colspan="2"><input class="form-control" type="text" placeholder="" id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
+      <th scope="col" colspan="2" ><input class="form-control" type="text" placeholder="" id="search-text7" onkeyup="tableSearch(7,'demo')"></th>
+      <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=" " id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text9" onkeyup="tableSearch(9,'demo')"></th>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
@@ -109,7 +109,14 @@
         {{ old('price_original.'.$key) }}
      @else
          {{$sparepart->price_original}}
-     @endif</td>
+     @endif</td><th class="min">
+     <div class="form_radio_btn zap">
+	<input id="radio-1{{$key}}" type="radio" name="selected_price[{{$key}}]" value="1" @if ($sparepart->selected_price == 1)
+         checked
+     @endif>
+	<label for="radio-1{{$key}}">&nbsp</label>
+</div>
+    </th>
       <input type="hidden" name="price_original[{{$key}}]"  id='price_original{{$key}}' value='{{$sparepart->price_original}}'>
       <td id="td_price_analogue{{$key}}" scope="col" class="
       @if($sparepart->selected_mrk==2&&$sparepart->selected_price==2)zapmrk @endif
@@ -120,9 +127,14 @@
         {{ old('price_analogue.'.$key) }}
      @else
          {{$sparepart->price_analogue}}
-     @endif
-     
-     </td>
+     @endif</td><th class="min">
+     <div class="form_radio_btn zap">
+	<input id="radio-2{{$key}}" type="radio" name="selected_price[{{$key}}]" value="2" @if ($sparepart->selected_price == 2)
+         checked
+     @endif>
+	<label for="radio-2{{$key}}">&nbsp</label>
+</div>
+     </th>
       <input type="hidden" name="price_analogue[{{$key}}]"  id='price_analogue{{$key}}' value='{{$sparepart->price_analogue}}'>
       <td id="td_price_used{{$key}}" scope="col" class="
       @if($sparepart->selected_mrk==3&&$sparepart->selected_price==3)zapmrk @endif
@@ -132,7 +144,14 @@
         {{ old('price_used.'.$key) }}
      @else
          {{$sparepart->price_used}}
-     @endif</td>
+     @endif </td><th class="min">
+     <div class="form_radio_btn zap">
+	<input id="radio-3{{$key}}" type="radio" name="selected_price[{{$key}}]" value="3" @if ($sparepart->selected_price == 3)
+         checked
+     @endif>
+	<label for="radio-3{{$key}}">&nbsp</label>
+</div>
+   </th>
       <input type="hidden" name="price_used[{{$key}}]"  id='price_used{{$key}}' value='{{$sparepart->price_used}}'>
       <td id="td_status{{$key}}" scope="col">@if (old('status.'.$key)!==null)
         {{ old('status.'.$key) }}

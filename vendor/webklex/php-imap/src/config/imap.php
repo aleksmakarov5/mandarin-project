@@ -64,7 +64,15 @@ return [
             "timeout" => 30,
             "extensions" => []
         ],
-
+ 'yandex' => [ // account identifier
+            'host' => 'mail.mandarin-portal.ru',
+            'port' => 143,
+            'encryption' => 'none',
+            // 'validate_cert' => true,
+            'username' => 'robot@mandarin-portal.ru',
+            'password' => 'eR7cE4dE6ntH9zQ8',
+            // 'authentication' => 'oauth',
+        ],
         /*
         'gmail' => [ // account identifier
             'host' => 'imap.gmail.com',
