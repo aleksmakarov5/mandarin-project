@@ -8,7 +8,7 @@
 @foreach ($messages as $message)
 <div class="alert alert-warning">
     <h3>
-        {{ $message->subject }}
+        {{ imap_utf8($message->subject) }}
         </h3>
     <p>
         
