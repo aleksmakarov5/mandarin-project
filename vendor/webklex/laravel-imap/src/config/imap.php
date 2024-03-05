@@ -46,15 +46,15 @@ return [
     */
     'accounts' => [
 
-        'default' => [// account identifier
-            'host'  => env('IMAP_HOST', 'localhost'),
+        'default' => [ // account identifier
+            'host'  => env('IMAP_HOST', 'imap.yandex.ru'),
             'port'  => env('IMAP_PORT', 993),
             'protocol'  => env('IMAP_PROTOCOL', 'imap'), //might also use imap, [pop3 or nntp (untested)]
             'encryption'    => env('IMAP_ENCRYPTION', 'ssl'), // Supported: false, 'ssl', 'tls', 'notls', 'starttls'
             'validate_cert' => env('IMAP_VALIDATE_CERT', true),
-            'username' => env('IMAP_USERNAME', 'root@example.com'),
-            'password' => env('IMAP_PASSWORD', ''),
-            'authentication' => env('IMAP_AUTHENTICATION', null),
+            'username' => env('IMAP_USERNAME', 'mandarin.portal'),
+            'password' => env('IMAP_PASSWORD', 'faebqrmuwhmhyqmi'),
+            //   'authentication' => env('IMAP_AUTHENTICATION', null),
             'proxy' => [
                 'socket' => null,
                 'request_fulluri' => false,
@@ -65,17 +65,17 @@ return [
             "extensions" => []
         ],
 
-        /*
-        'gmail' => [ // account identifier
-            'host' => 'imap.gmail.com',
+
+        'yandex' => [ // account identifier
+            'host' => 'imap.yandex.ru',
             'port' => 993,
             'encryption' => 'ssl',
             'validate_cert' => true,
-            'username' => 'example@gmail.com',
-            'password' => 'PASSWORD',
-            'authentication' => 'oauth',
+            'username' => 'mandarin.portal',
+            'password' => 'faebqrmuwhmhyqmi',
+            //'authentication' => 'oauth',
         ],
-
+        /*
         'another' => [ // account identifier
             'host' => '',
             'port' => 993,

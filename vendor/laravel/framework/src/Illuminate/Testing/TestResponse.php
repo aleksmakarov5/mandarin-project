@@ -1651,7 +1651,7 @@ class TestResponse implements ArrayAccess
      */
     protected function appendExceptionToException($exceptionToAppend, $exception)
     {
-        $exceptionMessage = is_string($exceptionToAppend) ? $exceptionToAppend : $exceptionToAppend->getMessage();
+        $exceptionMessage = $exceptionToAppend->getMessage();
 
         $exceptionToAppend = (string) $exceptionToAppend;
 

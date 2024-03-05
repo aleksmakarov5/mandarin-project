@@ -62,19 +62,17 @@ abstract class Processor
 
     public function collect(): self
     {
-        $this->info('Collecting translations...');
-
         foreach ($this->plugins() as $directory => $plugins) {
-            $this->task(
-                $this->config->getPackageNameByPath($directory, Types::TypeClass),
-                function () use ($directory, $plugins) {
-                    /** @var Plugin $plugin */
-                    foreach ($plugins as $plugin) {
-                        $this->collectKeys($directory, $plugin->files());
-                        $this->collectLocalizations($directory, $plugin->files());
-                    }
+            $this->info($this->config->getPackageNameByPath($directory, Types::TypeClass));
+
+            $this->task('Collect source', function () use ($directory, $plugins) {
+                /** @var Plugin $plugin */
+                foreach ($plugins as $plugin) {
+                    $this->collectKeys($directory, $plugin->files());
                 }
-            );
+            });
+
+            $this->collectLocalizations($directory);
         }
 
         return $this;
@@ -112,16 +110,14 @@ abstract class Processor
         }
     }
 
-    protected function collectLocalizations(string $directory, array $files): void
+    protected function collectLocalizations(string $directory): void
     {
-        foreach ($files as $filename) {
-            $keys = array_keys($this->translation->getSource($filename));
+        foreach ($this->locales as $locale) {
+            $locale = $this->fromAlias($locale?->value ?? $locale);
 
-            foreach ($this->locales as $locale) {
-                $locale = $this->fromAlias($locale?->value ?? $locale);
+            $locale_alias = $this->toAlias($locale);
 
-                $locale_alias = $this->toAlias($locale);
-
+            $this->task('Collecting ' . $locale, function () use ($locale, $locale_alias, $directory) {
                 foreach ($this->file_types as $type) {
                     $main_path   = $this->localeFilename($locale_alias, "$directory/locales/$locale/$type.json");
                     $inline_path = $this->localeFilename($locale_alias, "$directory/locales/$locale/$type.json", true);
@@ -132,11 +128,9 @@ abstract class Processor
                         $values = $this->arr->merge($values, $this->filesystem->load($inline_path));
                     }
 
-                    $values = collect($values)->only($keys)->toArray();
-
-                    $this->translation->setTranslations($filename, $locale_alias, $values);
+                    $this->translation->setTranslations($locale_alias, $values);
                 }
-            }
+            });
         }
     }
 
