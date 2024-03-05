@@ -172,6 +172,7 @@ return [
             "trash" => "INBOX/Trash",
         ],
         'decoder' => [
+            'subject' => 'utf-8',
             'message' => 'utf-8', // mimeheader
             'attachment' => 'utf-8' // mimeheader
         ],
