@@ -96,7 +96,6 @@ class MainController extends Controller
                         'CarModel' => $model,
                         'gnz' => $gnz,
                         'id_status' => 1
-
                     ]
                 );
 
@@ -112,8 +111,8 @@ class MainController extends Controller
 
                 $att->save();
             }
-            //$user=User::find(2);
-          //   Mail::to($user->email)->send(new appnotify($applications->id)); 
+            $user=User::find(2);
+            Mail::to($user->email)->send(new appnotify($applications->id)); 
             $message->save();
         }
     }
