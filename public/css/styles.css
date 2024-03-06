@@ -27,7 +27,7 @@ tr.pink {
     background-color: #00a1eb6e;
 }
 tr:hover {
-    background-color: #eb6600;
+    background-color: #eb66002b;
 }
 
 .tn-active {
@@ -37,7 +37,7 @@ tr:hover {
     line-height: 1.55;
     font-weight: 600;
     border-radius: 30px;
-    background-color: #eb6700;
+    background-color: #eb6700;;
     background-position: center center;
     border-color: transparent;
     border-style: solid;
@@ -200,7 +200,7 @@ td.zapmrk {
 }
 
 .grey{
-    color: #363535;
+    color: #656565;
 }
 /* вся страница */
 * {
@@ -211,12 +211,14 @@ td.zapmrk {
 /* РЕДАКТИРУЕМАЯ ТАБЛИЦА */
 .editable {
     border-collapse: collapse;
+    border-color: white;
 }
 
 .editable th,
 .editable td {
     border: 1px solid #000;
     padding-left: 3px;
+    border-color: white;
    
 }
 
@@ -242,3 +244,9 @@ td.zapmrk {
     text-align: center;
 }
 
+div.sticky {
+    position: -webkit-sticky;
+    /* Safari */
+    position: sticky;
+    top: 0;
+}

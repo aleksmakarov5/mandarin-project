@@ -63,7 +63,10 @@
 
         
         @auth("web")
+        <li class="nav-item"><a href="\failures" class="nav-link {{ request()->routeIs('failures') ? 'tn-active' : '' }}">Отказы</a></li>
+        <li class="nav-item"><a href="\lawyers" class="nav-link {{ request()->routeIs('lawyers') ? 'tn-active' : '' }}">С автоюристом</a></li>
         <li class="nav-item"><a href="\applications" class="nav-link {{ request()->routeIs('applications') ? 'tn-active' : '' }}">Заявки</a></li>
+        <li class="nav-item"><a href="\directions" class="nav-link {{ request()->routeIs('directions') ? 'tn-active' : '' }}">Направления</a></li>
         <li class="nav-item"><a href="\mail" class="nav-link {{ request()->routeIs('mail') ? 'tn-active' : '' }}">Почта</a></li>
         &nbsp&nbsp&nbsp&nbsp
                <li class="nav-item"><a href="\logout" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Выйти</a></li>

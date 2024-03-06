@@ -14,32 +14,100 @@ use App\Mail\user\mrknotify;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+
 class ApplicationController extends Controller
 {
     public function applications()
     {
-       
+
         if (Gate::allows('admin')) {
             $applications = DB::table('applications')
+            ->where('id_status','<','5')
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get();
             // dd($applications);
 
-        } else
-        {
-           $applications = DB::table('applications')
+        } else {
+            $applications = DB::table('applications')
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            
                 ->where('applications.id_MRK', '=', Auth::user()->id)
                 ->orWhere('applications.id_spm', '=', Auth::user()->id)
                 ->get();
         }
-             return view('applications', ['applications' => $applications],);
-       
+        return view('applications', ['applications' => $applications], );
+
     }
+
+     public function failures()
+    {
+
+        
+            $applications = DB::table('applications')
+            ->where('id_status','=','7')
+            ->orwhere('id_status','=','8')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+            // dd($applications);
+
+       
+      
+        
+        return view('applications', ['applications' => $applications], );
+
+    }
+
+    public function lawyers()
+    {
+
+        
+            $applications = DB::table('applications')
+            ->where('id_status','=','25')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+            // dd($applications);
+
+       
+      
+        
+        return view('applications', ['applications' => $applications], );
+
+    }
+
+     public function directions()
+    {
+
+        
+            $applications = DB::table('applications')
+            ->where('id_status','=','6')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+            // dd($applications);
+
+       
+      
+        
+        return view('applications', ['applications' => $applications], );
+
+    }
+
+    
+
+
+
     public function application($id)
     {
         $application = DB::table('applications')
@@ -49,7 +117,7 @@ class ApplicationController extends Controller
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
             ->where('applications.id', '=', $id)
             ->first();
-        // dd($application);
+      //   dd($application);
         $mrk = DB::table('users')
             ->where('id', '=', $application->id_MRK)
             ->first();
@@ -62,22 +130,20 @@ class ApplicationController extends Controller
 
         $spm
             = DB::table('users')
-            ->where('id', '=', $application->id_spm)
-            ->first();
+                ->where('id', '=', $application->id_spm)
+                ->first();
         $spmname = '';
         if (isset($spm->name)) {
             $spmname = $spm->name;
         }
-        $empty=0;
-        foreach ($application as $key => $value)
-        {   
-            if ($value==null)
-            {
-                $empty=1;
+        $empty = 0;
+        foreach ($application as $key => $value) {
+            if ($value == null) {
+                $empty = 1;
             }
         }
 
-        
+
         return view('application.index', ['application' => $application, 'id' => $id, 'mrk' => $mrkname, 'spm' => $spmname, 'empty' => $empty]);
     }
     //
@@ -98,7 +164,8 @@ class ApplicationController extends Controller
         return view(
             'application.edit',
             [
-                'application' => $application, 'mrks' => $mrks,
+                'application' => $application,
+                'mrks' => $mrks,
                 'InsuranceCompany' => $InsuranceCompany->all(),
                 'spms' => $spms
             ]
@@ -107,16 +174,15 @@ class ApplicationController extends Controller
     public function update(Request $request, $id)
     {
         $application = application::findOrFail($id);
-        if ($request->ur)
-        {
+        if ($request->ur) {
             $application->id_MRK = null;
             $application->id_spm = null;
-            $application -> id_status=25;
+            $application->id_status = 25;
 
-        
+
 
         } else {
-            if ($application->id_status < 2||$application->id_status==25) {
+            if ($application->id_status < 2 || $application->id_status == 25) {
                 $application->id_status = 2;
             }
             $data = $this->validate($request, [
@@ -175,7 +241,7 @@ class ApplicationController extends Controller
         $application = new application;
 
         $application->id_status = 2;
-        
+
         foreach ($data as $key => $value) {
             $application->$key = $value;
         }
@@ -199,8 +265,8 @@ class ApplicationController extends Controller
 
     public function doc_load($id)
     {
-         $documents = DB::table('attachments')
-              ->where('id_application', '=', $id)
+        $documents = DB::table('attachments')
+            ->where('id_application', '=', $id)
             ->get();
         return view('application.doc_load', ['id' => $id], ['documents' => $documents]);
     }
@@ -224,9 +290,9 @@ class ApplicationController extends Controller
     {
 
         $application = application::findOrFail($id);
-if ($application->id_status < 2) {
+        if ($application->id_status < 2) {
             $application->id_status = 2;
-        } 
+        }
         $data = $this->validate($request, [
             'CarModel' => 'nullable|string',
             'gnz' => 'nullable|string',
@@ -251,16 +317,48 @@ if ($application->id_status < 2) {
 
         return redirect()->route('application', $id);
     }
-        public function send_mrk($id,$id_MRK)
+    public function send_mrk($id, $id_MRK)
     {
-        $user=User::find($id_MRK);
-             Mail::to($user->email)->send(new mrknotify($id)); 
- $application = application::findOrFail($id);
- if ($application->id_status < 3) {
+        $user = User::find($id_MRK);
+        Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+        $application = application::findOrFail($id);
             $application->id_status = 3;
-            $application ->save();
+            $application->save();
+        
+        return redirect()->route('applications');
+
+    }
+    public function change_status(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+
+        switch ($request->variant) {
+            case 1:
+                $application->id_status = 4;
+                // dd ($application->id_status);
+                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                break;
+            case 2:
+                $application->id_status = 6;
+                $application->id_MRK = null;
+                $application->id_spm = null;
+                break;
+            case 3:
+                $application->id_status = 7;
+
+                $application->id_MRK = null;
+                $application->id_spm = null;
+                break;
+                case 4:
+                    $application->id_status = 8;
+                $application->id_MRK = null;
+                $application->id_spm = null;
+                break;
+
+              
+
         }
-            return redirect()->route('application', $id);
-          
+    $application->save();
+       return redirect()->route('applications');
     }
 }

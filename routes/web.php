@@ -105,12 +105,17 @@ Route::middleware("auth:web")->group(
      
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
+        Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
+         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
+        Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
         Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');
         Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
             ->name('applications.edit');
         Route::get('applications/{id}/send_mrk/{id_MRK}', [ApplicationController::class, 'send_mrk'])
             ->name('applications.send_mrk');
+        Route::post('applications/{id}/change_status', [ApplicationController::class, 'change_status'])
+            ->name('applications.change_status');
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');

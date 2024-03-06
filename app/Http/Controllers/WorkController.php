@@ -11,17 +11,28 @@ class WorkController extends Controller
 {
     public function Work($id)
     {
-        $Works = DB::table('works')->where('id_application', '=', $id)->get();
+        $Works_ic = DB::table('works')
+        ->where('id_application', '=', $id)
+        ->where('summ', '<>', 0)
+        ->get();
+        $Works_serv = DB::table('works')
+        ->where('id_application', '=', $id)
+        ->where('price_service', '<>', 0)
+        ->get();
         // dd($rewiew->all()) ;
         $summ_ic = 0;
         $summ_service = 0;
-        foreach ($Works as $work)
+        foreach ($Works_ic as $work)
         {
             $summ_ic = $summ_ic + (int)str_replace(' ','',$work->summ);
+        }
+        foreach ($Works_serv as $work)
+        {   
             $summ_service = $summ_service + (int)str_replace(' ','',$work->price_service);
         }
-
-        return view('Work.index', ['Works' => $Works->all(),'id' => $id,
+$delta=-$summ_service+$summ_ic ;
+        return view('Work.index', ['Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
+        'id' => $id, 'delta' => $delta,
     'summ_ic' => $summ_ic,'summ_service' => $summ_service]);
     }
 
@@ -37,10 +48,8 @@ class WorkController extends Controller
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
-            'price' => 'nullable',
-            'count_hours' => 'nullable',
-            'summ' => 'nullable',
-            'price_service' => 'nullable'
+            'summ' => 'required',
+            'price_service' => 'required',
 
 
         ]);
@@ -66,18 +75,17 @@ class WorkController extends Controller
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
-            'price' => 'nullable',
-            'count_hours' => 'nullable',
             'summ' => 'nullable',
             'price_service' => 'nullable'
 
         ]);
+        // dd($data);
         foreach ($data as $key => $val) {
             $Work->$key = $val;
         }
         $Work->save();
         return redirect()
-            ->route('Work', $Work->id_application);
+            ->to(route('Work', $Work->id_application).'#'.$request->id);
     }
 
     public function doc_load($id)

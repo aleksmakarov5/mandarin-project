@@ -24,7 +24,12 @@ class WordController extends Controller
             ->where('applications.id', '=', $id)
             ->first();   
             //dd($application);
+            $number=date('Hi');
+            $date=date('d-m-y');
+  
      $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
+     $templateProcessor->setValue('number', $number);
+     $templateProcessor->setValue('date', $date);
       $templateProcessor->setValue('CarModel', $application->CarModel);
      $templateProcessor->setValue('gnz', $application->gnz);
      $templateProcessor->setValue('vin', $application->vin);
@@ -43,7 +48,7 @@ class WordController extends Controller
           $pathToSave = 'storage/files/'.$filename;
     $templateProcessor->saveAs($pathToSave);
             $document = new Attachment();
-            $document->file_name = "Акт скрытых повреждений";
+            $document->file_name = "Акт скрытых повреждений №".$number.' от '.$date;
             $document->message_id = 0;
             $document->mime_type=mime_content_type($pathToSave);
             $document->id_application = $id;
@@ -53,7 +58,7 @@ class WordController extends Controller
       
     
 
-return redirect()->route('troubleshooting', $id);
+return redirect()->route('document', $id);
 
 
 

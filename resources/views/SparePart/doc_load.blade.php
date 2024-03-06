@@ -1,6 +1,6 @@
 @extends('layout')
 @section('main_content')
-<a href="/Work/{{$id}}" class="nav-link">Отмена</a>
+<a href="/SparePart/{{$id}}" class="nav-link">Отмена</a>
 <h1>Выберите документ</h1>
 <form action="data_load" method="POST">
     @csrf

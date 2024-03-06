@@ -16,24 +16,36 @@ class SparePartController extends Controller
         $summ_ic_full = 0;
         $summ_ic_half = 0;
         $summ_order = 0;
-        foreach ($spareparts as $sparepart) {
+        $delta_full=[];
+        $delta_half=[];
+        foreach ($spareparts as $i=>$sparepart) {
             $summ_ic_full = $summ_ic_full + (float)str_replace(' ', '', $sparepart->price_ic_full);
             $summ_ic_half = $summ_ic_half + (float)str_replace(' ', '', $sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:
                     $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_original);
+                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_original)-(float)str_replace(' ', '', $sparepart->price_ic_full);
+                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_original)-(float)str_replace(' ', '', $sparepart->price_ic_half);
                     break;
                 case 2:
                     $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_analogue);
+                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_analogue)-(float)str_replace(' ', '', $sparepart->price_ic_full);
+                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_analogue)-(float)str_replace(' ', '', $sparepart->price_ic_half);
                     break;
                 case 3:
                     $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_used);
+                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_used)-(float)str_replace(' ', '', $sparepart->price_ic_full);
+                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_used)-(float)str_replace(' ', '', $sparepart->price_ic_half);
                     break;
-                    default:
+                default:
+                    $delta_full[$i] = 0-(float)str_replace(' ', '', $sparepart->price_ic_full);
+                    $delta_half[$i] = 0-(float)str_replace(' ', '', $sparepart->price_ic_half);
                     break;
             }
         }
-        return view('SparePart.index', ['spareparts' => $spareparts->all(),
+        $delta_res_full = $summ_order - $summ_ic_full;
+        $delta_res_half = $summ_order - $summ_ic_half;
+        return view('SparePart.index', ['spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
         'id' => $id,'summ_ic_full' => $summ_ic_full,'summ_ic_half' => $summ_ic_half,
     'summ_order' => $summ_order]);
     }
@@ -67,6 +79,7 @@ class SparePartController extends Controller
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;
         }
+        
         $sparepart->save();
         return redirect()
             ->route('SparePart', $sparepart->id_application);
@@ -84,51 +97,34 @@ class SparePartController extends Controller
         
         // dd($request);
             
+          $sparepart = sparepart::findOrFail($request->id);
           
 
                  $data = $this->validate($request, [
-                'id_application' => 'required',
-                'id' => 'array|required',
-                'name' => 'array|required',
-                'name.*'    => 'required',
-                'part_number' => 'array|nullable',
-                'order_number' => 'array|nullable',
-                'price_original' => 'array|nullable',
-                'price_analogue' => 'array|nullable',
-                'price_used' => 'array|nullable',
-                'status' => 'array|nullable',
-                'date_price' => 'array|nullable',
-                   'date_wait' => 'array|nullable'
+                'id_application' =>'required',
+                'name' => 'required',
+                'part_number' => 'nullable',
+                'order_number' => 'nullable',
+                'price_original' => 'nullable',
+                'price_analogue' => 'nullable',
+                'price_used' => 'nullable',
+                'status' => 'nullable',
+                'date_price' => 'nullable',
+                'date_wait' => 'nullable',
+                'selected_price' => 'nullable',
+                'selected_mrk' => 'nullable',    
+        
             ]);
             //  dd($data);
-        $id = $request->id;
-        $name=$request->name;
-        $part_number=$request->part_number;
-        $order_number=$request->order_number;
-        $price_original=$request->price_original;
-        $price_analogue=$request->price_analogue;
-        $price_used=$request->price_used;
-        $status=$request->status;
-        $date_price=$request->date_price;
-        $comment=$request->comment;
-        $date_wait=$request->date_wait;
-        foreach ($id as $key => $val)
-        {$sparepart = SparePart::findOrFail($val);
-           $sparepart->name=$name[$key];
-        $sparepart->part_number=$part_number[$key];
-           $sparepart->order_number=$order_number[$key];
-           $sparepart->price_original=$price_original[$key];
-           $sparepart->price_analogue=$price_analogue[$key];
-           $sparepart->price_used=$price_used[$key];
-           $sparepart->status=$status[$key];    
-           $sparepart->date_price=$date_price[$key];
-            $sparepart->date_wait=$date_wait[$key];
-           $sparepart->save();
+          foreach ($data as $key => $value) {
+            $sparepart->$key = $value;
+            
         }
+        $sparepart->save();
             
         
         return redirect()
-            ->route('SparePart', $request->id_application);
+            ->to(route('SparePart', $request->id_application).'#'.$request->id);
     }
       public function doc_load($id)
     {
