@@ -9,7 +9,6 @@
 <div class="alert alert-warning">
     <h3>
         @php
-             $elements = imap_mime_header_decode($message->subject);
     $ret = "";
     //перебираем элементы
     for ($i=0; $i<count($elements); $i++) {

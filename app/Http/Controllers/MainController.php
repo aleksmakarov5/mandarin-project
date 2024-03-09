@@ -64,6 +64,7 @@ class MainController extends Controller
             $subject = $message->subject;
             $subject = trim($subject);
             $body_html = $message->body_html;
+            $id = 0;
             if (mb_strpos($body_html, 'vsk.ru') !== false) {
                 $start_pos_app_number = strripos($subject, ':');
                 if (
@@ -100,6 +101,7 @@ class MainController extends Controller
                 );
 
                 $message->application_id = $applications->id;
+                $id = $applications->id;
 
                 $message->save();
 
@@ -107,12 +109,12 @@ class MainController extends Controller
             $message->is_parsed = true;
             $attachment=attachment::where('message_id', $message->id)->get();
             foreach ($attachment->all() as $att) {
-                $att->id_application= $applications->id;
+                $att->id_application= $id;
 
                 $att->save();
             }
             $user=User::find(2);
-            Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($applications->id)); 
+            Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($id)); 
             $message->save();
         }
     }
