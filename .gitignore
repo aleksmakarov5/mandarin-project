@@ -21,3 +21,4 @@ public/storage
 storage/logs/laravel.log
 vendor
 *.DS_Store
+vendor/*
