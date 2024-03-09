@@ -26,6 +26,10 @@
 tr.pink {
     background-color: #00a1eb6e;
 }
+td.ic_price {
+    background-color: #30374d;
+}
+
 tr:hover {
     background-color: #eb66002b;
 }

@@ -44,8 +44,28 @@
       <th scope="col">{{$summ_ic_full}}</th>
       <th scope="col">{{$summ_ic_half}}</th>
       <th scope="col" colspan="7">{{$summ_order}}</th>
-       <th scope="col">{{$delta_res_full}}</th>
-      <th scope="col">{{$delta_res_half}}</th>
+       <th scope="col">
+         <div class="
+       @if ($delta_res_full<0)
+           alert alert-success
+       @else
+       alert alert-danger
+       @endif
+       ">
+       {{$delta_res_full}}
+    </div>
+</th>
+      <th scope="col">
+           <div class="
+       @if ($delta_res_half<0)
+           alert alert-success
+       @else
+       alert alert-danger
+       @endif
+       ">
+        {{$delta_res_half}}
+    </div>
+    </th>
       <th scope="col"></th>
       <th scope="col"></th>
     
@@ -109,13 +129,13 @@
          {{$sparepart->order_number}}
      @endif</td>
       <input type="hidden" name="order_number"  id='order_number{{$key}}' value='{{$sparepart->order_number}}'>
-      <td id="td_price_ic_full-{{$key}}" scope="col">@if (old('price_ic_full.'.$key)!==null)
+      <td id="td_price_ic_full-{{$key}}" scope="col" class="ic_price">@if (old('price_ic_full.'.$key)!==null)
         {{ old('price_ic_full.'.$key) }}
      @else
          {{$sparepart->price_ic_full}}
      @endif</td>
       <input type="hidden" name="price_ic_full"  id='price_ic_full-{{$key}}' value='{{$sparepart->price_ic_full}}'>
-      <td id="td_price_ic_half-{{$key}}" scope="col" >@if (old('price_ic_half.'.$key)!==null)
+      <td id="td_price_ic_half-{{$key}}" scope="col"  class="ic_price">@if (old('price_ic_half.'.$key)!==null)
         {{ old('price_ic_half.'.$key) }}
      @else
          {{$sparepart->price_ic_half}}
@@ -248,11 +268,27 @@
       <input type="hidden" name="price_used"  id='price_used-{{$key}}' value='{{$sparepart->price_used}}'>
 
        <th scope="col">@if (isset($delta_full[$key]))
+           <div class="
+       @if ($delta_full[$key]<0)
+           alert alert-success
+       @else
+       alert alert-danger
+       @endif
+       ">
            {{$delta_full[$key]}}
+           </div>
        @endif</th>
       <th scope="col">
      @if (isset($delta_half[$key]))
+         <div class="
+       @if ($delta_half[$key]<0)
+           alert alert-success
+       @else
+       alert alert-danger
+       @endif
+       ">
      {{$delta_half[$key]}}
+         </div>
      @endif     
     </td>
       <td id="td_status-{{$key}}" scope="col">@if (old('status.'.$key)!==null)
@@ -270,12 +306,18 @@
           
          </th>
        <th id="td_date_wait{{$key}}" scope="col">
+        
+        <div class="
+        @if (strtotime(date("Y-m-d h:m:s"))>strtotime($sparepart->date_wait))
+       alert alert-danger
+       @endif
+        ">
            <input type="date" name="date_wait"  id='date_wait{{$key}}' @if(old('date_wait.'.$key)!=null)
         value='{{date(old('date_wait.'.$key))}}'
      @else
          value='{{date($sparepart->date_wait)}}'
      @endif   onchange="document.forms['form{{$key}}'].submit();"> 
-          
+          </div>
          </th>
 
       <th scope="col"> <a onclick="if (!confirm('Точно удалить запчасть <{{$sparepart->name}}?>')) return false"  href="{{route('SparePart.destroy', $sparepart->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>

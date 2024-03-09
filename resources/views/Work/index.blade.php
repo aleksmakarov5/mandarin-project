@@ -107,8 +107,8 @@
  </tbody>
 </table>
 </div>
-
-<div class="col-8 ">
+<div class="col"></div>
+<div class="col-7">
   <table class="editable" id='demo'>
   <thead>
   <tr>

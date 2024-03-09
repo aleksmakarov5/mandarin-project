@@ -349,14 +349,11 @@ class ApplicationController extends Controller
                 $application->id_MRK = null;
                 $application->id_spm = null;
                 break;
-                case 4:
+            case 4:
                     $application->id_status = 8;
                 $application->id_MRK = null;
                 $application->id_spm = null;
                 break;
-
-              
-
         }
     $application->save();
        return redirect()->route('applications');

@@ -65,7 +65,11 @@
       <td  onclick="window.location.href='/application/{{$application->id}}'; return false">{{$application->ClientPhone}}</td>
     @if (((48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)))>0)
            <td scope="col"  onclick="window.location.href='/application/{{$application->id}}'; return false">
-             {{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}
+<div class="progress">
+  <div class="progress-bar w-75" role="progressbar" aria-valuenow="{{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}" aria-valuemin="0" aria-valuemax="48"></div>
+</div>
+
+             
              </td>
             
                  

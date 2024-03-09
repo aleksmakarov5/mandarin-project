@@ -16,6 +16,7 @@ use \ConvertApi\ConvertApi;
 
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
+use \PhpOffice\PhpWord\IOFactory;
 
 use Escarter\PopplerPhp\PdfToText;
 use Escarter\PopplerPhp\getOutput;
@@ -152,7 +153,7 @@ class MainController extends Controller
         // dd($document);
         return view('document', ['document' => $document], ['id' => $id]);
     }
-    public function showdoc($id)
+    public function showdoc($id,$locations)
     {
 
         // $text = (new PdfToText('/opt/homebrew/bin/pdftotext'))
@@ -160,7 +161,7 @@ class MainController extends Controller
         //     ->text();
         // echo $text;
         //  exec('pdftohtml storage/files/' . $id . ' -p -i -xml');
-         exec('pdftohtml storage/files/' . $id . ' -p -i');
+        //  exec('pdftohtml storage/files/' . $id . ' -p -i');
 // ConvertApi::setApiSecret('Mrv6e6zPa9oTst7o');
 // $result = ConvertApi::convert('pdf-extract', [
 //         'File' => 'storage/files/'.$id,
@@ -168,78 +169,151 @@ class MainController extends Controller
 // );
 // $result->saveFiles('storage/files/');
 
-        $html = substr($id, 0, strlen($id) - 4) . 's.html';
-        //  include('storage/files/' . $html);
-        $file = file_get_contents('storage/files/' . $html);
-        $file = strip_tags($file, ['br']);
-        // echo $file;
-        $start_number = mb_strpos($file, 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ');
-        $number = mb_substr($file, $start_number + 35, 7);
-        echo 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ' . $start_number . '<br>' . $number . '<br>';
-        $inf_start = mb_strpos($file, 'Марка, модель');
-        echo $inf_start . '<br /><br />';
-        $inf_end = mb_strpos($file, 'Точное');
-        echo $inf_end . '<br /><br />';
-        $inf = mb_substr($file, $inf_start, $inf_end - $inf_start);
-        // echo $inf;
-        $inf_array = explode('<br/>', $inf);
-        echo '<table border=1>';
-        for ($i = 0; $i < count($inf_array) - 1; $i) {
-            echo '<tr><td>' . $inf_array[$i] . '</td><td>' . $inf_array[$i + 1] . '</td></tr>';
-            $i = $i + 2;
-            if ($i == 18) {
-                $i++;
-            }
-        }
-        echo '</table>';
+        // $html = substr($id, 0, strlen($id) - 4) . 's.html';
+        // //  include('storage/files/' . $html);
+        // $file = file_get_contents('storage/files/' . $html);
+        // $file = strip_tags($file, ['br']);
+        // // echo $file;
+        // $start_number = mb_strpos($file, 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ');
+        // $number = mb_substr($file, $start_number + 35, 7);
+        // echo 'ЭКСПЕРТНОЕ ЗАКЛЮЧЕНИЕ' . $start_number . '<br>' . $number . '<br>';
+        // $inf_start = mb_strpos($file, 'Марка, модель');
+        // echo $inf_start . '<br /><br />';
+        // $inf_end = mb_strpos($file, 'Точное');
+        // echo $inf_end . '<br /><br />';
+        // $inf = mb_substr($file, $inf_start, $inf_end - $inf_start);
+        // // echo $inf;
+        // $inf_array = explode('<br/>', $inf);
+        // echo '<table border=1>';
+        // for ($i = 0; $i < count($inf_array) - 1; $i) {
+        //     echo '<tr><td>' . $inf_array[$i] . '</td><td>' . $inf_array[$i + 1] . '</td></tr>';
+        //     $i = $i + 2;
+        //     if ($i == 18) {
+        //         $i++;
+        //     }
+        // }
+        // echo '</table>';
 
 
-        //dd($inf_array);
-        $sparepart_start = mb_strpos($file, 'износом, Рубли');
-        echo $sparepart_start . ' ЗЧ_Старт<br /><br />';
-        $sparepart_end = mb_strpos($file, 'ИТОГО');
-        echo $sparepart_end . ' ЗЧ_Фин<br /><br />';
-        $sparepart = mb_substr($file, $sparepart_start + 14, $sparepart_end - $sparepart_start + 14);
-        //echo $sparepart;
-        $sparepart_array = explode('<br/>', $sparepart);
-        echo '<table border=1>';
-        for ($i = 1; $i < count($sparepart_array) - 8; $i) {
-            echo '<tr><td>' . $sparepart_array[$i] . '</td>
-            <td>' . $sparepart_array[$i + 1] . '</td>
-            <td>' . $sparepart_array[$i + 2] . '</td>
-            <td>' . $sparepart_array[$i + 3] . '</td>
-            <td>' . $sparepart_array[$i + 4] . '</td>
-            <td>' . $sparepart_array[$i + 5] . '</td>
-            <td>' . $sparepart_array[$i + 6] . '</td>
-            <td>' . $sparepart_array[$i + 7] . '</td>
-            </tr>';
-            $i = $i + 8;
-        }
-        echo '</table>';
-        $work_start = mb_strpos($file, 'н-час');
-        echo $work_start . 'Раб_Старт<br /><br />';
-        $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-        echo $work_end . 'Раб_фин<br /><br />';
-        $work = mb_substr($file, $work_start + 5, $work_end - $work_start - 18);
+        // //dd($inf_array);
+        // $sparepart_start = mb_strpos($file, 'износом, Рубли');
+        // echo $sparepart_start . ' ЗЧ_Старт<br /><br />';
+        // $sparepart_end = mb_strpos($file, 'ИТОГО');
+        // echo $sparepart_end . ' ЗЧ_Фин<br /><br />';
+        // $sparepart = mb_substr($file, $sparepart_start + 14, $sparepart_end - $sparepart_start + 14);
+        // //echo $sparepart;
+        // $sparepart_array = explode('<br/>', $sparepart);
+        // echo '<table border=1>';
+        // for ($i = 1; $i < count($sparepart_array) - 8; $i) {
+        //     echo '<tr><td>' . $sparepart_array[$i] . '</td>
+        //     <td>' . $sparepart_array[$i + 1] . '</td>
+        //     <td>' . $sparepart_array[$i + 2] . '</td>
+        //     <td>' . $sparepart_array[$i + 3] . '</td>
+        //     <td>' . $sparepart_array[$i + 4] . '</td>
+        //     <td>' . $sparepart_array[$i + 5] . '</td>
+        //     <td>' . $sparepart_array[$i + 6] . '</td>
+        //     <td>' . $sparepart_array[$i + 7] . '</td>
+        //     </tr>';
+        //     $i = $i + 8;
+        // }
+        // echo '</table>';
+        // $work_start = mb_strpos($file, 'н-час');
+        // echo $work_start . 'Раб_Старт<br /><br />';
+        // $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+        // echo $work_end . 'Раб_фин<br /><br />';
+        // $work = mb_substr($file, $work_start + 5, $work_end - $work_start - 18);
 
-        $work_array = explode('<br/>', $work);
-        // dd($work_array);
-        $iskl = [29, 74, 75, 76, 77, 78, 79];
-        echo '<table border=1>';
-        for ($i = 1; $i < count($work_array) - 4; $i) {
-            foreach ($iskl as $k) {
-                if ($i == $k) {
-                    $i++;
-                }
-            }
-            echo '<tr><td>' . $work_array[$i] . '</td>
-            <td>' . $work_array[$i + 1] . '</td>
-            <td>' . $work_array[$i + 2] . '</td>
-            <td>' . $work_array[$i + 3] . '</td>
-            </tr>';
-            $i = $i + 4;
-        }
-        echo '</table>';
+        // $work_array = explode('<br/>', $work);
+        // // dd($work_array);
+        // $iskl = [29, 74, 75, 76, 77, 78, 79];
+        // echo '<table border=1>';
+        // for ($i = 1; $i < count($work_array) - 4; $i) {
+        //     foreach ($iskl as $k) {
+        //         if ($i == $k) {
+        //             $i++;
+        //         }
+        //     }
+        //     echo '<tr><td>' . $work_array[$i] . '</td>
+        //     <td>' . $work_array[$i + 1] . '</td>
+        //     <td>' . $work_array[$i + 2] . '</td>
+        //     <td>' . $work_array[$i + 3] . '</td>
+        //     </tr>';
+        //     $i = $i + 4;
+        // }
+        // echo '</table>';
+
+      
+        $content = '';
+$source = 'storage/files/'.$locations;
+ 
+$objReader = IOFactory::createReader('Word2007');
+ 
+$phpWord = $objReader->load($source);
+ 
+$body = '';
+foreach($phpWord->getSections() as $section) {
+	$arrays = $section->getElements();
+	
+	foreach($arrays as $e) {
+		if(get_class($e) === 'PhpOffice\PhpWord\Element\TextRun') {
+			foreach($e->getElements() as $text) {
+				
+				$font = $text->getFontStyle();
+				
+				$size = $font->getSize()/10;
+				$bold = $font->isBold() ? 'font-weight:700;' :'';
+				$color = $font->getColor();
+				$fontFamily = $font->getName();
+				
+				$body .= '<span style="font-size:' . $size . 'em;font-family:' . $fontFamily . '; '.$bold.'; color:#'.$color.'">';
+				$body .= $text->getText().'</span>';
+			}
+		}
+		
+		else if(get_class($e) === 'PhpOffice\PhpWord\Element\TextBreak') {
+			$body .= '<br />';
+		}
+		
+		else if(get_class($e) === 'PhpOffice\PhpWord\Element\Table') {
+			$body .= '<table border="2px">';
+			
+			$rows = $e->getRows();
+			
+			foreach($rows as $row) {
+				$body .= '<tr>';
+				
+				$cells = $row->getCells();
+				foreach($cells as $cell) {
+					$body .= '<td style="width:'.$cell->getWidth().'">';
+					$celements = $cell->getElements();
+					foreach($celements as $celem) {
+						if(get_class($celem) === 'PhpOffice\PhpWord\Element\Text') {
+							$body .= $celem->getText();
+						}
+						
+						else if(get_class($celem) === 'PhpOffice\PhpWord\Element\TextRun') {
+							foreach($celem->getElements() as $text) {
+								$body .= $text->getText();
+							}
+						}
+					}	
+					$body .= '</td>';
+				}
+				
+				$body .= '</tr>';
+			}
+			
+			$body .= '</table>';
+		}
+		else {
+			$body .= $e->getText();
+		}
+	}
+	
+	break;
+}
+
+echo $body;
 
        
     }
