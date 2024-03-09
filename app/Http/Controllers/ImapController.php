@@ -20,7 +20,7 @@ class ImapController extends Controller
         $cm = new ClientManager('config/imap.php');
 
         /** @var \Webklex\PHPIMAP\Client $client */
-        $client = $cm->account('yandex');
+        $client = $cm->account('default');
         //   dd($client);
         //Connect to the IMAP Server
         $client->connect();

@@ -11,9 +11,9 @@ LOG_LEVEL=debug
 DB_CONNECTION=mysql
 DB_HOST=127.0.0.1
 DB_PORT=3306
-DB_DATABASE=mandarin
+DB_DATABASE=mandarin_local
 DB_USERNAME=root
-DB_PASSWORD=P@55w0rd!
+DB_PASSWORD=root
 
 BROADCAST_DRIVER=log
 CACHE_DRIVER=file
@@ -28,12 +28,12 @@ REDIS_PASSWORD=null
 REDIS_PORT=6379
 
 MAIL_MAILER=smtp
-MAIL_HOST=mail.mandarin-portal.ru
-MAIL_PORT=587
-MAIL_USERNAME="robot@mandarin-portal.ru"
-MAIL_PASSWORD="eR7cE4dE6ntH9zQ8"
+MAIL_HOST=smtp.yandex.ru
+MAIL_PORT=465
+MAIL_USERNAME="mandarin.portal"
+MAIL_PASSWORD="faebqrmuwhmhyqmi"
 MAIL_ENCRYPTION=none
-MAIL_FROM_ADDRESS="robot@mandarin-portal.ru"
+MAIL_FROM_ADDRESS="mandarin.portal@yandex.ru"
 MAIL_FROM_NAME="Mandarin Portal"
 
 AWS_ACCESS_KEY_ID=
