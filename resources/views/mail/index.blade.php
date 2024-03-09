@@ -8,22 +8,7 @@
 @foreach ($messages as $message)
 <div class="alert alert-warning">
     <h3>
-        @php
-    $ret = "";
-    //перебираем элементы
-    for ($i=0; $i<count($elements); $i++) {
-        $charset = $elements[$i]->charset;//кодировка
-        $text = $elements[$i]->text;//закодированный текст
-        if($charset == 'default'){
-            //если элемент не кодирован, то значение кодировки default
-            $ret .= $text;
-        }else{
-            //приводим всё кодировке к UTF-8
-            $ret .= iconv($charset,"UTF-8",$text);
-        }
-    }
-    echo $ret;
-        @endphp
+    {{ $message->subject}}
       
         </h3>
     <p>
