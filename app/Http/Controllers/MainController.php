@@ -104,10 +104,7 @@ class MainController extends Controller
                 $id = $applications->id;
 
                 $message->save();
-
-            }
-            $message->is_parsed = true;
-            $attachment=attachment::where('message_id', $message->id)->get();
+  $attachment=attachment::where('message_id', $message->id)->get();
             foreach ($attachment->all() as $att) {
                 $att->id_application= $id;
 
@@ -115,7 +112,10 @@ class MainController extends Controller
             }
             $user=User::find(2);
             Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($id)); 
-            $message->save();
+       
+            }
+            $message->is_parsed = true;
+               $message->save();
         }
     }
     public function review_check(Request $request)
