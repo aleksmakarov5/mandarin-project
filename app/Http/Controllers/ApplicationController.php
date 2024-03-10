@@ -571,7 +571,7 @@ $history->id_application= $id;
           $application->id_status = 24;
            $history=new history;
            $messages=new message();
-       $messages->id_application=$id;
+       $messages->application_id=$id;
        $messages->body_html=$request->message;
        $messages->save();
         $history->id_user = Auth::user()->id;

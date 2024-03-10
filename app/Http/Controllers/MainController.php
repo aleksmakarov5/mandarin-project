@@ -110,6 +110,7 @@ class MainController extends Controller
                 $history = new History;
                 $history->id_application = $applications->id;
                 $history->id_status = 1;
+                $history->id_user = 2;
                 $history->save();
                 $message->save();
   $attachment=attachment::where('message_id', $message->id)->get();

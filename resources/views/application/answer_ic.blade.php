@@ -58,7 +58,7 @@
           <li class="bg-white mb-3">
            
             <div class="form-outline">
-              <textarea class="form-control" id="textAreaExample2" rows="4" name=message>
+              <textarea class="form-control" id="textAreaExample2" rows="15" name=message>
 Добрый день! 
 По заявке {{$application->numberInsuranceCompanyApplication}} принято отрицательное решение по следующим причинам:
 
