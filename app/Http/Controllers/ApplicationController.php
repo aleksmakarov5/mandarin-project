@@ -538,15 +538,16 @@ $history->id_application= $id;
     }
     public function answer_fail_save(Request $request, $id)
     {
-         $failure = new failure;
+         
         $variants=$request->variant;
-    //    dd($request);
-            foreach ($variants as $value) {
+     // dd($variants);
+        foreach($variants as $key => $value) {
+            $failure = new failure;
                 $failure->id_application = $id;
                 $failure->id_var = $value;
                 $failure->save();
-            return redirect()->route('applications');
         }
+           return redirect()->route('applications');
 
     }
 
