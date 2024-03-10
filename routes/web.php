@@ -115,10 +115,14 @@ Route::middleware("auth:web")->group(
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/chat/{id}',  [ApplicationController::class, 'chat'])->name('chat');
         Route::post('/chat_sent/{id}',  [ApplicationController::class, 'chat_sent'])->name('chat_sent');
+
+        Route::get('/answer_ic/{id}',  [ApplicationController::class, 'answer_ic'])->name('answer_ic');
+        Route::post('/answer_ic_sent/{id}',  [ApplicationController::class, 'answer_ic_sent'])->name('answer_ic_sent');
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
-         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
+         Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
+        Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
         Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
         Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');

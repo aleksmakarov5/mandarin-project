@@ -8,7 +8,7 @@
     @csrf
 @foreach ($fail_vars as $key=>$item)
 <p>
-<input type="checkbox" name="variant[]" id="var" value="{{$item->id}}">{{$item->variant}}</p>
+<input type="checkbox" name="variant[{{$key}}]" id="var" value="{{$item->id}}">{{$item->variant}}</p>
     
 @endforeach
 <input class="nav-link" type="submit" value="Сохранить">

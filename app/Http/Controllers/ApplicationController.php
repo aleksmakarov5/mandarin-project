@@ -100,6 +100,26 @@ class ApplicationController extends Controller
 
     }
 
+     public function archive()
+    {
+
+        
+            $applications = DB::table('applications')
+            ->where('id_status','=','24')
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+            // dd($applications);
+
+      session(['rout'=>'archive']); 
+      
+        
+        return view('applications', ['applications' => $applications], );
+
+    }
+
      public function directions()
     {
 
@@ -140,6 +160,8 @@ session(['rout'=>'directions']);
         return view('applications', ['applications' => $applications], );
 
     }
+
+    
 
     
 
@@ -516,7 +538,7 @@ $history->id_application= $id;
     {
          $failure = new failure;
         $variants=$request->variant;
-       // dd($request);
+    //    dd($request);
             foreach ($variants as $value) {
                 $failure->id_application = $id;
                 $failure->id_var = $value;
@@ -524,6 +546,28 @@ $history->id_application= $id;
             return redirect()->route('applications');
         }
 
+    }
+
+    public function answer_ic(Request $request,$id)
+    {
+        $application=application::findOrFail($id);
+ $fail_vars=DB::table('failures')
+        ->where('id_application', '=',$id)
+        ->join('failure_vars','failures.id_var','=','failure_vars.id')
+        ->select('failures.*','failure_vars.variant')
+        ->get();
+        $users=DB::table('users')->get();
+        
+        return view('application.answer_ic', [ 'users'=>$users->all(),'fail_vars'=>$fail_vars->all() ,'application'=>$application, 'id' => $id]);
+    }
+    public function answer_ic_sent(Request $request, $id)
+    {
+       $application=application::findOrFail($id);
+          Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
+          $application->id_status = 24;
+          $application->save();
+        return redirect()
+            ->route('archive');
     }
 
 }

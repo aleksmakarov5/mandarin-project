@@ -68,6 +68,7 @@
         <li class="nav-item"><a href="\lawyers" class="nav-link {{ session('rout')=='lawyers' ? 'tn-active' : '' }}">С автоюристом</a></li>
         <li class="nav-item"><a href="\applications" class="nav-link {{ session('rout')=='applications' ? 'tn-active' : '' }}">Заявки</a></li>
         <li class="nav-item"><a href="\directions" class="nav-link {{ session('rout')=='directions' ? 'tn-active' : '' }}">Направления</a></li>
+        <li class="nav-item"><a href="\archive" class="nav-link {{ session('rout')=='archive' ? 'tn-active' : '' }}">Архив</a></li>
         <li class="nav-item"><a href="\mail" class="nav-link {{ session('rout')=='mail' ? 'tn-active' : '' }}">Почта</a></li>
         &nbsp&nbsp&nbsp&nbsp
                <li class="nav-item"><a href="\logout" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Выйти</a></li>
