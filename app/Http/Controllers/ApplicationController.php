@@ -20,25 +20,35 @@ class ApplicationController extends Controller
     public function applications()
     {
 
-        if (Gate::allows('admin')) {
-            $applications = DB::table('applications')
-            ->where('id_status','<','5')
+        if (Gate::allows('admin'))
+{
+ $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '6');
+            })
+                
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+} else {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '6');
+            })
+                ->where(function ($query) {
+                    $query->where('applications.id_MRK', '=', Auth::user()->id)
+                        ->orWhere('applications.id_spm', '=', Auth::user()->id);
+                })
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get();
             // dd($applications);
-
-        } else {
-            $applications = DB::table('applications')
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-            
-                ->where('applications.id_MRK', '=', Auth::user()->id)
-                ->orWhere('applications.id_spm', '=', Auth::user()->id)
-                ->get();
         }
+        session(['rout'=>'applications']);
         return view('applications', ['applications' => $applications], );
 
     }
@@ -49,7 +59,7 @@ class ApplicationController extends Controller
         
             $applications = DB::table('applications')
             ->where('id_status','=','7')
-            ->orwhere('id_status','=','8')
+            ->orwhere('id_status','=','6')
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -58,6 +68,7 @@ class ApplicationController extends Controller
             // dd($applications);
 
        
+      session(['rout'=>'failures']); 
       
         
         return view('applications', ['applications' => $applications], );
@@ -77,7 +88,7 @@ class ApplicationController extends Controller
                 ->get();
             // dd($applications);
 
-       
+      session(['rout'=>'lawyers']); 
       
         
         return view('applications', ['applications' => $applications], );
@@ -87,15 +98,36 @@ class ApplicationController extends Controller
      public function directions()
     {
 
-        
-            $applications = DB::table('applications')
-            ->where('id_status','=','6')
+if (Gate::allows('admin'))
+{
+ $applications = application::where(function ($query) {
+                $query->where('id_status', '>', '7')
+                    ->where('id_status', '<', '24');
+            })
+                
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->get();
+} else {
+            $applications = application::where(function ($query) {
+                $query->where('id_status', '>', '7')
+                    ->where('id_status', '<', '24');
+            })
+                ->where(function ($query) {
+                    $query->where('applications.id_MRK', '=', Auth::user()->id)
+                        ->orWhere('applications.id_spm', '=', Auth::user()->id);
+                })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get();
             // dd($applications);
+        }
+session(['rout'=>'directions']);
+//echo (session('rout'));
 
        
       
@@ -110,6 +142,7 @@ class ApplicationController extends Controller
 
     public function application($id)
     {
+        // echo (session('rout'));
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
 
@@ -339,9 +372,8 @@ class ApplicationController extends Controller
                 Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
                 break;
             case 2:
-                $application->id_status = 6;
-                $application->id_MRK = null;
-                $application->id_spm = null;
+                $application->id_status = 8;
+               
                 break;
             case 3:
                 $application->id_status = 7;
@@ -350,7 +382,7 @@ class ApplicationController extends Controller
                 $application->id_spm = null;
                 break;
             case 4:
-                    $application->id_status = 8;
+                    $application->id_status = 5;
                 $application->id_MRK = null;
                 $application->id_spm = null;
                 break;

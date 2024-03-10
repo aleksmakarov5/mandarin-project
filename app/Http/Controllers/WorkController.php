@@ -147,6 +147,8 @@ $delta=-$summ_service+$summ_ic ;
         for ($i = 1; $i <= count($name); $i++) {
             $Work = new Work;
             $Work->name = $name[$i];
+            $Work->price = $price[$i];
+            $Work->count_hours = $count_hours[$i];
             $Work->summ = $summ[$i];
             $Work->id_application = $id_application;
             $Work->save();

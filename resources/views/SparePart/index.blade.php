@@ -29,10 +29,13 @@
       <th scope="col">Ремонт</th>
       <th scope="col">Разница от полной цены</th>
       <th scope="col">Разница от цены с учетом износа</th>
-      <th scope="col">Статус</th>
+      @if (session('rout')=='directions')
+            <th scope="col">Статус</th>
       <th scope="col">Дата заказа</th>
       <th scope="col">Ожидаемая дата получения</th>
 
+      @endif
+    
     
     
     </tr>
@@ -66,12 +69,13 @@
         {{$delta_res_half}}
     </div>
     </th>
+    @if (session('rout')=='directions')
       <th scope="col"></th>
       <th scope="col"></th>
     
     
       <th scope="col"></th>
-
+@endif
     </tr>
       <tr>
       <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0" onkeyup="tableSearch(0,'demo')">
@@ -291,12 +295,14 @@
          </div>
      @endif     
     </td>
+    @if (session('rout')=='directions')
       <td id="td_status-{{$key}}" scope="col">@if (old('status.'.$key)!==null)
         {{ old('status.'.$key) }}
      @else
          {{$sparepart->status}}
      @endif</td>
       <input type="hidden" name="status"  id='status-{{$key}}' value='{{$sparepart->status}}'>
+      
       <th id="td_date_price{{$key}}" scope="col">
           <input type="date" name="date_price"  id='date_price{{$key}}' @if(old('date_price.'.$key)!=null)
         value='{{date(old('date_price.'.$key))}}'
@@ -319,10 +325,11 @@
      @endif   onchange="document.forms['form{{$key}}'].submit();"> 
           </div>
          </th>
-
+@endif
+@if((Auth::user()->GroupId==5))
       <th scope="col"> <a onclick="if (!confirm('Точно удалить запчасть <{{$sparepart->name}}?>')) return false"  href="{{route('SparePart.destroy', $sparepart->id)}}" class="nav-link"><img src="/storage/img/delete.png" width="30" alt="delete"></a>
       </th>
-
+@endif
    </form>  
    </tr> 
 @endforeach
@@ -335,7 +342,12 @@
       
 <input name = "id_application" type="hidden" value="{{$id}}">
 <input name = "author" type="hidden" value="{{Auth::user()->GroupId}}">
-<th></th>
+<th>
+<a class="nav-link" href="#">
+   <img src="/storage/img/edit.png" width="30" alt="edit" onclick="document.forms['callback'].submit();">
+</a>
+
+</th>
 <th>
    <input type="text" name="name" id="name"  class="form-control"  >
 </th>
@@ -366,7 +378,10 @@
 </th><th>
     </th><th>
         </th><th>
-        </th><th>
+        </th>
+        @if (session('rout')=='directions')
+        <th>
+
 <input type="text" name="status" id="status"  class="form-control"  >
 
 </th><th>
@@ -374,10 +389,9 @@
 </th><th>
 <input type="date" name="date_wait" id="date_wait"  class="form-control"  >
 
-</th><th><a class="nav-link" href="#">
-   <img src="/storage/img/edit.png" width="30" alt="edit" onclick="document.forms['callback'].submit();">
-</a>
 </th>
+@endif
+
 </form>
 </tr>
  </tbody>
@@ -450,7 +464,5 @@ editable.selected.classList.remove("edit");
     form.submit();
 }}
 };
-
-
 </script>
  @endsection 

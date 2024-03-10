@@ -15,6 +15,8 @@ class AdminController extends Controller
 {
     public function index()
     {
+
+        session(['rout' => 'admin']);
         return view('admin.index');
     }
     public function users_index()

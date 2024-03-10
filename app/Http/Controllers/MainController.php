@@ -27,6 +27,8 @@ class MainController extends Controller
 {
     public function home()
     {
+        
+        session(['rout' => 'home']);
         return view('home');
     }
 
@@ -55,6 +57,7 @@ class MainController extends Controller
     public function review()
     {
         $rewiews = new Contact();
+        session(['rout' => 'review']);
         // dd($rewiew->all()) ;
         return view('review', ['reviews' => $rewiews->all()]);
     }
@@ -142,6 +145,8 @@ class MainController extends Controller
     public function message()
     {
         $messages = new message();
+
+        session(['rout' => 'mail']);
         // dd($rewiew->all()) ;
         return view('mail.index', ['messages' => $messages->all()]);
     }

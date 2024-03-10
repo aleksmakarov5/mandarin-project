@@ -30,7 +30,8 @@ td.ic_price {
     background-color: #30374d;
 }
 
-tr:hover {
+tr:hover
+{
     background-color: #eb66002b;
 }
 
@@ -238,6 +239,11 @@ td.zapmrk {
     border-color: white;
     
 }
+
+.editable th:hover {
+    background-color: #eb66002b;
+}
+
 .editable th.min {
     color: #ffffff;
     background: #00000000;

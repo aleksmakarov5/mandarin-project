@@ -41,6 +41,7 @@
 
 <body class="bg-dark text-white ">
 <div class="container">
+
     @auth("web")
     <p align=right> {{ Auth::user()->name }} </p>
     
@@ -58,16 +59,16 @@
      
       <ul class="nav nav-pills"> 
        
-        <li class="nav-item"><a href="\" class="nav-link {{ request()->routeIs('home') ? 'tn-active' : '' }}" >Главная</a></li>
-        <li class="nav-item"><a href="\review" class="nav-link {{ request()->routeIs('review') ? 'tn-active' : '' }}">Отзывы</a></li>
+        <li class="nav-item"><a href="\" class="nav-link {{ session('rout')=='home' ? 'tn-active' : '' }}" >Главная</a></li>
+        <li class="nav-item"><a href="\review" class="nav-link {{ session('rout')=='review' ? 'tn-active' : '' }}">Отзывы</a></li>
 
         
         @auth("web")
-        <li class="nav-item"><a href="\failures" class="nav-link {{ request()->routeIs('failures') ? 'tn-active' : '' }}">Отказы</a></li>
-        <li class="nav-item"><a href="\lawyers" class="nav-link {{ request()->routeIs('lawyers') ? 'tn-active' : '' }}">С автоюристом</a></li>
-        <li class="nav-item"><a href="\applications" class="nav-link {{ request()->routeIs('applications') ? 'tn-active' : '' }}">Заявки</a></li>
-        <li class="nav-item"><a href="\directions" class="nav-link {{ request()->routeIs('directions') ? 'tn-active' : '' }}">Направления</a></li>
-        <li class="nav-item"><a href="\mail" class="nav-link {{ request()->routeIs('mail') ? 'tn-active' : '' }}">Почта</a></li>
+        <li class="nav-item"><a href="\failures" class="nav-link {{ session('rout')=='failures' ? 'tn-active' : '' }}">Отказы</a></li>
+        <li class="nav-item"><a href="\lawyers" class="nav-link {{ session('rout')=='lawyers' ? 'tn-active' : '' }}">С автоюристом</a></li>
+        <li class="nav-item"><a href="\applications" class="nav-link {{ session('rout')=='applications' ? 'tn-active' : '' }}">Заявки</a></li>
+        <li class="nav-item"><a href="\directions" class="nav-link {{ session('rout')=='directions' ? 'tn-active' : '' }}">Направления</a></li>
+        <li class="nav-item"><a href="\mail" class="nav-link {{ session('rout')=='mail' ? 'tn-active' : '' }}">Почта</a></li>
         &nbsp&nbsp&nbsp&nbsp
                <li class="nav-item"><a href="\logout" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Выйти</a></li>
                
@@ -77,7 +78,7 @@
          <li class="nav-item"><a href="\login" class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}" >Войти</a></li>
          @endguest
          @can('administrator')
-             <li class="nav-item"><a href="\admin" class="nav-link {{ request()->routeIs('admin') ? 'tn-active' : '' }}" >Админ панель</a></li>
+             <li class="nav-item"><a href="\admin" class="nav-link {{ session('rout')=='admin' ? 'tn-active' : '' }}" >Админ панель</a></li>
          @endcan
        </ul>
     </header>
@@ -90,7 +91,6 @@
       <p class="text-center ">© 2023 Мандарин авто, Inc</p>
     </footer>
   </div>
-     <script src="storage/js/table.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
  </body>
