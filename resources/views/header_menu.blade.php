@@ -15,7 +15,7 @@
        
         @endif
         <li class="nav-item"><a href="/mail/{{$id}}" class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}" aria-current="page">Деловая переписка</a></li>
-        <li class="nav-item"><a href="#" class="nav-link {{ request()->routeIs('chat') ? 'tn-active' : '' }}" aria-current="page">Чат</a></li>
+        <li class="nav-item"><a href="/chat/{{$id}}" class="nav-link {{ request()->routeIs('chat') ? 'tn-active' : '' }}" aria-current="page">Чат</a></li>
          <li class="nav-item"><a href="/document/{{$id}}" class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}" aria-current="page">Документы</a></li>
        <li class="nav-item"><a href="/history/{{$id}}" class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a></li>
       </ul>

@@ -104,6 +104,8 @@ Route::middleware("auth:web")->group(
         Route::post('/test',  [MainController::class, 'test'])->name('test');
      
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
+        Route::get('/chat/{id}',  [ApplicationController::class, 'chat'])->name('chat');
+        Route::post('/chat_sent/{id}',  [ApplicationController::class, 'chat_sent'])->name('chat_sent');
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');

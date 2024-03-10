@@ -8,10 +8,12 @@ use App\Models\application;
 use App\Models\User;
 use App\Models\InsuranceCompany;
 use App\Models\history;
+use App\Models\chat;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
 use App\Mail\user\mrknotify;
+use App\Mail\user\newmessage;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -321,7 +323,47 @@ $history->id_status = 2;
         // dd($rewiew->all()) ;
         return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);
     }
+  public function chat(Request $request,$id)
+    {
 
+        $users=DB::table('users')->get();
+        if($request->input('only_me'))
+        {
+ $chats = DB::table('chats')
+        ->where('id_application', '=', $id)
+        ->where(function($query)
+        {
+            $query->where('to', '=', Auth::user()->id)
+                ->orWhere('from', '=', Auth::user()->id);
+        })
+        ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
+        ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
+        ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+        ->get();
+        }
+        else
+{        $chats = DB::table('chats')
+        ->where('id_application', '=', $id)
+        ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
+        ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
+        ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+        ->get();
+}        // dd($rewiew->all()) ;
+        return view('application.chat', ['chats' => $chats->all(), 'users'=>$users->all() , 'id' => $id,'only_me'=> $request->input('only_me')]);
+    }
+    public function chat_sent(Request $request, $id)
+    {
+        $chat = new chat;
+        $author = User::findOrFail($request->from);
+        $chat->id_application = $id;
+        $chat->from = $request->from;
+        $chat->to = $request->to;
+        $chat->message = $request->message;
+        $chat->save();
+          Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, $author->name, $request->message) );
+        return redirect()
+            ->route('chat', $id);
+    }
     public function doc_load($id)
     {
         $documents = DB::table('attachments')
