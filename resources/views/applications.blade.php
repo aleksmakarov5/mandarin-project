@@ -67,7 +67,7 @@
            <td scope="col"  onclick="window.location.href='/application/{{$application->id}}'; return false">
 <div class="progress">
   <div class="progress-bar" style="width: {{round(48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600))/48*100}}%;" role="progressbar" aria-valuenow="{{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}" aria-valuemin="0" aria-valuemax="48">
-  {{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600))}}часов
+  {{48-round((strtotime(date("Y-m-d h:m:s"))-strtotime($application->created_at))/3600)}}часов
   </div>
 </div>
 
