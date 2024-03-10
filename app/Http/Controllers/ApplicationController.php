@@ -516,6 +516,8 @@ $history->id_application= $id;
                 $application->id_status = 5;
                 $history->id_status = 5;
                 $application->save();
+
+                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
                 $history->save();
                 return redirect()->route('answer_fail_sel',$id);
             }
@@ -563,8 +565,13 @@ $history->id_application= $id;
     public function answer_ic_sent(Request $request, $id)
     {
        $application=application::findOrFail($id);
+
           Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
           $application->id_status = 24;
+           $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_application= $id;
+        $history->id_status = 24;
           $application->save();
         return redirect()
             ->route('archive');
