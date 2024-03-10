@@ -86,6 +86,13 @@ Route::middleware("can:administrator")->group(
         Route::post('/insurance_company/{id}/update', [AdminController::class, 'update_insurance_company'])->name('insurance_company_update');
         Route::get('insurance_company/{id}/delete', [AdminController::class, 'destroy_insurance_company'])
             ->name('insurance_company.destroy');
+
+       Route::get('/fail_var',  [AdminController::class, 'fail_var'])->name('fail_var');
+        Route::post('/fail_var_register',  [AdminController::class, 'fail_var_register'])->name('fail_var_register');
+        Route::post('/fail_var/{id}', [AdminController::class, 'fail_var_edit'])->name('fail_var_edit');
+        Route::get('fail_var/{id}/delete', [AdminController::class, 'destroy_fail_var'])
+            ->name('fail_var.destroy');
+      
     }
 );
 
@@ -103,6 +110,8 @@ Route::middleware("auth:web")->group(
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::post('/test',  [MainController::class, 'test'])->name('test');
      
+        Route::get('/answer_fail_sel/{id}', [ApplicationController::class, 'answer_fail_sel'])->name('answer_fail_sel');
+        Route::post('/answer_fail_save/{id}', [ApplicationController::class, 'answer_fail_save'])->name('answer_fail_save');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/chat/{id}',  [ApplicationController::class, 'chat'])->name('chat');
         Route::post('/chat_sent/{id}',  [ApplicationController::class, 'chat_sent'])->name('chat_sent');
@@ -119,6 +128,9 @@ Route::middleware("auth:web")->group(
             ->name('applications.send_mrk');
         Route::post('applications/{id}/change_status', [ApplicationController::class, 'change_status'])
             ->name('applications.change_status');
+             Route::post('applications/{id}/change_status_km', [ApplicationController::class, 'change_status_km'])
+            ->name('applications.change_status_km');
+      
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
@@ -130,6 +142,8 @@ Route::middleware("auth:web")->group(
         Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
         Route::get('applications/{id}/delete', [ApplicationController::class, 'destroy'])
             ->name('applications.destroy');
+
+        
 
         Route::get('/SparePart/{id}', [SparePartController::class, 'SparePart'])->name('SparePart');
         Route::get('SparePart/{id}/edit', [SparePartController::class, 'edit'])

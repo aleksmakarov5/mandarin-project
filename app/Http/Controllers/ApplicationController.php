@@ -9,6 +9,7 @@ use App\Models\User;
 use App\Models\InsuranceCompany;
 use App\Models\history;
 use App\Models\chat;
+use App\Models\failure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
@@ -464,18 +465,65 @@ $history->id_status = 4;
                 $application->id_status = 7;
                 $history->id_status = 7;
 
-                $application->id_MRK = null;
-                $application->id_spm = null;
                 break;
             case 4:
-                    $application->id_status = 5;
-                    $history->id_status = 5;
-                $application->id_MRK = null;
-                $application->id_spm = null;
+                    $application->id_status = 6;
+                    $history->id_status = 6;
                 break;
         }
     $application->save();
     $history->save();
        return redirect()->route('applications');
     }
+ public function change_status_km(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+            $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_application= $id;
+        switch ($request->variant) {
+            case 1: {
+                $application->id_status = 8;
+                $history->id_status = 8;
+                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                $application->save();
+                $history->save();
+                return redirect()->route('directions');
+            }
+            case 2: {
+                $application->id_status = 5;
+                $history->id_status = 5;
+                $application->save();
+                $history->save();
+                return redirect()->route('answer_fail_sel',$id);
+            }
+          }
+   
+    }
+
+    public function answer_fail_sel( $id)
+    {
+        
+       
+        
+            $fail_vars=DB::table('failure_vars')->get();
+
+            return view('application.answer_fail_select', ['id' => $id], ['fail_vars' => $fail_vars->all()]);
+        
+
+    }
+    public function answer_fail_save(Request $request, $id)
+    {
+         $failure = new failure;
+        $variants=$request->variant;
+       // dd($request);
+            foreach ($variants as $value) {
+                $failure->id_application = $id;
+                $failure->id_var = $value;
+                $failure->save();
+            return redirect()->route('applications');
+        }
+
+    }
+
 }

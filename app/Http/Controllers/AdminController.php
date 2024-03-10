@@ -8,6 +8,8 @@ use App\Models\usergroup;
 
 use App\Models\ApplicationStatus;
 use App\Models\InsuranceCompany;
+use App\Models\failure_var;
+
 use Illuminate\Support\Facades\DB;
 
 
@@ -285,4 +287,42 @@ class AdminController extends Controller
 
         return redirect()->route('insurance_companies');
     }
+
+    
+     public function fail_var()
+
+    {
+        $fail_vars = new failure_var();
+        return view('admin.fail_var', ['fail_vars' => $fail_vars->all()]);
+    }
+     public function fail_var_edit(Request $request,$id)
+    {
+        $fail_var = failure_var::findOrFail($id);
+        $data = $request->validate([
+            'variant' => ["required", "string"]
+        ]);
+        $fail_var->variant = $data['variant'];
+        $fail_var->save();
+        return redirect()->route('fail_var');
+    }
+
+    public function fail_var_register(Request $request)
+    {
+        $data = $request->validate([
+            'variant' => ["required", "string"]
+        ]);
+        $fail_var = failure_var::create([
+            'variant' => $data['variant']
+        ]);
+        return redirect()->route('fail_var');
+    }
+
+    public function destroy_fail_var($id)
+    {
+        $fail_var = failure_var::findOrFail($id);
+        $fail_var->delete();
+        return redirect()
+            ->route('fail_var');
+    }
+    
 }

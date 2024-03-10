@@ -4,6 +4,7 @@
 @endsection
 @section('main')   
 @can('admin')
+
 <a href="/application/{{$id}}/doc_load" class="nav-link">Загрузить данные из документа</a>
 <br>  
 <a href="/applications/{{$application->id}}/edit" class="nav-link">Изменить</a> 
@@ -11,7 +12,9 @@
    @if ($application->id_status==2&&!$empty)
      <a href="/applications/{{$application->id}}/send_mrk/{{$application->id_MRK}}" class="nav-link">Передать МРК</a> 
    @endif
-   
+   @if ($application->id_status==5||$application->id_status==10)
+       <a href="/answer_ic/{{$id}}" class="nav-link">Подготовить ответ в ск</a>
+   @endif
 
 @endcan
 @can('spm')
@@ -31,6 +34,19 @@
   <option value="2">Принять в работу</option>
   <option value="3">Отклонить по причине отказа клиента</option>
   <option value="4">Отклонить по причине нецелесообразности ремонта</option>
+</select>
+<input type="submit" class="nav-link" value="Выбрать">
+    </form>
+
+    @endif
+@endcan
+@can('km')
+    @if ($application->id_status==6||$application->id_status==7)
+    <form action="/applications/{{$application->id}}/change_status_km" method="POST">
+      @csrf
+<select name="variant" id="var" class="form-control">
+  <option value="1">Принять в работу</option>
+  <option value="2">Подготовить отказ</option>
 </select>
 <input type="submit" class="nav-link" value="Выбрать">
     </form>

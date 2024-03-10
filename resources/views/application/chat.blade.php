@@ -1,6 +1,6 @@
 @extends('header_menu')
 @section('title')
-    История 
+    Чат 
 @endsection
 @section('main') 
 

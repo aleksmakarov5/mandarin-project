@@ -11,6 +11,7 @@
         <li class="nav-item"><a href="/application_statuses" class="nav-link {{ request()->routeIs('application_statuses') ? 'tn-active' : '' }}" aria-current="page">Статусы заявок</a></li>
        <li class="nav-item"><a href="/usergroups" class="nav-link {{ request()->routeIs('usergroups') ? 'tn-active' : '' }}" aria-current="page">Группы пользователей</a></li>
      <li class="nav-item"><a href="/insurance_companies" class="nav-link {{ request()->routeIs('insurance_companies') ? 'tn-active' : '' }}" aria-current="page">Страховые компании</a></li>
+     <li class="nav-item"><a href="/fail_var" class="nav-link {{ request()->routeIs('fail_var') ? 'tn-active' : '' }}" aria-current="page">Варианты отказа</a></li>
      
       </ul>
     </header>

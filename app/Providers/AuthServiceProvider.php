@@ -31,7 +31,7 @@ class AuthServiceProvider extends ServiceProvider
             return $user->GroupId === 1;
         });
         Gate::define('admin', function (User $user) {
-            return $user->GroupId === 2 || $user->GroupId === 1 || $user->GroupId === 7;
+            return $user->GroupId === 2 || $user->GroupId === 1 || $user->GroupId === 7|| $user->GroupId === 8;
         });
         Gate::define('buh', function (User $user) {
             return $user->GroupId === 3 || $user->GroupId === 1 || $user->GroupId === 7;
