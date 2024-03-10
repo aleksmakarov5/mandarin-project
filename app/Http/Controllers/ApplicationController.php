@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\application;
 use App\Models\User;
 use App\Models\InsuranceCompany;
+use App\Models\history;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
@@ -14,6 +15,7 @@ use App\Mail\user\mrknotify;
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Psy\Command\HistoryCommand;
 
 class ApplicationController extends Controller
 {
@@ -207,16 +209,20 @@ session(['rout'=>'directions']);
     public function update(Request $request, $id)
     {
         $application = application::findOrFail($id);
+        $history=new history;
+        $history->id_application= $id;
+        $history->id_user = Auth::user()->id;
         if ($request->ur) {
             $application->id_MRK = null;
             $application->id_spm = null;
             $application->id_status = 25;
-
-
-
+            $history->id_status = 25;
+        $history->save();
         } else {
             if ($application->id_status < 2 || $application->id_status == 25) {
                 $application->id_status = 2;
+                $history->id_status = 2;
+        $history->save();
             }
             $data = $this->validate($request, [
                 'id_insuranceCompany' => 'required',
@@ -272,13 +278,21 @@ session(['rout'=>'directions']);
 
         ]);
         $application = new application;
-
+         $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_status = 2;
         $application->id_status = 2;
+        
+
+
 
         foreach ($data as $key => $value) {
             $application->$key = $value;
         }
         $application->save();
+
+        $history->id_application= $application->id;
+        $history->save();
         return redirect()
             ->route('application', $application->id);
     }
@@ -289,7 +303,19 @@ session(['rout'=>'directions']);
         return redirect()
             ->route('applications');
     }
-    public function message($id)
+    public function history($id)
+    {
+        $histories = DB::table('histories')
+        ->where('id_application', '=', $id)
+        ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
+        ->join('users', 'histories.id_user', '=', 'users.id')
+        ->select('histories.*', 'application_statuses.StatusName', 'users.name')
+        ->get();
+        // dd($rewiew->all()) ;
+        return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
+    }
+
+     public function message($id)
     {
         $messages = DB::table('messages')->where('application_id', '=', $id)->get();
         // dd($rewiew->all()) ;
@@ -325,6 +351,12 @@ session(['rout'=>'directions']);
         $application = application::findOrFail($id);
         if ($application->id_status < 2) {
             $application->id_status = 2;
+             $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_status = 2;
+            $history->id_application= $id;
+            $history->save();
+
         }
         $data = $this->validate($request, [
             'CarModel' => 'nullable|string',
@@ -357,37 +389,51 @@ session(['rout'=>'directions']);
         $application = application::findOrFail($id);
             $application->id_status = 3;
             $application->save();
-        
+         $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_status = 3;
+        $history->id_application= $id;
+        $history->save();
         return redirect()->route('applications');
 
     }
     public function change_status(Request $request, $id)
     {
         $application = application::findOrFail($id);
-
+            $history=new history;
+        $history->id_user = Auth::user()->id;
+$history->id_application= $id;
         switch ($request->variant) {
             case 1:
                 $application->id_status = 4;
                 // dd ($application->id_status);
+            
+$history->id_status = 4;
+        
+        
                 Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
                 break;
             case 2:
                 $application->id_status = 8;
+                $history->id_status = 8;
                
                 break;
             case 3:
                 $application->id_status = 7;
+                $history->id_status = 7;
 
                 $application->id_MRK = null;
                 $application->id_spm = null;
                 break;
             case 4:
                     $application->id_status = 5;
+                    $history->id_status = 5;
                 $application->id_MRK = null;
                 $application->id_spm = null;
                 break;
         }
     $application->save();
+    $history->save();
        return redirect()->route('applications');
     }
 }

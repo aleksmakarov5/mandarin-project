@@ -10,6 +10,7 @@ use App\Models\message;
 use App\Models\application;
 use App\Models\attachment;
 use App\Models\User;
+use App\Models\history;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
  
@@ -106,7 +107,10 @@ class MainController extends Controller
 
                 $message->application_id = $applications->id;
                 $id = $applications->id;
-
+                $history = new History;
+                $history->id_application = $applications->id;
+                $history->id_status = 1;
+                $history->save();
                 $message->save();
   $attachment=attachment::where('message_id', $message->id)->get();
             foreach ($attachment->all() as $att) {

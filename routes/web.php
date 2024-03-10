@@ -104,6 +104,7 @@ Route::middleware("auth:web")->group(
         Route::post('/test',  [MainController::class, 'test'])->name('test');
      
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
+        Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
          Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
@@ -173,6 +174,7 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+        
           Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
             Route::post('documents/{id}/doc_add', [MainController::class, 'doc_add'])->name('doc_add');
         Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
