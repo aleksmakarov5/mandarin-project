@@ -14,24 +14,27 @@
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
     padding: 8px;
 }
+
 .nav-link:hover {
     background-color: #eb6700;
     color: white;
 }
-.table{
+
+.table {
     --bs-table-hover-bg: #eb6700;
     --bs-table-active-bg: #eb6700;
     color: #eb6700;
-}   
+}
+
 tr.pink {
     background-color: #00a1eb6e;
 }
+
 td.ic_price {
     background-color: #30374d;
 }
 
-tr:hover
-{
+tr:hover {
     background-color: #eb66002b;
 }
 
@@ -42,12 +45,14 @@ tr:hover
     line-height: 1.55;
     font-weight: 600;
     border-radius: 30px;
-    background-color: #eb6700;;
+    background-color: #eb6700;
+    ;
     background-position: center center;
     border-color: transparent;
     border-style: solid;
     transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
 }
+
 div.card {
     width: 128px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
@@ -64,6 +69,7 @@ div.header {
 div.container {
     padding: 10px;
 }
+
 #buttons .butn {
     padding: 3px 15px 3px 15px;
     border: 1px solid #ebebeb;
@@ -167,7 +173,7 @@ div.container {
     display: inline-block;
     cursor: pointer;
     padding: 6px;
-    margin-top:2px;
+    margin-top: 2px;
     line-height: 14px;
     border: 1px solid #999;
     border-radius: 2px;
@@ -179,6 +185,7 @@ div.container {
 .form_radio_btn.mrk input[type=radio]:checked+label {
     background: #0a07e8;
 }
+
 .form_radio_btn.zap input[type=radio]:checked+label {
     background: #06e70a;
 }
@@ -186,12 +193,15 @@ div.container {
 td.zap {
     background: #06e70a;
 }
+
 td.mrk {
-   background: #0a07e8;
+    background: #0a07e8;
 }
+
 td.zapmrk {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, rgba(10, 7, 232, 1) 100%);
 }
+
 /* Hover */
 .form_radio_btn label:hover {
     color: #666;
@@ -204,9 +214,10 @@ td.zapmrk {
     margin: 0px;
 }
 
-.grey{
+.grey {
     color: #656565;
 }
+
 /* вся страница */
 * {
     font-family: arial, sans-serif;
@@ -218,8 +229,9 @@ td.zapmrk {
     border-collapse: collapse;
     border-color: white;
 }
+
 .editable td {
-  
+
     min-width: 90px;
 
 }
@@ -229,20 +241,18 @@ td.zapmrk {
     border: 1px solid #000;
     padding-left: 3px;
     border-color: white;
-  
-   
+
+
 }
 
 .editable th {
     color: #ffffff;
     background: #000;
     border-color: white;
-    
+
 }
 
-.editable th:hover {
-    background-color: #eb66002b;
-}
+
 
 .editable th.min {
     color: #ffffff;
@@ -250,12 +260,15 @@ td.zapmrk {
     padding-left: 3px;
     padding-right: 0px;
     margin: 0px;
-    border-left: none important;
     size: 10;
     text-align: center;
-    border-color: #000;
+    border-left: none;
     width: 3px;
-    
+
+}
+
+.editable td.min {
+    border-right: none;
 }
 
 .editable td.edit {

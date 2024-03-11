@@ -13,7 +13,7 @@ use App\Models\User;
 use App\Models\history;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
- 
+
 
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
@@ -28,7 +28,7 @@ class MainController extends Controller
 {
     public function home()
     {
-        
+
         session(['rout' => 'home']);
         return view('home');
     }
@@ -63,7 +63,7 @@ class MainController extends Controller
         return view('review', ['reviews' => $rewiews->all()]);
     }
     public function new_application()
-    { 
+    {
         $messages = message::where('is_parsed', null)->get();
         foreach ($messages->all() as $message) {
             $subject = $message->subject;
@@ -113,18 +113,17 @@ class MainController extends Controller
                 $history->id_user = 2;
                 $history->save();
                 $message->save();
-  $attachment=attachment::where('message_id', $message->id)->get();
-            foreach ($attachment->all() as $att) {
-                $att->id_application= $id;
+                $attachment = attachment::where('message_id', $message->id)->get();
+                foreach ($attachment->all() as $att) {
+                    $att->id_application = $id;
 
-                $att->save();
-            }
-            $user=User::find(2);
-            Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($id)); 
-       
+                    $att->save();
+                }
+                $user = User::find(2);
+                Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($id));
             }
             $message->is_parsed = true;
-               $message->save();
+            $message->save();
         }
     }
     public function review_check(Request $request)
@@ -158,12 +157,12 @@ class MainController extends Controller
     public function document($id)
     {
         $document = DB::table('attachments')
-              ->where('id_application', '=', $id)
+            ->where('id_application', '=', $id)
             ->get();
         // dd($document);
         return view('document', ['document' => $document], ['id' => $id]);
     }
-    public function showdoc($id,$locations)
+    public function showdoc($id, $locations)
     {
 
         // $text = (new PdfToText('/opt/homebrew/bin/pdftotext'))
@@ -172,12 +171,12 @@ class MainController extends Controller
         // echo $text;
         //  exec('pdftohtml storage/files/' . $id . ' -p -i -xml');
         //  exec('pdftohtml storage/files/' . $id . ' -p -i');
-// ConvertApi::setApiSecret('Mrv6e6zPa9oTst7o');
-// $result = ConvertApi::convert('pdf-extract', [
-//         'File' => 'storage/files/'.$id,
-//     ], 'pdf'
-// );
-// $result->saveFiles('storage/files/');
+        // ConvertApi::setApiSecret('Mrv6e6zPa9oTst7o');
+        // $result = ConvertApi::convert('pdf-extract', [
+        //         'File' => 'storage/files/'.$id,
+        //     ], 'pdf'
+        // );
+        // $result->saveFiles('storage/files/');
 
         // $html = substr($id, 0, strlen($id) - 4) . 's.html';
         // //  include('storage/files/' . $html);
@@ -252,86 +251,77 @@ class MainController extends Controller
         // }
         // echo '</table>';
 
-      
+
         $content = '';
-$source = 'storage/files/'.$locations;
- 
-$objReader = IOFactory::createReader('Word2007');
- 
-$phpWord = $objReader->load($source);
- 
-$body = '';
-foreach($phpWord->getSections() as $section) {
-	$arrays = $section->getElements();
-	
-	foreach($arrays as $e) {
-		if(get_class($e) === 'PhpOffice\PhpWord\Element\TextRun') {
-			foreach($e->getElements() as $text) {
-				
-				$font = $text->getFontStyle();
-				
-				$size = $font->getSize()/10;
-				$bold = $font->isBold() ? 'font-weight:700;' :'';
-				$color = $font->getColor();
-				$fontFamily = $font->getName();
-				
-				$body .= '<span style="font-size:' . $size . 'em;font-family:' . $fontFamily . '; '.$bold.'; color:#'.$color.'">';
-				$body .= $text->getText().'</span>';
-			}
-		}
-		
-		else if(get_class($e) === 'PhpOffice\PhpWord\Element\TextBreak') {
-			$body .= '<br />';
-		}
-		
-		else if(get_class($e) === 'PhpOffice\PhpWord\Element\Table') {
-			$body .= '<table border="2px">';
-			
-			$rows = $e->getRows();
-			
-			foreach($rows as $row) {
-				$body .= '<tr>';
-				
-				$cells = $row->getCells();
-				foreach($cells as $cell) {
-					$body .= '<td style="width:'.$cell->getWidth().'">';
-					$celements = $cell->getElements();
-					foreach($celements as $celem) {
-						if(get_class($celem) === 'PhpOffice\PhpWord\Element\Text') {
-							$body .= $celem->getText();
-						}
-						
-						else if(get_class($celem) === 'PhpOffice\PhpWord\Element\TextRun') {
-							foreach($celem->getElements() as $text) {
-								$body .= $text->getText();
-							}
-						}
-					}	
-					$body .= '</td>';
-				}
-				
-				$body .= '</tr>';
-			}
-			
-			$body .= '</table>';
-		}
-		else {
-			$body .= $e->getText();
-		}
-	}
-	
-	break;
-}
+        $source = 'storage/files/' . $locations;
 
-echo $body;
+        $objReader = IOFactory::createReader('Word2007');
 
-       
+        $phpWord = $objReader->load($source);
+
+        $body = '';
+        foreach ($phpWord->getSections() as $section) {
+            $arrays = $section->getElements();
+
+            foreach ($arrays as $e) {
+                if (get_class($e) === 'PhpOffice\PhpWord\Element\TextRun') {
+                    foreach ($e->getElements() as $text) {
+
+                        $font = $text->getFontStyle();
+
+                        $size = $font->getSize() / 10;
+                        $bold = $font->isBold() ? 'font-weight:700;' : '';
+                        $color = $font->getColor();
+                        $fontFamily = $font->getName();
+
+                        $body .= '<span style="font-size:' . $size . 'em;font-family:' . $fontFamily . '; ' . $bold . '; color:#' . $color . '">';
+                        $body .= $text->getText() . '</span>';
+                    }
+                } else if (get_class($e) === 'PhpOffice\PhpWord\Element\TextBreak') {
+                    $body .= '<br />';
+                } else if (get_class($e) === 'PhpOffice\PhpWord\Element\Table') {
+                    $body .= '<table border="2px">';
+
+                    $rows = $e->getRows();
+
+                    foreach ($rows as $row) {
+                        $body .= '<tr>';
+
+                        $cells = $row->getCells();
+                        foreach ($cells as $cell) {
+                            $body .= '<td style="width:' . $cell->getWidth() . '">';
+                            $celements = $cell->getElements();
+                            foreach ($celements as $celem) {
+                                if (get_class($celem) === 'PhpOffice\PhpWord\Element\Text') {
+                                    $body .= $celem->getText();
+                                } else if (get_class($celem) === 'PhpOffice\PhpWord\Element\TextRun') {
+                                    foreach ($celem->getElements() as $text) {
+                                        $body .= $text->getText();
+                                    }
+                                }
+                            }
+                            $body .= '</td>';
+                        }
+
+                        $body .= '</tr>';
+                    }
+
+                    $body .= '</table>';
+                } else {
+                    $body .= $e->getText();
+                }
+            }
+
+            break;
+        }
+
+        echo $body;
     }
 
-    public function doc_edit(Request $request,$id,$doc_id)
+    public function doc_edit(Request $request, $id, $doc_id)
     {
-         $document = DB::table('attachments')
-              ->where('id_application', '=', $id)
+        $document = DB::table('attachments')
+            ->where('id_application', '=', $id)
             ->get();
         // dd($document);
         $document_edit = DB::table('attachments')
@@ -339,22 +329,22 @@ echo $body;
             ->first();
         // dd($document);
         //return view('doc_edit', ['document' => $document,'id' => $id, 'doc_id' => $doc_id]);
-        $filename=$document_edit->file_name;
-        $doc_ext=mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
-        $doc_name=mb_substr($filename, 0, mb_strlen($filename)-mb_strlen($doc_ext)-1);
-        return view('document', ['document' => $document, 'doc_name'=> $doc_name, 'doc_ext'=>$doc_ext, 'document_edit'=>$document_edit], ['id' => $id]);
+        $filename = $document_edit->file_name;
+        $doc_ext = mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
+        $doc_name = mb_substr($filename, 0, mb_strlen($filename) - mb_strlen($doc_ext) - 1);
+        return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit], ['id' => $id]);
     }
-    public function doc_update(Request $request,$id,$doc_id)
-    {   
+    public function doc_update(Request $request, $id, $doc_id)
+    {
         $document = Attachment::findOrFail($doc_id);
-        $document->file_name = $request->input('file_name').'.'.$request->input('file_ext');
+        $document->file_name = $request->input('file_name') . '.' . $request->input('file_ext');
         $document->save();
         return redirect()->route('document', ['id' => $id]);
     }
-    public function doc_delete(Request $request,$id,$doc_id)
+    public function doc_delete(Request $request, $id, $doc_id)
     {
         $document = Attachment::findOrFail($doc_id);
-        Storage::delete('public/files/'.$document->location);
+        Storage::delete('public/files/' . $document->location);
         $document->delete();
         return redirect()->route('document', ['id' => $id]);
     }
@@ -362,7 +352,7 @@ echo $body;
     {
         return view('doc_load', ['id' => $id]);
     }
-    public function doc_add(Request $request,$id)
+    public function doc_add(Request $request, $id)
     {
         if ($request->isMethod('post') && $request->file('userfile')) {
 
@@ -375,18 +365,17 @@ echo $body;
             $document = new Attachment();
             $document->file_name = $filename;
             $document->message_id = 0;
-            $document->mime_type=$file->getMimeType();
+            $document->mime_type = $file->getMimeType();
             $document->id_application = $id;
             $document->file_size = $file->getSize();
             $document->location = $filename_new;
             $document->save();
         }
-       
+
         return redirect()->route('document', ['id' => $id]);
     }
     public function test(request $request)
     {
         dd($request);
     }
-
 }
