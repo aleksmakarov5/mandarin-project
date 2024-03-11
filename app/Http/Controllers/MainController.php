@@ -148,7 +148,13 @@ class MainController extends Controller
 
     public function message()
     {
-        $messages = new message();
+        $messages = DB::table('messages')->get();
+        // dd($messages);
+        foreach ($messages as $message) {
+            $message->attachment = DB::table('attachments')
+                ->where('message_id', '=', $message->id)
+                ->get();
+        }
 
         session(['rout' => 'mail']);
         // dd($rewiew->all()) ;

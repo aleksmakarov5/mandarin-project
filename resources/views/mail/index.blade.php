@@ -86,28 +86,26 @@
                                 </div>
                                 <div class="attachments-sections">
                                     <ul>
-                                        <li>
-                                            <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
-                                            <div class="details">
-                                                <p class="file-name">Seminar Reports.pdf</p>
-                                                <div class="buttons">
-                                                    <p class="file-size">678Kb</p>
-                                                    <a href="#" class="view">View</a>
-                                                    <a href="#" class="download">Download</a>
+                                        @foreach ($message->attachment as $attachment)
+                                            <li>
+                                                <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
+                                                <div class="details">
+                                                    <p class="file-name"><a
+                                                            href="/storage/files/{{ $attachment->location }}" class="view"
+                                                            target="_blank">
+                                                            <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
+                                                                alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
+                                                                width=25px>
+
+                                                            {{ $attachment->file_name }} </a></p>
+                                                    <div class="buttons">
+                                                        <p class="file-size">
+                                                            {{ round($attachment->file_size / 1024 / 1024, 2) }} мб</p>
+
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="thumb"><i class="mdi mdi-file-image"></i></div>
-                                            <div class="details">
-                                                <p class="file-name">Product Design.jpg</p>
-                                                <div class="buttons">
-                                                    <p class="file-size">1.96Mb</p>
-                                                    <a href="#" class="view">View</a>
-                                                    <a href="#" class="download">Download</a>
-                                                </div>
-                                            </div>
-                                        </li>
+                                            </li>
+                                        @endforeach
                                     </ul>
                                 </div>
                             </div>
