@@ -25,19 +25,18 @@ class ApplicationController extends Controller
     public function applications()
     {
 
-        if (Gate::allows('admin'))
-{
- $applications = application::where(function ($query) {
+        if (Gate::allows('admin')) {
+            $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '6');
             })
-                
+
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get();
-} else {
+        } else {
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '6');
@@ -53,89 +52,84 @@ class ApplicationController extends Controller
                 ->get();
             // dd($applications);
         }
-        session(['rout'=>'applications']);
-        return view('applications', ['applications' => $applications], );
-
+        session(['rout' => 'applications']);
+        return view('applications', ['applications' => $applications],);
     }
 
-     public function failures()
+    public function failures()
     {
 
-        
-            $applications = DB::table('applications')
-            ->where('id_status','=','7')
-            ->orwhere('id_status','=','6')
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
-            // dd($applications);
+        $applications = DB::table('applications')
+            ->where('id_status', '=', '7')
+            ->orwhere('id_status', '=', '6')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-       
-      session(['rout'=>'failures']); 
-      
-        
-        return view('applications', ['applications' => $applications], );
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->get();
+        // dd($applications);
 
+
+        session(['rout' => 'failures']);
+
+
+        return view('applications', ['applications' => $applications],);
     }
 
     public function lawyers()
     {
 
-        
-            $applications = DB::table('applications')
-            ->where('id_status','=','25')
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
-            // dd($applications);
+        $applications = DB::table('applications')
+            ->where('id_status', '=', '25')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-      session(['rout'=>'lawyers']); 
-      
-        
-        return view('applications', ['applications' => $applications], );
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->get();
+        // dd($applications);
 
+        session(['rout' => 'lawyers']);
+
+
+        return view('applications', ['applications' => $applications],);
     }
 
-     public function archive()
+    public function archive()
     {
 
-        
-            $applications = DB::table('applications')
-            ->where('id_status','=','24')
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
-            // dd($applications);
+        $applications = DB::table('applications')
+            ->where('id_status', '=', '24')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-      session(['rout'=>'archive']); 
-      
-        
-        return view('applications', ['applications' => $applications], );
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->get();
+        // dd($applications);
 
+        session(['rout' => 'archive']);
+
+
+        return view('applications', ['applications' => $applications],);
     }
 
-     public function directions()
+    public function directions()
     {
 
-if (Gate::allows('admin'))
-{
- $applications = application::where(function ($query) {
+        if (Gate::allows('admin')) {
+            $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
                     ->where('id_status', '<', '24');
             })
-                
+
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get();
-} else {
+        } else {
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
                     ->where('id_status', '<', '24');
@@ -151,19 +145,18 @@ if (Gate::allows('admin'))
                 ->get();
             // dd($applications);
         }
-session(['rout'=>'directions']);
-//echo (session('rout'));
+        session(['rout' => 'directions']);
+        //echo (session('rout'));
 
-       
-      
-        
-        return view('applications', ['applications' => $applications], );
 
+
+
+        return view('applications', ['applications' => $applications],);
     }
 
-    
 
-    
+
+
 
 
 
@@ -177,7 +170,7 @@ session(['rout'=>'directions']);
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
             ->where('applications.id', '=', $id)
             ->first();
-      //   dd($application);
+        //   dd($application);
         $mrk = DB::table('users')
             ->where('id', '=', $application->id_MRK)
             ->first();
@@ -190,8 +183,8 @@ session(['rout'=>'directions']);
 
         $spm
             = DB::table('users')
-                ->where('id', '=', $application->id_spm)
-                ->first();
+            ->where('id', '=', $application->id_spm)
+            ->first();
         $spmname = '';
         if (isset($spm->name)) {
             $spmname = $spm->name;
@@ -234,20 +227,20 @@ session(['rout'=>'directions']);
     public function update(Request $request, $id)
     {
         $application = application::findOrFail($id);
-        $history=new history;
-        $history->id_application= $id;
+        $history = new history;
+        $history->id_application = $id;
         $history->id_user = Auth::user()->id;
         if ($request->ur) {
             $application->id_MRK = null;
             $application->id_spm = null;
             $application->id_status = 25;
             $history->id_status = 25;
-        $history->save();
+            $history->save();
         } else {
             if ($application->id_status < 2 || $application->id_status == 25) {
                 $application->id_status = 2;
                 $history->id_status = 2;
-        $history->save();
+                $history->save();
             }
             $data = $this->validate($request, [
                 'id_insuranceCompany' => 'required',
@@ -303,11 +296,11 @@ session(['rout'=>'directions']);
 
         ]);
         $application = new application;
-         $history=new history;
+        $history = new history;
         $history->id_user = Auth::user()->id;
-$history->id_status = 2;
+        $history->id_status = 2;
         $application->id_status = 2;
-        
+
 
 
 
@@ -316,7 +309,7 @@ $history->id_status = 2;
         }
         $application->save();
 
-        $history->id_application= $application->id;
+        $history->id_application = $application->id;
         $history->save();
         return redirect()
             ->route('application', $application->id);
@@ -331,48 +324,55 @@ $history->id_status = 2;
     public function history($id)
     {
         $histories = DB::table('histories')
-        ->where('id_application', '=', $id)
-        ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
-        ->join('users', 'histories.id_user', '=', 'users.id')
-        ->select('histories.*', 'application_statuses.StatusName', 'users.name')
-        ->get();
+            ->where('id_application', '=', $id)
+            ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
+            ->join('users', 'histories.id_user', '=', 'users.id')
+            ->select('histories.*', 'application_statuses.StatusName', 'users.name')
+            ->get();
         // dd($rewiew->all()) ;
         return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
     }
 
-     public function message($id)
-    {
-        $messages = DB::table('messages')->where('application_id', '=', $id)->get();
-        // dd($rewiew->all()) ;
-        return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);
-    }
-  public function chat(Request $request,$id)
+    public function message($id)
     {
 
-        $users=DB::table('users')->get();
-        if($request->input('only_me'))
-        {
- $chats = DB::table('chats')
-        ->where('id_application', '=', $id)
-        ->where(function($query)
-        {
-            $query->where('to', '=', Auth::user()->id)
-                ->orWhere('from', '=', Auth::user()->id);
-        })
-        ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
-        ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-        ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-        ->get();
+        $messages = DB::table('messages')
+            ->where('application_id', '=', $id)
+            // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
+            // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
+            ->get();
+        foreach ($messages as $message) {
+            $message->attachment = DB::table('attachments')
+                ->where('message_id', '=', $message->id)
+                ->get();
         }
-        else
-{        $chats = DB::table('chats')
-        ->where('id_application', '=', $id)
-        ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
-        ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-        ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-        ->get();
-}        // dd($rewiew->all()) ;
-        return view('application.chat', ['chats' => $chats->all(), 'users'=>$users->all() , 'id' => $id,'only_me'=> $request->input('only_me')]);
+        // dd($messages);
+        return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);
+    }
+    public function chat(Request $request, $id)
+    {
+
+        $users = DB::table('users')->get();
+        if ($request->input('only_me')) {
+            $chats = DB::table('chats')
+                ->where('id_application', '=', $id)
+                ->where(function ($query) {
+                    $query->where('to', '=', Auth::user()->id)
+                        ->orWhere('from', '=', Auth::user()->id);
+                })
+                ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
+                ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
+                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+                ->get();
+        } else {
+            $chats = DB::table('chats')
+                ->where('id_application', '=', $id)
+                ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
+                ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
+                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+                ->get();
+        }        // dd($rewiew->all()) ;
+        return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me')]);
     }
     public function chat_sent(Request $request, $id)
     {
@@ -383,7 +383,7 @@ $history->id_status = 2;
         $chat->to = $request->to;
         $chat->message = $request->message;
         $chat->save();
-          Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, $author->name, $request->message) );
+        Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, $author->name, $request->message));
         return redirect()
             ->route('chat', $id);
     }
@@ -416,12 +416,11 @@ $history->id_status = 2;
         $application = application::findOrFail($id);
         if ($application->id_status < 2) {
             $application->id_status = 2;
-             $history=new history;
-        $history->id_user = Auth::user()->id;
-$history->id_status = 2;
-            $history->id_application= $id;
+            $history = new history;
+            $history->id_user = Auth::user()->id;
+            $history->id_status = 2;
+            $history->id_application = $id;
             $history->save();
-
         }
         $data = $this->validate($request, [
             'CarModel' => 'nullable|string',
@@ -452,36 +451,35 @@ $history->id_status = 2;
         $user = User::find($id_MRK);
         Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
         $application = application::findOrFail($id);
-            $application->id_status = 3;
-            $application->save();
-         $history=new history;
+        $application->id_status = 3;
+        $application->save();
+        $history = new history;
         $history->id_user = Auth::user()->id;
-$history->id_status = 3;
-        $history->id_application= $id;
+        $history->id_status = 3;
+        $history->id_application = $id;
         $history->save();
         return redirect()->route('applications');
-
     }
     public function change_status(Request $request, $id)
     {
         $application = application::findOrFail($id);
-            $history=new history;
+        $history = new history;
         $history->id_user = Auth::user()->id;
-$history->id_application= $id;
+        $history->id_application = $id;
         switch ($request->variant) {
             case 1:
                 $application->id_status = 4;
                 // dd ($application->id_status);
-            
-$history->id_status = 4;
-        
-        
+
+                $history->id_status = 4;
+
+
                 Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
                 break;
             case 2:
                 $application->id_status = 8;
                 $history->id_status = 8;
-               
+
                 break;
             case 3:
                 $application->id_status = 7;
@@ -489,97 +487,92 @@ $history->id_status = 4;
 
                 break;
             case 4:
-                    $application->id_status = 6;
-                    $history->id_status = 6;
+                $application->id_status = 6;
+                $history->id_status = 6;
                 break;
         }
-    $application->save();
-    $history->save();
-       return redirect()->route('applications');
+        $application->save();
+        $history->save();
+        return redirect()->route('applications');
     }
- public function change_status_km(Request $request, $id)
+    public function change_status_km(Request $request, $id)
     {
         $application = application::findOrFail($id);
-            $history=new history;
+        $history = new history;
         $history->id_user = Auth::user()->id;
-$history->id_application= $id;
+        $history->id_application = $id;
         switch ($request->variant) {
             case 1: {
-                $application->id_status = 8;
-                $history->id_status = 8;
-                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
-                $application->save();
-                $history->save();
-                return redirect()->route('directions');
-            }
+                    $application->id_status = 8;
+                    $history->id_status = 8;
+                    Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                    $application->save();
+                    $history->save();
+                    return redirect()->route('directions');
+                }
             case 2: {
-                $application->id_status = 5;
-                $history->id_status = 5;
-                $application->save();
+                    $application->id_status = 5;
+                    $history->id_status = 5;
+                    $application->save();
 
-                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
-                $history->save();
-                return redirect()->route('answer_fail_sel',$id);
-            }
-          }
-   
+                    Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                    $history->save();
+                    return redirect()->route('answer_fail_sel', $id);
+                }
+        }
     }
 
-    public function answer_fail_sel( $id)
+    public function answer_fail_sel($id)
     {
-        
-       
-        
-            $fail_vars=DB::table('failure_vars')->get();
 
-            return view('application.answer_fail_select', ['id' => $id], ['fail_vars' => $fail_vars->all()]);
-        
 
+
+        $fail_vars = DB::table('failure_vars')->get();
+
+        return view('application.answer_fail_select', ['id' => $id], ['fail_vars' => $fail_vars->all()]);
     }
     public function answer_fail_save(Request $request, $id)
     {
-         
-        $variants=$request->variant;
-     // dd($variants);
-        foreach($variants as $key => $value) {
-            $failure = new failure;
-                $failure->id_application = $id;
-                $failure->id_var = $value;
-                $failure->save();
-        }
-           return redirect()->route('applications');
 
+        $variants = $request->variant;
+        // dd($variants);
+        foreach ($variants as $key => $value) {
+            $failure = new failure;
+            $failure->id_application = $id;
+            $failure->id_var = $value;
+            $failure->save();
+        }
+        return redirect()->route('applications');
     }
 
-    public function answer_ic(Request $request,$id)
+    public function answer_ic(Request $request, $id)
     {
-        $application=application::findOrFail($id);
- $fail_vars=DB::table('failures')
-        ->where('id_application', '=',$id)
-        ->join('failure_vars','failures.id_var','=','failure_vars.id')
-        ->select('failures.*','failure_vars.variant')
-        ->get();
-        $users=DB::table('users')->get();
-        
-        return view('application.answer_ic', [ 'users'=>$users->all(),'fail_vars'=>$fail_vars->all() ,'application'=>$application, 'id' => $id]);
+        $application = application::findOrFail($id);
+        $fail_vars = DB::table('failures')
+            ->where('id_application', '=', $id)
+            ->join('failure_vars', 'failures.id_var', '=', 'failure_vars.id')
+            ->select('failures.*', 'failure_vars.variant')
+            ->get();
+        $users = DB::table('users')->get();
+
+        return view('application.answer_ic', ['users' => $users->all(), 'fail_vars' => $fail_vars->all(), 'application' => $application, 'id' => $id]);
     }
     public function answer_ic_sent(Request $request, $id)
     {
-       $application=application::findOrFail($id);
+        $application = application::findOrFail($id);
 
-          Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
-          $application->id_status = 24;
-           $history=new history;
-           $messages=new message();
-       $messages->application_id=$id;
-       $messages->body_html=$request->message;
-       $messages->save();
+        Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
+        $application->id_status = 24;
+        $history = new history;
+        $messages = new message();
+        $messages->application_id = $id;
+        $messages->body_html = $request->message;
+        $messages->save();
         $history->id_user = Auth::user()->id;
-$history->id_application= $id;
+        $history->id_application = $id;
         $history->id_status = 24;
-          $application->save();
+        $application->save();
         return redirect()
             ->route('archive');
     }
-
 }

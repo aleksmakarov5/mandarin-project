@@ -1,24 +1,109 @@
 @extends('header_menu')
 @section('title')
-    Заявкa 
+    Заявкa
 @endsection
-@section('main') 
-@foreach ($messages as $message)
-<div class="alert" role="alert" style="width: 100%; background: rgb(116, 116, 255);">
-   <div class="card-body">
-    <h5 class="card-title"> {{ $message->subject }}</h5>
-    <p class="card-text">
-        @php
-       $body = $message->body_html;
-       $body_start=mb_strpos($body,'<body');
-       $body_end=mb_strpos($body,'</body>');
-       if($body_start)
-       $body=mb_substr($body,$body_start,$body_end-$body_start);
-       echo $body;
-    @endphp
-    </p>
-     </div>
-</div>
-   
-@endforeach
- @endsection 
+@section('main')
+    <div class="content-wrapper">
+        <div class="email-wrapper wrapper">
+            <div class="row align-items-stretch">
+                @foreach ($messages as $message)
+                    <button class="accordion">
+                        <div class="sender-details">
+                            <div class="details">
+                                <p class="msg-subject">
+                                    {{ $message->subject }}
+                                </p>
+                                <p class="sender-email">
+                                    От кого
+                                </p>
+                            </div>
+                        </div>
+                    </button>
+                    <div class="panel">
+                        <p>
+
+                        <div class="mail-view">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="btn-toolbar">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
+                                                    class="mdi mdi-reply text-primary mr-1"></i> Ответить</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
+                                                    class="mdi mdi-reply-all text-primary mr-1"></i>Ответить всем</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
+                                                    class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
+                                        </div>
+                                        <div class="btn-group">
+
+                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
+                                                    class="mdi mdi-delete text-primary mr-1"></i>Удалить</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="message-body">
+
+                                <div class="message-content">
+                                    @php
+                                        $body = $message->body_html;
+                                        $body_start = mb_strpos($body, '<body');
+                                        $body_end = mb_strpos($body, '</body>');
+                                        if ($body_start) {
+                                            $body = mb_substr($body, $body_start, $body_end - $body_start);
+                                        }
+                                        $body = str_replace('color', '', $body);
+
+                                        $body = str_replace('font-size:', '', $body);
+                                        echo $body;
+                                    @endphp
+                                </div>
+                                <div class="attachments-sections">
+                                    <ul>
+                                        @foreach ($message->attachment as $attachment)
+                                            <li>
+                                                <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
+                                                <div class="details">
+                                                    <p class="file-name"><a
+                                                            href="/storage/files/{{ $attachment->location }}"
+                                                            class="view">
+                                                            <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
+                                                                alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
+                                                                width=25px>
+
+                                                            {{ $attachment->file_name }} </a></p>
+                                                    <div class="buttons">
+                                                        <p class="file-size">
+                                                            {{ round($attachment->file_size / 1024 / 1024, 2) }} мб</p>
+
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        </p>
+                    </div>
+                @endforeach
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+        var acc = document.getElementsByClassName("accordion");
+        var i;
+
+        for (i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+@endsection
