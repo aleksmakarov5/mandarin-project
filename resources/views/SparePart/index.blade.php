@@ -320,7 +320,7 @@
                                 </div>
                             @endif
                             </td>
-                        <td id="td_comment-{{ $key }}" scope="col">
+                        <td id="td_comment-{{ $key }}" scope="col" class="comment">
                             @if (old('comment.' . $key) !== null)
                                 {{ old('comment.' . $key) }}
                             @else

@@ -271,6 +271,10 @@ td.zapmrk {
     border-right: none;
 }
 
+.editable td.comment {
+    min-width: 250px;
+}
+
 .editable td.edit {
     text-align: center;
 }
