@@ -41,7 +41,7 @@ class ImapController extends Controller
             foreach ($emailes as $email) {
                 $message = new Message();
 
-                dd($email);
+                // dd($email);
                 $email->setFlag('Seen');
                 $attachments = $email->getAttachments();
                 $message->subject = $email->getSubject();
