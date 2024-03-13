@@ -29,7 +29,7 @@ class appnotify extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Требуется действие по заявке',
+            subject: 'Требуется действие по заявке ' . $this->app_number,
         );
     }
 

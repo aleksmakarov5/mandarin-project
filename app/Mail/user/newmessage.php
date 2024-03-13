@@ -32,7 +32,7 @@ class newmessage extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Вы получили новое соообщение',
+            subject: 'Новое соообщение в чате заявки ' . $this->app_number,
         );
     }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\application;
+use App\Jobs\QueueSenderChat;
 use App\Models\User;
 use App\Models\InsuranceCompany;
 use App\Models\history;
@@ -13,8 +14,10 @@ use App\Models\failure;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
+use App\Models\address;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
+
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
@@ -391,7 +394,10 @@ class ApplicationController extends Controller
         $chat->to = $request->to;
         $chat->message = $request->message;
         $chat->save();
-        Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, $author->name, $request->message));
+        // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
+        // $this->dispatch($qs);
+        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, $author->name, $request->message));
+
         return redirect()
             ->route('chat', $id);
     }
@@ -457,7 +463,7 @@ class ApplicationController extends Controller
     public function send_mrk($id, $id_MRK)
     {
         $user = User::find($id_MRK);
-        Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+        Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
         $application = application::findOrFail($id);
         $application->id_status = 3;
         $application->save();
@@ -482,7 +488,7 @@ class ApplicationController extends Controller
                 $history->id_status = 4;
 
 
-                Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                 break;
             case 2:
                 $application->id_status = 8;
@@ -513,7 +519,7 @@ class ApplicationController extends Controller
             case 1: {
                     $application->id_status = 8;
                     $history->id_status = 8;
-                    Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                    Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                     $application->save();
                     $history->save();
                     return redirect()->route('directions');
@@ -523,7 +529,7 @@ class ApplicationController extends Controller
                     $history->id_status = 5;
                     $application->save();
 
-                    Mail::to('aleksmakarov5@yandex.ru')->send(new mrknotify($id));
+                    Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                     $history->save();
                     return redirect()->route('answer_fail_sel', $id);
                 }
@@ -569,13 +575,26 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
 
-        Mail::to('aleksmakarov5@yandex.ru')->send(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
+        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
         $application->id_status = 24;
         $history = new history;
         $messages = new message();
         $messages->application_id = $id;
         $messages->body_html = $request->message;
+        $messages->message_date = time();
+
+
         $messages->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'from';
+        $address->email = 'robot@mandarinportal.ru';
+        $address->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'to';
+        $address->email = 'aleksmakarov5@yandex.ru';
+        $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
         $history->id_status = 24;

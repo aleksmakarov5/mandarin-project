@@ -11,6 +11,7 @@ use App\Models\application;
 use App\Models\attachment;
 use App\Models\User;
 use App\Models\history;
+use App\Jobs\QueueSenderEmail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 
@@ -121,7 +122,7 @@ class MainController extends Controller
                     $att->save();
                 }
                 $user = User::find(2);
-                Mail::to('aleksmakarov5@yandex.ru')->send(new appnotify($id));
+                Mail::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             }
             $message->is_parsed = true;
             $message->save();
