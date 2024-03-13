@@ -27,7 +27,7 @@ class mrknotify extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Заявка ',
+            subject: 'Заявка ' . $this->app_number,
         );
     }
 
