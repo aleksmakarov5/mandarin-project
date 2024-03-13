@@ -50,12 +50,13 @@ class ImapController extends Controller
                 $message->body_html = $email->getHTMLBody();
                 $message->body_text = $email->getTextBody();
                 $message->header = $email->getHeaders();
+                $message->message_date = $email->getdate();
                 $from = $email->getFrom()->toarray();
                 $to = $email->getTo()->toArray();
                 // $adressto = $to->toArray();
 
                 // $address = $to->getAddress();
-                // dd($values);
+                // dd($message);
                 //echo $values[2]->mail;
                 // echo count($to);
                 $message->save();

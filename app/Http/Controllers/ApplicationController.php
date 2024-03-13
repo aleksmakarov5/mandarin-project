@@ -345,6 +345,14 @@ class ApplicationController extends Controller
             $message->attachment = DB::table('attachments')
                 ->where('message_id', '=', $message->id)
                 ->get();
+            $message->from = DB::table('addresses')
+                ->where('message_id', '=', $message->id)
+                ->where('type', '=', 'from')
+                ->first();
+            $message->to = DB::table('addresses')
+                ->where('message_id', '=', $message->id)
+                ->where('type', '=', 'to')
+                ->get();
         }
         // dd($messages);
         return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);

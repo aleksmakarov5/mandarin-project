@@ -40,12 +40,30 @@
                                     {{ $message->subject }}
                                 </p>
                                 <p class="sender-email">
-                                    От кого
+                                    От кого@if (isset($message->from->email))
+                                        {{ $message->from->email }}
+                                    @endif
                                 </p>
+                                <p class="text-muted small mb-0"><i class="far fa-clock">
+                                        @if (isset($message->message_date))
+                                            {{ date('d-m-Y h:m', strtotime($message->message_date)) }}
+                                        @endif
+                                    </i>
+                                </p>
+
                             </div>
                         </div>
                     </button>
                     <div class="panel">
+                        Кому: @foreach ($message->to as $to)
+                            <p class="text-muted small mb-0">
+                                <i class="far fa-clock">
+                                    @if (isset($to->email))
+                                        {{ $to->email }};
+                                    @endif
+                                </i>
+                            </p>
+                        @endforeach
                         <p>
 
                         <div class="mail-view">

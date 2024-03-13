@@ -64,7 +64,8 @@ class MainController extends Controller
     }
     public function new_application()
     {
-        $messages = message::where('is_parsed', null)->get();
+        $messages = message::where('is_parsed', null)
+            ->get();
         foreach ($messages->all() as $message) {
             $subject = $message->subject;
             $subject = trim($subject);
@@ -148,11 +149,20 @@ class MainController extends Controller
 
     public function message()
     {
-        $messages = DB::table('messages')->get();
+        $messages = DB::table('messages')
+            ->get();
         // dd($messages);
         foreach ($messages as $message) {
             $message->attachment = DB::table('attachments')
                 ->where('message_id', '=', $message->id)
+                ->get();
+            $message->from = DB::table('addresses')
+                ->where('message_id', '=', $message->id)
+                ->where('type', '=', 'from')
+                ->first();
+            $message->to = DB::table('addresses')
+                ->where('message_id', '=', $message->id)
+                ->where('type', '=', 'to')
                 ->get();
         }
 
