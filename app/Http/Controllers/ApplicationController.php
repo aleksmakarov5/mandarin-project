@@ -581,7 +581,7 @@ class ApplicationController extends Controller
         $messages = new message();
         $messages->application_id = $id;
         $messages->body_html = $request->message;
-        $messages->message_date = time();
+        $messages->message_date = date('Y-m-d H:i:s');
 
 
         $messages->save();
