@@ -10,6 +10,8 @@ use greeny\MailLibrary\Mail;
 use greeny\MailLibrary\Connection;
 use App\Models\message;
 use App\Models\attachment;
+use App\Models\address;
+
 
 
 
@@ -41,13 +43,21 @@ class ImapController extends Controller
             foreach ($emailes as $email) {
                 $message = new Message();
 
-                // dd($email);
+                //dd($email);
                 $email->setFlag('Seen');
                 $attachments = $email->getAttachments();
                 $message->subject = $email->getSubject();
                 $message->body_html = $email->getHTMLBody();
                 $message->body_text = $email->getTextBody();
                 $message->header = $email->getHeaders();
+                $from = $email->getFrom()->toarray();
+                $to = $email->getTo()->toArray();
+                // $adressto = $to->toArray();
+
+                // $address = $to->getAddress();
+                // dd($values);
+                //echo $values[2]->mail;
+                // echo count($to);
                 $message->save();
                 foreach ($attachments as $attachment) {
                     $filename =  uniqid("", false) . "." . $attachment->getExtension();
@@ -59,6 +69,23 @@ class ImapController extends Controller
                     $attach->file_size = $attachment->getSize();
                     $attach->file_name = $attachment->getFilename();
                     $attach->save();
+                }
+                //echo $to;
+                foreach ($to as $mail) {
+                    // dd($mail);
+                    $address = new address;
+                    $address->message_id = $message->id;
+                    $address->email = $mail->mail;
+                    $address->type = 'to';
+                    $address->save();
+                }
+                //dd($from, $to, $address);
+                foreach ($from as $mail) {
+                    $address = new address;
+                    $address->message_id = $message->id;
+                    $address->email = $mail->mail;
+                    $address->type = 'from';
+                    $address->save();
                 }
             }
         }
