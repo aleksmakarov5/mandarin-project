@@ -12,28 +12,28 @@ class WorkController extends Controller
     public function Work($id)
     {
         $Works_ic = DB::table('works')
-        ->where('id_application', '=', $id)
-        ->where('summ', '<>', 0)
-        ->get();
+            ->where('id_application', '=', $id)
+            ->where('summ', '<>', 0)
+            ->get();
         $Works_serv = DB::table('works')
-        ->where('id_application', '=', $id)
-        ->where('price_service', '<>', 0)
-        ->get();
+            ->where('id_application', '=', $id)
+            ->where('price_service', '<>', 0)
+            ->get();
         // dd($rewiew->all()) ;
         $summ_ic = 0;
         $summ_service = 0;
-        foreach ($Works_ic as $work)
-        {
-            $summ_ic = $summ_ic + (int)str_replace(' ','',$work->summ);
+        foreach ($Works_ic as $work) {
+            $summ_ic = $summ_ic + (int)str_replace(' ', '', $work->summ);
         }
-        foreach ($Works_serv as $work)
-        {   
-            $summ_service = $summ_service + (int)str_replace(' ','',$work->price_service);
+        foreach ($Works_serv as $work) {
+            $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
         }
-$delta=-$summ_service+$summ_ic ;
-        return view('Work.index', ['Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
-        'id' => $id, 'delta' => $delta,
-    'summ_ic' => $summ_ic,'summ_service' => $summ_service]);
+        $delta = -$summ_service + $summ_ic;
+        return view('Work.index', [
+            'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
+            'id' => $id, 'delta' => $delta,
+            'summ_ic' => $summ_ic, 'summ_service' => $summ_service
+        ]);
     }
 
     public function create($id)
@@ -49,7 +49,7 @@ $delta=-$summ_service+$summ_ic ;
             'id_application' => 'required',
             'name' => 'required',
             'summ' => 'required',
-            'price_service' => 'required',
+            'price_service' => 'nullable',
 
 
         ]);
@@ -85,13 +85,13 @@ $delta=-$summ_service+$summ_ic ;
         }
         $Work->save();
         return redirect()
-            ->to(route('Work', $Work->id_application).'#'.$request->id);
+            ->to(route('Work', $Work->id_application) . '#' . $request->id);
     }
 
     public function doc_load($id)
     {
-         $documents = DB::table('attachments')
-              ->where('id_application', '=', $id)
+        $documents = DB::table('attachments')
+            ->where('id_application', '=', $id)
             ->get();
         return view('Work.doc_load', ['id' => $id], ['documents' => $documents]);
     }
