@@ -338,7 +338,7 @@ class MainController extends Controller
                 $document->mime_type = $file->getMimeType();
                 $document->id_application = $id;
                 $document->file_size = $file->getSize();
-                $document->location = $upload_folder . '/' . $fileNameToStore;
+                $document->location = $fileNameToStore;
                 // dd($document);
                 $document->save();
             }
