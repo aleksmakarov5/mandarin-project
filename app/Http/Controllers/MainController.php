@@ -524,7 +524,7 @@ class MainController extends Controller
             }
         }
         // $images = scandir($dir);
-        // return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
+        return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
     }
 
     public function photo_destroy(request $request)
