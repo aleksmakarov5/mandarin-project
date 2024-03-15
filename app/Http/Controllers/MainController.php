@@ -24,14 +24,19 @@ use Escarter\PopplerPhp\PdfToText;
 use Escarter\PopplerPhp\getOutput;
 use Mtownsend\XmlToArray\XmlToArray;
 use function Laravel\Prompts\table;
+use Illuminate\Support\Facades\Auth;
 
 class MainController extends Controller
 {
     public function home()
     {
-
-        session(['rout' => 'home']);
-        return view('home');
+        if (isset(Auth::user()->id)) {
+            session(['rout' => 'applications']);
+            return redirect()->route('applications');
+        } else {
+            session(['rout' => 'home']);
+            return view('home');
+        }
     }
 
     public function about()
