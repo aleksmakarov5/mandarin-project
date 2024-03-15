@@ -322,7 +322,7 @@ class MainController extends Controller
                 // Расширение
                 $extention = $file->getClientOriginalExtension();
                 // Путь для сохранения
-                $fileNameToStore = $filename . "_" . date('d-m-y_h:m:s') . "." . $extention;
+                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
                 // Сохраняем файл
                 $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
                 // $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));

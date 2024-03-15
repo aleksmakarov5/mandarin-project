@@ -414,7 +414,7 @@ class ApplicationController extends Controller
 
         exec('pdftohtml storage/files/' . $request['location'] . ' -p -i');
         $html = substr($request['location'], 0, strlen($request['location']) - 4) . 's.html';
-        $file = file_get_contents('storage/files/' . $html);
+        $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
         $application_start = mb_strpos($file, 'Марка, модель');
         $application_end = mb_strpos($file, 'Точное');

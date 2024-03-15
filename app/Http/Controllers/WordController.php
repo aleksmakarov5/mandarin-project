@@ -43,7 +43,7 @@ class WordController extends Controller
     //  dd ($array);
 
     $templateProcessor->cloneRowAndSetValues('id_row', $array);
-    $filename = "Акт скрытых повреждений №" . date('d-m-y_h:m:s') . ".docx";
+    $filename = "Акт скрытых повреждений №" . date('d-m-y_hms') . ".docx";
 
     $dir = 'storage/files/' . $id;
     if (!is_dir($dir)) {

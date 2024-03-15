@@ -118,7 +118,7 @@ class ImapController extends Controller
                     }
                     foreach ($attachments as $attachment) {
                         $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-                        $filename .= "_" . date('d-m-y_h:m:s') . "." . $attachment->getExtension();
+                        $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
                         $attachment->save($path = $dir . '/', $filename);
                         $attach = new attachment();
                         $attach->message_id = $message->id;
