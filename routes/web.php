@@ -200,6 +200,11 @@ Route::middleware("auth:web")->group(
         Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
         Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
         Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
+        Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
+        Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
+        Route::post('/photo_destroy', [MainController::class, 'photo_destroy'])->name('photo_destroy');
+
+
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
 
         Route::get('export_hda/{id}', [WordController::class, 'export_hda'])->name('export_hda');

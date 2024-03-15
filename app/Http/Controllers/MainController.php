@@ -15,7 +15,9 @@ use App\Jobs\QueueSenderEmail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 use \ZanySoft\Zip\Facades\Zip;
-
+use Selective\Rar\RarFileReader;
+use SplFileObject;
+use Archive7z\Archive7z;
 
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
@@ -28,8 +30,11 @@ use Mtownsend\XmlToArray\XmlToArray;
 use function Laravel\Prompts\table;
 use Illuminate\Support\Facades\Auth;
 
+
 class MainController extends Controller
 {
+
+
     public function home()
     {
         if (isset(Auth::user()->id)) {
@@ -305,7 +310,20 @@ class MainController extends Controller
     }
     public function doc_delete(Request $request, $id, $doc_id)
     {
+
         $document = Attachment::findOrFail($doc_id);
+        if (pathinfo($document->location, PATHINFO_EXTENSION) == 'zip') {
+            // echo 'zip';
+            // dd(pathinfo($document->location, PATHINFO_EXTENSION));
+            // Storage::delete('public/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+            $att = scandir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+            foreach ($att as $file) {
+                if ($file != '.' && $file != '..') {
+                    unlink('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME) . '/' . $file);
+                }
+            }
+            rmdir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+        }
         Storage::delete('public/files/' . $id . '/' . $document->location);
         $document->delete();
         return redirect()->route('document', ['id' => $id]);
@@ -398,8 +416,10 @@ class MainController extends Controller
                 mkdir($dir, 0777, true);
             }
             $zip_path = 'storage/files/' . $id . '/' . 'priemka.zip';
+            $zip_bool = true;
             if (file_exists($zip_path)) {
                 $zip = Zip::open($zip_path);
+                $zip_bool = false;
             } else {
                 $zip = Zip::create($zip_path);
             }
@@ -431,15 +451,17 @@ class MainController extends Controller
             }
 
             $zip->close();
+            if ($zip_bool) {
+                $document->file_name = 'Приемка автомобиля';
+                $document->message_id = 0;
+                $document->mime_type = 'application/x-7z-compressed';
+                $document->id_application = $id;
+                $document->file_size = 0;
+                $document->location = 'priemka.zip';
+                // dd($document);
+                $document->save();
+            }
 
-            $document->file_name = 'Приемка автомобиля';
-            $document->message_id = 0;
-            $document->mime_type = 'application/x-7z-compressed';
-            $document->id_application = $id;
-            $document->file_size = 0;
-            $document->location = 'priemka.zip';
-            // dd($document);
-            $document->save();
 
 
 
@@ -484,5 +506,39 @@ class MainController extends Controller
     public function test(request $request)
     {
         dd($request);
+    }
+    public function gallery($id, $location, $name)
+    {
+        $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
+        // dd($dir);
+        if (!is_dir($dir)) {
+            if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
+                $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
+                $zip->extract($dir);
+                $zip->close();
+            } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
+            } else if (pathinfo($location, PATHINFO_EXTENSION) == '7z') {
+                $obj = new Archive7z($dir . ' . ' . pathinfo($location, PATHINFO_EXTENSION));
+                $obj->setOutputDirectory($dir)->extract();
+                // $obj->close();
+            }
+        }
+        // $images = scandir($dir);
+        // return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
+    }
+
+    public function photo_destroy(request $request)
+    {
+        // dd($request);
+        $dir = $request->dir;
+        $name = $request->name;
+        $location = $request->location;
+        $image = $request->image;
+        unlink($dir . '/' . $image);
+        $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
+        $zip->delete($image);
+        $zip->close();
+
+        return redirect()->back();
     }
 }
