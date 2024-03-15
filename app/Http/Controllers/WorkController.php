@@ -100,8 +100,11 @@ class WorkController extends Controller
     {
 
         //dd($request['iskl']);
-        exec('pdftohtml storage/files/' . $id . '/' . $request['location'] . ' -p -i');
-        $html = substr($request['location'], 0, strlen($request['location']) - 4) . 's.html';
+        rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+        exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+        rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+
+        $html = 'works.html';
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
