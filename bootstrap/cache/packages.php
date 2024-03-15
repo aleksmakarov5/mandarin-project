@@ -141,4 +141,15 @@
       'Client' => 'Webklex\\IMAP\\Facades\\Client',
     ),
   ),
+  'zanysoft/laravel-zip' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'ZanySoft\\Zip\\ZipServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Zip' => 'ZanySoft\\Zip\\Facades\\Zip',
+    ),
+  ),
 );

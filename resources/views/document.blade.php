@@ -9,7 +9,12 @@
         <input type="submit" value="Загрузить документ" class="nav-link">
     </form>
     <br>
-
+    <form action="/documents/{{ $id }}/priemka_add" method="post" enctype="multipart/form-data">
+        @csrf <!-- с версии Laravel 5.6 -->
+        <input type="file" name="userfile[]" multiple accept="image/png, image/gif, image/jpeg">
+        <input type="submit" value="Загрузить фото с приемки" class="nav-link">
+    </form>
+    <br>
     <div class="row">
         @foreach ($document as $doc)
             {{-- <a href="/showdoc/{{$doc->location}}" class="nav-link">!{{$doc->file_name}}</a> --}}

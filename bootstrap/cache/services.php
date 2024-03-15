@@ -41,10 +41,11 @@
     37 => 'Orchestra\\Parser\\XmlServiceProvider',
     38 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     39 => 'Webklex\\IMAP\\Providers\\LaravelServiceProvider',
-    40 => 'App\\Providers\\AppServiceProvider',
-    41 => 'App\\Providers\\AuthServiceProvider',
-    42 => 'App\\Providers\\EventServiceProvider',
-    43 => 'App\\Providers\\RouteServiceProvider',
+    40 => 'ZanySoft\\Zip\\ZipServiceProvider',
+    41 => 'App\\Providers\\AppServiceProvider',
+    42 => 'App\\Providers\\AuthServiceProvider',
+    43 => 'App\\Providers\\EventServiceProvider',
+    44 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -73,10 +74,11 @@
     22 => 'Termwind\\Laravel\\TermwindServiceProvider',
     23 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     24 => 'Webklex\\IMAP\\Providers\\LaravelServiceProvider',
-    25 => 'App\\Providers\\AppServiceProvider',
-    26 => 'App\\Providers\\AuthServiceProvider',
-    27 => 'App\\Providers\\EventServiceProvider',
-    28 => 'App\\Providers\\RouteServiceProvider',
+    25 => 'ZanySoft\\Zip\\ZipServiceProvider',
+    26 => 'App\\Providers\\AppServiceProvider',
+    27 => 'App\\Providers\\AuthServiceProvider',
+    28 => 'App\\Providers\\EventServiceProvider',
+    29 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (

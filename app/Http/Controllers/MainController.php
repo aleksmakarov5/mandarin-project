@@ -14,6 +14,7 @@ use App\Models\history;
 use App\Jobs\QueueSenderEmail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
+use \ZanySoft\Zip\Facades\Zip;
 
 
 use Illuminate\Support\Facades\DB;
@@ -382,6 +383,100 @@ class MainController extends Controller
                 // dd($document);
                 $document->save();
             }
+        }
+
+        return redirect()->route('document', ['id' => $id]);
+    }
+    public function priemka_add(Request $request, $id)
+    {
+        if ($request->isMethod('post') && $request->file('userfile')) {
+
+            // $file = $request->file('userfile');
+            // dd($request->file('userfile'));
+            $dir = 'storage/files/' . $id . '/priemka';
+            if (!is_dir($dir)) {
+                mkdir($dir, 0777, true);
+            }
+            $zip_path = 'storage/files/' . $id . '/' . 'priemka.zip';
+            if (file_exists($zip_path)) {
+                $zip = Zip::open($zip_path);
+            } else {
+                $zip = Zip::create($zip_path);
+            }
+            foreach ($request->file('userfile') as $file) {
+
+                $upload_folder = '' . $id . '/priemka';
+                $filenameWithExt  = $file->getClientOriginalName(); // 
+                // Имя и расширение файла
+                // Только оригинальное имя файла
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Расширение
+                $extention = $file->getClientOriginalExtension();
+                // Путь для сохранения
+                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                // Сохраняем файл
+                $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+
+                $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
+
+                // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
+
+                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                if ($size) {
+                    Optimize::path($filename);
+                    $document = new Attachment();
+                    $zip->setpath($dir)->add($fileNameToStore);
+                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                }
+            }
+
+            $zip->close();
+
+            $document->file_name = 'Приемка автомобиля';
+            $document->message_id = 0;
+            $document->mime_type = 'application/x-7z-compressed';
+            $document->id_application = $id;
+            $document->file_size = 0;
+            $document->location = 'priemka.zip';
+            // dd($document);
+            $document->save();
+
+
+
+            //     // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
+            //     $width = 500;
+            //     $height = 500;
+
+            //     // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+            //     header("Content-type: {$size['mime']}");
+
+            //     // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+            //     list($width_orig, $height_orig) = getimagesize($filename);
+
+            //     if (
+            //         $width && ($width_orig < $height_orig)
+            //     ) {
+            //         $width = ($height / $height_orig) * $width_orig;
+            //     } else {
+            //         $height = ($width / $width_orig) * $height_orig;
+            //     }
+
+            //     // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+            //     $image_p = imagecreatetruecolor($width, $height);
+            //     $image = imagecreatefromjpeg($filename);
+            //     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+            //     // СОЗДАЁМ
+            //     $img_name =  'storage/files/' . $id . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . date('d-m-y_hms') . 'compressed.' . $extention;
+            //     imagejpeg($image_p, $img_name, 100);
+
+            //     // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+            //     //unlink($filename);
+            // }
+            // $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
+            // Storage::putFileAs($upload_folder, $file, $filename_new);
+
+
         }
 
         return redirect()->route('document', ['id' => $id]);
