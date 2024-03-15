@@ -143,10 +143,10 @@ class SparePartController extends Controller
     {
 
         //dd($request['iskl']);
-        exec('pdftohtml storage/files/' . $request['location'] . ' -p -i');
+        exec('pdftohtml storage/files/' . $id . '/' . $request['location'] . ' -p -i');
         $html = substr($request['location'], 0, strlen($request['location']) - 4) . 's.html';
-        //  include('storage/files/' . $html);
-        $file = file_get_contents('storage/files/' . $html);
+        //  include('storage/files/'.$id.'/' . $html);
+        $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
         $SparePart_start = mb_strpos($file, 'износом, Рубли');
         // echo $SparePart_start . 'Раб_Старт<br /><br />';
