@@ -520,14 +520,19 @@ class MainController extends Controller
                 $zip->extract($dir);
                 $zip->close();
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
-                mkdir($dir);
+                mkdir($dir, 0777, true);
                 exec('bsdtar -xf ' . $dir . '.' . pathinfo($location, PATHINFO_EXTENSION) . ' -C ' . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == '7z') {
-                mkdir($dir);
+                mkdir($dir, 0777, true);
                 exec('bsdtar -xf ' . $dir . '.' . pathinfo($location, PATHINFO_EXTENSION) . ' -C ' . $dir);
             }
         }
         $images = scandir($dir);
+        try {
+            rmdir($dir);
+        } catch (\Exception $e) {
+            // dd($e);
+        }
         return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
     }
 
