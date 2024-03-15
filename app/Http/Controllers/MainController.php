@@ -523,7 +523,7 @@ class MainController extends Controller
                 // $obj->close();
             }
         }
-        // $images = scandir($dir);
+        $images = scandir($dir);
         return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
     }
 
