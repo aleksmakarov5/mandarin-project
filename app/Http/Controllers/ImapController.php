@@ -11,6 +11,12 @@ use greeny\MailLibrary\Connection;
 use App\Models\message;
 use App\Models\attachment;
 use App\Models\address;
+use App\Models\application;
+use App\Models\history;
+use App\Models\User;
+use App\Mail\user\appnotify;
+use \ConvertApi\ConvertApi;
+use Illuminate\Support\Facades\Mail as Mail_send;
 
 
 
@@ -41,52 +47,109 @@ class ImapController extends Controller
             //dd($folder);
             /** @var \Webklex\PHPIMAP\Message $message */
             foreach ($emailes as $email) {
-                $message = new Message();
 
                 //dd($email);
                 $email->setFlag('Seen');
                 $attachments = $email->getAttachments();
-                $message->subject = $email->getSubject();
-                $message->body_html = $email->getHTMLBody();
-                $message->body_text = $email->getTextBody();
-                $message->header = $email->getHeaders();
-                $message->message_date = $email->getdate();
+
                 $from = $email->getFrom()->toarray();
                 $to = $email->getTo()->toArray();
-                // $adressto = $to->toArray();
+                $subject = $email->getSubject();
+                $subject = trim($subject);
+                $body_html = $email->getHTMLBody();
+                $id = 0;
+                if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                    $id = 1;
+                    $start_pos_app_number = strripos($subject, ':');
+                    if (
+                        $start_pos_app_number === false
+                    ) {
+                        $start_pos_app_number;
+                    } else {
+                        $start_pos_app_number++;
+                    }
+                    $finish_pos_app_number = mb_strripos($subject, '_');
 
-                // $address = $to->getAddress();
-                // dd($message);
-                //echo $values[2]->mail;
-                // echo count($to);
-                $message->save();
-                foreach ($attachments as $attachment) {
-                    $filename =  uniqid("", false) . "." . $attachment->getExtension();
-                    $status = $attachment->save($path = "storage/files/", $filename);
-                    $attach = new attachment();
-                    $attach->message_id = $message->id;
-                    $attach->location = $filename;
-                    $attach->mime_type = $attachment->getMimeType();
-                    $attach->file_size = $attachment->getSize();
-                    $attach->file_name = $attachment->getFilename();
-                    $attach->save();
+                    $app_number = mb_substr($subject, $start_pos_app_number, $finish_pos_app_number - $start_pos_app_number);
+                    if (!$app_number) {
+
+                        continue;
+                    }
+
+                    // echo $app_number . '<br>';
+                    $start_pos_gnz = mb_strripos($subject, ' ');
+
+                    $model = mb_substr($subject, $finish_pos_app_number + 8, $start_pos_gnz - $finish_pos_app_number - 8);
+                    // echo $model . '<br>';
+                    $gnz = mb_substr($subject, $start_pos_gnz, iconv_strlen($subject) - $start_pos_gnz);
+                    echo $gnz . '<br>';
                 }
-                //echo $to;
-                foreach ($to as $mail) {
-                    // dd($mail);
-                    $address = new address;
-                    $address->message_id = $message->id;
-                    $address->email = $mail->mail;
-                    $address->type = 'to';
-                    $address->save();
-                }
-                //dd($from, $to, $address);
-                foreach ($from as $mail) {
-                    $address = new address;
-                    $address->message_id = $message->id;
-                    $address->email = $mail->mail;
-                    $address->type = 'from';
-                    $address->save();
+                if ($id) {
+
+                    $applications = application::firstorcreate(
+                        ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1],
+                        [
+                            'numberInsuranceCompanyApplication' => $app_number,
+                            'id_insuranceCompany' => $id,
+                            'CarModel' => $model,
+                            'gnz' => $gnz,
+                            'id_status' => 1
+                        ]
+                    );
+                    // dd($applications);
+                    $message = new Message();
+                    $message->subject = $email->getSubject();
+                    $message->body_html = $email->getHTMLBody();
+                    $message->body_text = $email->getTextBody();
+                    $message->header = $email->getHeaders();
+                    $message->message_date = $email->getdate();
+                    $message->application_id = $applications->id;
+                    $id = $applications->id;
+                    $history = new History;
+                    $history->id_application = $applications->id;
+                    $history->id_status = 1;
+                    $history->id_user = 2;
+                    $history->save();
+                    $message->is_parsed = true;
+                    $message->save();
+                    $dir = 'storage/files/' . $applications->id;
+                    if (!is_dir($dir)) {
+                        mkdir($dir, 0777, true);
+                    }
+                    foreach ($attachments as $attachment) {
+                        $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                        $filename .= "_" . date('d-m-y_h:m:s') . "." . $attachment->getExtension();
+                        $attachment->save($path = $dir . '/', $filename);
+                        $attach = new attachment();
+                        $attach->message_id = $message->id;
+                        $attach->id_application = $applications->id;
+                        $attach->location = $filename;
+                        $attach->mime_type = $attachment->getMimeType();
+                        $attach->file_size = $attachment->getSize();
+                        $attach->file_name = $attachment->getFilename();
+                        $attach->save();
+                    }
+                    //echo $to;
+                    foreach ($to as $mail) {
+                        // dd($mail);
+                        $address = new address;
+                        $address->message_id = $message->id;
+                        $address->email = $mail->mail;
+                        $address->type = 'to';
+                        $address->save();
+                    }
+                    //dd($from, $to, $address);
+                    foreach ($from as $mail) {
+                        $address = new address;
+                        $address->message_id = $message->id;
+                        $address->email = $mail->mail;
+                        $address->type = 'from';
+                        $address->save();
+                    }
+                    $user = User::find(2);
+                    Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
+                } else {
+                    echo 'Сообщение не по заявке';
                 }
             }
         }

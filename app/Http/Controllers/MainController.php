@@ -65,68 +65,6 @@ class MainController extends Controller
     }
     public function new_application()
     {
-        $messages = message::where('is_parsed', null)
-            ->get();
-        foreach ($messages->all() as $message) {
-            $subject = $message->subject;
-            $subject = trim($subject);
-            $body_html = $message->body_html;
-            $id = 0;
-            if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                $start_pos_app_number = strripos($subject, ':');
-                if (
-                    $start_pos_app_number === false
-                ) {
-                    $start_pos_app_number;
-                } else {
-                    $start_pos_app_number++;
-                }
-                $finish_pos_app_number = mb_strripos($subject, '_');
-
-                $app_number = mb_substr($subject, $start_pos_app_number, $finish_pos_app_number - $start_pos_app_number);
-                if (!$app_number) {
-
-                    continue;
-                }
-
-                // echo $app_number . '<br>';
-                $start_pos_gnz = mb_strripos($subject, ' ');
-
-                $model = mb_substr($subject, $finish_pos_app_number + 8, $start_pos_gnz - $finish_pos_app_number - 8);
-                // echo $model . '<br>';
-                $gnz = mb_substr($subject, $start_pos_gnz, iconv_strlen($subject) - $start_pos_gnz);
-                echo $gnz . '<br>';
-                $applications = application::firstorcreate(
-                    ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1],
-                    [
-                        'numberInsuranceCompanyApplication' => $app_number,
-                        'id_insuranceCompany' => 1,
-                        'CarModel' => $model,
-                        'gnz' => $gnz,
-                        'id_status' => 1
-                    ]
-                );
-
-                $message->application_id = $applications->id;
-                $id = $applications->id;
-                $history = new History;
-                $history->id_application = $applications->id;
-                $history->id_status = 1;
-                $history->id_user = 2;
-                $history->save();
-                $message->save();
-                $attachment = attachment::where('message_id', $message->id)->get();
-                foreach ($attachment->all() as $att) {
-                    $att->id_application = $id;
-
-                    $att->save();
-                }
-                $user = User::find(2);
-                Mail::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
-            }
-            $message->is_parsed = true;
-            $message->save();
-        }
     }
     public function review_check(Request $request)
     {
@@ -361,7 +299,7 @@ class MainController extends Controller
     public function doc_delete(Request $request, $id, $doc_id)
     {
         $document = Attachment::findOrFail($doc_id);
-        Storage::delete('public/files/' . $document->location);
+        Storage::delete('public/files/' . $id . '/' . $document->location);
         $document->delete();
         return redirect()->route('document', ['id' => $id]);
     }
@@ -373,20 +311,32 @@ class MainController extends Controller
     {
         if ($request->isMethod('post') && $request->file('userfile')) {
 
-            $file = $request->file('userfile');
-            // dd($file);
-            $upload_folder = 'public/files';
-            $filename = $file->getClientOriginalName(); // 
-            $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
-            Storage::putFileAs($upload_folder, $file, $filename_new);
-            $document = new Attachment();
-            $document->file_name = $filename;
-            $document->message_id = 0;
-            $document->mime_type = $file->getMimeType();
-            $document->id_application = $id;
-            $document->file_size = $file->getSize();
-            $document->location = $filename_new;
-            $document->save();
+            // $file = $request->file('userfile');
+            // dd($request->file('userfile'));
+            foreach ($request->file('userfile') as $file) {
+                $upload_folder = '' . $id;
+                $filenameWithExt  = $file->getClientOriginalName(); // 
+                // Имя и расширение файла
+                // Только оригинальное имя файла
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Расширение
+                $extention = $file->getClientOriginalExtension();
+                // Путь для сохранения
+                $fileNameToStore = $filename . "_" . date('d-m-y_h:m:s') . "." . $extention;
+                // Сохраняем файл
+                $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+                // $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
+                // Storage::putFileAs($upload_folder, $file, $filename_new);
+                $document = new Attachment();
+                $document->file_name = $filename;
+                $document->message_id = 0;
+                $document->mime_type = $file->getMimeType();
+                $document->id_application = $id;
+                $document->file_size = $file->getSize();
+                $document->location = $upload_folder . '/' . $fileNameToStore;
+                // dd($document);
+                $document->save();
+            }
         }
 
         return redirect()->route('document', ['id' => $id]);

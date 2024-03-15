@@ -87,12 +87,11 @@ Route::middleware("can:administrator")->group(
         Route::get('insurance_company/{id}/delete', [AdminController::class, 'destroy_insurance_company'])
             ->name('insurance_company.destroy');
 
-       Route::get('/fail_var',  [AdminController::class, 'fail_var'])->name('fail_var');
+        Route::get('/fail_var',  [AdminController::class, 'fail_var'])->name('fail_var');
         Route::post('/fail_var_register',  [AdminController::class, 'fail_var_register'])->name('fail_var_register');
         Route::post('/fail_var/{id}', [AdminController::class, 'fail_var_edit'])->name('fail_var_edit');
         Route::get('fail_var/{id}/delete', [AdminController::class, 'destroy_fail_var'])
             ->name('fail_var.destroy');
-      
     }
 );
 
@@ -109,7 +108,7 @@ Route::middleware("auth:web")->group(
 
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::post('/test',  [MainController::class, 'test'])->name('test');
-     
+
         Route::get('/answer_fail_sel/{id}', [ApplicationController::class, 'answer_fail_sel'])->name('answer_fail_sel');
         Route::post('/answer_fail_save/{id}', [ApplicationController::class, 'answer_fail_save'])->name('answer_fail_save');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
@@ -121,7 +120,7 @@ Route::middleware("auth:web")->group(
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
-         Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
+        Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
         Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
@@ -132,9 +131,9 @@ Route::middleware("auth:web")->group(
             ->name('applications.send_mrk');
         Route::post('applications/{id}/change_status', [ApplicationController::class, 'change_status'])
             ->name('applications.change_status');
-             Route::post('applications/{id}/change_status_km', [ApplicationController::class, 'change_status_km'])
+        Route::post('applications/{id}/change_status_km', [ApplicationController::class, 'change_status_km'])
             ->name('applications.change_status_km');
-      
+
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
@@ -147,7 +146,7 @@ Route::middleware("auth:web")->group(
         Route::get('applications/{id}/delete', [ApplicationController::class, 'destroy'])
             ->name('applications.destroy');
 
-        
+
 
         Route::get('/SparePart/{id}', [SparePartController::class, 'SparePart'])->name('SparePart');
         Route::get('SparePart/{id}/edit', [SparePartController::class, 'edit'])
@@ -156,14 +155,14 @@ Route::middleware("auth:web")->group(
             ->name('SparePart.price_select');
         Route::get('SparePart/{id}/create', [SparePartController::class, 'create'])
             ->name('SparePart.create');
-         Route::get('SparePart/{id}/doc_load', [SparePartController::class, 'doc_load'])->name('SparePart.doc_load');
+        Route::get('SparePart/{id}/doc_load', [SparePartController::class, 'doc_load'])->name('SparePart.doc_load');
         Route::post('SparePart/{id}/data_load', [SparePartController::class, 'data_load'])->name('SparePart.data_load');
         Route::post('SparePart/{id}/data_save', [SparePartController::class, 'data_save'])->name('SparePart.data_save');
 
         Route::post('SpareParts/store', [SparePartController::class, 'store'])
             ->name('SparePart.store');
         Route::post('SparePart/{id}/update', [SparePartController::class, 'update'])->name('SparePart.update');
-       Route::post('SparePart/{id}/update_price', [SparePartController::class, 'update_price'])->name('SparePart.update_price');
+        Route::post('SparePart/{id}/update_price', [SparePartController::class, 'update_price'])->name('SparePart.update_price');
         Route::get('SparePart/{id}/delete', [SparePartController::class, 'destroy'])
             ->name('SparePart.destroy');
 
@@ -194,16 +193,15 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
-        
-          Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
-            Route::post('documents/{id}/doc_add', [MainController::class, 'doc_add'])->name('doc_add');
+
+        Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
+        Route::post('documents/{id}/doc_add', [MainController::class, 'doc_add'])->name('doc_add');
         Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
         Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
-         Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
+        Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
-        
+
         Route::get('export_hda/{id}', [WordController::class, 'export_hda'])->name('export_hda');
-        
     }
 
 );
