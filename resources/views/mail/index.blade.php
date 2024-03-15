@@ -109,8 +109,8 @@
                                                 <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
                                                 <div class="details">
                                                     <p class="file-name"><a
-                                                            href="/storage/files/{{ $attachment->location }}" class="view"
-                                                            target="_blank">
+                                                            href="/storage/files/{{ $attachment->id_application }}/{{ $attachment->location }}"
+                                                            class="view" target="_blank">
                                                             <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
                                                                 alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
                                                                 width=25px>
