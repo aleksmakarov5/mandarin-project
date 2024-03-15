@@ -10,6 +10,13 @@
       'Mailbox' => 'BeyondCode\\Mailbox\\Facades\\Mailbox',
     ),
   ),
+  'golchha21/resmushit' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Golchha21\\ReSmushIt\\Providers\\ServiceProvider',
+    ),
+  ),
   'ibnuhalimm/laravel-pdf-to-html' => 
   array (
     'providers' => 

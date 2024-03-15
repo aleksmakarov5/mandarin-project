@@ -19,6 +19,7 @@ use \ConvertApi\ConvertApi;
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
 use \PhpOffice\PhpWord\IOFactory;
+use \Golchha21\ReSmushIt\Facades\Optimize;
 
 use Escarter\PopplerPhp\PdfToText;
 use Escarter\PopplerPhp\getOutput;
@@ -319,6 +320,7 @@ class MainController extends Controller
             // $file = $request->file('userfile');
             // dd($request->file('userfile'));
             foreach ($request->file('userfile') as $file) {
+
                 $upload_folder = '' . $id;
                 $filenameWithExt  = $file->getClientOriginalName(); // 
                 // Имя и расширение файла
@@ -330,9 +332,47 @@ class MainController extends Controller
                 $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
                 // Сохраняем файл
                 $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+
+                $filename = 'storage/files/' . $id . '/' . $fileNameToStore;
+                Optimize::path($filename);
+                // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
+                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                // if ($size) {
+
+                //     // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
+                //     $width = 500;
+                //     $height = 500;
+
+                //     // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                //     header("Content-type: {$size['mime']}");
+
+                //     // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                //     list($width_orig, $height_orig) = getimagesize($filename);
+
+                //     if (
+                //         $width && ($width_orig < $height_orig)
+                //     ) {
+                //         $width = ($height / $height_orig) * $width_orig;
+                //     } else {
+                //         $height = ($width / $width_orig) * $height_orig;
+                //     }
+
+                //     // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                //     $image_p = imagecreatetruecolor($width, $height);
+                //     $image = imagecreatefromjpeg($filename);
+                //     imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+                //     // СОЗДАЁМ
+                //     $img_name =  'storage/files/' . $id . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . date('d-m-y_hms') . 'compressed.' . $extention;
+                //     imagejpeg($image_p, $img_name, 100);
+
+                //     // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                //     //unlink($filename);
+                // }
                 // $filename_new = uniqid("", false) . "." . mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
                 // Storage::putFileAs($upload_folder, $file, $filename_new);
                 $document = new Attachment();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 $document->file_name = $filename;
                 $document->message_id = 0;
                 $document->mime_type = $file->getMimeType();

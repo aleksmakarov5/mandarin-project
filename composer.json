@@ -12,6 +12,7 @@
         "convertapi/convertapi-php": "^2.0",
         "cpierce/pdf2text": "^1.2",
         "escarter/poppler-wrapper-php": "^1.0",
+        "golchha21/resmushit": "^1.3",
         "guzzlehttp/guzzle": "^7.2",
         "ibnuhalimm/laravel-pdf-to-html": "^1.1",
         "laravel/framework": "^10.10",
