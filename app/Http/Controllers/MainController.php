@@ -18,6 +18,9 @@ use \ZanySoft\Zip\Facades\Zip;
 use Selective\Rar\RarFileReader;
 use SplFileObject;
 use Archive7z\Archive7z;
+use \CloudConvert\Laravel\Facades\CloudConvert;
+use \CloudConvert\Models\Job;
+use \CloudConvert\Models\Task;
 
 use Illuminate\Support\Facades\DB;
 use Ibnuhalimm\LaravelPdfToHtml\Facades\PdfToHtml;
@@ -517,10 +520,9 @@ class MainController extends Controller
                 $zip->extract($dir);
                 $zip->close();
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
+                exec('unrar x -r ' . $dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
             } else if (pathinfo($location, PATHINFO_EXTENSION) == '7z') {
-                $obj = new Archive7z($dir . ' . ' . pathinfo($location, PATHINFO_EXTENSION));
-                $obj->setOutputDirectory($dir)->extract();
-                // $obj->close();
+                exec('unrar x -r ' . $dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
             }
         }
         $images = scandir($dir);

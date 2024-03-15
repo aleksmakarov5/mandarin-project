@@ -10,6 +10,17 @@
       'Mailbox' => 'BeyondCode\\Mailbox\\Facades\\Mailbox',
     ),
   ),
+  'cloudconvert/cloudconvert-laravel' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'CloudConvert\\Laravel\\Providers\\CloudConvertServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'CloudConvert' => 'CloudConvert\\Laravel\\Facades\\CloudConvert',
+    ),
+  ),
   'golchha21/resmushit' => 
   array (
     'providers' => 
