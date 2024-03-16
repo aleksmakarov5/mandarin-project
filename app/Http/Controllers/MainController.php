@@ -457,9 +457,9 @@ class MainController extends Controller
             if ($zip_bool) {
                 $document->file_name = 'Приемка автомобиля';
                 $document->message_id = 0;
-                $document->mime_type = 'application/x-7z-compressed';
+                $document->mime_type = 'application/zip-compressed';
                 $document->id_application = $id;
-                $document->file_size = 0;
+                $document->file_size = filesize($dir . '/' . $fileNameToStore);
                 $document->location = 'priemka.zip';
                 // dd($document);
                 $document->save();
@@ -549,5 +549,11 @@ class MainController extends Controller
         $zip->close();
 
         return redirect()->back();
+    }
+
+    public function download($id, $location)
+    {
+        $path = '/storage/files/' . $id . '/' . $location;
+        return Storage::download($path);
     }
 }

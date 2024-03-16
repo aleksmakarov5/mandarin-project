@@ -206,6 +206,7 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
+        Route::get('/download/{id}/{location}', [MainController::class, 'download'])->name('download');
 
         Route::get('export_hda/{id}', [WordController::class, 'export_hda'])->name('export_hda');
     }

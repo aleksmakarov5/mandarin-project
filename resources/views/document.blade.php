@@ -43,6 +43,9 @@
                             href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img
                                 src="/storage/img/delete.png" width="35" alt="delete">
                         </a>
+                        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
+                                src="/storage/img/download.png" width="35" alt="Скачать">
+                        </a>
                         <div class="card-body">
                             @if (isset($document_edit->id))
                                 @if ($document_edit->id == $doc->id)
@@ -59,7 +62,8 @@
                             @else
                                 <h5 class="card-title">{{ $doc->file_name }}</h5>
                             @endif
-
+                            <p class="file-size">
+                                {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
 
                         </div>
 
