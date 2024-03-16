@@ -203,6 +203,7 @@ Route::middleware("auth:web")->group(
         Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
         Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
         Route::post('/photo_destroy', [MainController::class, 'photo_destroy'])->name('photo_destroy');
+        Route::post('/doc_status_change', [MainController::class, 'doc_status_change'])->name('doc_status_change');
 
 
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\doc_status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -129,8 +130,10 @@ class MainController extends Controller
         $document = DB::table('attachments')
             ->where('id_application', '=', $id)
             ->get();
-        // dd($document);
-        return view('document', ['document' => $document], ['id' => $id]);
+        $doc_statuses = new doc_status();
+
+        // dd($doc_statuses->all());
+        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all()], ['id' => $id]);
     }
     public function showdoc($id, $locations)
     {
@@ -297,12 +300,14 @@ class MainController extends Controller
         $document_edit = DB::table('attachments')
             ->where('attachments.id', '=', $doc_id)
             ->first();
+
+        $doc_statuses = new doc_status();
         // dd($document);
         //return view('doc_edit', ['document' => $document,'id' => $id, 'doc_id' => $doc_id]);
         $filename = $document_edit->file_name;
         $doc_ext = mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
         $doc_name = mb_substr($filename, 0, mb_strlen($filename) - mb_strlen($doc_ext) - 1);
-        return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit], ['id' => $id]);
+        return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit, 'doc_statuses' => $doc_statuses->all()], ['id' => $id]);
     }
     public function doc_update(Request $request, $id, $doc_id)
     {
@@ -460,6 +465,7 @@ class MainController extends Controller
                 $document->mime_type = 'application/zip-compressed';
                 $document->id_application = $id;
                 $document->file_size = filesize($dir . '/' . $fileNameToStore);
+                $document->id_status = 2;
                 $document->location = 'priemka.zip';
                 // dd($document);
                 $document->save();
@@ -555,5 +561,12 @@ class MainController extends Controller
     {
         $path = '/storage/files/' . $id . '/' . $location;
         return Storage::download($path);
+    }
+    public function doc_status_change(request $request)
+    {
+        $document = Attachment::findOrFail($request->id);
+        $document->id_status = $request->doc_status;
+        $document->save();
+        return redirect()->back();
     }
 }

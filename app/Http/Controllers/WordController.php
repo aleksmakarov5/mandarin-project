@@ -63,6 +63,7 @@ class WordController extends Controller
     $document->id_application = $id;
     $document->file_size = filesize($pathToSave);
     $document->location = $filename;
+    $document->id_status = 11;
     $document->save();
 
 

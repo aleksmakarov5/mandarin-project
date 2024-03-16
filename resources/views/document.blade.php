@@ -9,68 +9,226 @@
         <input type="submit" value="Загрузить документ" class="nav-link">
     </form>
     <br>
-    <form action="/documents/{{ $id }}/priemka_add" method="post" enctype="multipart/form-data">
-        @csrf <!-- с версии Laravel 5.6 -->
-        <input type="file" name="userfile[]" multiple accept="image/png, image/gif, image/jpeg">
-        <input type="submit" value="Загрузить фото с приемки" class="nav-link">
-    </form>
-    <br>
+
     <div class="row">
         @foreach ($document as $doc)
-            {{-- <a href="/showdoc/{{$doc->location}}" class="nav-link">!{{$doc->file_name}}</a> --}}
-            {{--    
- <a href="/storage/files/{{$doc->location}}" class="nav-link" target="_blank">{{$doc->file_name}}</a> --}}
-
-            <div class="card" style="width: 20rem;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <a
-                            @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
-                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
-                                    pathinfo($doc->location, PATHINFO_EXTENSION) == '7z') href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}'
+            @if (!$doc->id_status)
+                <div class="card" style="width: 20rem;">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <a
+                                @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                                        pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                                        pathinfo($doc->location, PATHINFO_EXTENSION) == '7z') href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}'
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" target="_blank" @endif>
-                            <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
-                                class="card-img-top"
-                                alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
-                        </a>
-                    </div>
+                                <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
+                                    class="card-img-top"
+                                    alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                            </a>
+                        </div>
 
-                    <div class="col-md-8">
-                        <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img
-                                src="/storage/img/edit.png" width="35" alt="edit">
-                        </a>
-                        <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
-                            href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img
-                                src="/storage/img/delete.png" width="35" alt="delete">
-                        </a>
-                        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
-                                src="/storage/img/download.png" width="35" alt="Скачать">
-                        </a>
-                        <div class="card-body">
-                            @if (isset($document_edit->id))
-                                @if ($document_edit->id == $doc->id)
-                                    <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}"
-                                        method="POST">
-                                        @csrf
-                                        <input type="text" name="file_name" value="{{ $doc_name }}">
-                                        <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
-                                        <input type="submit" value="ок">
-                                    </form>
+                        <div class="col-md-8">
+                            <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img
+                                    src="/storage/img/edit.png" width="35" alt="edit">
+                            </a>
+                            <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
+                                href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img
+                                    src="/storage/img/delete.png" width="35" alt="delete">
+                            </a>
+                            <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
+                                    src="/storage/img/download.png" width="35" alt="Скачать">
+                            </a>
+                            <div class="card-body">
+                                @if (isset($document_edit->id))
+                                    @if ($document_edit->id == $doc->id)
+                                        <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}"
+                                            method="POST">
+                                            @csrf
+                                            <input type="text" name="file_name" value="{{ $doc_name }}">
+                                            <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
+                                            <input type="submit" value="ок">
+                                        </form>
+                                    @else
+                                        <h5 class="card-title">{{ $doc->file_name }}</h5>
+                                    @endif
                                 @else
                                     <h5 class="card-title">{{ $doc->file_name }}</h5>
                                 @endif
-                            @else
-                                <h5 class="card-title">{{ $doc->file_name }}</h5>
-                            @endif
-                            <p class="file-size">
-                                {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
+                                <p class="file-size">
+                                    {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
+                                @if (session('rout') == 'directions')
+                                    <div class="form-floating">
+                                        <form action="/doc_status_change" method="post" name='form{{ $doc->id }}'>
+                                            @csrf
+                                            <input type="hidden" name="id" value="{{ $doc->id }}">
+                                            <select class="form-control" id="doc_status" name="doc_status"
+                                                onchange="form{{ $doc->id }}.submit()">
+                                                <option value="0" selected>
+                                                    -------------
+                                                </option>
+                                                @foreach ($doc_statuses as $item)
+                                                    <option value="{{ $item->id }}"
+                                                        @if ($item->id === $doc->id_status) selected @endif>
+                                                        {{ $item->doc_status }}
+                                                    </option>
+                                                @endforeach
+
+                                            </select>
+                                            <label for="doc_status">Тип документа</label>
+                                        </form>
+                                    </div>
+                                @endif
+
+                            </div>
 
                         </div>
-
                     </div>
-                </div>
 
-            </div>
+                </div>
+            @endif
         @endforeach
     </div>
+    <br>
+    @if (session('rout') == 'directions')
+        <table class='editable'>
+            <thead>
+                <tr>
+                    <th scope="col">Тип документа</th>
+                    <th scope="col">Печатная форма</th>
+                    <th scope="col">Скан документа</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="col">Акт первичного осмотра</th>
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => 20])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Фото первичного осмотра автомобиля</th>
+
+                    <th scope="col" colspan="2">
+                        @include('document.form_scan', [
+                            'status_id' => 21,
+                            'load_name' => 'Фото первичного осмотра автомобиля',
+                            'load_location' => 'photo_first',
+                        ])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Смета</th>
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => 22])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Направление</th>
+
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => 1])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Калькуляция</th>
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => '23'])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Договор с клиентом</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 2, 'template' => 'export_hda'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 3])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Дополнительное соглашение</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 4, 'template' => 'export_ds'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 5])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Информационный акт</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 7])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Акт приема автомобиля</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 8, 'template' => 'export_ap'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 9])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Фото приема автомобиля</th>
+
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => 10])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Акт скрытых повреждений</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 11, 'template' => 'export_hda'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 12])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Акт сдачи автомобиля</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 13, 'template' => 'export_as'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 14])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Фото сдачи автомобиля</th>
+
+
+                    <th scope="col" colspan=2>
+                        @include('document.form_scan', ['status_id' => 15])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Заказ наряд</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 16, 'template' => 'export_zn'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 17])
+                    </th>
+                </tr>
+                <tr>
+                    <th scope="col">Счет</th>
+                    <th scope="col">
+                        @include('document.form_print', ['status_id' => 18, 'template' => 'export_hda'])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', ['status_id' => 19])
+                    </th>
+                </tr>
+
+            </tbody>
+        </table>
+    @endif
 @endsection
