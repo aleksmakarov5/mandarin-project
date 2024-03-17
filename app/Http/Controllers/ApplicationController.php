@@ -194,9 +194,10 @@ class ApplicationController extends Controller
         }
         $empty = 0;
         foreach ($application as $key => $value) {
-            if ($value == null) {
-                $empty = 1;
-            }
+            if ($key != 'ClientPasport')
+                if ($value == null) {
+                    $empty = 1;
+                }
         }
 
 
@@ -252,7 +253,7 @@ class ApplicationController extends Controller
                 'gnz' => 'nullable|string',
                 'vin' => 'nullable|string',
                 'ClientName' => 'nullable|string',
-                'ClientPhone' => 'nullable|string',
+                'ClientPhone' => 'required|string',
                 'id_MRK' => 'nullable|integer',
                 'id_spm' => 'nullable|integer',
                 'mileage' => 'nullable|integer',

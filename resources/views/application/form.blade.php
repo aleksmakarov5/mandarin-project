@@ -76,11 +76,7 @@
     <label for="ClientPhone">Телефон клиента</label>
 
 </div>
-<div class="form-floating">
-    <input type="text" name="ClientPasport" id="ClientPasport" class="form-control"
-        value="{{ $application->ClientPasport }}">
-    <label for="ClientPasport">Паспорт РФ</label>
-</div>
+
 <div class="form-floating">
 
     <select class="form-control" id="id_MRK" name="id_MRK">
@@ -103,3 +99,11 @@
     </select>
     <label for="id_spm">Запчастист</label>
 </div>
+@if (session('rout') == 'directions')
+    <hr>
+    <div class="form-floating">
+        <input type="text" name="ClientPasport" id="ClientPasport" class="form-control"
+            value="{{ $application->ClientPasport }}">
+        <label for="ClientPasport">Паспорт РФ</label>
+    </div>
+@endif
