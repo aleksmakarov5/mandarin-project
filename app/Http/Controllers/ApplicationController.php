@@ -433,7 +433,7 @@ class ApplicationController extends Controller
 
         $application_start = mb_strpos($file, 'Марка, модель');
         $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
-        $estimate_end = mb_strpos($file, 'Работы');
+        $estimate_end = mb_strlen($file);
         $estimate = '';
         $price = [];
         if ($estimate_start !== false && $estimate_end !== false) {
