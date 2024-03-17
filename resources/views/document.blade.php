@@ -142,7 +142,7 @@
                 <tr>
                     <th scope="col">Договор с клиентом</th>
                     <th scope="col">
-                        @include('document.form_print', ['status_id' => 2, 'template' => 'export_hda'])
+                        @include('document.form_print', ['status_id' => 2, 'template' => 'export_dk'])
                     </th>
                     <th scope="col">
                         @include('document.form_scan', ['status_id' => 3])
@@ -180,7 +180,11 @@
 
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => 10])
+                        @include('document.form_scan', [
+                            'status_id' => 10,
+                            'load_name' => 'Фото приема автомобиля',
+                            'load_location' => 'priemka',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -206,7 +210,11 @@
 
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => 15])
+                        @include('document.form_scan', [
+                            'status_id' => 15,
+                            'load_name' => 'Фото cдачи автомобиля',
+                            'load_location' => 'photo_return',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -221,7 +229,7 @@
                 <tr>
                     <th scope="col">Счет</th>
                     <th scope="col">
-                        @include('document.form_print', ['status_id' => 18, 'template' => 'export_hda'])
+                        @include('document.form_print', ['status_id' => 18, 'template' => 'export_sch'])
                     </th>
                     <th scope="col">
                         @include('document.form_scan', ['status_id' => 19])
