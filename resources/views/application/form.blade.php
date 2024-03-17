@@ -7,17 +7,20 @@
         </ul>
     </div>
 @endif
-<div class="form-floating">
+@if (session('rout') == 'applications')
+    <div class="form-floating">
 
-    <select class="form-control" id="ur" name="ur">
+        <select class="form-control" id="ur" name="ur">
 
-        <option value=0>Клиент не работает с автоюристом</option>
-        <option value=1 @if ($application->id_status == 25) selected @endif>Клиент работает с автоюристом</option>
+            <option value=0>Клиент не работает с автоюристом</option>
+            <option value=1 @if ($application->id_status == 25) selected @endif>Клиент работает с автоюристом</option>
 
 
-    </select>
-    <label for="id_insuranceCompany">Страховая компания</label>
-</div>
+        </select>
+        <label for="id_insuranceCompany">Страховая компания</label>
+    </div>
+@endif
+
 <div class="form-floating">
 
     <select class="form-control" id="id_insuranceCompany" name="id_insuranceCompany">
@@ -102,8 +105,63 @@
 @if (session('rout') == 'directions')
     <hr>
     <div class="form-floating">
+        <input type="text" name="ub_number" id="ub_number" class="form-control"
+            value="{{ $application->ub_number }}">
+        <label for="ub_number">№ убытка</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="mnf_year" id="mnf_year" class="form-control"
+            value="{{ $application->mnf_year }}">
+        <label for="mnf_year">Год выпуска ТС</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="dogovor" id="dogovor" class="form-control"
+            value="{{ $application->dogovor }}">
+        <label for="dogovor">Страховой полис</label>
+    </div>
+
+    <div class="form-floating">
+
+        <select class="form-control" id="def" name="def">
+            <option value="0" @if ($application->def == 0) selected @endif>Да</option>
+            <option value="1"@if ($application->def == 1) selected @endif>Нет</option>
+        </select>
+        <label for="def">Деффектовка во время ремонта</label>
+    </div>
+    <div class="form-floating">
+        <input type="date" name="start_date" id="start_date" class="form-control"
+            value="{{ $application->start_date }}">
+        <label for="start_date">Дата начала ремонта</label>
+    </div>
+    <div class="form-floating">
+        <input type="date" name="end_date" id="end_date" class="form-control"
+            value="{{ $application->end_date }}">
+        <label for="end_date">Дата окончания ремонта</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="wait_sp" id="wait_sp" class="form-control"
+            value="{{ $application->wait_sp }}">
+        <label for="wait_sp">Срок поставки запчастей</label>
+    </div>
+    <h1>Паспорт РФ</h1>
+    <div class="form-floating">
         <input type="text" name="ClientPasport" id="ClientPasport" class="form-control"
             value="{{ $application->ClientPasport }}">
-        <label for="ClientPasport">Паспорт РФ</label>
+        <label for="ClientPasport">Серия</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="ClientPasport_number" id="ClientPasport_number" class="form-control"
+            value="{{ $application->ClientPasport }}">
+        <label for="ClientPasport_number">Номер</label>
+    </div>
+    <div class="form-floating">
+        <input type="date" name="ClientPasport_date" id="ClientPasport_date" class="form-control"
+            value="{{ $application->ClientPasport_date }}">
+        <label for="ClientPasport_date">Дата выдачи</label>
+    </div>
+    <div class="form-floating">
+        <input type="text" name="ClientPasport_struct" id="ClientPasport_struct" class="form-control"
+            value="{{ $application->ClientPasport_struct }}">
+        <label for="ClientPasport_struct">Орган, выдавший паспорт</label>
     </div>
 @endif

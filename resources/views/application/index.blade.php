@@ -8,7 +8,7 @@
         <br>
         <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
         <br>
-        @if ($application->id_status == 2 && !$empty)
+        @if ($application->id_status == 2)
             <a href="/applications/{{ $application->id }}/send_mrk/{{ $application->id_MRK }}" class="nav-link">Передать МРК</a>
         @endif
         @if ($application->id_status == 5 || $application->id_status == 10)
@@ -21,7 +21,7 @@
         @endif
     @endcan
     @can('mrk')
-        @if ($application->id_status == 3 && !$empty)
+        @if ($application->id_status == 3)
             <form action="/applications/{{ $application->id }}/change_status" method="POST">
                 @csrf
                 <select name="variant" id="var" class="form-control">
@@ -154,9 +154,80 @@
         @if (session('rout') == 'directions')
             <tr></tr>
             <tr>
-                <th>Паспорт РФ</th>
+                <th>№ убытка</th>
+                <th>
+                    {{ $application->ub_number }}
+                </th>
+            </tr>
+            <tr>
+                <th>Год выпуска ТС</th>
+                <th>
+                    {{ $application->mnf_year }}
+                </th>
+            </tr>
+            <tr>
+                <th>Страховой полис</th>
+                <th>
+                    {{ $application->dogovor }}
+                </th>
+            </tr>
+            <tr>
+                <th>Деффектовка во время ремонта</th>
+                <th>
+                    @if ($application->def == 0)
+                        Да
+                    @else
+                        Нет
+                    @endif
+                </th>
+            </tr>
+            <tr>
+                <th>Дата начала ремонта</th>
+                <th>
+                    {{ $application->start_date }}
+                </th>
+            </tr>
+            <tr>
+                <th>Дата окончания ремонта</th>
+                <th>
+                    {{ $application->end_date }}
+                </th>
+            </tr>
+            <tr>
+                <th>Срок поставки запчастей</th>
+                <th>
+                    {{ $application->wait_sp }}
+                </th>
+            </tr>
+            <tr>
+                <th colspan=2>
+                    <h1>Паспорт РФ</h1>
+                </th>
+
+            </tr>
+
+            <tr>
+                <th>Серия</th>
                 <th>
                     {{ $application->ClientPasport }}
+                </th>
+            </tr>
+            <tr>
+                <th>Номер</th>
+                <th>
+                    {{ $application->ClientPasport_number }}
+                </th>
+            </tr>
+            <tr>
+                <th>Дата выдачи</th>
+                <th>
+                    {{ $application->ClientPasport_date }}
+                </th>
+            </tr>
+            <tr>
+                <th>Орган, выдавший паспорт</th>
+                <th>
+                    {{ $application->ClientPasport_struct }}
                 </th>
             </tr>
         @endif

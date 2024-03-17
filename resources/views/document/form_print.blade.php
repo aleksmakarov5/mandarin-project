@@ -1,3 +1,3 @@
-<a href="/{{ $template }}/{{ $id }}" class="nav-link">Создать</a>
+<a href="/{{ $template }}/{{ $id }}/{{ $status_id }}" class="nav-link">Создать</a>
 
 @include('document/attach')

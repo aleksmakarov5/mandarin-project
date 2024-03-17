@@ -209,10 +209,11 @@ Route::middleware("auth:web")->group(
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
         Route::get('/download/{id}/{location}', [MainController::class, 'download'])->name('download');
 
-        Route::get('export_hda/{id}', [WordController::class, 'export_hda'])->name('export_hda');
-        Route::get('export_dk/{id}', [WordController::class, 'export_dk'])->name('export_dk');
-        Route::get('export_ap/{id}', [WordController::class, 'export_ap'])->name('export_ap');
-        Route::get('export_as/{id}', [WordController::class, 'export_as'])->name('export_as');
+        Route::get('export_hda/{id}/{status_id}', [WordController::class, 'export_hda'])->name('export_hda');
+        Route::get('export_dk/{id}/{status_id}', [WordController::class, 'export_dk'])->name('export_dk');
+        Route::get('export_ap/{id}/{status_id}', [WordController::class, 'export_ap'])->name('export_ap');
+        Route::get('export_as/{id}/{status_id}', [WordController::class, 'export_as'])->name('export_as');
+        Route::get('export_if/{id}/{status_id}', [WordController::class, 'export_if'])->name('export_if');
     }
 
 );

@@ -166,8 +166,82 @@
                         @include('document.form_scan', ['status_id' => 7])
                     </th>
                 </tr>
+                @if ($def == 1)
+                    <tr>
+                        <th scope="col">Акт приема автомобиля на деффектовку</th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 24,
+                                'template' => 'export_ap',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', ['status_id' => 25])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Фото приема автомобиля на деффектовку</th>
+
+
+                        <th scope="col" colspan=2>
+                            @include('document.form_scan', [
+                                'status_id' => 26,
+                                'load_name' => 'Фото приема автомобиля на деффектовку',
+                                'load_location' => 'priemka_def',
+                            ])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Акт скрытых повреждений</th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 11,
+                                'template' => 'export_hda',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', ['status_id' => 12])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Фото деффектовки</th>
+
+
+                        <th scope="col" colspan=2>
+                            @include('document.form_scan', [
+                                'status_id' => 10,
+                                'load_name' => 'Фото деффектовки',
+                                'load_location' => 'deffect',
+                            ])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Акт сдачи автомобиля после дефектовки</th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 27,
+                                'template' => 'export_as',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', ['status_id' => 28])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Фото сдачи автомобиля после деффектовки</th>
+
+
+                        <th scope="col" colspan=2>
+                            @include('document.form_scan', [
+                                'status_id' => 29,
+                                'load_name' => 'Фото cдачи автомобиля после деффектовки',
+                                'load_location' => 'photo_return_def',
+                            ])
+                        </th>
+                    </tr>
+                @endif
                 <tr>
-                    <th scope="col">Акт приема автомобиля</th>
+                    <th scope="col">Акт приема автомобиля на ремонт</th>
                     <th scope="col">
                         @include('document.form_print', ['status_id' => 8, 'template' => 'export_ap'])
                     </th>
@@ -176,28 +250,45 @@
                     </th>
                 </tr>
                 <tr>
-                    <th scope="col">Фото приема автомобиля</th>
+                    <th scope="col">Фото приема автомобиля на ремонт</th>
 
 
                     <th scope="col" colspan=2>
                         @include('document.form_scan', [
                             'status_id' => 10,
-                            'load_name' => 'Фото приема автомобиля',
-                            'load_location' => 'priemka',
+                            'load_name' => 'Фото приема автомобиля на ремонт',
+                            'load_location' => 'priemka_rem',
                         ])
                     </th>
                 </tr>
+                @if (!$def)
+                    <tr>
+                        <th scope="col">Акт скрытых повреждений</th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 11,
+                                'template' => 'export_hda',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', ['status_id' => 12])
+                        </th>
+                    </tr>
+                    <tr>
+                        <th scope="col">Фото деффектовки</th>
+
+
+                        <th scope="col" colspan=2>
+                            @include('document.form_scan', [
+                                'status_id' => 10,
+                                'load_name' => 'Фото деффектовки',
+                                'load_location' => 'deffect',
+                            ])
+                        </th>
+                    </tr>
+                @endif
                 <tr>
-                    <th scope="col">Акт скрытых повреждений</th>
-                    <th scope="col">
-                        @include('document.form_print', ['status_id' => 11, 'template' => 'export_hda'])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', ['status_id' => 12])
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="col">Акт сдачи автомобиля</th>
+                    <th scope="col">Акт сдачи автомобиля после ремонта</th>
                     <th scope="col">
                         @include('document.form_print', ['status_id' => 13, 'template' => 'export_as'])
                     </th>
@@ -206,14 +297,14 @@
                     </th>
                 </tr>
                 <tr>
-                    <th scope="col">Фото сдачи автомобиля</th>
+                    <th scope="col">Фото сдачи автомобиля после ремонта</th>
 
 
                     <th scope="col" colspan=2>
                         @include('document.form_scan', [
                             'status_id' => 15,
-                            'load_name' => 'Фото cдачи автомобиля',
-                            'load_location' => 'photo_return',
+                            'load_name' => 'Фото cдачи автомобиля после ремонта',
+                            'load_location' => 'photo_return_rem',
                         ])
                     </th>
                 </tr>

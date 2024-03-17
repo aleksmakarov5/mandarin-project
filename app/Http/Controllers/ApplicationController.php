@@ -260,7 +260,17 @@ class ApplicationController extends Controller
                 'vehicle_passport' => 'nullable|string',
                 'Color' => 'nullable|string',
                 'ClientPasport' => 'nullable|string',
-                'DTPdate' => 'nullable|date'
+                'DTPdate' => 'nullable|date',
+                'ub_number' => 'nullable|string',
+                'mnf_year' => 'nullable|string',
+                'dogovor' => 'nullable|string',
+                'def' => 'nullable|integer',
+                'start_date' => 'nullable|date',
+                'end_date' => 'nullable|date',
+                'wait_sp' => 'nullable|string',
+                'ClientPasport_number' => 'nullable|string',
+                'ClientPasport_struct' => 'nullable|string',
+                'ClientPasport_date' => 'nullable|date',
 
             ]);
             // dd($data);
@@ -419,13 +429,19 @@ class ApplicationController extends Controller
         $html = 'works.html';
         $file = file_get_contents('storage/files/' . $id . '/'  . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
+        //echo ($file);
         $application_start = mb_strpos($file, 'Марка, модель');
+        $smeta = false;
+        if ($application_start)
+            $smeta = true;
+
+        // echo $application_start;
         $application_end = mb_strpos($file, 'Точное');
         // echo $application_end . 'Раб_фин<br /><br />';
         $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
         $application_array = explode('<br/>', $application);
         // dd($application_array);
-        return view('application.data_select', ['applications' => $application_array, 'id' => $id]);
+        return view('application.data_select', ['applications' => $application_array, 'id' => $id, 'smeta' => $smeta]);
     }
     public function data_save(Request $request, $id)
     {
@@ -449,7 +465,15 @@ class ApplicationController extends Controller
             'vehicle_passport' => 'nullable|string',
             'Color' => 'nullable|string',
             'ClientPassport' => 'nullable|string',
-            'DTPdate' => 'nullable|date'
+            'DTPdate' => 'nullable|date',
+            'id_MRK' => 'nullable|integer',
+            'id_spm' => 'nullable|integer',
+            'dogovor' => 'nullable|string',
+            'mnf_year' => 'nullable|string',
+            'ub_number' => 'nullable|string'
+
+
+
 
         ]);
         // dd($data);

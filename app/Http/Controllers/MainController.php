@@ -131,9 +131,14 @@ class MainController extends Controller
             ->where('id_application', '=', $id)
             ->get();
         $doc_statuses = new doc_status();
+        $def = DB::table('applications')
+            ->where('id', '=', $id)
+            ->select('def')
+            ->first();
+
 
         // dd($doc_statuses->all());
-        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all()], ['id' => $id]);
+        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def], ['id' => $id]);
     }
     public function showdoc($id, $locations)
     {
