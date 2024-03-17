@@ -143,12 +143,16 @@ class WorkController extends Controller
 
         $name = $request['name'];
         $summ = $request['summ'];
+        $price = $request['price'];
+        $count_hours = $request['count_hours'];
         $id_application = $request['id_application'];
         //dd($request->name);
         for ($i = 1; $i <= count($name); $i++) {
             $Work = new Work;
             $Work->name = $name[$i];
-            $Work->summ = $summ[$i];
+            $Work->summ = str_replace(' ', '', $summ[$i]);
+            $Work->price = str_replace(' ', '', $price[$i]);
+            $Work->count_hours = str_replace(' ', '', $count_hours[$i]);
             $Work->id_application = $id_application;
             $Work->save();
         }

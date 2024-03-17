@@ -189,6 +189,9 @@ class SparePartController extends Controller
         $part_number = $request['part_number'];
         $price_ic_half = $request['price_ic_half'];
         $id_application = $request['id_application'];
+        $price = $request['price'];
+        $count = $request['count'];
+        $iznos = $request['iznos'];
         //dd($request->name);
         for ($i = 1; $i <= count($name); $i++) {
             $SparePart = new SparePart;
@@ -196,6 +199,9 @@ class SparePartController extends Controller
             $SparePart->price_ic_full = str_replace(' ', '', $price_ic_full[$i]);
             $SparePart->part_number = str_replace(' ', '', $part_number[$i]);
             $SparePart->price_ic_half = str_replace(' ', '', $price_ic_half[$i]);
+            $SparePart->price = str_replace(' ', '', $price[$i]);
+            $SparePart->count = str_replace(' ', '', $count[$i]);
+            $SparePart->iznos = str_replace(' ', '', $iznos[$i]);
             $SparePart->id_application = str_replace(' ', '', $id_application);
             $SparePart->save();
         }
