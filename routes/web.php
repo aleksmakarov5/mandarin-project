@@ -216,6 +216,7 @@ Route::middleware("auth:web")->group(
         Route::get('export_if/{id}/{status_id}', [WordController::class, 'export_if'])->name('export_if');
         Route::get('export_ds/{id}/{status_id}', [WordController::class, 'export_ds'])->name('export_ds');
         Route::get('export_zn/{id}/{status_id}', [WordController::class, 'export_zn'])->name('export_zn');
+        Route::get('export_sch/{id}/{status_id}', [WordController::class, 'export_sch'])->name('export_sch');
     }
 
 );

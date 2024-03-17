@@ -6,11 +6,65 @@ use Illuminate\Http\Request;
 use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\DB;
 use App\Models\attachment;
+use App\Models\estimate;
 use App\Models\troubleshooting;
 
 
 class WordController extends Controller
 {
+  public function morph($n, $f1, $f2, $f5)
+  {
+    $n = abs(intval($n)) % 100;
+    if ($n > 10 && $n < 20) return $f5;
+    $n = $n % 10;
+    if ($n > 1 && $n < 5) return $f2;
+    if ($n == 1) return $f1;
+    return $f5;
+  }
+  public function num2str($num)
+  {
+    $nul = 'ноль';
+    $ten = array(
+      array('', 'один', 'два', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'),
+      array('', 'одна', 'две', 'три', 'четыре', 'пять', 'шесть', 'семь', 'восемь', 'девять'),
+    );
+    $a20 = array('десять', 'одиннадцать', 'двенадцать', 'тринадцать', 'четырнадцать', 'пятнадцать', 'шестнадцать', 'семнадцать', 'восемнадцать', 'девятнадцать');
+    $tens = array(2 => 'двадцать', 'тридцать', 'сорок', 'пятьдесят', 'шестьдесят', 'семьдесят', 'восемьдесят', 'девяносто');
+    $hundred = array('', 'сто', 'двести', 'триста', 'четыреста', 'пятьсот', 'шестьсот', 'семьсот', 'восемьсот', 'девятьсот');
+    $unit = array( // Units
+      array('копейка', 'копейки', 'копеек',   1),
+      array('рубль', 'рубля', 'рублей', 0),
+      array('тысяча', 'тысячи', 'тысяч', 1),
+      array('миллион', 'миллиона', 'миллионов', 0),
+      array('миллиард', 'милиарда', 'миллиардов', 0),
+    );
+    //
+    list($rub, $kop) = explode('.', sprintf("%015.2f", floatval($num)));
+    $out = array();
+    if (intval($rub) > 0) {
+      foreach (str_split($rub, 3) as $uk => $v) { // by 3 symbols
+        if (!intval($v)) continue;
+        $uk = sizeof($unit) - $uk - 1; // unit key
+        $gender = $unit[$uk][3];
+        list($i1, $i2, $i3) = array_map('intval', str_split($v, 1));
+        // mega-logic
+        $out[] = $hundred[$i1]; # 1xx-9xx
+        if ($i2 > 1) $out[] = $tens[$i2] . ' ' . $ten[$gender][$i3]; # 20-99
+        else $out[] = $i2 > 0 ? $a20[$i3] : $ten[$gender][$i3]; # 10-19 | 1-9
+        // units without rub & kop
+        if ($uk > 1) $out[] = $this->morph($v, $unit[$uk][0], $unit[$uk][1], $unit[$uk][2]);
+      } //foreach
+    } else $out[] = $nul;
+    $out[] = $this->morph(intval($rub), $unit[1][0], $unit[1][1], $unit[1][2]); // rub
+    $out[] = $kop . ' ' . $this->morph($kop, $unit[0][0], $unit[0][1], $unit[0][2]); // kop
+    return trim(preg_replace('/ {2,}/', ' ', join(' ', $out)));
+  }
+
+  /**
+   * Склоняем словоформу
+   * @ author runcore
+   */
+
 
   public function export_hda($id)
   {
@@ -618,8 +672,8 @@ class WordController extends Controller
         break;
     }
     $date = date('d') . ' ' . $month_name . ' ' . date('Y');
-
-
+    $estimate = estimate::where('id_application', '=', $id)->first();
+    // dd($estimate);
     $templateProcessor->setValue('Client', $application->ClientName);
     $templateProcessor->setValue('num', $num);
     $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
@@ -654,6 +708,11 @@ class WordController extends Controller
     // dd($array1);
 
     $templateProcessor->cloneRowAndSetValues('name', $array1);
+    $templateProcessor->setValue('price_repair', $estimate->price_repair);
+    $templateProcessor->setValue('price_paint', $estimate->price_paint);
+    $templateProcessor->setValue('price_zip', $estimate->price_zip);
+    $templateProcessor->setValue('price_work', $estimate->price_work);
+    $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
 
 
 
@@ -683,6 +742,114 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 16;
     $document->save();
+
+    $estimate->zn_number = $num . ' от ' . $date . 'г.';
+    $estimate->save();
+
+    // dd($estimate);
+    return redirect()->route('document', $id);
+  }
+
+  public function export_sch($id)
+  {
+    $application = DB::table('applications')
+      ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+      ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+      ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+      ->where('applications.id', '=', $id)
+      ->first();
+    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/sch.docx');
+    //dd($application);
+    $num = date('Hi');
+    $month = date('m');
+    $month_name = '';
+    switch ($month) {
+      case 1:
+        $month_name = 'января';
+        break;
+      case 2:
+        $month_name = 'февраля';
+        break;
+      case 3:
+        $month_name = 'марта';
+        break;
+      case 4:
+        $month_name = 'апреля';
+        break;
+      case 5:
+        $month_name = 'мая';
+        break;
+      case 6:
+        $month_name = 'июня';
+        break;
+      case 7:
+        $month_name = 'июля';
+        break;
+      case 8:
+        $month_name = 'августа';
+        break;
+      case 9:
+        $month_name = 'сентября';
+        break;
+      case 10:
+        $month_name = 'октября';
+        break;
+      case 11:
+        $month_name = 'ноября';
+        break;
+      case 12:
+        $month_name = 'декабря';
+        break;
+    }
+    $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+    $estimate = estimate::where('id_application', '=', $id)->first();
+    // dd($estimate);
+    $templateProcessor->setValue('Client', $application->ClientName);
+    $templateProcessor->setValue('num', $num);
+    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('Date', $date);
+    $templateProcessor->setValue('mnf_date', $application->mnf_year);
+    $templateProcessor->setValue('CarModel', $application->CarModel);
+    $templateProcessor->setValue('gnz', $application->gnz);
+    $templateProcessor->setValue('vin', $application->vin);
+
+    $templateProcessor->setValue('zn_num', $estimate->zn_number);
+    $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+    $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
+
+
+
+
+    // dd($array, $array1);
+
+    $filename = "Счет №" . date('d-m-y_hms') . ".docx";
+
+    $dir = 'storage/files/' . $id;
+    if (!is_dir($dir)) {
+      mkdir($dir, 0777, true);
+    }
+    $i = 1;
+    if (file_exists($dir . '/' . $filename)) {
+      while (file_exists($dir . '/' . $filename))
+        $filename .= '(' . $i++ . ')';
+    }
+    $pathToSave = $dir . '/' . $filename;
+    // dd($templateProcessor);
+    $templateProcessor->saveAs($pathToSave);
+    $document = new Attachment();
+    $document->file_name = "Счет №" . $num . ' от ' . $date . ".docx";
+    $document->message_id = 0;
+    $document->mime_type = mime_content_type($pathToSave);
+    $document->id_application = $id;
+    $document->file_size = filesize($pathToSave);
+    $document->location = $filename;
+    $document->id_status = 18;
+    $document->save();
+
+    $estimate->zn_number = $num . ' от ' . $date . 'г.';
+    $estimate->save();
+
+    // dd($estimate);
     return redirect()->route('document', $id);
   }
 }

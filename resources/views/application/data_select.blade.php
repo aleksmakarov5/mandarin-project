@@ -6,6 +6,62 @@
         @csrf
 
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
+            @if (isset($price[1]))
+                <tr>
+                    <th>Cтоимость узлов и деталей:</th>
+                    <th>
+                        <input type="text" name="price_sp_full" value="{{ $price[0] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cтоимость узлов и деталей c учетом износа:</th>
+                    <th>
+                        <input type="text" name="price_sp_half" value="{{ $price[1] }}">
+                    </th>
+                </tr>
+            @endif
+            @if (isset($price[3]))
+                <tr>
+                    <th>Cтоимость ремонта/замены:</th>
+                    <th>
+                        <input type="text" name="price_repair" value="{{ $price[2] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cтоимость окраски контроля: </th>
+                    <th>
+                        <input type="text" name="price_paint" value="{{ $price[3] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cтоимость расходных материалов: </th>
+                    <th>
+                        <input type="text" name="price_zip" value="{{ $price[4] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cтоимость работ и материалов: </th>
+                    <th>
+                        <input type="text" name="price_work" value="{{ $price[5] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Cтоимость восстановительного ремонта (Всего) </th>
+                    <th>
+                        <input type="text" name="price_repair_full" value="{{ $price[6] }}">
+                    </th>
+                </tr>
+                <tr>
+                    <th>Затраты на восстановительный ремонт (с учетом износа): </th>
+                    <th>
+                        <input type="text" name="price_repair_half" value="{{ $price[7] }}">
+                    </th>
+                </tr>
+            @endif
+        </table>
+
+
+        <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             @if ($smeta)
                 <tr>
                     <th>Марка машины</th>

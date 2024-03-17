@@ -8,6 +8,7 @@ use App\Models\application;
 use App\Jobs\QueueSenderChat;
 use App\Models\User;
 use App\Models\InsuranceCompany;
+use App\Models\estimate;
 use App\Models\history;
 use App\Models\chat;
 use App\Models\failure;
@@ -429,8 +430,34 @@ class ApplicationController extends Controller
         $html = 'works.html';
         $file = file_get_contents('storage/files/' . $id . '/'  . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
-        //echo ($file);
+
         $application_start = mb_strpos($file, 'Марка, модель');
+        $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
+        $estimate_end = mb_strpos($file, 'Работы');
+        $estimate = '';
+        $price = [];
+        if ($estimate_start !== false && $estimate_end !== false) {
+            $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+            $estimate = explode('<br/>', $estimate);
+            $price[0] = str_replace(' ', '', $estimate[1]);
+            $price[1] = str_replace(' ', '', $estimate[3]);
+        }
+        $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
+        $estimate_end = mb_strlen($file);
+        $estimate = '';
+
+        if ($estimate_start !== false && $estimate_end !== false) {
+            $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+            $estimate = explode('<br/>', $estimate);
+            $price[2] = str_replace(' ', '', $estimate[1]);
+            $price[3] = str_replace(' ', '', $estimate[3]);
+            $price[4] = str_replace(' ', '', $estimate[5]);
+            $price[5] = str_replace(' ', '', $estimate[7]);
+            $price[6] = str_replace(' ', '', $estimate[10]);
+            $price[7] = str_replace(' ', '', $estimate[12]);
+        }
+
+        // dd($price);
         $smeta = false;
         if ($application_start)
             $smeta = true;
@@ -441,11 +468,26 @@ class ApplicationController extends Controller
         $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
         $application_array = explode('<br/>', $application);
         // dd($application_array);
-        return view('application.data_select', ['applications' => $application_array, 'id' => $id, 'smeta' => $smeta]);
+        return view('application.data_select', ['applications' => $application_array, 'id' => $id, 'smeta' => $smeta, 'price' => $price]);
     }
     public function data_save(Request $request, $id)
     {
 
+        if (isset($request->price_sp_full)) {
+            $estimates = estimate::firstorcreate(
+                ['id_application' => $id],
+                [
+                    'price_sp_full' => $request->price_sp_full,
+                    'price_sp_half' => $request->price_sp_half,
+                    'price_repair' => $request->price_repair,
+                    'price_paint' => $request->price_paint,
+                    'price_zip' => $request->price_zip,
+                    'price_work' => $request->price_work,
+                    'price_repair_full' => $request->price_repair_full,
+                    'price_repair_half' => $request->price_repair_half
+                ]
+            );
+        }
         $application = application::findOrFail($id);
         if ($application->id_status < 2) {
             $application->id_status = 2;
