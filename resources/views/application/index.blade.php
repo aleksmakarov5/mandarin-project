@@ -34,6 +34,12 @@
             </form>
         @endif
     @endcan
+    @can('mrk')
+        <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
+        <br>
+        <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
+        <br>
+    @endcan
     @can('km')
         @if ($application->id_status == 6 || $application->id_status == 7)
             <form action="/applications/{{ $application->id }}/change_status_km" method="POST">

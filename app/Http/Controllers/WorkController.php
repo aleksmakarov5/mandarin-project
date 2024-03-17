@@ -28,7 +28,7 @@ class WorkController extends Controller
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
         }
-        $delta = -$summ_service + $summ_ic;
+        $delta = $summ_service - $summ_ic;
         return view('Work.index', [
             'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
             'id' => $id, 'delta' => $delta,

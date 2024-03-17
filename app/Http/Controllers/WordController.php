@@ -399,7 +399,7 @@ class WordController extends Controller
 
 
     $templateProcessor->setValue('Client', $application->ClientName);
-    $templateProcessor->setValue('number', $application->ub_number);
+    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
@@ -438,6 +438,129 @@ class WordController extends Controller
     $document->file_size = filesize($pathToSave);
     $document->location = $filename;
     $document->id_status = 6;
+    $document->save();
+    return redirect()->route('document', $id);
+  }
+
+  public function export_ds($id)
+  {
+    $application = DB::table('applications')
+      ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+      ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+      ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+      ->where('applications.id', '=', $id)
+      ->first();
+    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ds.docx');
+    //dd($application);
+    $number = date('Hi');
+    $month = date('m');
+    $month_name = '';
+    switch ($month) {
+      case 1:
+        $month_name = 'января';
+        break;
+      case 2:
+        $month_name = 'февраля';
+        break;
+      case 3:
+        $month_name = 'марта';
+        break;
+      case 4:
+        $month_name = 'апреля';
+        break;
+      case 5:
+        $month_name = 'мая';
+        break;
+      case 6:
+        $month_name = 'июня';
+        break;
+      case 7:
+        $month_name = 'июля';
+        break;
+      case 8:
+        $month_name = 'августа';
+        break;
+      case 9:
+        $month_name = 'сентября';
+        break;
+      case 10:
+        $month_name = 'октября';
+        break;
+      case 11:
+        $month_name = 'ноября';
+        break;
+      case 12:
+        $month_name = 'декабря';
+        break;
+    }
+    $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
+
+    $templateProcessor->setValue('Client', $application->ClientName);
+    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('Date', $date);
+    $templateProcessor->setValue('CarModel', $application->CarModel);
+    $templateProcessor->setValue('gnz', $application->gnz);
+    $templateProcessor->setValue('vin', $application->vin);
+    $templateProcessor->setValue('start_date', $application->start_date);
+    $templateProcessor->setValue('end_date', $application->end_date);
+    $templateProcessor->setValue('wait_sp', $application->wait_sp);
+    $templateProcessor->setValue('pass_ser', $application->ClientPasport);
+    $templateProcessor->setValue('pass_num', $application->ClientPasport_number);
+    $templateProcessor->setValue('pass_date', $application->ClientPasport_date);
+    $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct);
+    $array = [];
+    $SpareParts = DB::table('spare_parts')
+      ->where('id_application', '=', $id)
+      ->where('selected_mrk', '>', '0')
+      ->where('selected_mrk', '<', '4')
+      ->get();
+    $i = 1;
+
+    foreach ($SpareParts as $sparepart) {
+      $array[] = array('id_sp' => str($i), 'SparePart' => $sparepart->name);
+      $i++;
+    }
+    $templateProcessor->cloneRowAndSetValues('id_sp', $array);
+    $array1 = [];
+    $Works = DB::table('works')
+      ->where('id_application', '=', $id)
+      ->where('price_service', '<>', '0')
+      ->get();
+    $i = 1;
+    foreach ($Works as $work) {
+      $array1[] = array('num' => str($i), 'Work' => $work->name);
+      $i++;
+    }
+    $templateProcessor->cloneRowAndSetValues('num', $array1);
+
+
+
+
+    // dd($array1);
+
+    $filename = "Дополнительное соглашение №" . date('d-m-y_hms') . ".docx";
+
+    $dir = 'storage/files/' . $id;
+    if (!is_dir($dir)) {
+      mkdir($dir, 0777, true);
+    }
+    $i = 1;
+    if (file_exists($dir . '/' . $filename)) {
+      while (file_exists($dir . '/' . $filename))
+        $filename .= '(' . $i++ . ')';
+    }
+    $pathToSave = $dir . '/' . $filename;
+    dd($templateProcessor);
+    $templateProcessor->saveAs($pathToSave);
+    $document = new Attachment();
+    $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . $date . ".docx";
+    $document->message_id = 0;
+    $document->mime_type = mime_content_type($pathToSave);
+    $document->id_application = $id;
+    $document->file_size = filesize($pathToSave);
+    $document->location = $filename;
+    $document->id_status = 4;
     $document->save();
     return redirect()->route('document', $id);
   }
