@@ -111,10 +111,14 @@ Route::middleware("auth:web")->group(
 
         Route::get('/answer_fail_sel/{id}', [ApplicationController::class, 'answer_fail_sel'])->name('answer_fail_sel');
         Route::post('/answer_fail_save/{id}', [ApplicationController::class, 'answer_fail_save'])->name('answer_fail_save');
+        Route::get('/answer_true_sel/{id}', [ApplicationController::class, 'answer_true_sel'])->name('answer_true_sel');
+        Route::post('/answer_true_save/{id}', [ApplicationController::class, 'answer_true_save'])->name('answer_true_save');
         Route::get('/mail/{id}',  [ApplicationController::class, 'message'])->name('mail_app');
         Route::get('/chat/{id}',  [ApplicationController::class, 'chat'])->name('chat');
         Route::post('/chat_sent/{id}',  [ApplicationController::class, 'chat_sent'])->name('chat_sent');
 
+        Route::get('/answer_ic_true/{id}',  [ApplicationController::class, 'answer_ic_true'])->name('answer_ic_true');
+        Route::post('/answer_ic_true_sent/{id}',  [ApplicationController::class, 'answer_ic_true_sent'])->name('answer_ic_true_sent');
         Route::get('/answer_ic/{id}',  [ApplicationController::class, 'answer_ic'])->name('answer_ic');
         Route::post('/answer_ic_sent/{id}',  [ApplicationController::class, 'answer_ic_sent'])->name('answer_ic_sent');
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');

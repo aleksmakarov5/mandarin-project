@@ -11,8 +11,13 @@
         @if ($application->id_status == 2)
             <a href="/applications/{{ $application->id }}/send_mrk/{{ $application->id_MRK }}" class="nav-link">Передать МРК</a>
         @endif
-        @if ($application->id_status == 5 || $application->id_status == 10)
+        @if ($application->id_status == 5)
             <a href="/answer_ic/{{ $id }}" class="nav-link">Подготовить ответ в ск</a>
+            <br>
+        @endif
+        @if ($application->id_status == 10)
+            <a href="/answer_ic_true/{{ $id }}" class="nav-link">Подготовить ответ в ск</a>
+            <br>
         @endif
     @endcan
     @can('spm')
@@ -33,12 +38,15 @@
                 <input type="submit" class="nav-link" value="Выбрать">
             </form>
         @endif
-    @endcan
-    @can('mrk')
+
         <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
         <br>
         <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
         <br>
+        @if ($application->id_status == 9)
+            <a href="/answer_true_sel/{{ $application->id }}" class="nav-link">Подготовить
+                ответ</a>
+        @endif
     @endcan
     @can('km')
         @if ($application->id_status == 6 || $application->id_status == 7)

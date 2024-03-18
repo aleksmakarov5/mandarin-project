@@ -7,6 +7,7 @@ use PhpOffice\PhpWord\TemplateProcessor;
 use Illuminate\Support\Facades\DB;
 use App\Models\attachment;
 use App\Models\estimate;
+use App\Models\application;
 use App\Models\troubleshooting;
 
 
@@ -123,12 +124,16 @@ class WordController extends Controller
 
   public function export_dk($id)
   {
+
     $application = DB::table('applications')
       ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
       ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
       ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
       ->where('applications.id', '=', $id)
       ->first();
+    $app = application::findOrFail($id);
+    $app->id_status = 9;
+    $app->save();
     $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/dk.docx');
     //dd($application);
     $number = date('Hi');

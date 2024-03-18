@@ -53,7 +53,9 @@
                         </div>
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">
                         <li class="bg-white mb-3">
-
+                            <div class="alert  alert-success">
+                                {{ $application->comment_false }}
+                            </div>
                             <div class="form-outline">
                                 <textarea class="form-control" id="textAreaExample2" rows="15" name=message>
 Добрый день! 

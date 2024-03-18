@@ -12,6 +12,7 @@ use App\Models\estimate;
 use App\Models\history;
 use App\Models\chat;
 use App\Models\failure;
+use App\Models\tru;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
@@ -619,11 +620,16 @@ class ApplicationController extends Controller
 
         $variants = $request->variant;
         // dd($variants);
-        foreach ($variants as $key => $value) {
-            $failure = new failure;
-            $failure->id_application = $id;
-            $failure->id_var = $value;
-            $failure->save();
+        $application = application::findOrFail($id);
+        $application->comment_false = $request->comment;
+        $application->save();
+        if (isset($variants[0])) {
+            foreach ($variants as $key => $value) {
+                $failure = new failure;
+                $failure->id_application = $id;
+                $failure->id_var = $value;
+                $failure->save();
+            }
         }
         return redirect()->route('applications');
     }
@@ -670,5 +676,83 @@ class ApplicationController extends Controller
         $application->save();
         return redirect()
             ->route('archive');
+    }
+    public function answer_true_sel($id)
+    {
+        $true_vars = DB::table('true_vars')->get();
+        return view('application.answer_true_select', ['id' => $id], ['true_vars' => $true_vars->all()]);
+    }
+    public function answer_true_save(Request $request, $id)
+    {
+
+        $variants = $request->variant;
+        $application = application::findOrFail($id);
+        $application->comment_true = $request->comment;
+        $application->id_status = 10;
+        $application->save();
+
+        // dd($variants);
+        if (isset($variants[0])) {
+            foreach ($variants as $key => $value) {
+                $tru = new tru;
+                $tru->id_application = $id;
+                $tru->id_var = $value;
+                $tru->save();
+            }
+        }
+        return redirect()->route('directions');
+    }
+
+    public function answer_ic_true(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $to = DB::table('addresses')
+            ->where('message_id', '=', $message_id)
+            ->where('type', '=', 'from')
+            ->first()
+            ->email;
+        $true_vars = DB::table('trus')
+            ->where('id_application', '=', $id)
+            ->join('true_vars', 'trus.id_var', '=', 'true_vars.id')
+            ->select('trus.*', 'true_vars.variant')
+            ->get();
+        $users = DB::table('users')->get();
+
+        return view('application.answer_ic_true', ['users' => $users->all(), 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to]);
+    }
+
+    public function answer_ic_true_sent(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+
+        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
+        $application->id_status = 11;
+        $history = new history;
+
+        $messages = new message();
+        $messages->application_id = $id;
+        $messages->subject = message::where('application_id', '=', $id)->first()->subject;
+        $messages->body_html = $request->message;
+        $messages->message_date = date('Y-m-d H:i:s');
+
+
+        $messages->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'from';
+        $address->email = 'robot@mandarinportal.ru';
+        $address->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'to';
+        $address->email = $request->to;
+        $address->save();
+        $history->id_user = Auth::user()->id;
+        $history->id_application = $id;
+        $history->id_status = 24;
+        $application->save();
+        return redirect()
+            ->route('directions');
     }
 }
