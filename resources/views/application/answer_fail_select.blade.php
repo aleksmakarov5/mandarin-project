@@ -11,8 +11,8 @@
                     value="{{ $item->id }}">{{ $item->variant }}
             </p>
         @endforeach
-        Комментарий
-        <textarea name="comment" id="comment" cols="30" rows="10"></textarea>
+        Комментарий<br>
+        <textarea name="comment" id="comment" cols="300" rows="10"></textarea>
         <input class="nav-link" type="submit" value="Сохранить">
     </form>
 @endsection
