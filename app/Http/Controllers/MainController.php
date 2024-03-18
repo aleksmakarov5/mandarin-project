@@ -547,7 +547,16 @@ class MainController extends Controller
 
 
         }
-
+        $application = application::findOrFail($id);
+        switch ($request->status_id) {
+            case 1:
+                $application->id_status = 12;
+                break;
+            case 10:
+                $application->id_status = 16;
+                break;
+        }
+        $application->save();
         return redirect()->route('document', ['id' => $id]);
     }
     public function test(request $request)
@@ -604,6 +613,16 @@ class MainController extends Controller
     {
         $document = Attachment::findOrFail($request->id);
         $document->id_status = $request->doc_status;
+        $application = application::findOrFail($document->id_application);
+        switch ($document->id_status) {
+            case 1:
+                $application->id_status = 12;
+                break;
+            case 10:
+                $application->id_status = 16;
+                break;
+        }
+        $application->save();
         $document->save();
         return redirect()->back();
     }
