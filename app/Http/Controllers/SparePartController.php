@@ -12,6 +12,16 @@ class SparePartController extends Controller
     public function SparePart($id)
     {
         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
+        $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        $Works_serv = DB::table('works')
+            ->where('id_application', '=', $id)
+            ->where('price_service', '<>', 0)
+            ->get();
+        $summ_service = 0;
+        foreach ($Works_serv as $work) {
+            $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
+        }
+
         // dd($rewiew->all()) ;
         $summ_ic_full = 0;
         $summ_ic_half = 0;
@@ -43,12 +53,13 @@ class SparePartController extends Controller
                     break;
             }
         }
+
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
         return view('SparePart.index', [
             'spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
             'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_ic_half' => $summ_ic_half,
-            'summ_order' => $summ_order
+            'summ_order' => $summ_order, 'estimate' => $estimates, 'summ_service' => $summ_service
         ]);
     }
 
