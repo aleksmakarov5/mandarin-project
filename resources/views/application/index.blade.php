@@ -21,7 +21,7 @@
         @endif
     @endcan
     @can('spm')
-        @if ($application->id_status == 4 && !$empty)
+        @if ($application->id_status == 4)
             <a href="/applications/{{ $application->id }}/send_mrk/{{ $application->id_MRK }}" class="nav-link">Передать МРК</a>
         @endif
     @endcan
