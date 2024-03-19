@@ -221,6 +221,7 @@ Route::middleware("auth:web")->group(
         Route::get('export_ds/{id}/{status_id}', [WordController::class, 'export_ds'])->name('export_ds');
         Route::get('export_zn/{id}/{status_id}', [WordController::class, 'export_zn'])->name('export_zn');
         Route::get('export_sch/{id}/{status_id}', [WordController::class, 'export_sch'])->name('export_sch');
+        Route::get('create_all/{id}/{status_id}', [WordController::class, 'create_all'])->name('create_all');
     }
 
 );

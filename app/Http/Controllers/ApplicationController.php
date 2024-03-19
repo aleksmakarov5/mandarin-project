@@ -40,7 +40,8 @@ class ApplicationController extends Controller
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
+                ->get()
+                ->sortDesc();
         } else {
             $applications = application::where(function ($query) {
                 $query
@@ -54,7 +55,7 @@ class ApplicationController extends Controller
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
+                ->get()->sortDesc();
             // dd($applications);
         }
         session(['rout' => 'applications']);
@@ -72,7 +73,7 @@ class ApplicationController extends Controller
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-            ->get();
+            ->get()->sortDesc();
         // dd($applications);
 
 
@@ -92,7 +93,7 @@ class ApplicationController extends Controller
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-            ->get();
+            ->get()->sortDesc();
         // dd($applications);
 
         session(['rout' => 'lawyers']);
@@ -111,7 +112,7 @@ class ApplicationController extends Controller
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-            ->get();
+            ->get()->sortDesc();
         // dd($applications);
 
         session(['rout' => 'archive']);
@@ -133,7 +134,7 @@ class ApplicationController extends Controller
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
+                ->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
@@ -147,7 +148,7 @@ class ApplicationController extends Controller
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
-                ->get();
+                ->get()->sortDesc();
             // dd($applications);
         }
         session(['rout' => 'directions']);
@@ -344,7 +345,7 @@ class ApplicationController extends Controller
             ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
             ->join('users', 'histories.id_user', '=', 'users.id')
             ->select('histories.*', 'application_statuses.StatusName', 'users.name')
-            ->get();
+            ->get()->sortDesc();
         // dd($rewiew->all()) ;
         return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
     }
@@ -356,7 +357,7 @@ class ApplicationController extends Controller
             ->where('application_id', '=', $id)
             // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
             // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
-            ->get();
+            ->get()->sortDesc();
         foreach ($messages as $message) {
             $message->attachment = DB::table('attachments')
                 ->where('message_id', '=', $message->id)

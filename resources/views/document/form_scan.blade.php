@@ -13,4 +13,3 @@
      <input type="hidden" name="status_id" value="{{ $status_id }}">
 
  </form>
- @include('document/attach')

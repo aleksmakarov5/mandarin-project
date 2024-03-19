@@ -61,6 +61,50 @@ class WordController extends Controller
     return trim(preg_replace('/ {2,}/', ' ', join(' ', $out)));
   }
 
+  public function month2str($month)
+  {
+    $month_name = '';
+    switch ($month) {
+      case 1:
+        $month_name = 'января';
+        break;
+      case 2:
+        $month_name = 'февраля';
+        break;
+      case 3:
+        $month_name = 'марта';
+        break;
+      case 4:
+        $month_name = 'апреля';
+        break;
+      case 5:
+        $month_name = 'мая';
+        break;
+      case 6:
+        $month_name = 'июня';
+        break;
+      case 7:
+        $month_name = 'июля';
+        break;
+      case 8:
+        $month_name = 'августа';
+        break;
+      case 9:
+        $month_name = 'сентября';
+        break;
+      case 10:
+        $month_name = 'октября';
+        break;
+      case 11:
+        $month_name = 'ноября';
+        break;
+      case 12:
+        $month_name = 'декабря';
+        break;
+    }
+    return $month_name;
+  }
+
   /**
    * Склоняем словоформу
    * @ author runcore
@@ -319,7 +363,7 @@ class WordController extends Controller
       ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
       ->where('applications.id', '=', $id)
       ->first();
-    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ap.docx');
+    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/as.docx');
     //dd($application);
     $number = date('Hi');
     $month = date('m');
@@ -855,6 +899,18 @@ class WordController extends Controller
     $estimate->save();
 
     // dd($estimate);
+    return redirect()->route('document', $id);
+  }
+  public function create_all($id, $status_id)
+  {
+    $this->export_hda($id);
+    $this->export_sch($id);
+    $this->export_dk($id);
+    $this->export_ap($id, $status_id);
+    $this->export_as($id, $status_id);
+    $this->export_if($id);
+    $this->export_ds($id);
+    $this->export_zn($id);
     return redirect()->route('document', $id);
   }
 }
