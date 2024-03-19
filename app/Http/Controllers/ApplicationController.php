@@ -597,11 +597,11 @@ class ApplicationController extends Controller
                 }
             case 2: {
                     $application->id_status = 5;
-                    $history->id_status = 5;
+
                     $application->save();
 
                     Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
-                    $history->save();
+
                     return redirect()->route('answer_fail_sel', $id);
                 }
         }
@@ -623,6 +623,12 @@ class ApplicationController extends Controller
         // dd($variants);
         $application = application::findOrFail($id);
         $application->comment_false = $request->comment;
+        $history = new history;
+        $history->id_user = Auth::user()->id;
+        $history->id_status = 5;
+        $history->id_application = $id;
+        $history->comment = $request->comment;
+        $history->save();
         $application->save();
         if (isset($variants[0])) {
             foreach ($variants as $key => $value) {
@@ -674,6 +680,7 @@ class ApplicationController extends Controller
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
         $history->id_status = 24;
+        $history->save();
         $application->save();
         return redirect()
             ->route('archive');
@@ -690,6 +697,13 @@ class ApplicationController extends Controller
         $application = application::findOrFail($id);
         $application->comment_true = $request->comment;
         $application->id_status = 10;
+        $history = new history;
+        $history->id_user = Auth::user()->id;
+        $history->id_status = 10;
+        $history->id_application = $id;
+        $history->comment = $request->comment;
+        $history->save();
+
         $application->save();
 
         // dd($variants);
@@ -751,7 +765,8 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 24;
+        $history->id_status = 11;
+        $history->save();
         $application->save();
         return redirect()
             ->route('directions');

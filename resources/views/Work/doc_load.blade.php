@@ -1,18 +1,33 @@
-@extends('layout')
-@section('main_content')
-<a href="/Work/{{$id}}" class="nav-link">Отмена</a>
-<h1>Выберите документ</h1>
-<form action="data_load" method="POST">
-    @csrf
- <div class="form-floating">
-    
-    <select class="form-control" id="location" name="location">
-        @foreach ($documents as $item)
-            <option value="{{$item->location}}">{{$item->file_name}}</option>
-        @endforeach
-    </select>
+@extends('header_menu')
+@section('main')
+    <div class="row">
+        @foreach ($documents as $key => $doc)
+            @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'pdf')
+                <div class="card" style="width: 20rem;" onclick="document.forms['form{{ $key }}'].submit()"
+                    style='cursor: pointer;'>
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <form name="form{{ $key }}" action="data_load/" method="POST">
+                                @csrf
+                                <input type="hidden" name="location" value='{{ $doc->location }}'>
+                                <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
+                                    class="card-img-top"
+                                    alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                            </form>
+                        </div>
 
-  </div>
-  <button class="nav-link" type="submit">Выбрать</button>
-</form>
+                        <div class="col-md-8">
+
+                            <div class="card-body">
+
+                                <h5 class="card-title">{{ $doc->file_name }}</h5>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+            @endif
+        @endforeach
+    </div>
 @endsection

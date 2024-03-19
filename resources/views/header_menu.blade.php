@@ -122,7 +122,7 @@
                     <button class="dropbtn">Выберите действие</button>
                     <div class="dropdown-content">
                         @can('mrk')
-                            @if ($app->id_status == 8)
+                            @if ($app->id_status == 9)
                                 <a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a>
                             @endif
                             @if ($app->id_status == 3)
@@ -138,7 +138,7 @@
                         @can('km')
                             @if ($app->id_status == 6 || $app->id_status == 7)
                                 <a href="/applications/{{ $id }}/change_status_km/1">Принять в работу</a>
-                                <a href="/applications/{{ $id }}/change_status_km/1">Подготовить отказ</a>
+                                <a href="/applications/{{ $id }}/change_status_km/2">Подготовить отказ</a>
                             @endif
                         @endcan
                         @can('spm')
