@@ -6,7 +6,7 @@
     $Works_serv = DB::table('works')->where('id_application', '=', $id)->where('price_service', '<>', 0)->get();
     $summ_service = 0;
     foreach ($Works_serv as $work) {
-        $summ_service = $summ_service + (int) str_replace(' ', '', $work->price_service);
+        $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
     }
 
     // dd($rewiew->all()) ;
@@ -31,12 +31,12 @@
         }
     }
     if (isset($estimates->price_repair_full)) {
-        $eco_delta_full = $estimates->price_repair_full - $summ_order - $summ_service;
+        $eco_delta_full = (float) str_replace(' ', '', $estimates->price_repair_full) - $summ_order - $summ_service;
     } else {
         $eco_delta_full = $summ_ic_full - $summ_order - $summ_service;
     }
     if (isset($estimates->price_repair_half)) {
-        $eco_delta_half = $estimates->price_repair_half - $summ_order - $summ_service;
+        $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
     } else {
         $eco_delta_half = $summ_ic_half - $summ_order - $summ_service;
     }

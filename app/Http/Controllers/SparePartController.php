@@ -63,7 +63,7 @@ class SparePartController extends Controller
     }
     public function SparePart($id)
     {
-        $eco = $this->count($id);
+        $eco = '';
 
         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();

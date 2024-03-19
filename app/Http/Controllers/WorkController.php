@@ -65,7 +65,7 @@ class WorkController extends Controller
     }
     public function Work($id)
     {
-        $eco = $this->count($id);
+        $eco = '';
 
         $Works_ic = DB::table('works')
             ->where('id_application', '=', $id)
