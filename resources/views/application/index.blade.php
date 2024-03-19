@@ -3,7 +3,7 @@
     Заявкa
 @endsection
 @section('main')
-    @can('admin')
+    @can('admin', 'mrk')
         <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
         <br>
         <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
@@ -29,7 +29,7 @@
         @if ($application->id_status == 3)
             <form action="/applications/{{ $application->id }}/change_status" method="POST">
                 @csrf
-                <select name="variant" id="var" class="form-control">
+                <select name="variant" id="var" class="form-cont">
                     <option value="1">Передать запчастисту для предварительного расчета</option>
                     <option value="2">Принять в работу</option>
                     <option value="3">Отклонить по причине отказа клиента</option>
@@ -38,21 +38,12 @@
                 <input type="submit" class="nav-link" value="Выбрать">
             </form>
         @endif
-
-        <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
-        <br>
-        <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
-        <br>
-        @if ($application->id_status == 9)
-            <a href="/answer_true_sel/{{ $application->id }}" class="nav-link">Подготовить
-                ответ</a>
-        @endif
     @endcan
     @can('km')
         @if ($application->id_status == 6 || $application->id_status == 7)
             <form action="/applications/{{ $application->id }}/change_status_km" method="POST">
                 @csrf
-                <select name="variant" id="var" class="form-control">
+                <select name="variant" id="var" class="form-cont">
                     <option value="1">Принять в работу</option>
                     <option value="2">Подготовить отказ</option>
                 </select>

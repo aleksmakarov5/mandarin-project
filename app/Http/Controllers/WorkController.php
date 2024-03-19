@@ -7,10 +7,66 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\work;
 
+
+
 class WorkController extends Controller
 {
+    public function count($id)
+    {
+        $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
+        $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        $Works_serv = DB::table('works')
+            ->where('id_application', '=', $id)
+            ->where('price_service', '<>', 0)
+            ->get();
+        $summ_service = 0;
+        foreach ($Works_serv as $work) {
+            $summ_service = $summ_service + (int) str_replace(' ', '', $work->price_service);
+        }
+
+
+        // dd($rewiew->all()) ;
+        $summ_ic_full = 0;
+        $summ_ic_half = 0;
+        $summ_order = 0;
+        $delta_full = 0;
+        $delta_half = 0;
+        foreach ($spareparts as $i => $sparepart) {
+            $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
+            $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
+            switch ($sparepart->selected_price) {
+                case 1:
+                    $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
+                    break;
+                case 2:
+                    $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
+                    break;
+                case 3:
+                    $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
+                    break;
+            }
+        }
+        if (isset($estimates->price_repair_full)) {
+            $delta_full = $estimates->price_repair_full - $summ_order - $summ_service;
+        } else {
+            $delta_full =  $summ_ic_full - $summ_order - $summ_service;
+        }
+        if (isset($estimates->price_repair_half)) {
+            $delta_half = $estimates->price_repair_half - $summ_order - $summ_service;
+        } else {
+            $delta_half =  $summ_ic_half - $summ_order - $summ_service;
+        }
+
+
+        return [
+            'delta_full' => $delta_full,
+            'delta_half' => $delta_half,
+        ];
+    }
     public function Work($id)
     {
+        $eco = $this->count($id);
+
         $Works_ic = DB::table('works')
             ->where('id_application', '=', $id)
             ->where('summ', '<>', 0)
@@ -32,7 +88,8 @@ class WorkController extends Controller
         return view('Work.index', [
             'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
             'id' => $id, 'delta' => $delta,
-            'summ_ic' => $summ_ic, 'summ_service' => $summ_service
+            'summ_ic' => $summ_ic, 'summ_service' => $summ_service,
+            'eco' => $eco
         ]);
     }
 

@@ -757,12 +757,15 @@ class WordController extends Controller
     // dd($array1);
 
     $templateProcessor->cloneRowAndSetValues('name', $array1);
-    $templateProcessor->setValue('price_repair', $estimate->price_repair);
-    $templateProcessor->setValue('price_paint', $estimate->price_paint);
-    $templateProcessor->setValue('price_zip', $estimate->price_zip);
-    $templateProcessor->setValue('price_work', $estimate->price_work);
-    $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
-
+    if (isset($estimate->price_repair)) {
+      $templateProcessor->setValue('price_repair', $estimate->price_repair);
+      $templateProcessor->setValue('price_paint', $estimate->price_paint);
+      $templateProcessor->setValue('price_zip', $estimate->price_zip);
+      $templateProcessor->setValue('price_work', $estimate->price_work);
+      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $estimate->zn_number = $num . ' от ' . $date . 'г.';
+      $estimate->save();
+    }
 
 
 
@@ -792,8 +795,7 @@ class WordController extends Controller
     $document->id_status = 16;
     $document->save();
 
-    $estimate->zn_number = $num . ' от ' . $date . 'г.';
-    $estimate->save();
+
 
     // dd($estimate);
     return redirect()->route('document', $id);
@@ -861,11 +863,11 @@ class WordController extends Controller
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
     $templateProcessor->setValue('vin', $application->vin);
-
-    $templateProcessor->setValue('zn_num', $estimate->zn_number);
-    $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
-    $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
-
+    if (isset($estimate->price_repair)) {
+      $templateProcessor->setValue('zn_num', $estimate->zn_number);
+      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
+    }
 
 
 
@@ -895,22 +897,21 @@ class WordController extends Controller
     $document->id_status = 18;
     $document->save();
 
-    $estimate->zn_number = $num . ' от ' . $date . 'г.';
-    $estimate->save();
-
     // dd($estimate);
     return redirect()->route('document', $id);
   }
   public function create_all($id, $status_id)
   {
-    $this->export_hda($id);
-    $this->export_sch($id);
+
+
     $this->export_dk($id);
+    $this->export_ds($id);
+    $this->export_if($id);
     $this->export_ap($id, $status_id);
     $this->export_as($id, $status_id);
-    $this->export_if($id);
-    $this->export_ds($id);
+    $this->export_hda($id);
     $this->export_zn($id);
+    $this->export_sch($id);
     return redirect()->route('document', $id);
   }
 }

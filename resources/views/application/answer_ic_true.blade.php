@@ -40,9 +40,8 @@
 
                     <form action="/answer_ic_true_sent/{{ $id }}" method="post">
                         @csrf
-                        <div class="form-floating">
-                            <input type="text" name="to" id="to" class="form-control"
-                                value="{{ $to }}">
+                        <div class="form-float">
+                            <input type="text" name="to" id="to" class="form-cont" value="{{ $to }}">
                             <label for="to">Получатель</label>
                         </div>
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">
@@ -51,7 +50,7 @@
                                 {{ $application->comment_true }}
                             </div>
                             <div class="form-outline">
-                                <textarea class="form-control" id="textAreaExample2" rows="15" name=message>
+                                <textarea class="form-cont" id="textAreaExample2" rows="15" name=message>
 Добрый день! 
 По заявке {{ $application->numberInsuranceCompanyApplication }} принято положительное решение @if (isset($true_vars[0]))
 со следующими условиями:

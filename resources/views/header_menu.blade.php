@@ -3,7 +3,48 @@
     Домашняя
 @endsection
 @section('main_content')
-    <h1>Заявка № {{ $id }} </h1>
+    <table class="table">
+        <tr>
+            <td>
+                <h1>Заявка № {{ $id }} </h1>
+            </td>
+            <td>
+                @if (isset($eco['delta_full']))
+                    <table>
+                        <tr>
+                            <td>
+                                Остаток от полной стоимости:
+                            </td>
+                            <td>
+                                <div
+                                    class="
+       @if ($eco['delta_full'] > 0) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                    {{ $eco['delta_full'] }} руб;
+                                </div>
+                            </td>
+                            <td>
+                                Остаток от стоимости c учетом износа:
+                            </td>
+                            <td>
+                                <div
+                                    class="
+       @if ($eco['delta_half'] > 0) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                    {{ $eco['delta_half'] }} руб; </div>
+                            </td>
+                        </tr>
+                    </table>
+                @endif
+            </td>
+
+        </tr>
+    </table>
+
     <header class="d-flex justify-content-center py-3">
         <ul class="nav nav-pills">
             <li class="nav-item"><a href="/application/{{ $id }}"
@@ -30,6 +71,22 @@
                     aria-current="page">Документы</a></li>
             <li class="nav-item"><a href="/history/{{ $id }}"
                     class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a></li>
+            <li></li>
+
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="dropbtn">Выберите действие</button>
+                    <div class="dropdown-content">
+                        @if ($application->id_status == 9)
+                            <a href="/answer_true_sel/{{ $application->id }}">Подготовить ответ</a>
+                            <a href="/answer_true_sel/{{ $application->id }}">Подготовить ответ</a>
+                            <a href="/answer_true_sel/{{ $application->id }}">Подготовить ответ</a>
+                        @endif
+
+                    </div>
+                </div>
+
+            </li>
         </ul>
     </header>
     @yield('main')

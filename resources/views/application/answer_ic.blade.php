@@ -40,7 +40,7 @@
 
                     <form action="/answer_ic_sent/{{ $id }}" method="post">
                         @csrf
-                        <div class="form-floating">
+                        <div class="form-float">
                             <Select name="to" class="form-control">
                                 <option value="">Выберите получателя</option>
                                 <option value="0">Все</option>
