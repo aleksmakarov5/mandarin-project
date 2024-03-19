@@ -545,13 +545,13 @@ class ApplicationController extends Controller
         $history->save();
         return redirect()->route('applications');
     }
-    public function change_status(Request $request, $id)
+    public function change_status($id, $variant)
     {
         $application = application::findOrFail($id);
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        switch ($request->variant) {
+        switch ($variant) {
             case 1:
                 $application->id_status = 4;
                 // dd ($application->id_status);
@@ -580,13 +580,13 @@ class ApplicationController extends Controller
         $history->save();
         return redirect()->route('applications');
     }
-    public function change_status_km(Request $request, $id)
+    public function change_status_km($id, $variant)
     {
         $application = application::findOrFail($id);
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        switch ($request->variant) {
+        switch ($variant) {
             case 1: {
                     $application->id_status = 8;
                     $history->id_status = 8;
