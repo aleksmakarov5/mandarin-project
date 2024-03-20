@@ -19,6 +19,7 @@ use App\Models\message;
 use App\Models\address;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
+use Carbon\Carbon;
 
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
@@ -27,8 +28,10 @@ use Psy\Command\HistoryCommand;
 
 class ApplicationController extends Controller
 {
+
     public function applications()
     {
+        $current = carbon::now();
 
         if (Gate::allows('admin')) {
             $applications = application::where(function ($query) {
@@ -38,6 +41,7 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get()
@@ -57,6 +61,9 @@ class ApplicationController extends Controller
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get()->sortDesc();
             // dd($applications);
+        }
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
         }
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications],);
