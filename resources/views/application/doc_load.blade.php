@@ -6,7 +6,7 @@
                 <div class="card" style="width: 20rem;">
                     <div class="row g-0">
                         <div class="col-md-4">
-                            <form name="form{{ $key }}" action="data_load/" method="POST">
+                            <form action="data_load" method="POST" name="form{{ $key }}">
                                 @csrf
                                 <input type="hidden" name="location" value='{{ $doc->location }}'>
                                 <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
