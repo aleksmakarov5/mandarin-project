@@ -9,10 +9,10 @@
                             <form name="form{{ $key }}" action="data_load/" method="POST">
                                 @csrf
                                 <input type="hidden" name="location" value='{{ $doc->location }}'>
-                                <img onclick="document.forms['form{{ $key }}'].submit()" style='cursor: pointer;'
-                                    src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
+                                <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
                                     class="card-img-top"
                                     alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                                <input type="submit" value="Выбрать">
                             </form>
                         </div>
 
