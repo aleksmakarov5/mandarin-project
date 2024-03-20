@@ -31,7 +31,7 @@ class ApplicationController extends Controller
 
     public function applications()
     {
-        $current = carbon::now();
+
 
         if (Gate::allows('admin')) {
             $applications = application::where(function ($query) {
@@ -62,6 +62,7 @@ class ApplicationController extends Controller
                 ->get()->sortDesc();
             // dd($applications);
         }
+        $current = carbon::now();
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
         }
@@ -82,7 +83,10 @@ class ApplicationController extends Controller
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
             ->get()->sortDesc();
         // dd($applications);
-
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+        }
 
         session(['rout' => 'failures']);
 
@@ -104,7 +108,10 @@ class ApplicationController extends Controller
         // dd($applications);
 
         session(['rout' => 'lawyers']);
-
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+        }
 
         return view('applications', ['applications' => $applications],);
     }
@@ -124,7 +131,10 @@ class ApplicationController extends Controller
 
         session(['rout' => 'archive']);
 
-
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+        }
         return view('applications', ['applications' => $applications],);
     }
 
@@ -156,6 +166,7 @@ class ApplicationController extends Controller
 
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
                 ->get()->sortDesc();
+
             // dd($applications);
         }
         session(['rout' => 'directions']);
@@ -163,7 +174,10 @@ class ApplicationController extends Controller
 
 
 
-
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+        }
         return view('applications', ['applications' => $applications],);
     }
 
