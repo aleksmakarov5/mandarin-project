@@ -150,7 +150,7 @@
                                 <a href="/applications/{{ $id }}/change_status_km/2">Подготовить отказ</a>
                             @endif
                         @endcan
-                        @canany('mrk|admin|buh|km')
+                        @canany(['mrk', 'admin', 'buh', 'km'])
                             @if ($app->id_status > 10 && $app->id_status < 23)
                                 @foreach ($status as $stat)
                                     @if ($stat->id > $app->id_status && $stat->id < 23)
