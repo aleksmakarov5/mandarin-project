@@ -135,6 +135,9 @@ Route::middleware("auth:web")->group(
             ->name('applications.send_mrk');
         Route::get('applications/{id}/change_status/{variant}', [ApplicationController::class, 'change_status'])
             ->name('applications.change_status');
+        Route::get('applications/{id}/change_st/{status_id}', [ApplicationController::class, 'change_st'])
+            ->name('applications.change_st');
+
         Route::get('applications/{id}/change_status_km/{variant}', [ApplicationController::class, 'change_status_km'])
             ->name('applications.change_status_km');
 

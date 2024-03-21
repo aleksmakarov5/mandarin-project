@@ -1,6 +1,8 @@
 @php
     use App\Models\application;
+    use App\Models\ApplicationStatus;
     $app = application::where('id', '=', $id)->first();
+    $status = ApplicationStatus::get()->all();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
     $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
     $Works_serv = DB::table('works')->where('id_application', '=', $id)->where('price_service', '<>', 0)->get();
@@ -146,6 +148,16 @@
                             @if ($app->id_status == 6 || $app->id_status == 7)
                                 <a href="/applications/{{ $id }}/change_status_km/1">Принять в работу</a>
                                 <a href="/applications/{{ $id }}/change_status_km/2">Подготовить отказ</a>
+                            @endif
+                        @endcan
+                        @can('mrk', 'admin', 'buh', 'km')
+                            @if ($app->id_status > 10 && $app->id_status < 23)
+                                @foreach ($status as $stat)
+                                    @if ($stat->id > 10 && $stat->id < 23)
+                                        <a
+                                            href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                    @endif
+                                @endforeach
                             @endif
                         @endcan
                         @can('spm')
