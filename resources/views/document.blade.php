@@ -40,8 +40,8 @@
                         @else 
                         
                         @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')
-                
-                        @if (file_exists('/storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
+                1
+                        @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
                         href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
