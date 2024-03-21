@@ -3,13 +3,18 @@
     Заявкa
 @endsection
 @section('main')
-    @can('admin', 'mrk')
+    @can('admin')
         <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
         <br>
         <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
         <br>
     @endcan
-
+    @can('mrk')
+        <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
+        <br>
+        <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
+        <br>
+    @endcan
 
 
     <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
