@@ -260,7 +260,7 @@ class WordController extends Controller
     $document->id_status = 2;
     $document->save();
 
-    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
 
@@ -445,11 +445,11 @@ class WordController extends Controller
     $document->file_size = filesize($pathToSave);
     $document->location = $filename;
     $document->id_status = $status_id;
-    echo $pathToSave;
+    // echo $pathToSave;
     $document->save();
 
-    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
-    // return redirect()->route('document', $id);
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+    return redirect()->route('document', $id);
   }
 
   public function export_if($id)
@@ -672,7 +672,7 @@ class WordController extends Controller
     $document->id_status = 4;
     $document->save();
 
-    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
 
@@ -903,7 +903,7 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 18;
     $document->save();
-    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
 
     // dd($estimate);
     return redirect()->route('document', $id);
