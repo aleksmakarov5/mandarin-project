@@ -122,10 +122,10 @@
             <li class="nav-item">
                 <div class="dropdown">
                     <button class="dropbtn">
-                        @if ($app->id_status < 11)
-                            Выберите действие
-                        @else
+                        @if ($app->id_status > 10 && $app->id_status < 23)
                             Установить статус
+                        @else
+                            Выберите действие
                         @endif
 
                     </button>
@@ -177,6 +177,10 @@
                             @endif
                             @if ($app->id_status == 10)
                                 <a href="/answer_ic_true/{{ $id }}" class="nav-link">Подготовить ответ в ск</a>
+                                <br>
+                            @endif
+                            @if ($app->id_status == 24 && $app->id_status == 25)
+                                <a href="/applications/{{ $id }}/change_st/2">Вернуть в работу</a>
                                 <br>
                             @endif
                         @endcan
