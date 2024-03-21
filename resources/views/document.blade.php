@@ -3,13 +3,25 @@
     Документы
 @endsection
 @section('main')
+    @php
+        $all = true;
+        foreach ($document as $doc) {
+            if ($doc->id_status == 2) {
+                $all = false;
+            }
+        }
+    @endphp
+
     <form action="/documents/{{ $id }}/doc_add" method="post" enctype="multipart/form-data">
         @csrf <!-- с версии Laravel 5.6 -->
         <table class='table'>
             <tr>
                 <td><input type="file" name="userfile[]" multiple onchange="this.form.submit()"></td>
-                <td><a href="/create_all/{{ $id }}/0" class="nav-link">Создать все
-                        печатные формы</a></td>
+                @if ($all)
+                    <td><a href="/create_all/{{ $id }}/0" class="nav-link">Создать все
+                            печатные формы</a></td>
+                @endif
+
             </tr>
         </table>
 
