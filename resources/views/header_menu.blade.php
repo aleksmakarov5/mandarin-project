@@ -151,7 +151,7 @@
                             @endif
                         @endcan
                         @can('mrk', 'admin', 'buh', 'km')
-                            @if ($app->id_status > 10 && $app->id_status < 23)
+                            @if ($app->id_status > 11 && $app->id_status < 23)
                                 @foreach ($status as $stat)
                                     @if ($stat->id > 10 && $stat->id < 23)
                                         <a
