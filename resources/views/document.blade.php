@@ -39,14 +39,11 @@
                                 pathinfo($doc->location, PATHINFO_EXTENSION) == '7z') href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}'
                         @else 
                         
-                        href="/storage/files/{{ $id }}/
-                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')
-                        @if (file_exists(pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
-                        {{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}
-                        @else
-                        {{ $doc->location }} @endif
-                        @else {{ $doc->location }} @endif
-                            " target="_blank"
+                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')@if (file_exists(pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
+                        href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
+                        @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
+                        @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
+                            target="_blank"
         @endif>
         <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
             class="card-img-top"
