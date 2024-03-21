@@ -135,10 +135,10 @@ class WordController extends Controller
     $i = 1;
 
     foreach ($troubleshooting as $trouble) {
-      $array[] = array('id_row' => str($i), 'PartName' => $trouble->PartName, 'Work' => $trouble->Work, 'ExpertApinion' => $trouble->ExpertApinion, 'Сonclusion' => $trouble->Сonclusion);
+      $array[] = array('PartName' => $trouble->PartName, 'Work' => $trouble->Work);
       $i++;
     }
-    dd($array);
+    // dd($array);
 
     $templateProcessor->cloneRowAndSetValues('PartName', $array);
     $filename = "Акт скрытых повреждений №" . date('d-m-y_hms') . ".docx";
