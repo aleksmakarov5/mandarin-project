@@ -6,7 +6,7 @@
     @php
         $all = true;
         foreach ($document as $doc) {
-            if ($doc->id_status == 2) {
+            if ($doc->id_status != 0) {
                 $all = false;
             }
         }
