@@ -807,6 +807,6 @@ class ApplicationController extends Controller
 
         $application->save();
         $history->save();
-        return redirect()->route('applications');
+        return redirect()->back();
     }
 }
