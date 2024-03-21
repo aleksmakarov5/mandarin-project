@@ -163,6 +163,8 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 11;
     $document->save();
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+
     return redirect()->route('document', $id);
   }
 
@@ -354,6 +356,7 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = $status_id;
     $document->save();
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
 
@@ -547,6 +550,8 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 6;
     $document->save();
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+
     return redirect()->route('document', $id);
   }
 
@@ -801,6 +806,7 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 16;
     $document->save();
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
 
 
 
