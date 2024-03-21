@@ -445,6 +445,7 @@ class WordController extends Controller
     $document->file_size = filesize($pathToSave);
     $document->location = $filename;
     $document->id_status = $status_id;
+    echo $pathToSave;
     $document->save();
 
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
