@@ -449,7 +449,7 @@ class WordController extends Controller
     $document->save();
 
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '"');
-    return redirect()->route('document', $id);
+    // return redirect()->route('document', $id);
   }
 
   public function export_if($id)
