@@ -119,7 +119,14 @@
 
             <li class="nav-item">
                 <div class="dropdown">
-                    <button class="dropbtn">Выберите действие</button>
+                    <button class="dropbtn">
+                        @if ($app->id_status < 11)
+                            Выберите действие
+                        @else
+                            Установить статус
+                        @endif
+
+                    </button>
                     <div class="dropdown-content">
                         @can('mrk')
                             @if ($app->id_status == 9)
