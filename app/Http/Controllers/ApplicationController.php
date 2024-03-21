@@ -792,4 +792,21 @@ class ApplicationController extends Controller
         return redirect()
             ->route('directions');
     }
+
+    public function change_st($id, $status_id)
+    {
+        $application = application::findOrFail($id);
+        $history = new history;
+        $history->id_user = Auth::user()->id;
+        $history->id_application = $id;
+
+        $application->id_status = $status_id;
+        // dd ($application->id_status);
+
+        $history->id_status = $status_id;
+
+        $application->save();
+        $history->save();
+        return redirect()->route('applications');
+    }
 }
