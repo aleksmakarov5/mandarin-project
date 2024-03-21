@@ -47,7 +47,7 @@
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
                             target="_blank"
         @endif>
-        /storage/files/{{ $id }} / {{ pathinfo($doc->location, PATHINFO_FILENAME) }}.pdf'
+        /storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) }}.pdf'
         <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
             class="card-img-top"
             alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
