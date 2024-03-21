@@ -40,55 +40,57 @@
                         @else 
                         
                         href="/storage/files/{{ $id }}/
+                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')
                         @if (file_exists(pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
                         {{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}
                         @else
-                        {{ $doc->location }} @endif " target="_blank"
-                                        @endif>
-                            <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
-                                class="card-img-top"
-                                alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
-                        </a>
-                    </div>
+                        {{ $doc->location }} @endif
+                        @else {{ $doc->location }} @endif
+                            " target="_blank"
+        @endif>
+        <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
+            class="card-img-top"
+            alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+        </a>
+    </div>
 
-                    <div class="col-md-8">
-                        <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img
-                                src="/storage/img/edit.png" width="35" alt="edit">
-                        </a>
-                        <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
-                            href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img
-                                src="/storage/img/delete.png" width="35" alt="delete">
-                        </a>
-                        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
-                                src="/storage/img/download.png" width="35" alt="Скачать">
-                        </a>
-                        <div class="card-body">
-                            @if (isset($document_edit->id))
-                                @if ($document_edit->id == $doc->id)
-                                    <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}"
-                                        method="POST">
-                                        @csrf
-                                        <input type="text" name="file_name" value="{{ $doc_name }}">
-                                        <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
-                                        <input type="submit" value="ок">
-                                    </form>
-                                @else
-                                    <h5 class="card-title">{{ $doc->file_name }}</h5>
-                                @endif
-                            @else
-                                <h5 class="card-title">{{ $doc->file_name }}</h5>
-                            @endif
-                            <p class="file-size">
-                                {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
+    <div class="col-md-8">
+        <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img src="/storage/img/edit.png"
+                width="35" alt="edit">
+        </a>
+        <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
+            href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img src="/storage/img/delete.png"
+                width="35" alt="delete">
+        </a>
+        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img src="/storage/img/download.png"
+                width="35" alt="Скачать">
+        </a>
+        <div class="card-body">
+            @if (isset($document_edit->id))
+                @if ($document_edit->id == $doc->id)
+                    <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}" method="POST">
+                        @csrf
+                        <input type="text" name="file_name" value="{{ $doc_name }}">
+                        <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
+                        <input type="submit" value="ок">
+                    </form>
+                @else
+                    <h5 class="card-title">{{ $doc->file_name }}</h5>
+                @endif
+            @else
+                <h5 class="card-title">{{ $doc->file_name }}</h5>
+            @endif
+            <p class="file-size">
+                {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
 
 
-                        </div>
+        </div>
 
-                    </div>
-                </div>
+    </div>
+    </div>
 
-            </div>
-        @endforeach
+    </div>
+    @endforeach
     </div>
     <br>
     @if (session('rout') == 'directions')
