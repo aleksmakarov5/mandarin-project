@@ -752,7 +752,7 @@ class WordController extends Controller
       ->get();
 
     foreach ($Works as $work) {
-      $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => $work->price, 'count_hours' => $work->count_hours, 'sum_w' => $work->summ);
+      $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
     }
     // dd($array1);
 
