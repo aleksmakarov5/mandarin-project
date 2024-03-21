@@ -179,7 +179,7 @@
                                 <a href="/answer_ic_true/{{ $id }}" class="nav-link">Подготовить ответ в ск</a>
                                 <br>
                             @endif
-                            @if ($app->id_status == 24 && $app->id_status == 25)
+                            @if ($app->id_status == 24 || $app->id_status == 25)
                                 <a href="/applications/{{ $id }}/change_st/2">Вернуть в работу</a>
                                 <br>
                             @endif
