@@ -46,10 +46,11 @@
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
                             target="_blank"
-        @endif>{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}
+        @endif>
         <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
             class="card-img-top"
             alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+        {{ pathinfo($doc->location, PATHINFO_EXTENSION) }}
         </a>
     </div>
 
