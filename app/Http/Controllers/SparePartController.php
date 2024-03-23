@@ -16,7 +16,7 @@ class SparePartController extends Controller
         $Works_serv = DB::table('works')
             ->where('id_application', '=', $id)
             ->where('price_service', '<>', 0)
-            ->orderBy('npp')
+
             ->get();
         $summ_service = 0;
         foreach ($Works_serv as $work) {
@@ -68,6 +68,7 @@ class SparePartController extends Controller
 
         $spareparts = DB::table('spare_parts')
             ->where('id_application', '=', $id)
+            ->orderBy('npp')
             ->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')
@@ -276,7 +277,6 @@ class SparePartController extends Controller
                     'count' => str_replace(' ', '', $count[$i]),
                     'iznos' => str_replace(' ', '', $iznos[$i]),
                     'npp' => $i
-
                 ]
 
             );
