@@ -68,7 +68,7 @@ class SparePartController extends Controller
 
         $spareparts = DB::table('spare_parts')
             ->where('id_application', '=', $id)
-            ->orderBy('npp')
+
             ->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')
