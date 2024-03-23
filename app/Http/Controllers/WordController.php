@@ -762,6 +762,7 @@ class WordController extends Controller
     $Works = DB::table('works')
       ->where('id_application', '=', $id)
       ->where('price', '<>', '0')
+      ->orderBy('npp')
       ->get();
 
     foreach ($Works as $work) {

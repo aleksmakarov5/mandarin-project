@@ -205,13 +205,18 @@ class WorkController extends Controller
         $id_application = $request['id_application'];
         //dd($request->name);
         for ($i = 1; $i <= count($name); $i++) {
-            $Work = new Work;
-            $Work->name = $name[$i];
-            $Work->summ = str_replace(' ', '', $summ[$i]);
-            $Work->price = str_replace(' ', '', $price[$i]);
-            $Work->count_hours = str_replace(' ', '', $count_hours[$i]);
-            $Work->id_application = $id_application;
-            $Work->save();
+            Work::updateOrCreate(
+                [
+                    'id_application' => $id_application,
+                    'name' => $name[$i],
+                ],
+                [
+                    'price' => $price[$i],
+                    'count_hours' => str_replace(' ', '', $count_hours[$i]),
+                    'summ' => str_replace(' ', '', $summ[$i]),
+                    'npp' => $i
+                ]
+            );
         }
 
         return redirect()->route('Work', $id);
