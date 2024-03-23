@@ -497,7 +497,7 @@ class ApplicationController extends Controller
     {
 
         if (isset($request->price_sp_full)) {
-            $estimates = estimate::firstorcreate(
+            $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
                 [
                     'price_sp_full' => $request->price_sp_full,

@@ -260,16 +260,32 @@ class SparePartController extends Controller
         $iznos = $request['iznos'];
         //dd($request->name);
         for ($i = 1; $i <= count($name); $i++) {
-            $SparePart = new SparePart;
-            $SparePart->name = $name[$i];
-            $SparePart->price_ic_full = str_replace(' ', '', $price_ic_full[$i]);
-            $SparePart->part_number = str_replace(' ', '', $part_number[$i]);
-            $SparePart->price_ic_half = str_replace(' ', '', $price_ic_half[$i]);
-            $SparePart->price = str_replace(' ', '', $price[$i]);
-            $SparePart->count = str_replace(' ', '', $count[$i]);
-            $SparePart->iznos = str_replace(' ', '', $iznos[$i]);
-            $SparePart->id_application = str_replace(' ', '', $id_application);
-            $SparePart->save();
+            SparePart::updateOrCreate(
+                [
+                    'id_application' => $id_application,
+                    'name' => $name[$i],
+                    'part_number' => $part_number[$i]
+                ],
+                [
+                    'price' => $price[$i],
+                    'price_ic_full' => str_replace(' ', '', $price_ic_full[$i]),
+                    'price_ic_half' => str_replace(' ', '', $price_ic_half[$i]),
+                    'count' => str_replace(' ', '', $count[$i]),
+                    'iznos' => str_replace(' ', '', $iznos[$i]),
+
+                ]
+
+            );
+            // $SparePart = new SparePart;
+            // $SparePart->name = $name[$i];
+            // $SparePart->price_ic_full = str_replace(' ', '', $price_ic_full[$i]);
+            // $SparePart->part_number = str_replace(' ', '', $part_number[$i]);
+            // $SparePart->price_ic_half = str_replace(' ', '', $price_ic_half[$i]);
+            // $SparePart->price = str_replace(' ', '', $price[$i]);
+            // $SparePart->count = str_replace(' ', '', $count[$i]);
+            // $SparePart->iznos = str_replace(' ', '', $iznos[$i]);
+            // $SparePart->id_application = str_replace(' ', '', $id_application);
+            // $SparePart->save();
         }
 
         return redirect()->route('SparePart', $id);
