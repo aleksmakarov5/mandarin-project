@@ -883,3 +883,7 @@ div.sticky {
 .dropdown:hover .dropbtn {
     background-color: #eb6700;
 }
+
+.table-count td {
+    padding: 4px;
+}

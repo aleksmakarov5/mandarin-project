@@ -47,7 +47,7 @@
                 <th scope="col"></th>
                 <th scope="col">{{ $summ_ic_full }}</th>
                 <th scope="col">{{ $summ_ic_half }}</th>
-                <th scope="col" colspan="7">{{ $summ_order }}</th>
+                <th scope="col" colspan="7"></th>
                 <th scope="col">
                     <div
                         class="

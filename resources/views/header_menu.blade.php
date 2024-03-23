@@ -5,16 +5,19 @@
     $status = ApplicationStatus::get()->all();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
     $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
-    $Works_serv = DB::table('works')->where('id_application', '=', $id)->where('price_service', '<>', 0)->get();
+    $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
     $summ_service = 0;
+    $summ_service_ic = 0;
     foreach ($Works_serv as $work) {
         $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
+        $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
     }
 
     // dd($rewiew->all()) ;
     $summ_ic_full = 0;
     $summ_ic_half = 0;
     $summ_order = 0;
+    $proc = 0;
     $eco_delta_full = 0;
     $eco_delta_half = 0;
     foreach ($spareparts as $i => $sparepart) {
@@ -34,13 +37,15 @@
     }
     if (isset($estimates->price_repair_full)) {
         $eco_delta_full = (float) str_replace(' ', '', $estimates->price_repair_full) - $summ_order - $summ_service;
+        $proc = round(($summ_order / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
     } else {
-        $eco_delta_full = $summ_ic_full - $summ_order - $summ_service;
+        $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service;
+        $proc = round(($summ_order / ($summ_ic_full + $summ_service_ic)) * 100);
     }
     if (isset($estimates->price_repair_half)) {
         $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
     } else {
-        $eco_delta_half = $summ_ic_half - $summ_order - $summ_service;
+        $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
     }
 
 @endphp
@@ -56,11 +61,16 @@
             </td>
             <td>
                 @if (isset($eco_delta_full))
-                    <table>
+                    <table class="table-count">
                         <tr>
                             <td>
                                 Остаток от полной стоимости:
                             </td>
+                            <td> Стоимость запчастей</td>
+                            <td>Стоимость работ</td>
+                        </tr>
+                        <tr>
+
                             <td>
                                 <div
                                     class="
@@ -72,17 +82,26 @@
                                 </div>
                             </td>
                             <td>
-                                Остаток от стоимости c учетом износа:
+                                <div
+                                    class="
+       @if ($proc < 21) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                    {{ $summ_order }} руб; ({{ $proc }}%)
+                                </div>
                             </td>
                             <td>
                                 <div
                                     class="
-       @if ($eco_delta_half > 0) alert alert-success
+       @if ($summ_service > 0) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $eco_delta_half }} руб; </div>
+                                    {{ $summ_service }} руб;
+                                </div>
                             </td>
+
                         </tr>
                     </table>
                 @endif
