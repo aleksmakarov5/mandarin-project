@@ -483,6 +483,10 @@ class ApplicationController extends Controller
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
             $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
             $estimate = explode('<br/>', $estimate);
+            for ($i = 0; $i < 30; $i++) {
+                if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                    unset($estimate[$i]);
+            }
             // dd($estimate);
             if (is_numeric(str_replace(' ', '', $estimate[1])))
                 $price[2] = str_replace(' ', '', $estimate[1]);
