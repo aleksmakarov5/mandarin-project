@@ -485,7 +485,8 @@ class ApplicationController extends Controller
             $estimate = explode('<br/>', $estimate);
             for ($i = 0; $i < 30; $i++) {
                 if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                    unset($estimate[$i]);
+                    for ($j = $i; $j < 30; $j++)
+                        $estimate[$j] = $estimate[$j + 1];
             }
             // dd($estimate);
             if (is_numeric(str_replace(' ', '', $estimate[1])))
