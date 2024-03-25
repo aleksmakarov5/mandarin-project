@@ -483,9 +483,9 @@ class ApplicationController extends Controller
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
             $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
             $estimate = explode('<br/>', $estimate);
-            for ($i = 0; $i < 30; $i++) {
+            for ($i = 0; $i < count($estimate) - 1; $i++) {
                 if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                    for ($j = $i; $j < 30; $j++)
+                    for ($j = $i; $j < count($estimate) - 1; $j++)
                         $estimate[$j] = $estimate[$j + 1];
             }
             // dd($estimate);
