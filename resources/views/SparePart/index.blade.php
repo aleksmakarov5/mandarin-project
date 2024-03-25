@@ -452,60 +452,63 @@
         </tbody>
     </table>
     @if (isset($estimate->price_sp_full))
-        <table class="table table-striped-columns table-hover table-group-divider table-responsive">
+        <table @can('admin')
+            id='demo'
+        @endcan
+            class="table table-striped-columns table-hover table-group-divider table-responsive">
 
             <tr>
                 <th>Cтоимость узлов и деталей:</th>
-                <th>
+                <td>
                     {{ $estimate->price_sp_full }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Cтоимость узлов и деталей c учетом износа:</th>
-                <th>
+                <td>
                     {{ $estimate->price_sp_half }}
-                </th>
+                </td>
             </tr>
 
             <tr>
                 <th>Cтоимость ремонта/замены:</th>
-                <th>
+                <td>
                     {{ $estimate->price_repair }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Cтоимость окраски контроля: </th>
-                <th>
+                <td>
                     {{ $estimate->price_paint }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Cтоимость расходных материалов: </th>
-                <th>
+                <td>
                     {{ $estimate->price_zip }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Cтоимость работ и материалов: </th>
-                <th>
+                <td>
                     {{ $estimate->price_work }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Cтоимость восстановительного ремонта (Всего) </th>
-                <th>
+                <td>
                     {{ $estimate->price_repair_full }}
-                </th>
+                </td>
             </tr>
             <tr>
                 <th>Затраты на восстановительный ремонт (с учетом износа): </th>
-                <th>
-                    {{ $estimate->price_repair_half }} </th>
+                <td>
+                    {{ $estimate->price_repair_half }} </td>
             </tr>
             <tr>
                 <th>Фактическая стоимость восстановительного ремонта </th>
-                <th>
-                    {{ $summ_order + $summ_service }} </th>
+                <td>
+                    {{ $summ_order + $summ_service }} </td>
             </tr>
             <tr>
                 <th>Разница от полной стоимости</th>

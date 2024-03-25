@@ -167,10 +167,7 @@ class WorkController extends Controller
         $file = html_entity_decode(strip_tags($file, ['br']));
         $work_start = mb_strpos($file, 'н-час');
         // echo $work_start . 'Раб_Старт<br /><br />';
-        $iskl = $request['iskl'];
-        if ($request['reset']) {
-            $iskl = [];
-        }
+
 
         $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
         // echo $work_end . 'Раб_фин<br /><br />';
@@ -179,21 +176,59 @@ class WorkController extends Controller
         $j = 0;
         $reset = 0;
         $works = [];
-        for ($i = 0; $i < count($work_array); $i++) {
-            if ($request['iskl']) {
-                foreach ($iskl as $key => $value) {
-                    if ($i == $value) {
-                        $i++;
-                        $reset++;
-                    }
-                }
-            }
-            $works[$j++] = $work_array[$i];
+        for ($i = 0; $i < count($work_array) - 1; $i++) {
+            if (
+                trim($work_array[$i]) == "Наименование" ||
+                trim($work_array[$i + 1]) == "Наименование" ||
+                trim($work_array[$i]) == "Норматив," ||
+                trim($work_array[$i]) == "Сумма, руб."
+                ||
+                trim($work_array[$i]) == "Цена ед., руб." ||
+                trim($work_array[$i]) == "н-час"
+
+
+            ) {
+            } else
+
+
+                $works[$j++] = $work_array[$i];
             // echo $work_array[$i] . '<br />';
         }
+        // dd($works);
+        session(['works' => $works]);
+
 
         // dd($work_array);
         return view('Work.data_select', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+    }
+    public function work_edit($id, $id_work, $count)
+    {
+        if ($count == 0) {
+
+            $works = session('works');
+            for ($i = $id_work; $i < count($works) - 1; $i++) {
+                $works[$i] = $works[$i + 1];
+            }
+            unset($works[count($works) - 1]);
+
+            // dd($works);
+            session(['works' => $works]);
+        } else {
+
+            $works = session('works');
+            $works[$id_work - $count] = $works[$id_work - $count] . ' ' . $works[$id_work];
+            for ($i = $id_work; $i < count($works) - 1; $i++) {
+                $works[$i] = $works[$i + 1];
+            }
+
+            unset($works[count($works) - 1]);
+            // dd($works);
+            // unset(session('works')[count($works) - 1]);
+            session(['works' => $works]);
+            // dd(session('works'));
+        }
+
+        return view('Work.data_select', ['id' => $id]);
     }
     public function data_save(Request $request, $id)
     {

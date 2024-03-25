@@ -4,7 +4,7 @@
     <h1>Проверьте данные</h1>
     <form action="data_load" method="POST">
         @csrf
-        <input type="hidden" name="location" value="{{ $location }}">
+        {{-- <input type="hidden" name="location" value="{{ $location }}"> --}}
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
 
@@ -16,36 +16,77 @@
                 </tr>
             </thead>
             <tbody>
-                @for ($i = 1; $i < count($Works) - 4; $i += 4)
+
+                @for ($i = 1; $i < count(session('works')) - 3; $i += 4)
                     <tr>
-                        <td> {{ $Works[$i] }} <input type="checkbox" name='iskl[{{ $i }}]'
-                                value={{ $i }}> </td>
-                        <td> {{ $Works[$i + 1] }}<input type="checkbox"
-                                name='iskl[{{ $i + 1 }}]'value={{ $i + 1 }}> </td>
-                        <td> {{ $Works[$i + 2] }}<input type="checkbox"
-                                name='iskl[{{ $i + 2 }}]'value={{ $i + 2 }}> </td>
-                        <td> {{ $Works[$i + 3] }}<input type="checkbox"
-                                name='iskl[{{ $i + 3 }}]'value={{ $i + 3 }}> </td>
+                        <td> {{ session('works')[$i] }}
+                            @if (!is_numeric(str_replace(' ', '', session('works')[$i])))
+                                <br>
+                                <a href="/work_edit/{{ $id }}/{{ $i }}/1">
+                                    <img src="/storage/img/left.png" alt="Влево" width=25px
+                                        title="Объеденить с ячейкой слева">
+                                </a>
+                                <a href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                        src="/storage/img/up.png" alt="Вверх" width=25px
+                                        title="Объеденить с ячейкой сверху"></a>
+                            @endif
+                        </td>
+                        <td> {{ session('works')[$i + 1] }}
+                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 1])))
+                                <br>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/1"><img
+                                        src="/storage/img/left.png" alt="Влево" width=25px
+                                        title="Объеденить с ячейкой слева"></a>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/4"><a
+                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                            src="/storage/img/up.png" alt="Вверх" width=25px
+                                            title="Объеденить с ячейкой сверху"></a></a>
+                            @endif
+                        </td>
+                        <td> {{ session('works')[$i + 2] }}
+                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 2])))
+                                <br>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/1"><img
+                                        src="/storage/img/left.png" alt="Влево" width=25px
+                                        title="Объеденить с ячейкой слева"></a>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/4"><a
+                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                            src="/storage/img/up.png" alt="Вверх" width=25px
+                                            title="Объеденить с ячейкой сверху"></a></a>
+                            @endif
+                        </td>
+                        <td> {{ session('works')[$i + 3] }}
+                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 3])))
+                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/0">Удалить</a>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/1"><img
+                                        src="/storage/img/left.png" alt="Влево" width=25px
+                                        title="Объеденить с ячейкой слева"></a>
+                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/4"><a
+                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                            src="/storage/img/up.png" alt="Вверх" width=25px
+                                            title="Объеденить с ячейкой сверху"></a></a>
+                            @endif
+                        </td>
 
                     </tr>
                 @endfor
             </tbody>
         </table>
-        @if ($reset > 0)
+        {{-- @if ($reset > 0)
             <input type="hidden" name="reset" value=1>
             <button class="nav-link" type="submit">Сброс</button>
         @else
             <button class="nav-link" type="submit">Удалить выбранные ячейки</button>
-        @endif
+        @endif --}}
     </form>
-    <form action="data_save" method="post">
+    <form action="/Work/{{ $id }}/data_save" method="post">
         @csrf
         <input type="hidden" name="id_application" value="{{ $id }}">
-        @for ($i = 1, $j = 1; $i < count($Works) - 4; $i += 4, $j++)
-            <input type="hidden" name="name[{{ $j }}]" value="{{ $Works[$i] }}">
-            <input type="hidden" name="price[{{ $j }}]" value="{{ $Works[$i + 1] }}">
-            <input type="hidden" name="count_hours[{{ $j }}]" value="{{ $Works[$i + 2] }}">
-            <input type="hidden" name="summ[{{ $j }}]" value="{{ $Works[$i + 3] }}">
+        @for ($i = 1, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
+            <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
+            <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
+            <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
+            <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
         @endfor
         <button class="nav-link" type="submit">Сохранить</button>
     </form>
