@@ -462,8 +462,15 @@ class ApplicationController extends Controller
         if ($estimate_start !== false && $estimate_end !== false) {
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
             $estimate = explode('<br/>', $estimate);
-            $price[0] = str_replace(' ', '', $estimate[1]);
-            $price[1] = str_replace(' ', '', $estimate[3]);
+            if (is_numeric(str_replace(' ', '', $estimate[1])))
+                $price[0] = str_replace(' ', '', $estimate[1]);
+            else
+                $price[0] = str_replace(' ', '', $estimate[2]);
+
+            if (is_numeric(str_replace(' ', '', $estimate[3])))
+                $price[1] = str_replace(' ', '', $estimate[3]);
+            else
+                $price[1] = str_replace(' ', '', $estimate[4]);
         }
         $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
         $estimate_end = mb_strlen($file);
@@ -472,12 +479,30 @@ class ApplicationController extends Controller
         if ($estimate_start !== false && $estimate_end !== false) {
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
             $estimate = explode('<br/>', $estimate);
-            $price[2] = str_replace(' ', '', $estimate[1]);
-            $price[3] = str_replace(' ', '', $estimate[3]);
-            $price[4] = str_replace(' ', '', $estimate[5]);
-            $price[5] = str_replace(' ', '', $estimate[7]);
-            $price[6] = str_replace(' ', '', $estimate[10]);
-            $price[7] = str_replace(' ', '', $estimate[12]);
+            if (is_numeric(str_replace(' ', '', $estimate[1])))
+                $price[2] = str_replace(' ', '', $estimate[1]);
+            else
+                $price[2] = str_replace(' ', '', $estimate[2]);
+            if (is_numeric(str_replace(' ', '', $estimate[3])))
+                $price[3] = str_replace(' ', '', $estimate[3]);
+            else
+                $price[3] = str_replace(' ', '', $estimate[4]);
+            if (is_numeric(str_replace(' ', '', $estimate[5])))
+                $price[4] = str_replace(' ', '', $estimate[5]);
+            else
+                $price[4] = str_replace(' ', '', $estimate[6]);
+            if (is_numeric(str_replace(' ', '', $estimate[7])))
+                $price[5] = str_replace(' ', '', $estimate[7]);
+            else
+                $price[5] = str_replace(' ', '', $estimate[8]);
+            if (is_numeric(str_replace(' ', '', $estimate[9])))
+                $price[6] = str_replace(' ', '', $estimate[9]);
+            else
+                $price[6] = str_replace(' ', '', $estimate[10]);
+            if (is_numeric(str_replace(' ', '', $estimate[11])))
+                $price[7] = str_replace(' ', '', $estimate[11]);
+            else
+                $price[7] = str_replace(' ', '', $estimate[12]);
         }
 
         // dd($price);
