@@ -189,7 +189,7 @@
                         @endcan
                         @can('admin')
                             @if ($app->id_status == 2)
-                                <a href="/applications/{{ $application->id }}/send_mrk/{{ $application->id_MRK }}"
+                                <a href="/applications/{{ $app->id }}/send_mrk/{{ $app->id_MRK }}"
                                     class="nav-link">Передать МРК</a>
                             @endif
                             @if ($app->id_status == 5)
