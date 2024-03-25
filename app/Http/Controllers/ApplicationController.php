@@ -461,8 +461,10 @@ class ApplicationController extends Controller
         $price = [];
         if ($estimate_start !== false && $estimate_end !== false) {
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-            $estimate = str_replace('\u{A0}', '<br/>', $estimate);
+
+
             $estimate = explode('<br/>', $estimate);
+
             if (is_numeric(str_replace(' ', '', $estimate[1])))
                 $price[0] = str_replace(' ', '', $estimate[1]);
             else
@@ -479,6 +481,7 @@ class ApplicationController extends Controller
 
         if ($estimate_start !== false && $estimate_end !== false) {
             $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+            $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
             $estimate = explode('<br/>', $estimate);
             // dd($estimate);
             if (is_numeric(str_replace(' ', '', $estimate[1])))

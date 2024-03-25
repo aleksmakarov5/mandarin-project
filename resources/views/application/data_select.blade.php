@@ -1,6 +1,6 @@
 @extends('layout')
 @section('main_content')
-    <a href="/Work/{{ $id }}/doc_load" class="nav-link">Назад</a>
+    <a href="/application/{{ $id }}/doc_load" class="nav-link">Назад</a>
     <h1>Проверьте данные</h1>
     <form action="data_save" method="POST">
         @csrf
