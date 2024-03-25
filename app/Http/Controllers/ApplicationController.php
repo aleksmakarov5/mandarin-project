@@ -496,14 +496,25 @@ class ApplicationController extends Controller
                 $price[5] = str_replace(' ', '', $estimate[7]);
             else
                 $price[5] = str_replace(' ', '', $estimate[8]);
-            if (is_numeric(str_replace(' ', '', $estimate[9])))
-                $price[6] = str_replace(' ', '', $estimate[9]);
-            else
-                $price[6] = str_replace(' ', '', $estimate[10]);
-            if (is_numeric(str_replace(' ', '', $estimate[11])))
-                $price[7] = str_replace(' ', '', $estimate[11]);
-            else
-                $price[7] = str_replace(' ', '', $estimate[12]);
+            if (trim($estimate[9]) == 'ВСЕГО:') {
+                if (is_numeric(str_replace(' ', '', $estimate[10])))
+                    $price[6] = str_replace(' ', '', $estimate[10]);
+                else
+                    $price[6] = str_replace(' ', '', $estimate[11]);
+                if (is_numeric(str_replace(' ', '', $estimate[12])))
+                    $price[7] = str_replace(' ', '', $estimate[12]);
+                else
+                    $price[7] = str_replace(' ', '', $estimate[13]);
+            } else {
+                if (is_numeric(str_replace(' ', '', $estimate[9])))
+                    $price[6] = str_replace(' ', '', $estimate[9]);
+                else
+                    $price[6] = str_replace(' ', '', $estimate[10]);
+                if (is_numeric(str_replace(' ', '', $estimate[11])))
+                    $price[7] = str_replace(' ', '', $estimate[11]);
+                else
+                    $price[7] = str_replace(' ', '', $estimate[12]);
+            }
         }
 
         // dd($price);
