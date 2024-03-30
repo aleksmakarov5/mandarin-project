@@ -140,7 +140,7 @@
                     class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a></li>
             <li></li>
 
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <div class="dropdown">
                     <button class="dropbtn">
                         @if ($app->id_status > 10 && $app->id_status < 23)
@@ -213,21 +213,152 @@
                     </div>
                 </div>
 
-            </li>
+            </li> --}}
             <li>
                 <nav>
-                    <ul class="topmenu">
-                        <li><a href="" class="active">Главная<span class="fa fa-angle-down"></span></a>
+                    <ul class="dropbtn">
+                        <li><a href="" class="active">Выбрать действие</a>
                             <ul class="submenu">
-                                <li><a href="">меню второго уровня</a></li>
-                                <li><a href="">меню второго уровня<span class="fa fa-angle-down"></span></a>
-                                    <ul class="submenu">
-                                        <li><a href="">меню третьего уровня</a></li>
-                                        <li><a href="">меню третьего уровня</a></li>
-                                        <li><a href="">меню третьего уровня</a></li>
-                                    </ul>
+
+                                @can('mrk')
+                                    @if ($app->id_status == 9)
+                                        <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
+                                    @endif
+                                    @if ($app->id_status == 3)
+                                        <li><a href="/applications/{{ $id }}/change_status/1">Передать запчастисту
+                                                для
+                                                предварительного расчета</a></li>
+                                        <li><a href="/applications/{{ $id }}/change_status/2">Принять в работу</a>
+                                        </li>
+                                        <li><a href="/applications/{{ $id }}/change_status/3">Отклонить по причине
+                                                отказа
+                                                клиента</a></li>
+                                        <li><a href="/applications/{{ $id }}/change_status/4">Отклонить по причине
+                                                нецелесообразности ремонта</a></li>
+                                    @endif
+
+                                    @if ($app->id_status > 11 && $app->id_status < 21)
+                                        <li><a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт скрытых
+                                                повреждений</a>
+                                        </li>
+                                    @endif
+                                @endcan
+                                @can('km')
+                                    @if ($app->id_status == 6 || $app->id_status == 7)
+                                        <li><a href="/applications/{{ $id }}/change_status_km/1">Принять в работу</a>
+                                        </li>
+                                        <li><a href="/applications/{{ $id }}/change_status_km/2">Подготовить
+                                                отказ</a></li>
+                                    @endif
+                                @endcan
+
+                                @can('spm')
+                                    @if ($app->id_status == 4)
+                                        <li><a href="/applications/{{ $id }}/send_mrk/{{ $app->id_MRK }}">Передать
+                                                МРК</a></li>
+                                    @endif
+                                @endcan
+                                @can('admin')
+                                    @if ($app->id_status == 2 && $app->id_MRK)
+                                        <li><a href="/applications/{{ $app->id }}/send_mrk/{{ $app->id_MRK }}">Передать
+                                                МРК</a></li>
+                                    @endif
+                                    @if ($app->id_status == 5)
+                                        <li><a href="/answer_ic/{{ $id }}">Подготовить ответ в
+                                                ск</a></li>
+                                        <br>
+                                    @endif
+                                    @if ($app->id_status == 10)
+                                        <li><a href="/answer_ic_true/{{ $id }}">Подготовить ответ в
+                                                ск</a></li>
+                                        <br>
+                                    @endif
+                                    @if ($app->id_status == 20)
+                                        <li><a href="/answer_ic_sch/{{ $id }}">Отправить счет и ПЗН в СК</a></li>
+                                        <br>
+                                    @endif
+                                    @if ($app->id_status == 24 || $app->id_status == 25)
+                                        <li><a href="/applications/{{ $id }}/change_st/2">Вернуть в работу</a></li>
+                                        <br>
+                                    @endif
+                                @endcan
+
+                                <li><a href="">Установить статус</a>
+                                    @canany(['mrk', 'admin', 'km'])
+                                        @if ($app->id_status > 7 && $app->id_status < 4)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id > 2 && $stat->id < 14)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        @if (($app->id_status > 16 && $app->id_status < 21) || $app->id_status == 14)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if (($stat->id > 17 && $stat->id < 21) || $stat->id == 16)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        @if ($app->id_status == 15)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id == 13)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    @endcanany
+                                    @canany(['buh', 'km'])
+                                        @if ($app->id_status > 12 && $app->id_status < 17)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id > 13 && $stat->id < 16)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    @endcanany
+                                    @canany(['spm', 'km'])
+                                        @if ($app->id_status == 16)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id == 17)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    @endcanany
+                                    @can('admin')
+                                        @if ($app->id_status > 20 && $app->id_status < 25)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id > 19 && $stat->id < 25)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                    @endcan
                                 </li>
-                                <li><a href="">меню второго уровня</a></li>
                             </ul>
                         </li>
 

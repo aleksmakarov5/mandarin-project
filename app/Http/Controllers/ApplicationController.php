@@ -13,6 +13,7 @@ use App\Models\history;
 use App\Models\chat;
 use App\Models\attachment;
 use App\Models\failure;
+use App\Models\ApplicationStatus;
 use App\Models\tru;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
@@ -851,6 +852,15 @@ class ApplicationController extends Controller
 
         $application->id_status = $status_id;
         // dd ($application->id_status);
+        $data["email"] = "aleksmakarov5@yandex.ru";
+        $data["title"] = 'По заявке №' . $id . ' изменен статус';
+        $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
+
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject($data["title"]);
+        });
 
         $history->id_status = $status_id;
 
@@ -883,6 +893,7 @@ class ApplicationController extends Controller
 
         // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
         $data["email"] = "aleksmakarov5@yandex.ru";
+
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
         $files = [];
@@ -890,14 +901,7 @@ class ApplicationController extends Controller
             $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
         }
 
-        Mail_send::mailer('makarov')->send('email.myTestMail', $data, function ($message) use ($data, $files) {
-            $message->to($data["email"], $data["email"])
-                ->from('makarov@dvina-trust.ru', 'Двина')
-                ->subject($data["title"]);
-            foreach ($files as $file) {
-                $message->attach($file);
-            }
-        });
+
         Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["email"])
                 ->from('robot@mandarinportal.ru', 'Мандарин')
@@ -906,7 +910,58 @@ class ApplicationController extends Controller
                 $message->attach($file);
             }
         });
-        echo 'Сообщение успешно отправлено';
+        return redirect()->route('directions');
+    }
+
+    public function answer_ic_sch(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $subject =
+            message::where('application_id', '=', $id)->first()->subject;
+        $to = DB::table('addresses')
+            ->where('message_id', '=', $message_id)
+            ->where('type', '=', 'from')
+            ->first()
+            ->email;
+
+        $attachments = attachment::where('id_application', '=', $id)->get()->all();
+
+        return view('application.answer_ic_sch', ['application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
+    }
+
+    public function answer_ic_sch_sent(Request $request, $id)
+    {
+        // dd($request);
+
+        // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
+        $data["email"] = "aleksmakarov5@yandex.ru";
+
+        $data["title"] = $request->subject;
+        $data["body"] = $request->message;
+        $files = [];
+        for ($i = 0; $i < count($request->location); $i++) {
+            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+        }
+
+
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+        $application = application::findOrFail($id);
+        $application->id_status = 21;
+        $history = new history;
+        $history->id_user = Auth::user()->id;
+        $history->id_status = 21;
+        $history->id_application = $id;
+        $history->comment = $request->comment;
+        $history->save();
+        $application->save();
         return redirect()->route('directions');
     }
 }

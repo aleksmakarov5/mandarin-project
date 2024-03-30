@@ -45,7 +45,8 @@
                             <label for="to">Получатель</label>
                         </div>
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">
-                        <input type="hidden" name="subject" value="{{ $subject }}">
+                        <input type="hidden" name="subject"
+                            value="@if (isset($subject)) {{ $subject }} @else ---- @endif">
                         <li class="bg-white mb-3">
 
                             <div class="form-outline">

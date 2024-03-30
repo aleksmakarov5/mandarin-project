@@ -894,13 +894,10 @@ div.sticky {
     box-sizing: border-box;
 }
 
-body {
-    margin: 0;
-    font-family: 'Open Sans', sans-serif;
-}
 
 nav {
     background: #413F3C;
+    text-decoration: none;
 }
 
 nav ul {
@@ -952,8 +949,9 @@ nav a {
 
 .submenu {
     position: absolute;
+    right: 40%;
     z-index: 5;
-    min-width: 200px;
+    min-width: 400px;
     background: white;
     border-top: 1px solid #CBCBCC;
     border-left: 1px solid #CBCBCC;
@@ -978,8 +976,8 @@ nav a {
 
 .submenu .submenu {
     position: absolute;
-    left: 100%;
-    top: -1px;
+    right: 50%;
+    top: -4px;
     transition: .3s linear;
 }
 

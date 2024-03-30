@@ -122,6 +122,8 @@ Route::middleware("auth:web")->group(
         Route::post('/answer_ic_true_sent/{id}',  [ApplicationController::class, 'answer_ic_true_sent'])->name('answer_ic_true_sent');
         Route::get('/answer_ic_mrk/{id}',  [ApplicationController::class, 'answer_ic_mrk'])->name('answer_ic_mrk');
         Route::post('/answer_ic_mrk_sent/{id}',  [ApplicationController::class, 'answer_ic_mrk_sent'])->name('answer_ic_mrk_sent');
+        Route::get('/answer_ic_sch/{id}',  [ApplicationController::class, 'answer_ic_sch'])->name('answer_ic_sch');
+        Route::post('/answer_ic_sch_sent/{id}',  [ApplicationController::class, 'answer_ic_sch_sent'])->name('answer_ic_sch_sent');
         Route::get('/answer_ic/{id}',  [ApplicationController::class, 'answer_ic'])->name('answer_ic');
         Route::post('/answer_ic_sent/{id}',  [ApplicationController::class, 'answer_ic_sent'])->name('answer_ic_sent');
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');
