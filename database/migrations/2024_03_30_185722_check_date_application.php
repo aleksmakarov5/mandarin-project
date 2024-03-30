@@ -11,7 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        //
+        Schema::table('applications', function (Blueprint $table) {
+            $table->timestamp('check_date')->nullable();
+            $table->string('email_company')->nullable();
+        });
     }
 
     /**

@@ -69,6 +69,7 @@ class ApplicationController extends Controller
         $current = carbon::now();
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            $application->max_hour = 48;
         }
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications],);
@@ -90,6 +91,7 @@ class ApplicationController extends Controller
         $current = carbon::now();
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            $application->max_hour = 48;
         }
 
         session(['rout' => 'failures']);
@@ -115,6 +117,7 @@ class ApplicationController extends Controller
         $current = carbon::now();
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            $application->max_hour = 48;
         }
 
         return view('applications', ['applications' => $applications],);
@@ -137,7 +140,8 @@ class ApplicationController extends Controller
 
         $current = carbon::now();
         foreach ($applications as $application) {
-            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            $application->count_hour = 1;
+            $application->max_hour = 1000;
         }
         return view('applications', ['applications' => $applications],);
     }
@@ -180,7 +184,21 @@ class ApplicationController extends Controller
 
         $current = carbon::now();
         foreach ($applications as $application) {
-            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            if ($application->id_status < 10) {
+                $application->count_hour = 48 - $current->diffInHours($application->created_at);
+                $application->max_hour = 48;
+            }
+            if ($application->id_status == 10) {
+                $application->count_hour = 168 - $current->diffInHours($application->check_date);
+                $application->max_hour = 168;
+            }
+            if ($application->id_status == 18) {
+                $application->count_hour = 72 - $current->diffInHours($application->check_date);
+                $application->max_hour = 72;
+            } else {
+                $application->count_hour = 1;
+                $application->max_hour = 1000;
+            }
         }
         return view('applications', ['applications' => $applications],);
     }
@@ -851,6 +869,7 @@ class ApplicationController extends Controller
         });
 
         $application->id_status = 10;
+        $application->check_date = carbon::now();
         $history = new history;
 
         $messages = new message();
@@ -947,6 +966,35 @@ class ApplicationController extends Controller
                 $message->attach($file);
             }
         });
+
+        $application = application::findOrFail($id);
+        $application->id_status = 18;
+        $application->check_date = carbon::now();
+        $history = new history;
+
+        $messages = new message();
+        $messages->application_id = $id;
+        $messages->subject = message::where('application_id', '=', $id)->first()->subject;
+        $messages->body_html = $request->message;
+        $messages->message_date = date('Y-m-d H:i:s');
+
+
+        $messages->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'from';
+        $address->email = 'robot@mandarinportal.ru';
+        $address->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'to';
+        $address->email = $request->to;
+        $address->save();
+        $history->id_user = Auth::user()->id;
+        $history->id_application = $id;
+        $history->id_status = 18;
+        $history->save();
+        $application->save();
         return redirect()->route('directions');
     }
 

@@ -237,7 +237,7 @@
                                                 нецелесообразности ремонта</a></li>
                                     @endif
 
-                                    @if ($app->id_status > 11 && $app->id_status < 21)
+                                    @if ($app->id_status > 10 && $app->id_status < 21)
                                         <li><a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт скрытых
                                                 повреждений</a>
                                         </li>
@@ -308,6 +308,17 @@
                                             </ul>
                                         @endif
                                         @if ($app->id_status == 15)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id == 13)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
+                                        @if ($app->id_status == 18)
                                             <ul class="submenu">
                                                 @foreach ($status as $stat)
                                                     @if ($stat->id == 13)
