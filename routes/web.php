@@ -42,6 +42,7 @@ Route::get('/review',  [MainController::class, 'review'])->name('review');
 Route::get('/new_application',  [MainController::class, 'new_application'])->name('new_application');
 Route::post('/review/check',  [MainController::class, 'review_check']);
 Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_recive');
+Route::get('/mail_send',  [ImapController::class, 'send'])->name('mail_send');
 
 
 
@@ -119,6 +120,8 @@ Route::middleware("auth:web")->group(
 
         Route::get('/answer_ic_true/{id}',  [ApplicationController::class, 'answer_ic_true'])->name('answer_ic_true');
         Route::post('/answer_ic_true_sent/{id}',  [ApplicationController::class, 'answer_ic_true_sent'])->name('answer_ic_true_sent');
+        Route::get('/answer_ic_mrk/{id}',  [ApplicationController::class, 'answer_ic_mrk'])->name('answer_ic_mrk');
+        Route::post('/answer_ic_mrk_sent/{id}',  [ApplicationController::class, 'answer_ic_mrk_sent'])->name('answer_ic_mrk_sent');
         Route::get('/answer_ic/{id}',  [ApplicationController::class, 'answer_ic'])->name('answer_ic');
         Route::post('/answer_ic_sent/{id}',  [ApplicationController::class, 'answer_ic_sent'])->name('answer_ic_sent');
         Route::get('/history/{id}',  [ApplicationController::class, 'history'])->name('history');

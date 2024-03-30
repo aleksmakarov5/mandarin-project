@@ -164,6 +164,7 @@
                                 <a href="/applications/{{ $id }}/change_status/4">Отклонить по причине
                                     нецелесообразности ремонта</a>
                             @endif
+                            <a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт скрытых</a>
                         @endcan
                         @can('km')
                             @if ($app->id_status == 6 || $app->id_status == 7)

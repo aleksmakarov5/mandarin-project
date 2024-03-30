@@ -11,6 +11,7 @@ use App\Models\InsuranceCompany;
 use App\Models\estimate;
 use App\Models\history;
 use App\Models\chat;
+use App\Models\attachment;
 use App\Models\failure;
 use App\Models\tru;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,7 @@ use App\Models\message;
 use App\Models\address;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
+use App\Mail\user\ic_answer;
 use Carbon\Carbon;
 
 use Illuminate\Validation\Rules\Can;
@@ -854,5 +856,29 @@ class ApplicationController extends Controller
         $application->save();
         $history->save();
         return redirect()->back();
+    }
+
+    public function answer_ic_mrk(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $subject =
+            message::where('application_id', '=', $id)->first()->subject;
+        $to = DB::table('addresses')
+            ->where('message_id', '=', $message_id)
+            ->where('type', '=', 'from')
+            ->first()
+            ->email;
+
+        $users = DB::table('users')->get();
+        $attachments = attachment::where('id_application', '=', $id)->get()->all();
+
+        return view('application.answer_ic_mrk', ['users' => $users->all(),  'application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
+    }
+
+    public function answer_ic_mrk_sent(Request $request, $id)
+    {
+        // dd($request);
+        Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
     }
 }

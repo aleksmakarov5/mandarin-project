@@ -154,4 +154,36 @@ class ImapController extends Controller
             }
         }
     }
+    public function send()
+    {
+        $data["email"] = "aleksmakarov5@yandex.ru";
+        $data["title"] = "DEMO sending";
+        $data["body"] = "This is Demo";
+
+        $location = ['65ebcb84efdee.pdf', '65d42a55af4ce.pdf', '65d42a55afeac.zip', '65d42a55b3dab.png'];
+        $files = [];
+        for ($i = 0; $i < count($location); $i++) {
+            $files[] = public_path('/storage/files/' . $location[$i]);
+        }
+
+
+        Mail_send::mailer('makarov')->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["email"])
+                ->from('makarov@dvina-trust.ru', 'Двина')
+                ->subject('Отправка с Двины');
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject('Отправка с Мандарина');
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+
+        dd('Mail sent successfully');
+    }
 }

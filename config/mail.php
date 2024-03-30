@@ -15,6 +15,7 @@ return [
 
     'default' => env('MAIL_MAILER', 'smtp'),
 
+
     /*
     |--------------------------------------------------------------------------
     | Mailer Configurations
@@ -47,7 +48,19 @@ return [
             'auth_mode'  => null,
             'verify_peer'       => false,
         ],
-
+        'makarov' => [
+            'transport' => 'smtp',
+            'url' => env('MAIL_URL'),
+            'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
+            'port' => env('MAIL_PORT', 587),
+            'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+            'username' => 'aleksey.dvina-trust',
+            'password' => 'ykfxabppahmssqeq',
+            'timeout' => null,
+            'local_domain' => env('MAIL_EHLO_DOMAIN'),
+            'auth_mode'  => null,
+            'verify_peer'       => false,
+        ],
         'ses' => [
             'transport' => 'ses',
         ],
