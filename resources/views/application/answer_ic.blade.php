@@ -41,16 +41,12 @@
                     <form action="/answer_ic_sent/{{ $id }}" method="post">
                         @csrf
                         <div class="form-float">
-                            <Select name="to" class="form-control">
-                                <option value="">Выберите получателя</option>
-                                <option value="0">Все</option>
-                                @foreach ($users as $user)
-                                    @if ($user->id != Auth::user()->id)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                    @endif
-                                @endforeach
-                            </Select>
+                            <input type="text" name="to" id="to" class="form-cont" value="{{ $to }}">
+                            <label for="to">Получатель</label>
                         </div>
+                        <input type="hidden" name="from" value="{{ Auth::user()->id }}">
+                        <input type="hidden" name="subject"
+                            value="@if (isset($subject)) {{ $subject }} @else ---- @endif">
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">
                         <li class="bg-white mb-3">
                             <div class="alert  alert-success">

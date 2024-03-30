@@ -40,8 +40,12 @@
 
                     <form action="/answer_ic_true_sent/{{ $id }}" method="post">
                         @csrf
+
+                        <input type="hidden" name="subject"
+                            value="@if (isset($subject)) {{ $subject }} @else ---- @endif">
                         <div class="form-float">
-                            <input type="text" name="to" id="to" class="form-cont" value="{{ $to }}">
+                            <input type="text" name="to" id="to" class="form-cont"
+                                value="{{ $to }}">
                             <label for="to">Получатель</label>
                         </div>
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">

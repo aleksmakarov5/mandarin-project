@@ -720,15 +720,36 @@ class ApplicationController extends Controller
             ->join('failure_vars', 'failures.id_var', '=', 'failure_vars.id')
             ->select('failures.*', 'failure_vars.variant')
             ->get();
-        $users = DB::table('users')->get();
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $subject =
+            message::where('application_id', '=', $id)->first()->subject;
 
-        return view('application.answer_ic', ['users' => $users->all(), 'fail_vars' => $fail_vars->all(), 'application' => $application, 'id' => $id]);
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $to = DB::table('addresses')
+            ->where('message_id', '=', $message_id)
+            ->where('type', '=', 'from')
+            ->first()
+            ->email;
+
+        return view('application.answer_ic', ['subject' => $subject, 'to' => $to, 'fail_vars' => $fail_vars->all(), 'application' => $application, 'id' => $id]);
     }
     public function answer_ic_sent(Request $request, $id)
     {
         $application = application::findOrFail($id);
 
-        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
+        $data["email"] = "aleksmakarov5@yandex.ru";
+
+        $data["title"] = $request->subject;
+        $data["body"] = $request->message;
+
+
+
+
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject($data["title"]);
+        });
         $application->id_status = 24;
         $history = new history;
         $messages = new message();
@@ -746,7 +767,7 @@ class ApplicationController extends Controller
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'to';
-        $address->email = 'aleksmakarov5@yandex.ru';
+        $address->email = $data["email"];
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
@@ -767,10 +788,10 @@ class ApplicationController extends Controller
         $variants = $request->variant;
         $application = application::findOrFail($id);
         $application->comment_true = $request->comment;
-        $application->id_status = 10;
+        $application->id_status = 9;
         $history = new history;
         $history->id_user = Auth::user()->id;
-        $history->id_status = 10;
+        $history->id_status = 9;
         $history->id_application = $id;
         $history->comment = $request->comment;
         $history->save();
@@ -793,6 +814,10 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
         $message_id = message::where('application_id', '=', $id)->first()->id;
+        $subject =
+            message::where('application_id', '=', $id)->first()->subject;
+
+        $message_id = message::where('application_id', '=', $id)->first()->id;
         $to = DB::table('addresses')
             ->where('message_id', '=', $message_id)
             ->where('type', '=', 'from')
@@ -805,15 +830,27 @@ class ApplicationController extends Controller
             ->get();
         $users = DB::table('users')->get();
 
-        return view('application.answer_ic_true', ['users' => $users->all(), 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to]);
+        return view('application.answer_ic_true', ['subject' => $subject, 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to]);
     }
 
     public function answer_ic_true_sent(Request $request, $id)
     {
         $application = application::findOrFail($id);
+        $data["email"] = "aleksmakarov5@yandex.ru";
 
-        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, 'robot@mandarinportal.ru', $request->message));
-        $application->id_status = 11;
+        $data["title"] = $request->subject;
+        $data["body"] = $request->message;
+
+
+
+
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject($data["title"]);
+        });
+
+        $application->id_status = 10;
         $history = new history;
 
         $messages = new message();
@@ -836,7 +873,7 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 11;
+        $history->id_status = 10;
         $history->save();
         $application->save();
         return redirect()

@@ -221,7 +221,7 @@
                             <ul class="submenu">
 
                                 @can('mrk')
-                                    @if ($app->id_status == 9)
+                                    @if ($app->id_status == 8)
                                         <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
                                     @endif
                                     @if ($app->id_status == 3)
@@ -268,7 +268,7 @@
                                                 ск</a></li>
                                         <br>
                                     @endif
-                                    @if ($app->id_status == 10)
+                                    @if ($app->id_status == 9)
                                         <li><a href="/answer_ic_true/{{ $id }}">Подготовить ответ в
                                                 ск</a></li>
                                         <br>
@@ -285,7 +285,7 @@
 
                                 <li><a href="">Установить статус</a>
                                     @canany(['mrk', 'admin', 'km'])
-                                        @if ($app->id_status > 7 && $app->id_status < 4)
+                                        @if ($app->id_status > 7 && $app->id_status < 14)
                                             <ul class="submenu">
                                                 @foreach ($status as $stat)
                                                     @if ($stat->id > 2 && $stat->id < 14)
