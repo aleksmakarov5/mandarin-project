@@ -195,6 +195,10 @@ class ApplicationController extends Controller
             if ($application->id_status == 18) {
                 $application->count_hour = 72 - $current->diffInHours($application->check_date);
                 $application->max_hour = 72;
+            }
+            if ($application->id_status == 21) {
+                $application->count_hour = 1008 - $current->diffInHours($application->check_date);
+                $application->max_hour = 1008;
             } else {
                 $application->count_hour = 1;
                 $application->max_hour = 1000;
