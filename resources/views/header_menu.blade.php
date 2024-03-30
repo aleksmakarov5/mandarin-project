@@ -164,7 +164,10 @@
                                 <a href="/applications/{{ $id }}/change_status/4">Отклонить по причине
                                     нецелесообразности ремонта</a>
                             @endif
-                            <a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт скрытых</a>
+
+                            @if ($app->id_status > 11)
+                                <a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт скрытых</a>
+                            @endif
                         @endcan
                         @can('km')
                             @if ($app->id_status == 6 || $app->id_status == 7)
@@ -210,6 +213,26 @@
                     </div>
                 </div>
 
+            </li>
+            <li>
+                <nav>
+                    <ul class="topmenu">
+                        <li><a href="" class="active">Главная<span class="fa fa-angle-down"></span></a>
+                            <ul class="submenu">
+                                <li><a href="">меню второго уровня</a></li>
+                                <li><a href="">меню второго уровня<span class="fa fa-angle-down"></span></a>
+                                    <ul class="submenu">
+                                        <li><a href="">меню третьего уровня</a></li>
+                                        <li><a href="">меню третьего уровня</a></li>
+                                        <li><a href="">меню третьего уровня</a></li>
+                                    </ul>
+                                </li>
+                                <li><a href="">меню второго уровня</a></li>
+                            </ul>
+                        </li>
+
+                    </ul>
+                </nav>
             </li>
         </ul>
     </header>

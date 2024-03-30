@@ -27,6 +27,7 @@ use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Psy\Command\HistoryCommand;
+use Illuminate\Support\Facades\Mail as Mail_send;
 
 class ApplicationController extends Controller
 {
@@ -879,6 +880,33 @@ class ApplicationController extends Controller
     public function answer_ic_mrk_sent(Request $request, $id)
     {
         // dd($request);
-        Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
+
+        // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
+        $data["email"] = "aleksmakarov5@yandex.ru";
+        $data["title"] = $request->subject;
+        $data["body"] = $request->message;
+        $files = [];
+        for ($i = 0; $i < count($request->location); $i++) {
+            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+        }
+
+        Mail_send::mailer('makarov')->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["email"])
+                ->from('makarov@dvina-trust.ru', 'Двина')
+                ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["email"])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+        echo 'Сообщение успешно отправлено';
+        return redirect()->route('directions');
     }
 }
