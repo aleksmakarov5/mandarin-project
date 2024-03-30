@@ -610,7 +610,13 @@
                     let id = str.substring(start + 1, str.length);
                     isid.value = cell.innerHTML;
                     let form = document.getElementById('form' + id);
-                    form.submit();
+                    let params = new FormData(form);
+                    let url = form.getAttribute('action');
+
+                    fetch(url, {
+                        method: 'POST',
+                        body: params
+                    });
                 }
             }
         };
