@@ -63,7 +63,6 @@ class ApplicationController extends Controller
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()->sortDesc();
             // dd($applications);
