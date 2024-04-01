@@ -46,8 +46,8 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
                 ->get()
                 ->sortDesc();
         } else {
@@ -62,9 +62,9 @@ class ApplicationController extends Controller
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+                ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
                 ->get()->sortDesc();
             // dd($applications);
         }
@@ -87,8 +87,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+            ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
             ->get()->sortDesc();
         // dd($applications);
         $current = carbon::now();
@@ -112,8 +112,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+            ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
             ->get()->sortDesc();
         // dd($applications);
 
@@ -136,8 +136,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+            ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
             ->get()->sortDesc();
         // dd($applications);
 
@@ -162,8 +162,8 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
                 ->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
@@ -176,8 +176,8 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->join('our_company', 'applications.our_company', '=', 'our_company.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_company.our_name')
                 ->get()->sortDesc();
 
             // dd($applications);
