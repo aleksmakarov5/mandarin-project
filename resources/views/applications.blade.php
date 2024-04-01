@@ -22,6 +22,7 @@
                 <th scope="col">Телефон клиента</th>
                 <th scope="col">Остаток времени, час</th>
                 <th scope="col">Статус</th>
+                <th scope="col">Наша компания</th>
                 <th scope="col"></th>
 
             </tr>
@@ -49,6 +50,7 @@
                         id="search-text9" onkeyup="tableSearch(9,'applications')"></th>
                 <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10"
                         onkeyup="tableSearch(10,'applications')"></th>
+                <th scope="col"></th>
                 <th scope="col"></th>
 
             </tr>
@@ -104,6 +106,9 @@
                     <td scope="col"
                         onclick="window.location.href='/application/{{ $application->id }}'; return false">
                         {{ $application->StatusName }}</td>
+                    <td scope="col"
+                        onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                        {{ $application->our_name }}</td>
                     <td scope="col">
                         <a href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
                                 src="/storage/img/delete.png" width="30" alt="delete"></a>

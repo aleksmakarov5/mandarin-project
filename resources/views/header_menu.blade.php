@@ -263,7 +263,7 @@
                                         <li><a href="/applications/{{ $app->id }}/send_mrk/{{ $app->id_MRK }}">Передать
                                                 МРК</a></li>
                                     @endif
-                                    @if ($app->id_status == 5)
+                                    @if ($app->id_status == 5 || $app->id_status == 1)
                                         <li><a href="/answer_ic/{{ $id }}">Подготовить ответ в
                                                 ск</a></li>
                                         <br>

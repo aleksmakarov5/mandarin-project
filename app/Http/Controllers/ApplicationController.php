@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
 use App\Models\address;
+use App\Models\OurCompany;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
 use App\Mail\user\ic_answer;
@@ -45,9 +46,8 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-
-
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()
                 ->sortDesc();
         } else {
@@ -62,7 +62,9 @@ class ApplicationController extends Controller
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()->sortDesc();
             // dd($applications);
         }
@@ -85,7 +87,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
             ->get()->sortDesc();
         // dd($applications);
         $current = carbon::now();
@@ -109,7 +112,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
             ->get()->sortDesc();
         // dd($applications);
 
@@ -132,7 +136,8 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
             ->get()->sortDesc();
         // dd($applications);
 
@@ -157,8 +162,8 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
@@ -171,8 +176,8 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-
-                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()->sortDesc();
 
             // dd($applications);
@@ -199,7 +204,8 @@ class ApplicationController extends Controller
             if ($application->id_status == 21) {
                 $application->count_hour = 1008 - $current->diffInHours($application->check_date);
                 $application->max_hour = 1008;
-            } else {
+            }
+            if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
                 $application->count_hour = 1;
                 $application->max_hour = 1000;
             }
@@ -760,16 +766,15 @@ class ApplicationController extends Controller
         $application = application::findOrFail($id);
 
         $data["email"] = "aleksmakarov5@yandex.ru";
-
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
+        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
-
-
-
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
             $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
         });
         $application->id_status = 24;
@@ -859,16 +864,15 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
         $data["email"] = "aleksmakarov5@yandex.ru";
-
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
+        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
-
-
-
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
             $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
         });
 
@@ -915,10 +919,13 @@ class ApplicationController extends Controller
         $data["email"] = "aleksmakarov5@yandex.ru";
         $data["title"] = 'По заявке №' . $id . ' изменен статус';
         $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
+        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data) {
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
             $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
+                ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
         });
 
