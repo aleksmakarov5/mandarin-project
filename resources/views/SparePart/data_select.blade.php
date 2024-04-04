@@ -2,9 +2,23 @@
 @section('main_content')
     <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Назад</a>
     <h1>Проверьте данные</h1>
+    <form action="data_save" method="post">
+        @csrf
+        <input type="hidden" name="id_application" value="{{ $id }}">
+        @for ($i = 1, $j = 1; $i < count($SpareParts) - 8; $i += 8, $j++)
+            <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
+            <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
+            <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
+            <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
+            <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
+            <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
+            <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
+        @endfor
+        <button class="nav-link" type="submit">Сохранить</button>
+
+    </form>
     <form action="data_load" method="POST">
         @csrf
-        <button class="nav-link" type="submit">Сохранить</button>
         <input type="hidden" name="location" value="{{ $location }}">
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
@@ -50,19 +64,5 @@
         @else
             <button class="nav-link" type="submit">Удалить выбранные ячейки</button>
         @endif
-    </form>
-    <form action="data_save" method="post">
-        @csrf
-        <input type="hidden" name="id_application" value="{{ $id }}">
-        @for ($i = 1, $j = 1; $i < count($SpareParts) - 8; $i += 8, $j++)
-            <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
-            <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
-            <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
-            <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
-            <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
-            <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
-            <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
-        @endfor
-
     </form>
 @endsection
