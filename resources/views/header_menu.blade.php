@@ -37,11 +37,11 @@
     }
     if (isset($estimates->price_repair_full)) {
         $eco_delta_full = (float) str_replace(' ', '', $estimates->price_repair_full) - $summ_order - $summ_service;
-        $proc = round(($summ_order / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+        $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
     } else {
         $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service;
         if ($summ_ic_full + $summ_service_ic != 0) {
-            $proc = round(($summ_order / ($summ_ic_full + $summ_service_ic)) * 100);
+            $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
         }
     }
     if (isset($estimates->price_repair_half)) {
@@ -76,21 +76,16 @@
                             <td>
                                 <div
                                     class="
-       @if ($eco_delta_full > 0) alert alert-success
+       @if ($proc > 61) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $eco_delta_full }} руб;
+                                    {{ $eco_delta_full }} руб; ({{ $proc }}%)
                                 </div>
                             </td>
                             <td>
-                                <div
-                                    class="
-       @if ($proc < 21) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
-                                    {{ $summ_order }} руб; ({{ $proc }}%)
+                                <div class="alert alert-success">
+                                    {{ $summ_order }} руб;
                                 </div>
                             </td>
                             <td>

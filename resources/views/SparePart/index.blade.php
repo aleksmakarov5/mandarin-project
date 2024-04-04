@@ -23,13 +23,11 @@
                 <th scope="col">Кат. номер</th>
                 <th scope="col">Заказанный номер</th>
                 <th scope="col">Цена СК</th>
-                <th scope="col">Цена СК с износом</th>
                 <th scope="col" colspan="2">Цена оригинал</th>
                 <th scope="col" colspan="2">Цена аналог</th>
                 <th scope="col" colspan="2">Цена б/у</th>
                 <th scope="col">Ремонт</th>
                 <th scope="col">Разница от полной цены</th>
-                <th scope="col">Разница от цены с учетом износа</th>
                 <th scope="col">Комментарий</th>
                 @if (session('rout') == 'directions')
                     <th scope="col">Статус</th>
@@ -46,7 +44,6 @@
                 <th scope="col"></th>
                 <th scope="col"></th>
                 <th scope="col">{{ $summ_ic_full }}</th>
-                <th scope="col">{{ $summ_ic_half }}</th>
                 <th scope="col" colspan="7"></th>
                 <th scope="col">
                     <div
@@ -58,16 +55,7 @@
                         {{ $delta_res_full }}
                     </div>
                 </th>
-                <th scope="col">
-                    <div
-                        class="
-       @if ($delta_res_half < 0) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
-                        {{ $delta_res_half }}
-                    </div>
-                </th>
+
                 <th scope="col"></th>
                 @if (session('rout') == 'directions')
                     <th scope="col"></th>
@@ -159,13 +147,7 @@
                         </td>
                         <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
                             value='{{ $sparepart->price_ic_full }}'>
-                        <td id="td_price_ic_half-{{ $key }}" scope="col" class="ic_price">
-                            @if (old('price_ic_half.' . $key) !== null)
-                                {{ old('price_ic_half.' . $key) }}
-                            @else
-                                {{ $sparepart->price_ic_half }}
-                            @endif
-                        </td>
+
                         <input type="hidden" name="price_ic_half" id='price_ic_half-{{ $key }}'
                             value='{{ $sparepart->price_ic_half }}'>
                         <td id="td_price_original-{{ $key }}" scope="col"
@@ -309,18 +291,7 @@
                                 </div>
                             @endif
                         </th>
-                        <th scope="col">
-                            @if (isset($delta_half[$key]))
-                                <div
-                                    class="
-       @if ($delta_half[$key] < 0) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
-                                    {{ $delta_half[$key] }}
-                                </div>
-                            @endif
-                            </td>
+
                         <td id="td_comment-{{ $key }}" scope="col" class="comment">
                             @if (old('comment.' . $key) !== null)
                                 {{ old('comment.' . $key) }}
@@ -500,11 +471,7 @@
                     {{ $estimate->price_repair_full }}
                 </td>
             </tr>
-            <tr>
-                <th>Затраты на восстановительный ремонт (с учетом износа): </th>
-                <td>
-                    {{ $estimate->price_repair_half }} </td>
-            </tr>
+
             <tr>
                 <th>Фактическая стоимость восстановительного ремонта </th>
                 <td>
@@ -523,19 +490,7 @@
                     </div>
                 </th>
             </tr>
-            <tr>
-                <th>Разница от стоимости с учетом износа</th>
-                <th>
-                    <div
-                        class="
-                    @if ($summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_half) < 0) alert alert-success
-                    @else
-                        alert alert-danger @endif
-                    ">
-                        {{ $summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_half) }}
-                    </div>
-                </th>
-            </tr>
+
 
         </table>
     @endif
