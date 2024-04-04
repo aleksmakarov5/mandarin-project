@@ -2,9 +2,19 @@
 @section('main_content')
     <a href="/Work/{{ $id }}/doc_load" class="nav-link">Назад</a>
     <h1>Проверьте данные</h1>
+    <form action="/Work/{{ $id }}/data_save" method="post">
+        @csrf
+        <input type="hidden" name="id_application" value="{{ $id }}">
+        @for ($i = 1, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
+            <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
+            <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
+            <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
+            <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
+        @endfor
+        <button class="nav-link" type="submit">Сохранить</button>
+    </form>
     <form action="data_load" method="POST">
         @csrf
-        <button class="nav-link" type="submit">Сохранить</button>
         {{-- <input type="hidden" name="location" value="{{ $location }}"> --}}
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
@@ -79,15 +89,5 @@
         @else
             <button class="nav-link" type="submit">Удалить выбранные ячейки</button>
         @endif --}}
-    </form>
-    <form action="/Work/{{ $id }}/data_save" method="post">
-        @csrf
-        <input type="hidden" name="id_application" value="{{ $id }}">
-        @for ($i = 1, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
-            <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
-            <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
-            <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
-            <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
-        @endfor
     </form>
 @endsection
