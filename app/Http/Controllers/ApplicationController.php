@@ -440,14 +440,14 @@ class ApplicationController extends Controller
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
                 ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get();
+                ->get()->sortDesc();
         } else {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
                 ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get();
+                ->get()->sortDesc();
         }        // dd($rewiew->all()) ;
         return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me')]);
     }
