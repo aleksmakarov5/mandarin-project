@@ -424,7 +424,20 @@ class ApplicationController extends Controller
                 ->get();
         }
         // dd($messages);
-        return view('application.mail', ['messages' => $messages->all()], ['id' => $id]);
+        // $application = application::findOrFail($id);
+        $message_id = message::where('application_id', '=', $id)->first()->id;
+        $subject =
+            message::where('application_id', '=', $id)->first()->subject;
+        $to_email = DB::table('addresses')
+            ->where('message_id', '=', $message_id)
+            ->where('type', '=', 'from')
+            ->first()
+            ->email;
+        // echo $to;
+
+        $attachments = attachment::where('id_application', '=', $id)->get()->all();
+
+        return view('application.mail', ['messages' => $messages->all(), 'id' => $id,  'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
     }
     public function chat(Request $request, $id)
     {
