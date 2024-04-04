@@ -1033,6 +1033,7 @@ class ApplicationController extends Controller
             ->first()
             ->email;
 
+
         $attachments = attachment::where('id_application', '=', $id)->get()->all();
 
         return view('application.answer_ic_sch', ['application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
@@ -1068,6 +1069,28 @@ class ApplicationController extends Controller
         $history->id_status = 21;
         $history->id_application = $id;
         $history->comment = $request->comment;
+        $history->save();
+        $messages = new message();
+        $messages->application_id = $id;
+        $messages->subject = message::where('application_id', '=', $id)->first()->subject;
+        $messages->body_html = $request->message;
+        $messages->message_date = date('Y-m-d H:i:s');
+
+
+        $messages->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'from';
+        $address->email = 'robot@mandarinportal.ru';
+        $address->save();
+        $address = new address;
+        $address->message_id = $messages->id;
+        $address->type = 'to';
+        $address->email = $request->to;
+        $address->save();
+        $history->id_user = Auth::user()->id;
+        $history->id_application = $id;
+        $history->id_status = 18;
         $history->save();
         $application->save();
         return redirect()->route('directions');
