@@ -4,6 +4,7 @@
     <h1>Проверьте данные</h1>
     <form action="data_load" method="POST">
         @csrf
+        <button class="nav-link" type="submit">Сохранить</button>
         <input type="hidden" name="location" value="{{ $location }}">
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
@@ -62,6 +63,6 @@
             <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
             <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
         @endfor
-        <button class="nav-link" type="submit">Сохранить</button>
+
     </form>
 @endsection

@@ -986,3 +986,9 @@ nav li:hover>.submenu {
     visibility: visible;
     opacity: 1;
 }
+
+form .nav-link {
+    background-color: rgb(128, 128, 128);
+    min-width: 250px;
+    min-height: 40px;
+}

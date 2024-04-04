@@ -4,6 +4,7 @@
     <h1>Проверьте данные</h1>
     <form action="data_load" method="POST">
         @csrf
+        <button class="nav-link" type="submit">Сохранить</button>
         {{-- <input type="hidden" name="location" value="{{ $location }}"> --}}
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
@@ -88,6 +89,5 @@
             <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
             <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
         @endfor
-        <button class="nav-link" type="submit">Сохранить</button>
     </form>
 @endsection

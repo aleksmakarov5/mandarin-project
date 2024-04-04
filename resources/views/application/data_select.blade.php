@@ -5,6 +5,7 @@
     <form action="data_save" method="POST">
         @csrf
 
+        <button class="nav-link" type="submit">Сохранить</button>
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             @if (isset($price[1]))
                 <tr>
@@ -211,7 +212,6 @@
 
         </table>
 
-        <button class="nav-link" type="submit">Сохранить</button>
 
     </form>
 @endsection
