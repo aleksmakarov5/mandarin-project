@@ -580,7 +580,7 @@ class ApplicationController extends Controller
         // echo $application_end . 'Раб_фин<br /><br />';
         $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
         $application_array = explode('<br/>', $application);
-        // dd($application_array);
+        dd($application_array);
         return view('application.data_select', ['applications' => $application_array, 'id' => $id, 'smeta' => $smeta, 'price' => $price]);
     }
     public function data_save(Request $request, $id)
