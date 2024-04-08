@@ -12,7 +12,7 @@ use App\Models\application;
 use App\Models\attachment;
 use App\Models\User;
 use App\Models\history;
-use App\Jobs\QueueSenderEmail;
+use App\Jobs\QueueSenderEmФail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 use \ZanySoft\Zip\Facades\Zip;

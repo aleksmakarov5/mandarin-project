@@ -128,7 +128,8 @@
                     <th>ФИО клиента</th>
                     <th>
 
-                        <input type="text" name="ClientName" value="{{ $applications[20] }}">
+                        <input type="text" name="ClientName"
+                            value="@if (exist($applications[20])) {{ $applications[20] }}@else{{ $applications[19] }} @endif">
                         {{-- {{ $application-> ClientName }} --}}
                     </th>
                 </tr>
