@@ -129,7 +129,7 @@
                     <th>
 
                         <input type="text" name="ClientName"
-                            value="@if (exist($applications[20])) {{ $applications[20] }}@else{{ $applications[19] }} @endif">
+                            value="@if (isset($applications[20])) {{ $applications[20] }}@else{{ $applications[19] }} @endif">
                         {{-- {{ $application-> ClientName }} --}}
                     </th>
                 </tr>
