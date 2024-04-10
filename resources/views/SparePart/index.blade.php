@@ -422,64 +422,83 @@
             </tr>
         </tbody>
     </table>
-    @if (isset($estimate->price_sp_full))
-        <table @can('admin')
+
+    <table @can('admin')
             id='demo'
         @endcan
-            class="table table-striped-columns table-hover table-group-divider table-responsive">
+        class="table table-striped-columns table-hover table-group-divider table-responsive">
 
-            <tr>
-                <th>Cтоимость узлов и деталей:</th>
-                <td>
+        <tr>
+            <th>Cтоимость узлов и деталей:</th>
+            <td>
+                @if (isset($estimate->price_sp_full))
                     {{ $estimate->price_sp_full }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость узлов и деталей c учетом износа:</th>
-                <td>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Cтоимость узлов и деталей c учетом износа:</th>
+            <td>
+                @if (isset($estimate->price_sp_half))
                     {{ $estimate->price_sp_half }}
-                </td>
-            </tr>
+                @endif
+            </td>
+        </tr>
 
-            <tr>
-                <th>Cтоимость ремонта/замены:</th>
-                <td>
+        <tr>
+            <th>Cтоимость ремонта/замены:</th>
+            <td>
+                @if (isset($estimate->price_repair))
                     {{ $estimate->price_repair }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость окраски контроля: </th>
-                <td>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Cтоимость окраски контроля: </th>
+            <td>
+                @if (isset($estimate->price_paint))
                     {{ $estimate->price_paint }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость расходных материалов: </th>
-                <td>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Cтоимость расходных материалов: </th>
+            <td>
+                @if (isset($estimate->price_zip))
                     {{ $estimate->price_zip }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость работ и материалов: </th>
-                <td>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Cтоимость работ и материалов: </th>
+            <td>
+                @if (isset($estimate->price_work))
                     {{ $estimate->price_work }}
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость восстановительного ремонта (Всего) </th>
-                <td>
+                @endif
+            </td>
+        </tr>
+        <tr>
+            <th>Cтоимость восстановительного ремонта (Всего) </th>
+            <td>
+                @if (isset($estimate->price_repair_full))
                     {{ $estimate->price_repair_full }}
-                </td>
-            </tr>
+                @endif
+            </td>
+        </tr>
 
-            <tr>
-                <th>Фактическая стоимость восстановительного ремонта </th>
-                <td>
-                    {{ $summ_order + $summ_service }} </td>
-            </tr>
-            <tr>
-                <th>Разница от полной стоимости</th>
-                <th>
+        <tr>
+            <th>Фактическая стоимость восстановительного ремонта </th>
+            <td>
+                @if (isset($summ_order) && isset($summ_service))
+                    {{ $summ_order + $summ_service }}
+                @endif
+            </td>
+
+        </tr>
+        <tr>
+            <th>Разница от полной стоимости</th>
+            <th>
+                @if (isset($estimate->price_repair_full))
                     <div
                         class="
                     @if ($summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) < 0) alert alert-success
@@ -488,11 +507,12 @@
                     ">
                         {{ $summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) }}
                     </div>
-                </th>
-            </tr>
+                @endif
+            </th>
+        </tr>
 
 
-        </table>
+    </table>
     @endif
     <script>
         function tableSearch(k, table) {
