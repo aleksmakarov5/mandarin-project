@@ -586,7 +586,7 @@ class ApplicationController extends Controller
     public function data_save(Request $request, $id)
     {
 
-        if (isset($request->price_sp_full)) {
+        if (isset($request->price_sp_full) || isset($request->price_repair_full)) {
             $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
                 [
