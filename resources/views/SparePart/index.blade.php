@@ -513,7 +513,7 @@
 
 
     </table>
-    @endif
+
     <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
