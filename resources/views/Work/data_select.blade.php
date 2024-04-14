@@ -5,7 +5,7 @@
     <form action="/Work/{{ $id }}/data_save" method="post">
         @csrf
         <input type="hidden" name="id_application" value="{{ $id }}">
-        @for ($i = 1, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
+        @for ($i = 0, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
             <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
             <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
             <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
@@ -28,7 +28,7 @@
             </thead>
             <tbody>
 
-                @for ($i = 1; $i < count(session('works')) - 3; $i += 4)
+                @for ($i = 0; $i < count(session('works')) - 3; $i += 4)
                     <tr>
                         <td> {{ session('works')[$i] }}
                             @if (!is_numeric(str_replace(' ', '', session('works')[$i])))

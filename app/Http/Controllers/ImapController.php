@@ -113,6 +113,92 @@ class ImapController extends Controller
             Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         }
     }
+    public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company)
+    {
+        echo $subject;
+
+        $array_subject = explode(' ', $subject);
+        $gnz = '';
+        $app_number = '';
+
+        foreach ($array_subject as $item) {
+            if (preg_match("/\D[0-9]{3}\D\D[0-9]{3}/", $item) == 1 || preg_match("/\D[0-9]{3}\D\D[0-9]{2}/", $item) == 1) {
+                $gnz = $item;
+            }
+            if (preg_match("/[0-9]{7}/", $item) == 1 && strlen($item) < 8) {
+                $app_number = $item;
+            }
+        }
+
+
+        echo $gnz . '<br>';
+        echo $app_number . '<br>';
+
+
+        $applications = application::firstorcreate(
+            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 3, 'our_company' => $our_company],
+            [
+                'numberInsuranceCompanyApplication' => $app_number,
+                'id_insuranceCompany' => 3,
+                'gnz' => $gnz,
+                'CarModel' => 'model',
+                'id_status' => 1,
+                'our_company' => $our_company
+            ]
+        );
+        // dd($applications);
+        $message = new Message();
+        $message->subject = $email->getSubject();
+        $message->body_html = $email->getHTMLBody();
+        $message->body_text = $email->getTextBody();
+        $message->header = $email->getHeaders();
+        $message->message_date = $email->getdate();
+        $message->application_id = $applications->id;
+        $id = $applications->id;
+        $history = new History;
+        $history->id_application = $applications->id;
+        $history->id_status = 1;
+        $history->id_user = 2;
+        $history->save();
+        $message->is_parsed = true;
+        $message->save();
+        $dir = 'storage/files/' . $applications->id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        foreach ($attachments as $attachment) {
+            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+            $attachment->save($path = $dir . '/', $filename);
+            $attach = new attachment();
+            $attach->message_id = $message->id;
+            $attach->id_application = $applications->id;
+            $attach->location = $filename;
+            $attach->mime_type = $attachment->getMimeType();
+            $attach->file_size = $attachment->getSize();
+            $attach->file_name = $attachment->getFilename();
+            $attach->save();
+        }
+        //echo $to;
+        foreach ($to as $mail) {
+            // dd($mail);
+            $address = new address;
+            $address->message_id = $message->id;
+            $address->email = $mail->mail;
+            $address->type = 'to';
+            $address->save();
+        }
+        //dd($from, $to, $address);
+        foreach ($from as $mail) {
+            $address = new address;
+            $address->message_id = $message->id;
+            $address->email = $mail->mail;
+            $address->type = 'from';
+            $address->save();
+        }
+        $user = User::find(2);
+        Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
+    }
     public function recieve()
     {
         $cm = new ClientManager('config/imap.php');
@@ -151,6 +237,11 @@ class ImapController extends Controller
 
                 if (mb_strpos($body_html, 'vsk.ru') !== false) {
                     $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
+                }
+                if (mb_strpos($body_html, 'ingos.ru') !== false) {
+                    echo "Ingos";
+
+                    $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);
                 }
             }
         }

@@ -5,7 +5,7 @@
     <form action="data_save" method="POST">
         @csrf
 
-        <button class="nav-link" type="submit">Сохранить</button>
+        <input class="nav-link" type="submit" value="Сохранить">
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             @if (isset($price[1]))
                 <tr>
@@ -63,145 +63,118 @@
 
 
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
-            @if ($smeta)
+            @if (isset($applications['CarModel']))
                 <tr>
                     <th>Марка машины</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications[1] }}">
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['gnz']))
                 <tr>
                     <th>ГНЗ</th>
                     <th>
-                        <input type="text" name="gnz" value="{{ $applications[11] }}">
+                        <input type="text" name="gnz" value="{{ $applications['gnz'] }}">
 
 
                         {{-- {{ $application-> gnz }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['vin']))
                 <tr>
                     <th>ВИН/Кузов</th>
                     <th>
-                        <input type="text" name="vin" value="{{ $applications[3] }}">
+                        <input type="text" name="vin" value="{{ $applications['vin'] }}">
 
 
                         {{-- {{ $application-> vin }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['vehicle_passport']))
                 <tr>
                     <th>ПТС/Свидетельство о регистрации</th>
                     <th>
 
-                        <input type="text" name="vehicle_passport" value="{{ $applications[7] }}">
+                        <input type="text" name="vehicle_passport" value="{{ $applications['vehicle_passport'] }}">
 
                         {{-- {{ $application-> vehicle_passport }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['Color']))
                 <tr>
                     <th>Цвет</th>
                     <th>
 
-                        <input type="text" name="Color" value="{{ $applications[15] }}">
+                        <input type="text" name="Color" value="{{ $applications['Color'] }}">
                         {{-- {{ $application-> Color }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['mileage']))
                 <tr>
                     <th>Пробег</th>
                     <th>
 
-                        <input type="text" name="mileage" value="{{ $applications[5] }}">
+                        <input type="text" name="mileage" value="{{ $applications['mileage'] }}">
                         {{-- {{ $application-> mileage }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['DTPdate']))
                 <tr>
                     <th>Дата ДТП</th>
                     <th>
 
 
-                        <input type="text" name="DTPdate" value="{{ $applications[9] }}">
+                        <input type="text" name="DTPdate" value="{{ $applications['DTPdate'] }}">
                         {{-- {{ $application-> DTPdate}} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['ClientName']))
                 <tr>
                     <th>ФИО клиента</th>
                     <th>
 
-                        <input type="text" name="ClientName"
-                            value="@if (isset($applications[20])) {{ $applications[20] }}@else{{ $applications[19] }} @endif">
+                        <input type="text" name="ClientName" value="{{ $applications['ClientName'] }}">
                         {{-- {{ $application-> ClientName }} --}}
                     </th>
                 </tr>
-            @else
-                <tr>
-                    <th>ФИО клиента</th>
-                    <th>
-                        <input type="text" name="ClientName" value="{{ $applications[2] }}">
-                        {{-- {{ $application-> CarModel }} --}}
-
-                    </th>
-                </tr>
-                <tr>
-                    <th>ГНЗ</th>
-                    <th>
-                        <input type="text" name="gnz" value="{{ $applications[18] }}">
-
-
-                        {{-- {{ $application-> gnz }} --}}
-                    </th>
-                </tr>
-                <tr>
-                    <th>ВИН/Кузов</th>
-                    <th>
-                        <input type="text" name="vin" value="{{ $applications[23] }}">
-
-
-                        {{-- {{ $application-> vin }} --}}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Марка/модель</th>
-                    <th>
-
-                        <input type="text" name="CarModel" value="{{ $applications[17] }}">
-
-                        {{-- {{ $application-> vehicle_passport }} --}}
-                    </th>
-                </tr>
+            @endif
+            @if (isset($applications['dogovor']))
                 <tr>
                     <th>Страховой полис</th>
                     <th>
 
-                        <input type="text" name="dogovor" value="{{ $applications[19] }}">
+                        <input type="text" name="dogovor" value="{{ $applications['dogovor'] }}">
 
                         {{-- {{ $application-> vehicle_passport }} --}}
                     </th>
                 </tr>
+            @endif
+            @if (isset($applications['mnf_year']))
                 <tr>
                     <th>Год выпуска</th>
                     <th>
 
-                        <input type="text" name="mnf_year" value="{{ $applications[24] }}">
+                        <input type="text" name="mnf_year" value="{{ $applications['mnf_year'] }}">
 
                         {{-- {{ $application-> vehicle_passport }} --}}
                     </th>
                 </tr>
-                <tr>
-                    <th>Пробег</th>
-                    <th>
-
-                        <input type="text" name="mileage" value="{{ intval($applications[25]) }}">
-
-                        {{-- {{ $application-> vehicle_passport }} --}}
-                    </th>
-                </tr>
+            @endif
+            @if (isset($applications['ub_number']))
                 <tr>
                     <th>Убыток №</th>
                     <th>
 
-                        <input type="text" name="ub_number"
-                            value="{{ mb_substr($applications[11], mb_strpos($applications[11], '/') + 1, mb_strlen($applications[11]) - mb_strpos($applications[11], '/')) }}">
+                        <input type="text" name="ub_number" value="{{ $applications['ub_number'] }}">
 
                         {{-- {{ $application-> vehicle_passport }} --}}
                     </th>

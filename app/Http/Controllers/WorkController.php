@@ -6,6 +6,8 @@ use Illuminate\Support\Facades\DB;
 
 use Illuminate\Http\Request;
 use App\Models\work;
+use App\Models\application;
+
 
 
 
@@ -165,37 +167,234 @@ class WorkController extends Controller
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
-        $work_start = mb_strpos($file, 'н-час');
-        // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-        $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-        // echo $work_end . 'Раб_фин<br /><br />';
-        $work = mb_substr($file, $work_start + 5, $work_end - $work_start - 18);
-        $work_array = explode('<br/>', $work);
-        $j = 0;
+        $file = preg_replace("/\u{A0}/", ' ', $file);
+        $file = preg_replace("/\n/", ' ', $file);
+        // dd($file);
         $reset = 0;
         $works = [];
-        for ($i = 0; $i < count($work_array) - 1; $i++) {
-            if (
-                trim($work_array[$i]) == "Наименование" ||
-                trim($work_array[$i + 1]) == "Наименование" ||
-                trim($work_array[$i]) == "Норматив," ||
-                trim($work_array[$i]) == "Сумма, руб."
-                ||
-                trim($work_array[$i]) == "Цена ед., руб." ||
-                trim($work_array[$i]) == "н-час"
+
+        $app = Application::findorfail($id);
+        if ($app->id_insuranceCompany == 1) {
+            $work_start = mb_strpos($file, 'н-час');
+            // echo $work_start . 'Раб_Старт<br /><br />';
 
 
-            ) {
-            } else
+            $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+            $work_array = explode('<br/>', $work);
+            // dd($work_array);
+            $j = 0;
+
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час"
 
 
-                $works[$j++] = $work_array[$i];
-            // echo $work_array[$i] . '<br />';
+                ) {
+                } else
+
+
+                    $works[$j++] = $work_array[$i];
+                // echo $work_array[$i] . '<br />';
+            }
+            // dd($works);
+            session(['works' => $works]);
+        } else if ($app->id_insuranceCompany == 3) {
+            if (mb_strpos($file, 'www.autoins.ru')) {
+                $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+                // dd($file);
+                $work_start = mb_strpos($file, 'Ремонтные работы, рубли');
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'www.autoins.ru');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 158);
+                $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+                // dd($file);
+                $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'www.autoins.ru');
+                $work .= mb_substr($file, $work_start + 101, $work_end - $work_start - 163);
+
+                $work_array = explode('<br/>', $work);
+
+                $j = 0;
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час"
+
+
+                    ) {
+                    } else {
+                        if (($i - 3) % 5 != 0)
+                            $works[$j++] = $work_array[$i];
+                    }
+
+
+                    // echo $work_array[$i] . '<br />';
+                }
+                // dd($works, $work_array);
+                session(['works' => $works]);
+            } else {
+                if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
+                    rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                    exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+                    rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+                    $output = file_get_contents('storage/files/' . $id . '/output.txt');
+                    $data = array(
+                        "mimeType" => "application/pdf",
+                        "languageCodes" => ["*"],
+                        "model" => "page",
+                        "content" => $output
+                    );
+                    $header = array(
+                        "Content-Type" => "application/json",
+                        "Accept" => "application/json",
+                        "Authorization" => "Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2",
+                        "x-folder-id" => "b1gcnqkpepfcp6fulsah",
+                        "x-data-logging-enabled" => "true"
+                    );
+
+                    $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_HTTPHEADER,
+                        array(
+                            'Content-Type:application/json',
+                            'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                            'x-folder-id: b1gcnqkpepfcp6fulsah',
+                            'x-data-logging-enabled: true'
+                        )
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_POST,
+                        1
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_POSTFIELDS,
+                        json_encode($data, JSON_UNESCAPED_UNICODE)
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_RETURNTRANSFER,
+                        true
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_SSL_VERIFYPEER,
+                        false
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_HEADER,
+                        false
+                    );
+                    $res = curl_exec($ch);
+                    curl_close($ch);
+
+                    $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+                    // echo $res['id'];
+
+                    $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_RETURNTRANSFER,
+                        true
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_HTTPHEADER,
+                        array(
+                            'Content-Type:application/json',
+                            'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                            'x-folder-id: b1gcnqkpepfcp6fulsah',
+                            'x-data-logging-enabled: true'
+                        )
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_SSL_VERIFYPEER,
+                        false
+                    );
+                    curl_setopt(
+                        $ch,
+                        CURLOPT_HEADER,
+                        false
+                    );
+                    $html = curl_exec($ch);
+                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                    if (isset($html['error']['httpCode']))
+                        while (isset($html['error'])) {
+                            // echo ($html['error']['httpCode'] . '<br>');
+                            $html = curl_exec($ch);
+                            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                        }
+                    $html = curl_exec($ch);
+                    $html = explode("}}", $html);
+                    curl_close($ch);
+                    $file = '';
+                    foreach ($html as $result) {
+                        $result .= '}}';
+                        $result = json_decode($result, JSON_UNESCAPED_UNICODE);
+
+                        if (isset($result['result']['textAnnotation']['fullText']))
+                            $file .= $result['result']['textAnnotation']['fullText'];
+                    }
+                    file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
+                }
+                $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
+                $work_start = mb_strpos($file, 'н-час');
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 6, $work_end - $work_start - 2);
+                $work_array = explode("\n", $work);
+                // dd($work_array);
+                $j = 0;
+
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час"
+
+
+                    ) {
+                    } else
+
+
+                        $works[$j++] = $work_array[$i];
+                    // echo $work_array[$i] . '<br />';
+                }
+                // dd($works);
+                session(['works' => $works]);
+            }
         }
-        // dd($works);
-        session(['works' => $works]);
 
 
         // dd($work_array);
