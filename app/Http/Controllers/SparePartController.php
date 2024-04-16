@@ -225,6 +225,8 @@ class SparePartController extends Controller
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
         $file = preg_replace("/\u{A0}/", ' ', $file);
+        $file = preg_replace("/&#160/", '<br/>', $file);
+
         // dd($file);
 
         $app = Application::findorfail($id);
