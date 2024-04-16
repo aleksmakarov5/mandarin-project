@@ -582,6 +582,10 @@ class ApplicationController extends Controller
                     $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                 }
             $html = curl_exec($ch);
+            $html = explode("\n", $html);
+            foreach ($html as $key => $value) {
+                $html['key'] = json_decode($value);
+            }
             curl_close($ch);
             dd($html);
         } else {
