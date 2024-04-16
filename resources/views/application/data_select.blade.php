@@ -63,6 +63,68 @@
 
 
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
+
+
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Паспорт серия №</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Марка машины</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Марка машины</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Марка машины</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Марка машины</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
+            @if (isset($applications['CarModel']))
+                <tr>
+                    <th>Марка машины</th>
+                    <th>
+                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
             @if (isset($applications['CarModel']))
                 <tr>
                     <th>Марка машины</th>

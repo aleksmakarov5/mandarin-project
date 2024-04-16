@@ -597,9 +597,10 @@ class ApplicationController extends Controller
                 $applications[$entity['name']] = $entity['text'];
             }
             $applications['issued_by'] = mb_convert_case($applications['issued_by'], MB_CASE_UPPER, "UTF-8");
+            $applications['number'] = mb_substr($applications['number'], 0, 4) . ' ' . mb_substr($applications['number'], 4, 6);
             $applications['ClientName']
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
-            dd($applications);
+            // dd($applications);
         } else {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
