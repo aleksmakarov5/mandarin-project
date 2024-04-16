@@ -490,6 +490,7 @@ class ApplicationController extends Controller
 
     public function data_load(Request $request, $id)
     {
+        dd($request['location']);
         if ($request['location'] == "passport.pdf") {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
@@ -713,15 +714,17 @@ class ApplicationController extends Controller
                     $smeta = true;
 
                 $application_array = explode('<br/>', $application);
-                $applications['CarModel'] = $application_array[15];
-                $applications['gnz'] = $application_array[2];
-                $applications['vin'] = $application_array[9];
-                $applications['Color'] = $application_array[45];
-                $applications['mnf_year'] = $application_array[27];
-                $applications['mileage'] = (int)$application_array[33];
-                $applications['vehicle_passport'] = $application_array[68];
-                $applications['ClientName'] = $application_array[74];
-                //dd($application_array);
+                if (isset($application_array['1'])) {
+                    $applications['CarModel'] = $application_array[15];
+                    $applications['gnz'] = $application_array[2];
+                    $applications['vin'] = $application_array[9];
+                    $applications['Color'] = $application_array[45];
+                    $applications['mnf_year'] = $application_array[27];
+                    $applications['mileage'] = (int)$application_array[33];
+                    $applications['vehicle_passport'] = $application_array[68];
+                    $applications['ClientName'] = $application_array[74];
+                    //dd($application_array);
+                }
             }
         }
         return view('application.data_select', ['applications' => $applications, 'id' => $id, 'smeta' => $smeta, 'price' => $price]);
