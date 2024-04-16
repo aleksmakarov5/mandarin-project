@@ -184,6 +184,8 @@ class SparePartController extends Controller
             'price_original' => 'nullable',
             'price_analogue' => 'nullable',
             'price_used' => 'nullable',
+            'price_ic_full' => 'nullable',
+            'price_ic_half' => 'nullable',
             'status' => 'nullable',
             'comment' => 'nullable',
             'date_price' => 'nullable',
