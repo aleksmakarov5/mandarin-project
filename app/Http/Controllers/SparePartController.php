@@ -223,6 +223,7 @@ class SparePartController extends Controller
         $html = 'works.html';
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
+        $file = html_entity_decode($file);
         $file = html_entity_decode(strip_tags($file, ['br']));
         $file = preg_replace("/\u{A0}/", ' ', $file);
         $file = preg_replace("/&#160/", '<br/>', $file);
