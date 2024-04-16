@@ -583,11 +583,13 @@ class ApplicationController extends Controller
                 }
             $html = curl_exec($ch);
             $html = explode("\n", $html);
+            $passport = [];
+            $i = 0;
             foreach ($html as $key => $value) {
-                $html['key'] = json_decode($value);
+                $passport['$i++'] = json_decode($value);
             }
             curl_close($ch);
-            dd($html);
+            dd($passport);
         } else {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
