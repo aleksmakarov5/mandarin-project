@@ -65,66 +65,57 @@
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
 
 
-            @if (isset($applications['CarModel']))
+            @if (isset($applications['number']))
                 <tr>
                     <th>Паспорт серия №</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        <input type="text" name="number" value="{{ $applications['number'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
             @endif
-            @if (isset($applications['CarModel']))
+            @if (isset($applications['issued_by']))
                 <tr>
-                    <th>Марка машины</th>
+                    <th>Выдан кем</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        <input type="text" name="issued_by" value="{{ $applications['issued_by'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
             @endif
-            @if (isset($applications['CarModel']))
+            @if (isset($applications['issue_date']))
                 <tr>
-                    <th>Марка машины</th>
+                    <th>Выдан когда</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        <input type="text" name="issue_date" value="{{ $applications['issue_date'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
             @endif
-            @if (isset($applications['CarModel']))
+            @if (isset($applications['subdivision']))
                 <tr>
-                    <th>Марка машины</th>
+                    <th>Код подразделения</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        <input type="text" name="subdivision" value="{{ $applications['subdivision'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
             @endif
-            @if (isset($applications['CarModel']))
+            @if (isset($applications['birth_date']))
                 <tr>
-                    <th>Марка машины</th>
+                    <th>Дата рождения</th>
                     <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
+                        <input type="text" name="birth_date" value="{{ $applications['birth_date'] }}">
                         {{-- {{ $application-> CarModel }} --}}
 
                     </th>
                 </tr>
             @endif
-            @if (isset($applications['CarModel']))
-                <tr>
-                    <th>Марка машины</th>
-                    <th>
-                        <input type="text" name="CarModel" value="{{ $applications['CarModel'] }}">
-                        {{-- {{ $application-> CarModel }} --}}
 
-                    </th>
-                </tr>
-            @endif
             @if (isset($applications['CarModel']))
                 <tr>
                     <th>Марка машины</th>
