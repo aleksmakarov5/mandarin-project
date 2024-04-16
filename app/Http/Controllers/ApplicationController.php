@@ -492,6 +492,10 @@ class ApplicationController extends Controller
     {
         $loc = mb_substr($request['location'], 0, 8);
         $applications = array();
+        $estimate = '';
+        $price = [];
+
+        $smeta = false;
         if ($loc == "passport") {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
@@ -610,8 +614,7 @@ class ApplicationController extends Controller
             $file = file_get_contents('storage/files/' . $id . '/'  . $html);
             $file = html_entity_decode(strip_tags($file, ['br']));
 
-            $estimate = '';
-            $price = [];
+
 
             $app = Application::findorfail($id);
             if ($app->id_insuranceCompany == 1) {
@@ -686,7 +689,6 @@ class ApplicationController extends Controller
                 }
 
                 // dd($price);
-                $smeta = false;
                 if ($application_start) {
                     $smeta = true;
                 }
