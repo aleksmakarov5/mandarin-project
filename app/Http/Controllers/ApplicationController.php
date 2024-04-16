@@ -590,9 +590,9 @@ class ApplicationController extends Controller
                 $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
             }
             curl_close($ch);
-            dd($passport);
-            $data = $passport[0]['textAnnotation']['entities'];
-            foreach ($passport[0]['textAnnotation']['entities'] as $entity) {
+            // dd($passport);
+            // $data = $passport[0]['textAnnotation']['entities'];
+            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
 
                 $applications[$entity['name']] = $entity['text'];
             }
