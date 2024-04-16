@@ -490,8 +490,8 @@ class ApplicationController extends Controller
 
     public function data_load(Request $request, $id)
     {
-        dd($request['location']);
-        if ($request['location'] == "passport.pdf") {
+        $loc = mb_substr($request['location'], 0, 8);
+        if ($loc == "passport") {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
             rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
