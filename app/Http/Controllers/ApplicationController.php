@@ -587,7 +587,7 @@ class ApplicationController extends Controller
             $passport = [];
             $i = 0;
             foreach ($html as $key => $value) {
-                $passport[$i++] = json_decode($value);
+                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
             }
             curl_close($ch);
             $data = $passport[0]['textAnnotation']['entities'];
