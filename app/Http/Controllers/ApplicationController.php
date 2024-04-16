@@ -581,7 +581,7 @@ class ApplicationController extends Controller
                     $html = curl_exec($ch);
                     $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                 }
-
+            $html = curl_exec($ch);
             curl_close($ch);
             dd($html);
         } else {
