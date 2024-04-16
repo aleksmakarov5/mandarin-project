@@ -258,6 +258,7 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
             }
+            dd($SpareParts);
         } else if ($app->id_insuranceCompany == 3) {
 
             if (mb_strpos($file, 'www.autoins.ru')) {
