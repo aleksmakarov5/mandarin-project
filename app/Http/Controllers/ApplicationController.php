@@ -491,6 +491,7 @@ class ApplicationController extends Controller
     public function data_load(Request $request, $id)
     {
         $loc = mb_substr($request['location'], 0, 8);
+        $applications = array();
         if ($loc == "passport") {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
@@ -589,7 +590,12 @@ class ApplicationController extends Controller
                 $passport[$i++] = json_decode($value);
             }
             curl_close($ch);
-            dd($passport);
+            $data = $passport[0]['textAnnotation']['entities'];
+            foreach ($passport[0]['textAnnotation']['entities'] as $entity) {
+
+                $applications[$entity['name']] = $entity['text'];
+            }
+            dd($applications);
         } else {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
@@ -601,7 +607,7 @@ class ApplicationController extends Controller
 
             $estimate = '';
             $price = [];
-            $applications = array();
+
             $app = Application::findorfail($id);
             if ($app->id_insuranceCompany == 1) {
                 $application_start = mb_strpos($file, 'Марка, модель');
