@@ -296,13 +296,7 @@ class SparePartController extends Controller
                         "model" => "page",
                         "content" => $output
                     );
-                    $header = array(
-                        "Content-Type" => "application/json",
-                        "Accept" => "application/json",
-                        "Authorization" => "Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2",
-                        "x-folder-id" => "b1gcnqkpepfcp6fulsah",
-                        "x-data-logging-enabled" => "true"
-                    );
+
 
                     $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
                     curl_setopt(

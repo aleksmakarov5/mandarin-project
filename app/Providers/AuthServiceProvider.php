@@ -51,5 +51,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('km', function (User $user) {
             return $user->GroupId === 8 || $user->GroupId === 1 || $user->GroupId === 7;
         });
+        Gate::define('company', function (User $user) {
+            return $user->GroupId < 9;
+        });
     }
 }
