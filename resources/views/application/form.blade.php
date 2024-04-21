@@ -2,7 +2,7 @@
     <div>
         <ul>
             @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
+                <div class="alert alert-danger">{{ $error }}</div>
             @endforeach
         </ul>
     </div>
@@ -82,7 +82,11 @@
     <input type="text" name="ClientName" id="ClientName" class="form-cont" value="{{ $application->ClientName }}">
     <div class='lbl'><label for="ClientName">ФИО клиента</label></div>
 </div>
-<div class="form-float">
+
+<div class="form-float @error('ClientPhone')
+    alert alert-danger
+@enderror">
+
     <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont"
         value="{{ $application->ClientPhone }}">
     <div class='lbl'>

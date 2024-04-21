@@ -87,7 +87,7 @@
                         id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
                 <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text11"
                         onkeyup="tableSearch(11),'demo')"></th>
-                <th scope="col" colspan=5></th>
+                <th scope="col" colspan=4></th>
 
 
 
@@ -399,10 +399,7 @@
                     </th>
                     <th>
                     </th>
-                    <th>
-                    </th>
-                    <th>
-                    </th>
+
                     @if (session('rout') == 'directions')
                         <th>
 
