@@ -20,7 +20,6 @@
                 <p class="text-red-500">{{ $message }}</p>
             @enderror
         </div>
-
         <button class="nav-link" type="submit">Создать группу</button>
     </form>
 @endsection
