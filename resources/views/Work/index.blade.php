@@ -157,7 +157,7 @@
 
                     </tr>
                 </thead>
-                <tbody class="panel">
+                <tbody>
 
 
 

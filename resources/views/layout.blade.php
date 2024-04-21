@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-bs-theme="dark">
+<html lang="en" {{-- data-bs-theme="dark" --}}>
 
 <head>
     <meta charset="UTF-8">
@@ -46,7 +46,7 @@
 
 </head>
 
-<body class="bg-dark text-white ">
+<body {{-- class="bg-dark text-white " --}}>
     <div class="container">
 
         @auth('web')
