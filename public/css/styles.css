@@ -68,6 +68,7 @@ div.card {
     width: 128px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     text-align: center;
+    margin: 5px;
 }
 
 div.header {
@@ -999,4 +1000,10 @@ nav li:hover>.submenu {
 form .nav-link {
     background-color: rgb(128, 128, 128);
     min-width: 250px;
+}
+
+.user {
+    width: 25%;
+    margin-right: 0;
+    margin-left: auto;
 }

@@ -50,7 +50,7 @@
     <div class="container">
 
         @auth('web')
-            <p align=right> {{ Auth::user()->name }} </p>
+            <p class='user'> <a href="#" class='nav-link'>{{ Auth::user()->name }} </a></p>
         @endauth
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             @auth('web')
