@@ -338,7 +338,7 @@
                             <th scope="col"> <a
                                     onclick="if (!confirm('Точно удалить запчасть <{{ $sparepart->name }}?>')) return false"
                                     href="{{ route('SparePart.destroy', $sparepart->id) }}" class="nav-link"><img
-                                        src="/storage/img/delete.png" width="30" alt="delete"></a>
+                                        src="/storage/img/delete.png" width="20" alt="delete"></a>
                             </th>
                         @endif
                     </form>

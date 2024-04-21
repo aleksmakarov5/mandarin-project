@@ -86,7 +86,7 @@
                                 <td scope="col"> <a
                                         onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
                                         href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                            src="/storage/img/delete.png" width="30" alt="delete"></a>
+                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
                                 </td>
                         </tr>
                         </form>
@@ -191,7 +191,7 @@
                                 <td scope="col"> <a
                                         onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
                                         href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                            src="/storage/img/delete.png" width="30" alt="delete"></a>
+                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
                                 </td>
                         </tr>
                         </form>
