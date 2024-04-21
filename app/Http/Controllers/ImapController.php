@@ -246,42 +246,42 @@ class ImapController extends Controller
             }
         }
 
-        $client1 = $cm->account('makarov');
-        //   dd($client);
-        //Connect to the IMAP Server
-        $client1->connect();
+        // // $client1 = $cm->account('makarov');
+        // //   dd($client);
+        // //Connect to the IMAP Server
+        // $client1->connect();
 
-        //Get all Mailboxes
-        /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-        $folders = $client1->getFolders();
+        // //Get all Mailboxes
+        // /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
+        // $folders = $client1->getFolders();
 
-        //Loop through every Mailbox
-        /** @var \Webklex\PHPIMAP\Folder $folder */
-        foreach ($folders as $folder) {
+        // //Loop through every Mailbox
+        // /** @var \Webklex\PHPIMAP\Folder $folder */
+        // foreach ($folders as $folder) {
 
-            //Get all Messages of the current Mailbox $folder
-            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $emailes = $folder->messages()->UNSEEN()->get();
-            //dd($folder);
-            /** @var \Webklex\PHPIMAP\Message $message */
-            foreach ($emailes as $email) {
+        //     //Get all Messages of the current Mailbox $folder
+        //     /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+        //     $emailes = $folder->messages()->UNSEEN()->get();
+        //     //dd($folder);
+        //     /** @var \Webklex\PHPIMAP\Message $message */
+        //     foreach ($emailes as $email) {
 
-                //dd($email);
-                $email->setFlag('Seen');
-                $attachments = $email->getAttachments();
+        //         //dd($email);
+        //         $email->setFlag('Seen');
+        //         $attachments = $email->getAttachments();
 
-                $from = $email->getFrom()->toarray();
-                $to = $email->getTo()->toArray();
-                $subject = $email->getSubject();
-                $subject = trim($subject);
-                $body_html = $email->getHTMLBody();
-                $our_company = 2;
+        //         $from = $email->getFrom()->toarray();
+        //         $to = $email->getTo()->toArray();
+        //         $subject = $email->getSubject();
+        //         $subject = trim($subject);
+        //         $body_html = $email->getHTMLBody();
+        //         $our_company = 2;
 
-                if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                    $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
-                }
-            }
-        }
+        //         if (mb_strpos($body_html, 'vsk.ru') !== false) {
+        //             $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
+        //         }
+        //     }
+        // }
     }
     public function send()
     {
