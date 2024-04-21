@@ -70,8 +70,6 @@
 
                 <li class="nav-item"><a href="\" class="nav-link
                         {{ session('rout') == 'home' ? 'tn-active' : '' }}">Главная</a></li>
-                <li class="nav-item"><a href="\review"
-                        class="nav-link {{ session('rout') == 'review' ? 'tn-active' : '' }}">Отзывы</a></li>
 
 
                 @auth('web')
