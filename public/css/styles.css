@@ -219,34 +219,42 @@ div.container {
 
 td.zap {
     background: #06e70a;
+    color: white;
 }
 
 td.na {
     background: #e70a06;
+    color: white;
 }
 
 td.mrk {
     background: #0a07e8;
+    color: white;
 }
 
 td.sto {
     background: #facd08;
+    color: white;
 }
 
 td.zapmrksto {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, #facd08 50%, rgba(10, 7, 232, 1) 100%);
+    color: white;
 }
 
 td.zapmrk {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, rgba(10, 7, 232, 1) 100%);
+    color: white;
 }
 
 td.zapsto {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, #facd08 100%);
+    color: white;
 }
 
 td.mrksto {
     background: linear-gradient(90deg, #facd08, rgba(10, 7, 232, 1) 100%);
+    color: white;
 }
 
 /* Hover */
