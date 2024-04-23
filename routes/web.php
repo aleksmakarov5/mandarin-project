@@ -12,7 +12,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SparePartController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
-
+use Laravel\Socialite\Facades\Socialite;
 
 /*
 |--------------------------------------------------------------------------
@@ -232,5 +232,10 @@ Route::middleware("auth:web")->group(
         Route::get('export_sch/{id}/{status_id}', [WordController::class, 'export_sch'])->name('export_sch');
         Route::get('create_all/{id}/{status_id}', [WordController::class, 'create_all'])->name('create_all');
     }
-
 );
+Route::get('/auth/telegram/callback', function () {
+    return 'Hello telegram callback';
+});
+Route::get('/auth/telegram/redirect', function () {
+    return Socialite::driver('telegram')->redirect();
+});

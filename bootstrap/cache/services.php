@@ -35,18 +35,20 @@
     31 => 'LaravelLang\\Publisher\\ServiceProvider',
     32 => 'Laravel\\Sail\\SailServiceProvider',
     33 => 'Laravel\\Sanctum\\SanctumServiceProvider',
-    34 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    35 => 'Carbon\\Laravel\\ServiceProvider',
-    36 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
-    37 => 'Termwind\\Laravel\\TermwindServiceProvider',
-    38 => 'Orchestra\\Parser\\XmlServiceProvider',
-    39 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    40 => 'Webklex\\IMAP\\Providers\\LaravelServiceProvider',
-    41 => 'ZanySoft\\Zip\\ZipServiceProvider',
-    42 => 'App\\Providers\\AppServiceProvider',
-    43 => 'App\\Providers\\AuthServiceProvider',
-    44 => 'App\\Providers\\EventServiceProvider',
-    45 => 'App\\Providers\\RouteServiceProvider',
+    34 => 'Laravel\\Socialite\\SocialiteServiceProvider',
+    35 => 'Laravel\\Tinker\\TinkerServiceProvider',
+    36 => 'Carbon\\Laravel\\ServiceProvider',
+    37 => 'NunoMaduro\\Collision\\Adapters\\Laravel\\CollisionServiceProvider',
+    38 => 'Termwind\\Laravel\\TermwindServiceProvider',
+    39 => 'Orchestra\\Parser\\XmlServiceProvider',
+    40 => 'SocialiteProviders\\Manager\\ServiceProvider',
+    41 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
+    42 => 'Webklex\\IMAP\\Providers\\LaravelServiceProvider',
+    43 => 'ZanySoft\\Zip\\ZipServiceProvider',
+    44 => 'App\\Providers\\AppServiceProvider',
+    45 => 'App\\Providers\\AuthServiceProvider',
+    46 => 'App\\Providers\\EventServiceProvider',
+    47 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -225,6 +227,7 @@
     'CloudConvert\\CloudConvert' => 'CloudConvert\\Laravel\\Providers\\CloudConvertServiceProvider',
     'Laravel\\Sail\\Console\\InstallCommand' => 'Laravel\\Sail\\SailServiceProvider',
     'Laravel\\Sail\\Console\\PublishCommand' => 'Laravel\\Sail\\SailServiceProvider',
+    'Laravel\\Socialite\\Contracts\\Factory' => 'SocialiteProviders\\Manager\\ServiceProvider',
     'command.tinker' => 'Laravel\\Tinker\\TinkerServiceProvider',
     'orchestra.parser.xml' => 'Orchestra\\Parser\\XmlServiceProvider',
   ),
@@ -272,10 +275,16 @@
     'Laravel\\Sail\\SailServiceProvider' => 
     array (
     ),
+    'Laravel\\Socialite\\SocialiteServiceProvider' => 
+    array (
+    ),
     'Laravel\\Tinker\\TinkerServiceProvider' => 
     array (
     ),
     'Orchestra\\Parser\\XmlServiceProvider' => 
+    array (
+    ),
+    'SocialiteProviders\\Manager\\ServiceProvider' => 
     array (
     ),
   ),
