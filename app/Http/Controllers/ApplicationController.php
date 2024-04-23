@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 use App\Models\message;
 use App\Models\address;
+use App\Models\service;
 use App\Models\OurCompany;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
@@ -50,6 +51,16 @@ class ApplicationController extends Controller
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()
                 ->sortDesc();
+        } elseif (Gate::allows('service')) {
+            $applications = application::where(function ($query) {
+                $query->where('id_status', '<', '6');
+            })
+                ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
                 $query
@@ -164,6 +175,19 @@ class ApplicationController extends Controller
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
                 ->get()->sortDesc();
+        } else if (Auth::user()->GroupId == 9) {
+            $applications = application::where(function ($query) {
+                $query->where('id_status', '>', '7')
+                    ->where('id_status', '<', '24');
+            })
+                ->where(function ($query) {
+                    $query->Where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id);
+                })
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
@@ -225,28 +249,17 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
 
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
+            ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'services.service_name', 'spms.name as spm', 'mrks.name as mrk')
             ->where('applications.id', '=', $id)
             ->first();
         //   dd($application);
         $mrk = DB::table('users')
             ->where('id', '=', $application->id_MRK)
             ->first();
-        $mrkname = '';
-        if (isset($mrk->name)) {
-            $mrkname = $mrk->name;
-        }
 
-
-
-        $spm
-            = DB::table('users')
-            ->where('id', '=', $application->id_spm)
-            ->first();
-        $spmname = '';
-        if (isset($spm->name)) {
-            $spmname = $spm->name;
-        }
         $empty = 0;
         foreach ($application as $key => $value) {
             if ($key != 'ClientPasport')
@@ -256,7 +269,7 @@ class ApplicationController extends Controller
         }
 
 
-        return view('application.index', ['application' => $application, 'id' => $id, 'mrk' => $mrkname, 'spm' => $spmname, 'empty' => $empty]);
+        return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty]);
     }
     //
     public function edit($id)
@@ -267,6 +280,9 @@ class ApplicationController extends Controller
         $spms = DB::table('users')
             ->where('GroupId', '=', 6)
             ->get();
+        $services = DB::table('services')->get();
+        $lawyers = DB::table('lawyers')->get();
+
         $InsuranceCompany = new InsuranceCompany;
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -277,8 +293,9 @@ class ApplicationController extends Controller
             'application.edit',
             [
                 'application' => $application,
-                'mrks' => $mrks,
                 'InsuranceCompany' => $InsuranceCompany->all(),
+                'mrks' => $mrks,
+                'services' => $services,
                 'spms' => $spms
             ]
         );
@@ -311,6 +328,8 @@ class ApplicationController extends Controller
                 'ClientPhone' => 'required|string',
                 'id_MRK' => 'nullable|integer',
                 'id_spm' => 'nullable|integer',
+                'id_service' => 'nullable|integer',
+                'id_lawyer' => 'nullable|integer',
                 'mileage' => 'nullable|integer',
                 'vehicle_passport' => 'nullable|string',
                 'Color' => 'nullable|string',
@@ -357,6 +376,8 @@ class ApplicationController extends Controller
             'ClientPhone' => 'nullable|string',
             'id_MRK' => 'nullable|integer',
             'id_spm' => 'nullable|integer',
+            'id_service' => 'nullable|integer',
+            'id_lawyer' => 'nullable|integer',
             'mileage' => 'nullable|integer',
             'vehicle_passport' => 'nullable|string',
             'Color' => 'nullable|string',
@@ -443,7 +464,7 @@ class ApplicationController extends Controller
     {
 
         $users = DB::table('users')->get();
-        if ($request->input('only_me')) {
+        if ($request->input('only_me') || Gate::allows('service')) {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->where(function ($query) {

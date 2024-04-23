@@ -121,6 +121,22 @@
     </select>
 
 </div>
+<div class='lbl'>
+    <label for="id_spm">Сервис</label>
+</div>
+<div class="form-float">
+
+    <select class="form-cont" id="id_service" name="id_service">
+        @foreach ($services as $item)
+            <option value="{{ $item->id }}" @if ($item->id === $application->id_service) selected @endif>
+                {{ $item->service_name }}
+            </option>
+        @endforeach
+
+    </select>
+
+</div>
+
 @if (session('rout') == 'directions')
     <hr>
     <div class="form-float">

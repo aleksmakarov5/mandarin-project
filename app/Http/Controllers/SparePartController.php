@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\SparePart;
 use App\Models\application;
+use Illuminate\Support\Facades\Gate;
 
 class SparePartController extends Controller
 {
@@ -66,15 +67,20 @@ class SparePartController extends Controller
     public function SparePart($id)
     {
         $eco = '';
+        if (Gate::allows('service'))
+            $spareparts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('selected_mrk', '>', 0)
+                ->where('selected_mrk', '<', 4)
+                ->get();
+        else
+            $spareparts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->get();
 
-        $spareparts = DB::table('spare_parts')
-            ->where('id_application', '=', $id)
-
-            ->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')
             ->where('id_application', '=', $id)
-            ->where('price_service', '<>', 0)
             ->get();
         $summ_service = 0;
         foreach ($Works_serv as $work) {

@@ -61,44 +61,46 @@
             <td>
                 <h1>Заявка № {{ $id }} </h1>
             </td>
-            <td>
-                @if (isset($eco_delta_full))
-                    <table class="table-count">
-                        <tr>
-                            <td>
-                                Остаток от полной стоимости:
-                            </td>
-                            <td> Стоимость запчастей</td>
-                            <td>Стоимость работ</td>
-                        </tr>
-                        <tr>
+            @can('company')
+                <td>
+                    @if (isset($eco_delta_full))
+                        <table class="table-count">
+                            <tr>
+                                <td>
+                                    Остаток от полной стоимости:
+                                </td>
+                                <td> Стоимость запчастей</td>
+                                <td>Стоимость работ</td>
+                            </tr>
+                            <tr>
 
-                            <td>
-                                <div
-                                    class="
+                                <td>
+                                    <div
+                                        class="
        @if ($proc > 61) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $eco_delta_full }} руб; ({{ $proc }}%)
-                                </div>
-                            </td>
-                            <td>
-                                <div class="alert alert-success">
-                                    {{ $summ_order }} руб;
-                                </div>
-                            </td>
-                            <td>
-                                <div
-                                    class="
+                                        {{ $eco_delta_full }} руб; ({{ $proc }}%)
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="alert alert-success">
+                                        {{ $summ_order }} руб;
+                                    </div>
+                                </td>
+                                <td>
+                                    <div
+                                        class="
        @if ($summ_service > 0) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $summ_service }} руб;
-                                </div>
-                            </td>
+                                        {{ $summ_service }} руб;
+                                    </div>
 
+                                </td>
+                            @endcan
                         </tr>
                     </table>
                 @endif
@@ -118,21 +120,27 @@
             <li class="nav-item"><a href="/Work/{{ $id }}"
                     class="nav-link  {{ request()->routeIs('Work') ? 'tn-active' : '' }}" aria-current="page">Работы</a>
             </li>
-            @if (session('rout') == 'directions')
-                <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
-                        class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
-                        aria-current="page">Дефектовка</a></li>
-            @endif
-            <li class="nav-item"><a href="/mail/{{ $id }}"
-                    class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}" aria-current="page">Переписка
-                    с СК</a></li>
+
+            @can('company')
+                @if (session('rout') == 'directions')
+                    <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
+                            class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
+                            aria-current="page">Дефектовка</a></li>
+                @endif
+                <li class="nav-item"><a href="/mail/{{ $id }}"
+                        class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}" aria-current="page">Переписка
+                        с СК</a></li>
+            @endcan
             <li class="nav-item"><a href="/chat/{{ $id }}"
                     class="nav-link {{ request()->routeIs('chat') ? 'tn-active' : '' }}" aria-current="page">Чат</a></li>
             <li class="nav-item"><a href="/document/{{ $id }}"
                     class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}"
                     aria-current="page">Документы</a></li>
-            <li class="nav-item"><a href="/history/{{ $id }}"
-                    class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a></li>
+
+            @can('company')
+                <li class="nav-item"><a href="/history/{{ $id }}"
+                        class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a></li>
+            @endcan
             <li></li>
 
             {{-- <li class="nav-item">

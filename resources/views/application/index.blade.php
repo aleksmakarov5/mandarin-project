@@ -102,13 +102,19 @@
         <tr>
             <th>Менеджер по работе с клиентами</th>
             <th>
-                {{ $mrk }}
+                {{ $application->mrk }}
             </th>
         </tr>
         <tr>
             <th>Запчастист</th>
             <th>
-                {{ $spm }}
+                {{ $application->spm }}
+            </th>
+        </tr>
+        <tr>
+            <th>Сервис</th>
+            <th>
+                {{ $application->service_name }}
             </th>
         </tr>
         <tr>

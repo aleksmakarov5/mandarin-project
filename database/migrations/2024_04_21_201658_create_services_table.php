@@ -16,6 +16,7 @@ return new class extends Migration
             $table->timestamps();
             $table->string('service_name');
             $table->string('service_description');
+            $table->unsignedBigInteger('id_user');
         });
     }
 

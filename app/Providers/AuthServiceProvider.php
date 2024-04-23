@@ -54,5 +54,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('company', function (User $user) {
             return $user->GroupId < 9;
         });
+        Gate::define('service', function (User $user) {
+            return $user->GroupId === 9;
+        });
     }
 }
