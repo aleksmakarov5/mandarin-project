@@ -230,9 +230,8 @@
                                             МРК</a></li>
                                 @endcan
                                 @can('mrk')
-                                    @if ($app->current_group == 5)
-                                        <li><a href="#">Передать на СТО</a></li>
-                                    @endif
+                                    <li><a href="#">Передать на СТО</a></li>
+
                                     @if ($app->id_status == 8)
                                         <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
                                     @endif

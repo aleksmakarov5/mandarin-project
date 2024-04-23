@@ -89,10 +89,13 @@
                                 <input type="hidden" name="summ" id='summ--{{ $key }}'
                                     value='{{ $Work->summ }}'>
 
-                                <td scope="col"> <a
-                                        onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
-                                        href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                <td scope="col">
+                                    @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)
+                                        <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                            href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                                src="/storage/img/delete.png" width="20" alt="delete">
+                                        </a>
+                                    @endif
                                 </td>
                         </tr>
                         </form>
@@ -195,10 +198,12 @@
                                     </td>
                                     <input type="hidden" name="price_service" id='price_service-{{ $key }}'
                                         value='{{ $Work->price_service }}'>
-                                    <td scope="col"> <a
-                                            onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
-                                            href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                                src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                    <td scope="col">
+                                        @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)
+                                            <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                                href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                                    src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                        @endif
                                     </td>
                             </tr>
                             </form>

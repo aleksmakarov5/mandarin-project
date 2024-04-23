@@ -426,7 +426,7 @@
                                 </div>
                             </th>
                         @endif
-                        @if (Auth::user()->GroupId == 5)
+                        @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == 6 || Auth::user()->GroupId == $sparepart->author)
                             <th scope="col"> <a
                                     onclick="if (!confirm('Точно удалить запчасть <{{ $sparepart->name }}?>')) return false"
                                     href="{{ route('SparePart.destroy', $sparepart->id) }}" class="nav-link"><img
