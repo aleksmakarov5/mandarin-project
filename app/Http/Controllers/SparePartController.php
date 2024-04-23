@@ -67,7 +67,7 @@ class SparePartController extends Controller
     public function SparePart($id)
     {
         $eco = '';
-        if (Gate::allows('service'))
+        if (Gate::allows('service')) {
             $spareparts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where(function ($query) {
@@ -80,7 +80,12 @@ class SparePartController extends Controller
 
 
                 ->get();
-        else
+            foreach ($spareparts as $sparepart) {
+                $sparepart->price_original *= 1.1;
+                $sparepart->price_analogue *= 1.1;
+                $sparepart->price_used *= 1.1;
+            }
+        } else
             $spareparts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->get();

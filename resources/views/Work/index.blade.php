@@ -32,7 +32,11 @@
 
                         {{-- <th scope="col">Сумма</th> --}}
                         <th scope="col">Цена сервиса</th>
-                        <th scope="col">Разница стоимости</th>
+                        <th scope="col">
+                            @can('company')
+                                Разница стоимости
+                            @endcan
+                        </th>
 
                     </tr>
                     <tr>
@@ -41,14 +45,16 @@
                         {{-- <th scope="col">{{$summ_ic}}</th> --}}
                         <th scope="col">{{ $summ_service }}</th>
                         <th scope="col">
-                            <div
-                                class="
+                            @can('company')
+                                <div
+                                    class="
        @if ($delta < 0) alert alert-success
        @else
        alert alert-danger @endif
        ">
 
-                                {{ $delta }}</div>
+                                    {{ $delta }}</div>
+                            @endcan
                         </th>
 
                     </tr>
@@ -125,106 +131,107 @@
             </table>
         </div>
         <div class="col">
-
-            <table class="editable" id='demo'>
-                <thead class="accordion">
-                    <tr>
-                        <th scope="col" colspan=4>Данные из калькуляции</th>
-                        <th scope="col" colspan=4>
-                            <a href="/Work/{{ $id }}/doc_load" class="nav-link">Загрузить</a>
-                        </th>
-
-
-
-                    </tr>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Наименование</th>
-
-                        <th scope="col">Цена страховой</th>
-                        <th scope="col">Цена сервиса</th>
-                        {{-- <th scope="col">Цена сервиса</th> --}}
-                        <th scope="col"></th>
-
-                    </tr>
-                    <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Итого</th>
-                        <th scope="col">{{ $summ_ic }}</th>
-                        {{-- <th scope="col">{{$summ_service}}</th> --}}
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-
-                    </tr>
-                </thead>
-                <tbody>
-
-
-
-                    @foreach ($Works as $key => $Work)
+            @can('company')
+                <table class="editable" id='demo'>
+                    <thead class="accordion">
                         <tr>
-                            <form name="form{{ $key }}" id='form{{ $key }}'
-                                action="/Work/{{ $Work->id }}/update" method="POST">
+                            <th scope="col" colspan=4>Данные из калькуляции</th>
+                            <th scope="col" colspan=4>
+                                <a href="/Work/{{ $id }}/doc_load" class="nav-link">Загрузить</a>
+                            </th>
 
-                                @csrf
-                                <input type="hidden" name="id_application" value='{{ $id }}'>
 
-                                <td scope="col" id="td_id-{{ $key }}">
-                                    {{ $key + 1 }}
-                                    <a name="{{ $Work->id }}"></a>
-                                </td>
 
-                                <input type="hidden" name="id" id='id-{{ $key }}'
-                                    value=' {{ $Work->id }}'>
-                                <td scope="col" id="td_name-{{ $key }}">{{ $Work->name }}</td>
-                                <input type="hidden" name="name" id='name-{{ $key }}'
-                                    value='{{ $Work->name }}'>
-
-                                <td scope="col" id="td_summ-{{ $key }}">{{ $Work->summ }}</td>
-
-                                <input type="hidden" name="summ" id='summ-{{ $key }}'
-                                    value='{{ $Work->summ }}'>
-                                <td scope="col" id="td_price_service-{{ $key }}">{{ $Work->price_service }}
-                                </td>
-                                <input type="hidden" name="price_service" id='price_service-{{ $key }}'
-                                    value='{{ $Work->price_service }}'>
-                                <td scope="col"> <a
-                                        onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
-                                        href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
-                                </td>
                         </tr>
-                        </form>
-                    @endforeach
-                    <tr>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Наименование</th>
 
-                        <form action="/Works/store" method="POST">
-                            @csrf
-                            <th>
-                                <input name = "id_application" type="hidden" value="{{ $id }}">
-                            </th>
-                            <th>
-                                <div class="form-floating">
+                            <th scope="col">Цена страховой</th>
+                            <th scope="col">Цена сервиса</th>
+                            {{-- <th scope="col">Цена сервиса</th> --}}
+                            <th scope="col"></th>
 
-                                    <input type="text" name="name" id="name" class="form-control">
+                        </tr>
+                        <tr>
+                            <th scope="col"></th>
+                            <th scope="col">Итого</th>
+                            <th scope="col">{{ $summ_ic }}</th>
+                            {{-- <th scope="col">{{$summ_service}}</th> --}}
+                            <th scope="col"></th>
+                            <th scope="col"></th>
 
-                                </div>
-                            </th>
-                            <th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                                <div class="form-floating">
-                                    <input type="text" name="summ" id="summ" class="form-control" value=0>
 
-                                </div>
 
-                            </th>
-                            <th>
-                                <input type="submit" value="Создать" class="nav-link">
-                            </th>
-                        </form>
-                    </tr>
-                </tbody>
-            </table>
+                        @foreach ($Works as $key => $Work)
+                            <tr>
+                                <form name="form{{ $key }}" id='form{{ $key }}'
+                                    action="/Work/{{ $Work->id }}/update" method="POST">
+
+                                    @csrf
+                                    <input type="hidden" name="id_application" value='{{ $id }}'>
+
+                                    <td scope="col" id="td_id-{{ $key }}">
+                                        {{ $key + 1 }}
+                                        <a name="{{ $Work->id }}"></a>
+                                    </td>
+
+                                    <input type="hidden" name="id" id='id-{{ $key }}'
+                                        value=' {{ $Work->id }}'>
+                                    <td scope="col" id="td_name-{{ $key }}">{{ $Work->name }}</td>
+                                    <input type="hidden" name="name" id='name-{{ $key }}'
+                                        value='{{ $Work->name }}'>
+
+                                    <td scope="col" id="td_summ-{{ $key }}">{{ $Work->summ }}</td>
+
+                                    <input type="hidden" name="summ" id='summ-{{ $key }}'
+                                        value='{{ $Work->summ }}'>
+                                    <td scope="col" id="td_price_service-{{ $key }}">{{ $Work->price_service }}
+                                    </td>
+                                    <input type="hidden" name="price_service" id='price_service-{{ $key }}'
+                                        value='{{ $Work->price_service }}'>
+                                    <td scope="col"> <a
+                                            onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                            href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                                src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                    </td>
+                            </tr>
+                            </form>
+                        @endforeach
+                        <tr>
+
+                            <form action="/Works/store" method="POST">
+                                @csrf
+                                <th>
+                                    <input name = "id_application" type="hidden" value="{{ $id }}">
+                                </th>
+                                <th>
+                                    <div class="form-floating">
+
+                                        <input type="text" name="name" id="name" class="form-control">
+
+                                    </div>
+                                </th>
+                                <th>
+
+                                    <div class="form-floating">
+                                        <input type="text" name="summ" id="summ" class="form-control" value=0>
+
+                                    </div>
+
+                                </th>
+                                <th>
+                                    <input type="submit" value="Создать" class="nav-link">
+                                </th>
+                            </form>
+                        </tr>
+                    </tbody>
+                </table>
+            @endcan
         </div>
     </div>
 

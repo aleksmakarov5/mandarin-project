@@ -403,11 +403,13 @@
                     <th colspan=2>
                         <input type="text" name="price_used" id="price_used" class="form-control">
                     </th>
+                    @can('company')
+                        <th colspan=2></th>
+                    @endcan
                     <th>
                         <input type="text" name="comment" id="comment" class="form-control">
 
-                    </th>
-                    <th>
+
                     </th>
 
                     @if (session('rout') == 'directions')

@@ -30,12 +30,14 @@
 
 
     <div class="container">
-        @if (isset($only_me) && $only_me == true)
-            <form action="/chat/{{ $id }}" method="get">
-                <input type="hidden" name="only_me" value=0>
-                <input class="nav-link" type="submit" value="Показать все сообщения">
-            </form>
-        @else
+        @can('company')
+            @if (isset($only_me) && $only_me == true)
+                <form action="/chat/{{ $id }}" method="get">
+                    <input type="hidden" name="only_me" value=0>
+                    <input class="nav-link" type="submit" value="Показать все сообщения">
+                </form>
+            @else
+            @endcan
             <form action="/chat/{{ $id }}" method="get">
                 <input type="hidden" name="only_me" value=1>
                 <input class="nav-link" type="submit" value="Показать только мои сообщения">
@@ -85,7 +87,7 @@
 
                         </li>
                     @endforeach
-                    <form action="/chat_sent/{{ $id }}" method="post">
+                    <form action="/chat_sent/{{ $id }}" method="post" id='myForm'>
                         @csrf
                         <div class="form-float">
                             <Select name="to" class="form-cont">
