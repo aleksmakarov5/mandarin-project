@@ -1,10 +1,7 @@
 @php
     use App\Models\application;
     use App\Models\ApplicationStatus;
-    $app = application::find($id)
-        ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-        ->select('applications.*', 'application_statuses.StatusName', 'application_statuses.current_group')
-        ->first();
+    $app = application::where('id', '=', $id)->first();
     $status = ApplicationStatus::get()->all();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
     $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
@@ -230,7 +227,9 @@
                                             МРК</a></li>
                                 @endcan
                                 @can('mrk')
-                                    <li><a href="#">Передать на СТО</a></li>
+                                    @if (isset($app->id_service))
+                                        <li><a href="#">Передать на СТО</a></li>
+                                    @endif
 
                                     @if ($app->id_status == 8)
                                         <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
