@@ -210,6 +210,11 @@ class SparePartController extends Controller
             'date_wait' => 'nullable',
             'selected_price' => 'nullable',
             'selected_mrk' => 'nullable',
+            'selected_service' => 'nullable',
+            'price_service' => 'nullable',
+            'approved' => 'nullable',
+
+
 
         ]);
         //  dd($data);

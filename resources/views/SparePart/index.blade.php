@@ -12,9 +12,10 @@
             </ul>
         </div>
     @endif
-    <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
-
-    <table @if (Auth::user()->GroupId == 6) id="demo" @endif class="editable">
+    @can('company')
+        <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
+    @endcan
+    <table id="demo" class="editable">
         <thead>
 
             <tr>
@@ -32,6 +33,7 @@
                     <th scope="col">Не меняется</th>
                     <th scope="col">Разница от полной цены</th>
                 @endcan
+                <th scope="col" colspan="2">Цена СТО</th>
                 <th scope="col">Комментарий</th>
                 @if (session('rout') == 'directions')
                     <th scope="col">Статус</th>
@@ -50,7 +52,7 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col">{{ $summ_ic_full }}</th>
-                    <th scope="col" colspan="7"></th>
+                    <th scope="col" colspan="9"></th>
                     <th scope="col">
                         <div
                             class="
@@ -71,36 +73,36 @@
                         <th scope="col"></th>
                     @endif
                 </tr>
-
-                <tr>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
-                            onkeyup="tableSearch(0,'demo')">
-                    </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text1"
-                            onkeyup="tableSearch(1,'demo')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
-                            onkeyup="tableSearch(2,'demo')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
-                            onkeyup="tableSearch(3,'demo')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text4"
-                            onkeyup="tableSearch(4,'demo')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text5"
-                            onkeyup="tableSearch(5,'demo')"> </th>
-                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
-                            id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
-                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
-                            id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
-                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=" "
-                            id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text11"
-                            onkeyup="tableSearch(11),'demo')"></th>
-                    <th scope="col" colspan=4></th>
-
-
-
-
-                </tr>
             @endcan
+            <tr>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
+                        onkeyup="tableSearch(0,'demo')">
+                </th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text1"
+                        onkeyup="tableSearch(1,'demo')"></th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
+                        onkeyup="tableSearch(2,'demo')"></th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
+                        onkeyup="tableSearch(3,'demo')"></th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text4"
+                        onkeyup="tableSearch(4,'demo')"></th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text5"
+                        onkeyup="tableSearch(5,'demo')"> </th>
+                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
+                        id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
+                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
+                        id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
+                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=" "
+                        id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
+                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text11"
+                        onkeyup="tableSearch(11),'demo')"></th>
+                <th scope="col" colspan=6></th>
+
+
+
+
+            </tr>
+
         </thead>
         <tbody>
 
@@ -114,12 +116,30 @@
 
                         @csrf
                         <input type="hidden" name="id_application" value='{{ $id }}'>
-
-
+                        <input type="hidden" name="id" id='id-{{ $key }}' value='{{ $sparepart->id }}'>
+                        <input type="hidden" name="name" id='name-{{ $key }}'
+                            value='{{ $sparepart->name }}'>
+                        @can('spm')
+                            <input type="hidden" name="part_number" id='part_number-{{ $key }}'
+                                value='{{ $sparepart->part_number }}'>
+                            <input type="hidden" name="order_number" id='order_number{{ $key }}'
+                                value='{{ $sparepart->order_number }}'>
+                            <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
+                                value='{{ $sparepart->price_ic_full }}'>
+                            <input type="hidden" name="price_original" id='price_original-{{ $key }}'
+                                value='{{ $sparepart->price_original }}'>
+                            <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
+                                value='{{ $sparepart->price_analogue }}'>
+                            <input type="hidden" name="price_used" id='price_used-{{ $key }}'
+                                value='{{ $sparepart->price_used }}'>
+                        @endcan
+                        @can('service')
+                            <input type="hidden" name="price_service" id='price_service-{{ $key }}'
+                                value='{{ $sparepart->price_used }}'>
+                        @endcan
                         <td scope="col" id="td_id-{{ $key }}">{{ $key + 1 }}
                             <a name="{{ $sparepart->id }}"></a>
                         </td>
-                        <input type="hidden" name="id" id='id-{{ $key }}' value='{{ $sparepart->id }}'>
                         <td id="td_name-{{ $key }}" scope="col">
                             @if (old('name.' . $key) !== null)
                                 {{ old('name.' . $key) }}
@@ -127,8 +147,6 @@
                                 {{ $sparepart->name }}
                             @endif
                         </td>
-                        <input type="hidden" name="name" id='name-{{ $key }}'
-                            value='{{ $sparepart->name }}'>
                         <td id="td_part_number-{{ $key }}" scope="col">
                             @if (old('part_number.' . $key) !== null)
                                 {{ old('part_number.' . $key) }}
@@ -136,8 +154,6 @@
                                 {{ $sparepart->part_number }}
                             @endif
                         </td>
-                        <input type="hidden" name="part_number" id='part_number-{{ $key }}'
-                            value='{{ $sparepart->part_number }}'>
                         <td id="td_order_number{{ $key }}" scope="col">
                             @if (old('order_number.' . $key) !== null)
                                 {{ old('order_number.' . $key) }}
@@ -145,8 +161,6 @@
                                 {{ $sparepart->order_number }}
                             @endif
                         </td>
-                        <input type="hidden" name="order_number" id='order_number{{ $key }}'
-                            value='{{ $sparepart->order_number }}'>
                         @can('company')
                             <td id="td_price_ic_full-{{ $key }}" scope="col" class="ic_price">
                                 @if (old('price_ic_full.' . $key) !== null)
@@ -156,18 +170,18 @@
                                 @endif
                             </td>
                         @endcan
-                        <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
-                            value='{{ $sparepart->price_ic_full }}'>
 
-                        <input type="hidden" name="price_ic_half" id='price_ic_half-{{ $key }}'
-                            value='{{ $sparepart->price_ic_half }}'>
                         <td id="td_price_original-{{ $key }}" scope="col"
                             class="min
-      @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price == 1) zapmrk @endif
+      @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price == 1 && $sparepart->selected_service == 1) zapmrksto @endif
+      @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price == 1 && $sparepart->selected_service != 1) zapmrk @endif
+      @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price != 1 && $sparepart->selected_service == 1) mrksto @endif
+      @if ($sparepart->selected_mrk != 1 && $sparepart->selected_price == 1 && $sparepart->selected_service == 1) zapsto @endif
       @if ($sparepart->selected_mrk == 1) mrk @endif
       @if ($sparepart->selected_price == 1) zap @endif
+      @if ($sparepart->selected_service == 1) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5) colspan=2 @endif>
+                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
                             @if (old('price_original.' . $key) !== null)
                                 {{ old('price_original.' . $key) }}
                             @else
@@ -194,15 +208,27 @@
                                 </div>
                             </th>
                         @endif
-                        <input type="hidden" name="price_original" id='price_original-{{ $key }}'
-                            value='{{ $sparepart->price_original }}'>
+                        @if (Auth::user()->GroupId == 9)
+                            <th class="min">
+                                <div class="form_radio_btn sto">
+                                    <input id="radio-1{{ $key }}" type="radio" name="selected_service"
+                                        value="1" @if ($sparepart->selected_service == 1) checked @endif
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                    <label for="radio-1{{ $key }}">&nbsp</label>
+                                </div>
+                            </th>
+                        @endif
                         <td id="td_price_analogue-{{ $key }}" scope="col"
                             class="min 
-      @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2) zapmrk @endif
+     @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service == 2) zapmrksto @endif
+      @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service != 2) zapmrk @endif
+      @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price != 2 && $sparepart->selected_service == 2) mrksto @endif
+      @if ($sparepart->selected_mrk != 2 && $sparepart->selected_price == 2 && $sparepart->selected_service == 2) zapsto @endif
       @if ($sparepart->selected_mrk == 2) mrk @endif
       @if ($sparepart->selected_price == 2) zap @endif
+      @if ($sparepart->selected_service == 2) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5) colspan=2 @endif>
+                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
                             @if (old('price_analogue.' . $key) !== null)
                                 {{ old('price_analogue.' . $key) }}
                             @else
@@ -229,15 +255,27 @@
                                 </div>
                             </th>
                         @endif
-                        <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
-                            value='{{ $sparepart->price_analogue }}'>
+                        @if (Auth::user()->GroupId == 9)
+                            <th class="min">
+                                <div class="form_radio_btn sto">
+                                    <input id="radio-2{{ $key }}" type="radio" name="selected_service"
+                                        value="2" @if ($sparepart->selected_service == 2) checked @endif
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                    <label for="radio-2{{ $key }}">&nbsp</label>
+                                </div>
+                            </th>
+                        @endif
                         <td id="td_price_used-{{ $key }}" scope="col"
                             class="min 
-      @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3) zapmrk @endif
+      @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service == 3) zapmrksto @endif
+      @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service != 3) zapmrk @endif
+      @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price != 3 && $sparepart->selected_service == 3) mrksto @endif
+      @if ($sparepart->selected_mrk != 3 && $sparepart->selected_price == 3 && $sparepart->selected_service == 3) zapsto @endif
       @if ($sparepart->selected_mrk == 3) mrk @endif
       @if ($sparepart->selected_price == 3) zap @endif
+      @if ($sparepart->selected_service == 3) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5) colspan=2 @endif>
+                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
                             @if (old('price_used.' . $key) !== null)
                                 {{ old('price_used.' . $key) }}
                             @else
@@ -264,8 +302,18 @@
                                 </div>
                             </th>
                         @endif
+                        @if (Auth::user()->GroupId == 9)
+                            <th class="min">
+                                <div class="form_radio_btn sto">
+                                    <input id="radio-3{{ $key }}" type="radio" name="selected_service"
+                                        value="3" @if ($sparepart->selected_service == 3) checked @endif
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                    <label for="radio-3{{ $key }}">&nbsp</label>
+                                </div>
+                            </th>
+                        @endif
                         @can('company')
-                            <td
+                            <th
                                 class="
 @if ($sparepart->selected_mrk == 4 && $sparepart->selected_price == 4) zapmrk @endif
       @if ($sparepart->selected_mrk == 4) mrk @endif
@@ -287,9 +335,7 @@
                                         <label for="radio-4{{ $key }}">&nbsp</label>
                                     </div>
                                 @endif
-                                </th>
-                                <input type="hidden" name="price_used" id='price_used-{{ $key }}'
-                                    value='{{ $sparepart->price_used }}'>
+                            </th>
 
                             <th scope="col">
                                 @if (isset($delta_full[$key]))
@@ -304,6 +350,38 @@
                                 @endif
                             </th>
                         @endcan
+                        <td id="td_price_service-{{ $key }}" scope="col"
+                            class="min 
+      
+      @if ($sparepart->approved) zap 
+      @else
+      na @endif
+      "
+                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                            @if (old('price_service.' . $key) !== null)
+                                {{ old('price_service.' . $key) }}
+                            @else
+                                {{ $sparepart->price_service }}
+                            @endif
+                        </td>
+                        @if (Auth::user()->GroupId == 5)
+                            <th class="min">
+                                <div class="form_radio_btn zap">
+                                    <input id="radio-5{{ $key }}" type="radio" name="approved"
+                                        value="1" @if ($sparepart->approved) checked @endif
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                    <label for="radio-5{{ $key }}">&nbsp</label>
+                                </div>
+                                <div class="form_radio_btn na">
+                                    <input id="radio-6{{ $key }}" type="radio" name="approved"
+                                        value="0" @if (!$sparepart->approved) checked @endif
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                    <label for="radio-6{{ $key }}">&nbsp</label>
+                                </div>
+                            </th>
+                        @endif
+
+
                         <td id="td_comment-{{ $key }}" scope="col" class="comment">
                             @if (old('comment.' . $key) !== null)
                                 {{ old('comment.' . $key) }}

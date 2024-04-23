@@ -202,20 +202,48 @@ div.container {
     background: #0a07e8;
 }
 
+.form_radio_btn.sto input[type=radio]:checked+label {
+    background: #facd08;
+}
+
 .form_radio_btn.zap input[type=radio]:checked+label {
     background: #06e70a;
+}
+
+.form_radio_btn.na input[type=radio]:checked+label {
+    background: #e70a06;
 }
 
 td.zap {
     background: #06e70a;
 }
 
+td.na {
+    background: #e70a06;
+}
+
 td.mrk {
     background: #0a07e8;
 }
 
+td.sto {
+    background: #facd08;
+}
+
+td.zapmrksto {
+    background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, #facd08 50%, rgba(10, 7, 232, 1) 100%);
+}
+
 td.zapmrk {
     background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, rgba(10, 7, 232, 1) 100%);
+}
+
+td.zapsto {
+    background: linear-gradient(90deg, rgba(6, 231, 10, 1) 0%, #facd08 100%);
+}
+
+td.mrksto {
+    background: linear-gradient(90deg, #facd08, rgba(10, 7, 232, 1) 100%);
 }
 
 /* Hover */

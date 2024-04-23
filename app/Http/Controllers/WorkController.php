@@ -109,6 +109,7 @@ class WorkController extends Controller
             'name' => 'required',
             'summ' => 'required',
             'price_service' => 'nullable',
+            'author' => 'nullable',
 
 
         ]);

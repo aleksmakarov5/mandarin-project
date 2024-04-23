@@ -10,6 +10,6 @@ class work extends Model
     use HasFactory;
     protected $fillable = [
         'id_application', 'name',
-        'price', 'count_hours', 'summ', 'npp'
+        'price', 'count_hours', 'summ', 'npp', 'author'
     ];
 }

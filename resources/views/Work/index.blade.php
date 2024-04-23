@@ -64,7 +64,7 @@
 
 
                     @foreach ($Works_serv as $key => $Work)
-                        <tr>
+                        <tr @if ($Work->author == 9) class="sto" @endif>
                             <form name="form-{{ $key }}" id='form-{{ $key }}'
                                 action="/Work/{{ $Work->id }}/update" method="POST">
 
@@ -120,6 +120,7 @@
                                 <div class="form-floating">
                                     <input type="text" name="price_service" id="price_service" class="form-control">
 
+                                    <input name = "author" type="hidden" value="{{ Auth::user()->GroupId }}">
                                 </div>
                             </th>
                             <th>

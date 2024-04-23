@@ -1,7 +1,10 @@
 @php
     use App\Models\application;
     use App\Models\ApplicationStatus;
-    $app = application::where('id', '=', $id)->first();
+    $app = application::find($id)
+        ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        ->select('applications.*', 'application_statuses.StatusName', 'application_statuses.current_group')
+        ->first();
     $status = ApplicationStatus::get()->all();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
     $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
@@ -222,8 +225,14 @@
                     <ul class="dropbtn">
                         <li><a href="" class="active">Выбрать действие</a>
                             <ul class="submenu">
-
+                                @can('service')
+                                    <li><a href="#">Передать
+                                            МРК</a></li>
+                                @endcan
                                 @can('mrk')
+                                    @if ($app->current_group == 5)
+                                        <li><a href="#">Передать на СТО</a></li>
+                                    @endif
                                     @if ($app->id_status == 8)
                                         <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
                                     @endif
