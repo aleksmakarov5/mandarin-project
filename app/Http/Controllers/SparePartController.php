@@ -70,8 +70,15 @@ class SparePartController extends Controller
         if (Gate::allows('service'))
             $spareparts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
-                ->where('selected_mrk', '>', 0)
-                ->where('selected_mrk', '<', 4)
+                ->where(function ($query) {
+                    $query->where(function ($query) {
+                        $query->where('selected_mrk', '>', 0)
+                            ->where('selected_mrk', '<', 4);
+                    })
+                        ->orWhere('author', '=', 9);
+                })
+
+
                 ->get();
         else
             $spareparts = DB::table('spare_parts')

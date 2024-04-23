@@ -22,12 +22,16 @@
                 <th scope="col">Наименование</th>
                 <th scope="col">Кат. номер</th>
                 <th scope="col">Заказанный номер</th>
-                <th scope="col">Цена СК</th>
+                @can('company')
+                    <th scope="col">Цена СК</th>
+                @endcan
                 <th scope="col" colspan="2">Цена оригинал</th>
                 <th scope="col" colspan="2">Цена аналог</th>
                 <th scope="col" colspan="2">Цена б/у</th>
-                <th scope="col">Ремонт</th>
-                <th scope="col">Разница от полной цены</th>
+                @can('company')
+                    <th scope="col">Не меняется</th>
+                    <th scope="col">Разница от полной цены</th>
+                @endcan
                 <th scope="col">Комментарий</th>
                 @if (session('rout') == 'directions')
                     <th scope="col">Статус</th>
@@ -38,68 +42,73 @@
 
 
             </tr>
-            <tr>
-                <th scope="col"></th>
-                <th scope="col">Итого</th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-                <th scope="col">{{ $summ_ic_full }}</th>
-                <th scope="col" colspan="7"></th>
-                <th scope="col">
-                    <div
-                        class="
+
+            @can('company')
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Итого</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">{{ $summ_ic_full }}</th>
+                    <th scope="col" colspan="7"></th>
+                    <th scope="col">
+                        <div
+                            class="
        @if ($delta_res_full < 0) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                        {{ $delta_res_full }}
-                    </div>
-                </th>
-
-                <th scope="col"></th>
-                @if (session('rout') == 'directions')
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-
+                            {{ $delta_res_full }}
+                        </div>
+                    </th>
 
                     <th scope="col"></th>
-                @endif
-            </tr>
-            <tr>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
-                        onkeyup="tableSearch(0,'demo')">
-                </th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text1"
-                        onkeyup="tableSearch(1,'demo')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
-                        onkeyup="tableSearch(2,'demo')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
-                        onkeyup="tableSearch(3,'demo')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text4"
-                        onkeyup="tableSearch(4,'demo')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text5"
-                        onkeyup="tableSearch(5,'demo')"> </th>
-                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
-                        id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
-                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
-                        id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
-                <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=" "
-                        id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text11"
-                        onkeyup="tableSearch(11),'demo')"></th>
-                <th scope="col" colspan=4></th>
+                    @if (session('rout') == 'directions')
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+
+
+                        <th scope="col"></th>
+                    @endif
+                </tr>
+
+                <tr>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
+                            onkeyup="tableSearch(0,'demo')">
+                    </th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text1"
+                            onkeyup="tableSearch(1,'demo')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
+                            onkeyup="tableSearch(2,'demo')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
+                            onkeyup="tableSearch(3,'demo')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text4"
+                            onkeyup="tableSearch(4,'demo')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text5"
+                            onkeyup="tableSearch(5,'demo')"> </th>
+                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
+                            id="search-text6" onkeyup="tableSearch(6,'demo')"></th>
+                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=""
+                            id="search-text8" onkeyup="tableSearch(8,'demo')"></th>
+                    <th scope="col" colspan="2"><input class="form-control" type="text" placeholder=" "
+                            id="search-text10" onkeyup="tableSearch(10,'demo')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text11"
+                            onkeyup="tableSearch(11),'demo')"></th>
+                    <th scope="col" colspan=4></th>
 
 
 
 
-            </tr>
+                </tr>
+            @endcan
         </thead>
         <tbody>
 
 
 
             @foreach ($spareparts as $key => $sparepart)
-                <tr @if ($sparepart->author == 5) class="pink" @endif>
+                <tr @if ($sparepart->author == 5) class="pink" @endif
+                    @if ($sparepart->author == 9) class="sto" @endif>
                     <form name="form{{ $key }}" id='form{{ $key }}'
                         action="/SparePart/{{ $id }}/update" method="POST">
 
@@ -138,13 +147,15 @@
                         </td>
                         <input type="hidden" name="order_number" id='order_number{{ $key }}'
                             value='{{ $sparepart->order_number }}'>
-                        <td id="td_price_ic_full-{{ $key }}" scope="col" class="ic_price">
-                            @if (old('price_ic_full.' . $key) !== null)
-                                {{ old('price_ic_full.' . $key) }}
-                            @else
-                                {{ $sparepart->price_ic_full }}
-                            @endif
-                        </td>
+                        @can('company')
+                            <td id="td_price_ic_full-{{ $key }}" scope="col" class="ic_price">
+                                @if (old('price_ic_full.' . $key) !== null)
+                                    {{ old('price_ic_full.' . $key) }}
+                                @else
+                                    {{ $sparepart->price_ic_full }}
+                                @endif
+                            </td>
+                        @endcan
                         <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
                             value='{{ $sparepart->price_ic_full }}'>
 
@@ -253,45 +264,46 @@
                                 </div>
                             </th>
                         @endif
-                        <td
-                            class="
+                        @can('company')
+                            <td
+                                class="
 @if ($sparepart->selected_mrk == 4 && $sparepart->selected_price == 4) zapmrk @endif
       @if ($sparepart->selected_mrk == 4) mrk @endif
       @if ($sparepart->selected_price == 4) zap @endif
 ">
-                            @if (Auth::user()->GroupId == 6)
-                                <div class="form_radio_btn zap">
-                                    <input id="radio-4{{ $key }}" type="radio" name="selected_price"
-                                        value="4" @if ($sparepart->selected_price == 4) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-4{{ $key }}">&nbsp</label>
-                                </div>
-                            @endif
-                            @if (Auth::user()->GroupId == 5)
-                                <div class="form_radio_btn mrk">
-                                    <input id="radio-4{{ $key }}" type="radio" name="selected_mrk"
-                                        value="4" @if ($sparepart->selected_mrk == 4) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-4{{ $key }}">&nbsp</label>
-                                </div>
-                            @endif
-                            </th>
-                            <input type="hidden" name="price_used" id='price_used-{{ $key }}'
-                                value='{{ $sparepart->price_used }}'>
+                                @if (Auth::user()->GroupId == 6)
+                                    <div class="form_radio_btn zap">
+                                        <input id="radio-4{{ $key }}" type="radio" name="selected_price"
+                                            value="4" @if ($sparepart->selected_price == 4) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-4{{ $key }}">&nbsp</label>
+                                    </div>
+                                @endif
+                                @if (Auth::user()->GroupId == 5)
+                                    <div class="form_radio_btn mrk">
+                                        <input id="radio-4{{ $key }}" type="radio" name="selected_mrk"
+                                            value="4" @if ($sparepart->selected_mrk == 4) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-4{{ $key }}">&nbsp</label>
+                                    </div>
+                                @endif
+                                </th>
+                                <input type="hidden" name="price_used" id='price_used-{{ $key }}'
+                                    value='{{ $sparepart->price_used }}'>
 
-                        <th scope="col">
-                            @if (isset($delta_full[$key]))
-                                <div
-                                    class="
+                            <th scope="col">
+                                @if (isset($delta_full[$key]))
+                                    <div
+                                        class="
        @if ($delta_full[$key] < 0) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $delta_full[$key] }}
-                                </div>
-                            @endif
-                        </th>
-
+                                        {{ $delta_full[$key] }}
+                                    </div>
+                                @endif
+                            </th>
+                        @endcan
                         <td id="td_comment-{{ $key }}" scope="col" class="comment">
                             @if (old('comment.' . $key) !== null)
                                 {{ old('comment.' . $key) }}
@@ -372,15 +384,13 @@
 
                         <input type="text" name="order_number" id="order_number" class="form-control">
                     </th>
-                    <th>
+                    @can('company')
+                        <th>
 
-                        <input type="text" name="price_ic_full" id="price_ic_full" class="form-control">
-                    </th>
-                    <th>
+                            <input type="text" name="price_ic_full" id="price_ic_full" class="form-control">
+                        </th>
+                    @endcan
 
-                        <input type="text" name="price_ic_half" id="price_ic_half" class="form-control">
-
-                    </th>
                     <th colspan=2>
 
                         <input type="text" name="price_original" id="price_original" class="form-control">
@@ -419,98 +429,98 @@
             </tr>
         </tbody>
     </table>
-
-    <table @can('admin')
+    @can('company')
+        <table @can('admin')
             id='demo'
         @endcan
-        class="table table-striped-columns table-hover table-group-divider table-responsive">
+            class="table table-striped-columns table-hover table-group-divider table-responsive">
 
-        <tr>
-            <th>Cтоимость узлов и деталей:</th>
-            <td>
-                @if (isset($estimate->price_sp_full))
-                    {{ $estimate->price_sp_full }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Cтоимость узлов и деталей c учетом износа:</th>
-            <td>
-                @if (isset($estimate->price_sp_half))
-                    {{ $estimate->price_sp_half }}
-                @endif
-            </td>
-        </tr>
+            <tr>
+                <th>Cтоимость узлов и деталей:</th>
+                <td>
+                    @if (isset($estimate->price_sp_full))
+                        {{ $estimate->price_sp_full }}
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th>Cтоимость узлов и деталей c учетом износа:</th>
+                <td>
+                    @if (isset($estimate->price_sp_half))
+                        {{ $estimate->price_sp_half }}
+                    @endif
+                </td>
+            </tr>
 
-        <tr>
-            <th>Cтоимость ремонта/замены:</th>
-            <td>
-                @if (isset($estimate->price_repair))
-                    {{ $estimate->price_repair }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Cтоимость окраски контроля: </th>
-            <td>
-                @if (isset($estimate->price_paint))
-                    {{ $estimate->price_paint }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Cтоимость расходных материалов: </th>
-            <td>
-                @if (isset($estimate->price_zip))
-                    {{ $estimate->price_zip }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Cтоимость работ и материалов: </th>
-            <td>
-                @if (isset($estimate->price_work))
-                    {{ $estimate->price_work }}
-                @endif
-            </td>
-        </tr>
-        <tr>
-            <th>Cтоимость восстановительного ремонта (Всего) </th>
-            <td>
-                @if (isset($estimate->price_repair_full))
-                    {{ $estimate->price_repair_full }}
-                @endif
-            </td>
-        </tr>
+            <tr>
+                <th>Cтоимость ремонта/замены:</th>
+                <td>
+                    @if (isset($estimate->price_repair))
+                        {{ $estimate->price_repair }}
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th>Cтоимость окраски контроля: </th>
+                <td>
+                    @if (isset($estimate->price_paint))
+                        {{ $estimate->price_paint }}
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th>Cтоимость расходных материалов: </th>
+                <td>
+                    @if (isset($estimate->price_zip))
+                        {{ $estimate->price_zip }}
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th>Cтоимость работ и материалов: </th>
+                <td>
+                    @if (isset($estimate->price_work))
+                        {{ $estimate->price_work }}
+                    @endif
+                </td>
+            </tr>
+            <tr>
+                <th>Cтоимость восстановительного ремонта (Всего) </th>
+                <td>
+                    @if (isset($estimate->price_repair_full))
+                        {{ $estimate->price_repair_full }}
+                    @endif
+                </td>
+            </tr>
 
-        <tr>
-            <th>Фактическая стоимость восстановительного ремонта </th>
-            <td>
-                @if (isset($summ_order) && isset($summ_service))
-                    {{ $summ_order + $summ_service }}
-                @endif
-            </td>
+            <tr>
+                <th>Фактическая стоимость восстановительного ремонта </th>
+                <td>
+                    @if (isset($summ_order) && isset($summ_service))
+                        {{ $summ_order + $summ_service }}
+                    @endif
+                </td>
 
-        </tr>
-        <tr>
-            <th>Разница от полной стоимости</th>
-            <th>
-                @if (isset($estimate->price_repair_full))
-                    <div
-                        class="
+            </tr>
+            <tr>
+                <th>Разница от полной стоимости</th>
+                <th>
+                    @if (isset($estimate->price_repair_full))
+                        <div
+                            class="
                     @if ($summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) < 0) alert alert-success
                     @else
                         alert alert-danger @endif
                     ">
-                        {{ $summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) }}
-                    </div>
-                @endif
-            </th>
-        </tr>
+                            {{ $summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) }}
+                        </div>
+                    @endif
+                </th>
+            </tr>
 
 
-    </table>
-
+        </table>
+    @endcan
     <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
