@@ -60,7 +60,7 @@
 
 
             @foreach ($applications->all() as $application)
-                <tr @if (Auth::user()->GroupId != $application->current_group) class="grey" @endif>
+                <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
 
                     <td>
 
