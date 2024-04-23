@@ -52,7 +52,7 @@
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col">{{ $summ_ic_full }}</th>
-                    <th scope="col" colspan="9"></th>
+                    <th scope="col" colspan="7"></th>
                     <th scope="col">
                         <div
                             class="
@@ -70,6 +70,8 @@
                         <th scope="col"></th>
 
 
+                        <th scope="col"></th>
+                        <th scope="col"></th>
                         <th scope="col"></th>
                     @endif
                 </tr>
@@ -357,7 +359,7 @@
       @else
       na @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                            @if (Auth::user()->GroupId != 5) colspan=2 @endif>
                             @if (old('price_service.' . $key) !== null)
                                 {{ old('price_service.' . $key) }}
                             @else
@@ -370,13 +372,13 @@
                                     <input id="radio-5{{ $key }}" type="radio" name="approved"
                                         value="1" @if ($sparepart->approved) checked @endif
                                         onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-5{{ $key }}">&nbsp</label>
+                                    <label for="radio-5{{ $key }}">+</label>
                                 </div>
                                 <div class="form_radio_btn na">
                                     <input id="radio-6{{ $key }}" type="radio" name="approved"
                                         value="0" @if (!$sparepart->approved) checked @endif
                                         onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-6{{ $key }}">&nbsp</label>
+                                    <label for="radio-6{{ $key }}">-</label>
                                 </div>
                             </th>
                         @endif
@@ -482,7 +484,7 @@
                         <input type="text" name="price_used" id="price_used" class="form-control">
                     </th>
                     @can('company')
-                        <th colspan=2></th>
+                        <th colspan=4></th>
                     @endcan
                     <th>
                         <input type="text" name="comment" id="comment" class="form-control">
