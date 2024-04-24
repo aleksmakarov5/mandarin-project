@@ -358,7 +358,8 @@ class WorkController extends Controller
                     foreach ($html as $result) {
                         $result .= '}}';
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
-                        dd($result);
+                        if (!$result)
+                            dd($result);
                         // if (isset($result['result']['textAnnotation']['fullText']))
                         $file[$i++] = $result;
                     }
