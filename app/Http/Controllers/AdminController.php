@@ -9,6 +9,7 @@ use App\Models\usergroup;
 use App\Models\ApplicationStatus;
 use App\Models\InsuranceCompany;
 use App\Models\failure_var;
+use App\Models\service;
 
 use Illuminate\Support\Facades\DB;
 
@@ -190,7 +191,7 @@ class AdminController extends Controller
         // dd($data);
         $application_status = ApplicationStatus::create([
             'StatusName' => $data["StatusName"],
-             'current_group' => $data["current_group"]
+            'current_group' => $data["current_group"]
         ]);
 
         return redirect()->route('application_statuses');
@@ -200,7 +201,7 @@ class AdminController extends Controller
     {
         $application_status = ApplicationStatus::findOrFail($id);
         $groups = new usergroup();
-        return view('admin.application_statuses.edit', ['application_status' => $application_status, 'groups'=> $groups->all()]);
+        return view('admin.application_statuses.edit', ['application_status' => $application_status, 'groups' => $groups->all()]);
     }
     public function update_application_status(Request $request, $id)
     {
@@ -288,14 +289,14 @@ class AdminController extends Controller
         return redirect()->route('insurance_companies');
     }
 
-    
-     public function fail_var()
+
+    public function fail_var()
 
     {
         $fail_vars = new failure_var();
         return view('admin.fail_var', ['fail_vars' => $fail_vars->all()]);
     }
-     public function fail_var_edit(Request $request,$id)
+    public function fail_var_edit(Request $request, $id)
     {
         $fail_var = failure_var::findOrFail($id);
         $data = $request->validate([
@@ -324,5 +325,67 @@ class AdminController extends Controller
         return redirect()
             ->route('fail_var');
     }
-    
+
+
+    public function services_index()
+    {
+        $services = service::leftjoin('users', 'services.id_user', '=', 'users.id')
+            ->select('services.*', 'users.name')
+            ->get()->all();
+        return view('admin.services.index', ['services' => $services]);
+    }
+
+    public function service_edit($id)
+    {
+        $service = service::findOrFail($id);
+        $users = new user();
+        return view('admin.services.edit', ['service' => $service, 'users' => $users->all()]);
+    }
+    public function update_service(Request $request, $id)
+    {
+        $service = service::findOrFail($id);
+        $data = $request->validate([
+            'service_name' => ["required", "string"],
+            'service_description' => ["required", "string"],
+            'id_user' => ["nullable", "integer"]
+        ]);
+
+        // dd($data);
+        $service->service_name = $data["service_name"];
+        $service->service_description = $data["service_description"];
+        $service->id_user = $data["id_user"];
+        $service->save();
+
+        return redirect()->route('services');
+    }
+
+    public function destroy_service($id)
+    {
+        $service = service::findOrFail($id);
+        $service->delete();
+        return redirect()
+            ->route('services');
+    }
+    public function create_service()
+    {
+        $users = new user();
+        return view('admin.services.create', ['users' => $users->all()]);
+    }
+    public function store_service(Request $request)
+    {
+        $data = $request->validate([
+            'service_name' => ["required", "string"],
+            'service_description' => ["required", "string"],
+            'id_user' => ["nullable", "integer"]
+        ]);
+
+        // dd($data);
+        $service = service::create([
+            'service_name' => $data["service_name"],
+            'service_description' => $data["service_description"],
+            'id_user' => $data["id_user"]
+        ]);
+        //  dd($service);
+        return redirect()->route('services');
+    }
 }

@@ -238,7 +238,7 @@ class ImapController extends Controller
                 if (mb_strpos($body_html, 'vsk.ru') !== false) {
                     $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
                 }
-                if (mb_strpos($body_html, 'ingos.ru') !== false) {
+                if (mb_strpos($body_html, 'ingos') !== false) {
                     echo "Ingos";
 
                     $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);

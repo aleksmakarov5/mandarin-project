@@ -60,7 +60,21 @@ Route::middleware("can:administrator")->group(
         Route::post('/user/{id}/update', [AdminController::class, 'update_user'])->name('user_update');
         Route::get('user/{id}/delete', [AdminController::class, 'destroy_user'])
             ->name('user.destroy');
-
+        Route::prefix('/services')->group(
+            function () {
+                Route::get('/', [AdminController::class, 'services_index'])->name('services');
+                Route::get('/create', [AdminController::class, 'create_service'])
+                    ->name('service.create');
+                Route::post('/store', [AdminController::class, 'store_service'])
+                    ->name('service.store');
+                Route::get('/{id}', [AdminController::class, 'service_edit'])
+                    ->name('service.edit');
+                Route::post('/{id}/update', [AdminController::class, 'update_service'])
+                    ->name('service.update');
+                Route::get('/{id}/delete', [AdminController::class, 'destroy_service'])
+                    ->name('service.destroy');
+            }
+        );
         Route::get('/usergroups',  [AdminController::class, 'usergroups_index'])->name('usergroups');
         Route::get('usergroups/create', [AdminController::class, 'create_usergroup'])
             ->name('usergroups.create');
