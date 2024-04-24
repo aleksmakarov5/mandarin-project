@@ -360,7 +360,8 @@ class WorkController extends Controller
                         if (isset($result['result']['textAnnotation']['tables'])) {
 
                             foreach ($result['result']['textAnnotation']['tables'] as $table)
-                                $file[$i++] = $table['cells'];
+                                foreach ($table['cells'] as $cell)
+                                    $file[$i++] = $cell;
                         }
                     }
                     dd($file);
