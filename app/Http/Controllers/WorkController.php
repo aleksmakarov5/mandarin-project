@@ -261,7 +261,7 @@ class WorkController extends Controller
                     $data = array(
                         "mimeType" => "application/pdf",
                         "languageCodes" => ["*"],
-                        "model" => "page",
+                        "model" => "table",
                         "content" => $output
                     );
                     $header = array(
@@ -350,6 +350,7 @@ class WorkController extends Controller
                             $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                         }
                     $html = curl_exec($ch);
+                    dd($html);
                     $html = explode("}}", $html);
                     curl_close($ch);
                     $file = '';
