@@ -358,7 +358,7 @@ class WorkController extends Controller
                         $result .= '}}';
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
                         // if (isset($result['result']['textAnnotation']['fullText']))
-                        $file[$i++] = $result;
+                        $file[$i++] = $result['result']['textAnnotation']['tables'];
                     }
                     dd($file);
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
