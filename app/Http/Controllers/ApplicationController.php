@@ -525,7 +525,7 @@ class ApplicationController extends Controller
             $data = array(
                 "mimeType" => "application/pdf",
                 "languageCodes" => ["*"],
-                "model" => "passport",
+                "model" => "vehicle-registration-front",
                 "content" => $output
             );
 
