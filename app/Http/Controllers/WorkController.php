@@ -362,15 +362,15 @@ class WorkController extends Controller
                             foreach ($result['result']['textAnnotation']['tables'] as $table) {
                                 $k = 0;
                                 foreach ($table['cells'] as $cell) {
-                                    $file[$j][$k][$cell['rowIndex']][$cell['columnIndex']]=$cell['text'];
-                                    }
-                                    $k++;
+                                    $file[$j][$k][$cell['rowIndex']][$cell['columnIndex']] = $cell['text'];
                                 }
-                                $j++;
+                                $k++;
                             }
-                           // $file[$i++] = $result['result']['textAnnotation']['tables'];
+                            $j++;
                         }
+                        // $file[$i++] = $result['result']['textAnnotation']['tables'];
                     }
+
                     dd($file);
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
