@@ -359,9 +359,8 @@ class WorkController extends Controller
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
                         if (isset($result['result']['textAnnotation']['tables'])) {
 
-                            foreach ($result['result']['textAnnotation']['tables'] as $table)
-                                foreach ($table['cells'] as $cell)
-                                    $file[$i++] = $cell;
+
+                            $file[$i++] = $result;
                         }
                     }
                     dd($file);
