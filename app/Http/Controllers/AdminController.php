@@ -338,7 +338,7 @@ class AdminController extends Controller
     public function service_edit($id)
     {
         $service = service::findOrFail($id);
-        $users = new user();
+        $users = user::where('GroupId', '=', '9')->get();
         return view('admin.services.edit', ['service' => $service, 'users' => $users->all()]);
     }
     public function update_service(Request $request, $id)
@@ -368,7 +368,7 @@ class AdminController extends Controller
     }
     public function create_service()
     {
-        $users = new user();
+        $users = user::where('GroupId', '=', '9')->get();
         return view('admin.services.create', ['users' => $users->all()]);
     }
     public function store_service(Request $request)
