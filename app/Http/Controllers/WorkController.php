@@ -350,7 +350,6 @@ class WorkController extends Controller
                             $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                         }
                     $html = curl_exec($ch);
-                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                     $html = explode("}}", $html);
                     curl_close($ch);
                     $file = [];
@@ -358,8 +357,6 @@ class WorkController extends Controller
                     foreach ($html as $result) {
                         $result .= '}}';
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
-                        if (!$result)
-                            dd($result);
                         // if (isset($result['result']['textAnnotation']['fullText']))
                         $file[$i++] = $result;
                     }
