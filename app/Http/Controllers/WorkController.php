@@ -351,17 +351,18 @@ class WorkController extends Controller
                         }
                     $html = curl_exec($ch);
                     $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                    dd($html);
                     $html = explode("}}", $html);
                     curl_close($ch);
-                    $file = '';
+                    $file = [];
+                    $i = 0;
                     foreach ($html as $result) {
                         $result .= '}}';
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
 
                         if (isset($result['result']['textAnnotation']['fullText']))
-                            $file .= $result['result']['textAnnotation']['fullText'];
+                            $file[$i++] = $result;
                     }
+                    dd($file);
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
                 $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
