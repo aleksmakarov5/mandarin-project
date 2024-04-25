@@ -371,54 +371,60 @@ class WorkController extends Controller
                         $i++;
                         // $file[$i++] = $result['result']['textAnnotation']['tables'];
                     }
-                    foreach ($file as $page)
-                        foreach ($page as $table) {
-                            echo '<table border =1>';
-                            echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
-                            foreach ($table as $row) {
-                                echo '<tr>';
-                                foreach ($row as $cell) {
-                                    echo '<td>' . $cell . '</td>';
-                                }
-                                echo '<td>Удалить строку</td></tr>';
-                            }
-                            echo '</table>';
-                        }
-                    dd($file);
+                    $file = json_encode($file);
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
+                    // foreach ($file as $page)
+                    //     foreach ($page as $table) {
+                    //         echo '<table border =1>';
+                    //         echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
+                    //         foreach ($table as $row) {
+                    //             echo '<tr>';
+                    //             foreach ($row as $cell) {
+                    //                 echo '<td>' . $cell . '</td>';
+                    //             }
+                    //             echo '<td>Удалить строку</td></tr>';
+                    //         }
+                    //         echo '</table>';
+                    //     }
+                    // dd($file);
                 }
                 $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
-                $work_start = mb_strpos($file, 'н-час');
-                // echo $work_start . 'Раб_Старт<br /><br />';
+                $file = json_decode($file, JSON_UNESCAPED_UNICODE);
+                session(['works' => $file]);
+
+                return
+                    view('Work.data_select_ocr', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+                // $work_start = mb_strpos($file, 'н-час');
+                // // echo $work_start . 'Раб_Старт<br /><br />';
 
 
-                $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-                // echo $work_end . 'Раб_фин<br /><br />';
-                $work = mb_substr($file, $work_start + 6, $work_end - $work_start - 2);
-                $work_array = explode("\n", $work);
-                // dd($work_array);
-                $j = 0;
+                // $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+                // // echo $work_end . 'Раб_фин<br /><br />';
+                // $work = mb_substr($file, $work_start + 6, $work_end - $work_start - 2);
+                // $work_array = explode("\n", $work);
+                // // dd($work_array);
+                // $j = 0;
 
-                for ($i = 0; $i < count($work_array) - 1; $i++) {
-                    if (
-                        trim($work_array[$i]) == "Наименование" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
-                        trim($work_array[$i]) == "Норматив," ||
-                        trim($work_array[$i]) == "Сумма, руб."
-                        ||
-                        trim($work_array[$i]) == "Цена ед., руб." ||
-                        trim($work_array[$i]) == "н-час"
-
-
-                    ) {
-                    } else
+                // for ($i = 0; $i < count($work_array) - 1; $i++) {
+                //     if (
+                //         trim($work_array[$i]) == "Наименование" ||
+                //         trim($work_array[$i + 1]) == "Наименование" ||
+                //         trim($work_array[$i]) == "Норматив," ||
+                //         trim($work_array[$i]) == "Сумма, руб."
+                //         ||
+                //         trim($work_array[$i]) == "Цена ед., руб." ||
+                //         trim($work_array[$i]) == "н-час"
 
 
-                        $works[$j++] = $work_array[$i];
-                    // echo $work_array[$i] . '<br />';
-                }
-                // dd($works);
-                session(['works' => $works]);
+                //     ) {
+                //     } else
+
+
+                //         $works[$j++] = $work_array[$i];
+                //     // echo $work_array[$i] . '<br />';
+                // }
+                // // dd($works);
+
             }
         }
 
