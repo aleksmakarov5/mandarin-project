@@ -371,7 +371,18 @@ class WorkController extends Controller
                         $i++;
                         // $file[$i++] = $result['result']['textAnnotation']['tables'];
                     }
-
+                    foreach ($file as $page)
+                        foreach ($page as $table) {
+                            echo '<table>';
+                            foreach ($table as $row) {
+                                echo '<tr>';
+                                foreach ($row as $cell) {
+                                    echo '<td>' . $cell . '</td>';
+                                }
+                                echo '</tr>';
+                            }
+                            echo '</table>';
+                        }
                     dd($file);
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
