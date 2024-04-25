@@ -373,13 +373,14 @@ class WorkController extends Controller
                     }
                     foreach ($file as $page)
                         foreach ($page as $table) {
-                            echo '<table>';
+                            echo '<table border =1>';
+                            echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
                             foreach ($table as $row) {
                                 echo '<tr>';
                                 foreach ($row as $cell) {
                                     echo '<td>' . $cell . '</td>';
                                 }
-                                echo '</tr>';
+                                echo '<td>Удалить строку</td></tr>';
                             }
                             echo '</table>';
                         }
