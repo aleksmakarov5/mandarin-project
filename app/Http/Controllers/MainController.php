@@ -588,8 +588,10 @@ class MainController extends Controller
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
                 $img = scandir($dir . '/' . $image);
+
                 foreach ($img as $i) {
-                    rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
+                    if ($i != '.')
+                        rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                 }
             }
         }
