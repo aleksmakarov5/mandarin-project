@@ -590,7 +590,7 @@ class MainController extends Controller
                 $img = scandir($dir . '/' . $image);
 
                 foreach ($img as $i) {
-                    if ($i != '..')
+                    if ($i != '..' && $i != '.')
                         rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                 }
             }
