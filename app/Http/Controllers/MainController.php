@@ -585,7 +585,20 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-
+        // dd($images);
+        foreach ($images as $image) {
+            if (is_dir($dir . '/' . $image)) {
+                if ($image != '..' && $image != '.') {
+                    $img = scandir($dir . '/' . $image);
+                    foreach ($img as $i) {
+                        if ($i != '..' && $i != '.')
+                            rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
+                    }
+                    rmdir($dir . '/' . $image);
+                }
+            }
+        }
+        $images = scandir($dir);
         try {
             rmdir($dir);
         } catch (\Exception $e) {
