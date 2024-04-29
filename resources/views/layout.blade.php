@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" data-bs-theme="{{ Auth::user()->theme }}">
+<html lang="ru" data-bs-theme="@if (isset(Auth::user()->theme)) {{ Auth::user()->theme }} @endif">
 
 <head>
     <meta charset="UTF-8">
