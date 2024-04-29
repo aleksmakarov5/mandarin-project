@@ -13,6 +13,7 @@ use App\Http\Controllers\SparePartController;
 use Illuminate\Routing\Route as RoutingRoute;
 use Illuminate\Support\Facades\Route;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Controllers\PersonalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -245,7 +246,16 @@ Route::middleware("auth:web")->group(
         Route::get('export_zn/{id}/{status_id}', [WordController::class, 'export_zn'])->name('export_zn');
         Route::get('export_sch/{id}/{status_id}', [WordController::class, 'export_sch'])->name('export_sch');
         Route::get('create_all/{id}/{status_id}', [WordController::class, 'create_all'])->name('create_all');
+        Route::prefix('personal')->group(
+            function () {
+                Route::get('/', [PersonalController::class, 'index'])->name('personal');
+                Route::get('/create', [PersonalController::class, 'create'])->name('personal.create');
+                Route::post('/store', [PersonalController::class, 'store'])->name('personal.store');
+                Route::post('/update', [PersonalController::class, 'update'])->name('personal.update');
+            }
+        );
     }
+
 );
 Route::get('/auth/telegram/callback', function () {
     return 'Hello telegram callback';

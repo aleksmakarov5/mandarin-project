@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" {{-- data-bs-theme="dark" --}}>
+<html lang="ru" data-bs-theme="{{ Auth::user()->theme }}">
 
 <head>
     <meta charset="UTF-8">
@@ -52,7 +52,7 @@
     <div class="container">
 
         @auth('web')
-            <p class='user'> <a href="#" class='nav-link'>{{ Auth::user()->name }}</a></p>
+            <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
         @endauth
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             @auth('web')

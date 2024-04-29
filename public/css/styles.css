@@ -218,6 +218,18 @@ div.container {
     background: #e70a06;
 }
 
+.form_radio_btn.dark input[type=radio]:checked+label {
+    background: #323232;
+    color: white;
+    border-color: blue;
+}
+
+.form_radio_btn.light input[type=radio]:checked+label {
+    background: white;
+    color: black;
+    border-color: blue;
+}
+
 td.zap {
     background: #06e70a;
     color: white;
@@ -271,7 +283,7 @@ td.mrksto {
 }
 
 .grey {
-    color: #bdbbbb;
+    color: #888080;
 }
 
 /* вся страница */
@@ -710,8 +722,8 @@ div.sticky {
 .panel {
     padding: 0 18px;
     border-radius: 18px;
-    background-color: #cdcdcd;
-    color: white important;
+    background-color: #5c5b5b;
+    color: white;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
