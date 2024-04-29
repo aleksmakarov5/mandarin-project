@@ -372,7 +372,10 @@ class WorkController extends Controller
                         // $file[$i++] = $result['result']['textAnnotation']['tables'];
                     }
                     $file = json_encode($file);
-                    file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
+                    $works = $file;
+
+                    return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+                    // file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                     // foreach ($file as $page)
                     //     foreach ($page as $table) {
                     //         echo '<table border =1>';
@@ -391,9 +394,9 @@ class WorkController extends Controller
                 $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
                 $file = json_decode($file, JSON_UNESCAPED_UNICODE);
                 session(['works' => $file]);
+                $works = $file;
 
-                return
-                    view('Work.data_select_ocr', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+                return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
                 // $work_start = mb_strpos($file, 'н-час');
                 // // echo $work_start . 'Раб_Старт<br /><br />';
 
