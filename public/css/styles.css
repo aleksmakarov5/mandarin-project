@@ -722,6 +722,7 @@ div.sticky {
 .panel {
     padding: 0 18px;
     border-radius: 18px;
+    background-color: none;
     border-color: #eb6700;
     border-width: 3px;
     max-height: 0;
