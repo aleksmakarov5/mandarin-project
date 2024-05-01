@@ -25,15 +25,19 @@
                 <th scope="col">Заказанный номер</th>
                 @can('company')
                     <th scope="col">Цена СК</th>
-                @endcan
-                <th scope="col" colspan="2">Цена оригинал</th>
-                <th scope="col" colspan="2">Цена аналог</th>
-                <th scope="col" colspan="2">Цена б/у</th>
-                @can('company')
+
+                    <th scope="col" colspan="2">Цена оригинал</th>
+                    <th scope="col" colspan="2">Цена аналог</th>
+                    <th scope="col" colspan="2">Цена б/у</th>
+
                     <th scope="col">Не меняется</th>
                     <th scope="col">Разница от полной цены</th>
                 @endcan
-                <th scope="col" colspan="2">Цена СТО</th>
+                <th scope="col" @if (Auth::user()->GroupId != 9) colspan="2" @endif>Цена СТО</th>
+
+                @if (Auth::user()->GroupId == 9)
+                    <th scope="col" colspan="1">Вариант СТО</th>
+                @endif
                 <th scope="col">Комментарий</th>
                 @if (session('rout') == 'directions')
                     <th scope="col">Статус</th>
@@ -171,10 +175,10 @@
                                     {{ $sparepart->price_ic_full }}
                                 @endif
                             </td>
-                        @endcan
 
-                        <td id="td_price_original-{{ $key }}" scope="col"
-                            class="min
+
+                            <td id="td_price_original-{{ $key }}" scope="col"
+                                class="min
       @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price == 1 && $sparepart->selected_service == 1) zapmrksto @endif
       @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price == 1 && $sparepart->selected_service != 1) zapmrk @endif
       @if ($sparepart->selected_mrk == 1 && $sparepart->selected_price != 1 && $sparepart->selected_service == 1) mrksto @endif
@@ -183,45 +187,45 @@
       @if ($sparepart->selected_price == 1) zap @endif
       @if ($sparepart->selected_service == 1) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
-                            @if (old('price_original.' . $key) !== null)
-                                {{ old('price_original.' . $key) }}
-                            @else
-                                {{ $sparepart->price_original }}
+                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (old('price_original.' . $key) !== null)
+                                    {{ old('price_original.' . $key) }}
+                                @else
+                                    {{ $sparepart->price_original }}
+                                @endif
+                            </td>
+                            @if (Auth::user()->GroupId == 6)
+                                <th class="min">
+                                    <div class="form_radio_btn zap">
+                                        <input id="radio-1{{ $key }}" type="radio" name="selected_price"
+                                            value="1" @if ($sparepart->selected_price == 1) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-1{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
                             @endif
-                        </td>
-                        @if (Auth::user()->GroupId == 6)
-                            <th class="min">
-                                <div class="form_radio_btn zap">
-                                    <input id="radio-1{{ $key }}" type="radio" name="selected_price"
-                                        value="1" @if ($sparepart->selected_price == 1) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-1{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 5)
-                            <th class="min">
-                                <div class="form_radio_btn mrk">
-                                    <input id="radio-1{{ $key }}" type="radio" name="selected_mrk"
-                                        value="1" @if ($sparepart->selected_mrk == 1) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-1{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 9)
-                            <th class="min">
-                                <div class="form_radio_btn sto">
-                                    <input id="radio-1{{ $key }}" type="radio" name="selected_service"
-                                        value="1" @if ($sparepart->selected_service == 1) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-1{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        <td id="td_price_analogue-{{ $key }}" scope="col"
-                            class="min 
+                            @if (Auth::user()->GroupId == 5)
+                                <th class="min">
+                                    <div class="form_radio_btn mrk">
+                                        <input id="radio-1{{ $key }}" type="radio" name="selected_mrk"
+                                            value="1" @if ($sparepart->selected_mrk == 1) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-1{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+                            @if (Auth::user()->GroupId == 9)
+                                <th class="min">
+                                    <div class="form_radio_btn sto">
+                                        <input id="radio-1{{ $key }}" type="radio" name="selected_service"
+                                            value="1" @if ($sparepart->selected_service == 1) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-1{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+                            <td id="td_price_analogue-{{ $key }}" scope="col"
+                                class="min 
      @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service == 2) zapmrksto @endif
       @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service != 2) zapmrk @endif
       @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price != 2 && $sparepart->selected_service == 2) mrksto @endif
@@ -230,45 +234,45 @@
       @if ($sparepart->selected_price == 2) zap @endif
       @if ($sparepart->selected_service == 2) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
-                            @if (old('price_analogue.' . $key) !== null)
-                                {{ old('price_analogue.' . $key) }}
-                            @else
-                                {{ $sparepart->price_analogue }}
+                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (old('price_analogue.' . $key) !== null)
+                                    {{ old('price_analogue.' . $key) }}
+                                @else
+                                    {{ $sparepart->price_analogue }}
+                                @endif
+                            </td>
+                            @if (Auth::user()->GroupId == 6)
+                                <th class="min">
+                                    <div class="form_radio_btn zap">
+                                        <input id="radio-2{{ $key }}" type="radio" name="selected_price"
+                                            value="2" @if ($sparepart->selected_price == 2) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-2{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
                             @endif
-                        </td>
-                        @if (Auth::user()->GroupId == 6)
-                            <th class="min">
-                                <div class="form_radio_btn zap">
-                                    <input id="radio-2{{ $key }}" type="radio" name="selected_price"
-                                        value="2" @if ($sparepart->selected_price == 2) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-2{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 5)
-                            <th class="min">
-                                <div class="form_radio_btn mrk">
-                                    <input id="radio-2{{ $key }}" type="radio" name="selected_mrk"
-                                        value="2" @if ($sparepart->selected_mrk == 2) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-2{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 9)
-                            <th class="min">
-                                <div class="form_radio_btn sto">
-                                    <input id="radio-2{{ $key }}" type="radio" name="selected_service"
-                                        value="2" @if ($sparepart->selected_service == 2) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-2{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        <td id="td_price_used-{{ $key }}" scope="col"
-                            class="min 
+                            @if (Auth::user()->GroupId == 5)
+                                <th class="min">
+                                    <div class="form_radio_btn mrk">
+                                        <input id="radio-2{{ $key }}" type="radio" name="selected_mrk"
+                                            value="2" @if ($sparepart->selected_mrk == 2) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-2{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+                            @if (Auth::user()->GroupId == 9)
+                                <th class="min">
+                                    <div class="form_radio_btn sto">
+                                        <input id="radio-2{{ $key }}" type="radio" name="selected_service"
+                                            value="2" @if ($sparepart->selected_service == 2) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-2{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+                            <td id="td_price_used-{{ $key }}" scope="col"
+                                class="min 
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service == 3) zapmrksto @endif
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service != 3) zapmrk @endif
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price != 3 && $sparepart->selected_service == 3) mrksto @endif
@@ -277,44 +281,44 @@
       @if ($sparepart->selected_price == 3) zap @endif
       @if ($sparepart->selected_service == 3) sto @endif
       "
-                            @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
-                            @if (old('price_used.' . $key) !== null)
-                                {{ old('price_used.' . $key) }}
-                            @else
-                                {{ $sparepart->price_used }}
+                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (old('price_used.' . $key) !== null)
+                                    {{ old('price_used.' . $key) }}
+                                @else
+                                    {{ $sparepart->price_used }}
+                                @endif
+                            </td>
+                            @if (Auth::user()->GroupId == 6)
+                                <th class="min">
+                                    <div class="form_radio_btn zap">
+                                        <input id="radio-3{{ $key }}" type="radio" name="selected_price"
+                                            value="3" @if ($sparepart->selected_price == 3) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-3{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
                             @endif
-                        </td>
-                        @if (Auth::user()->GroupId == 6)
-                            <th class="min">
-                                <div class="form_radio_btn zap">
-                                    <input id="radio-3{{ $key }}" type="radio" name="selected_price"
-                                        value="3" @if ($sparepart->selected_price == 3) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-3{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 5)
-                            <th class="min">
-                                <div class="form_radio_btn mrk">
-                                    <input id="radio-3{{ $key }}" type="radio" name="selected_mrk"
-                                        value="3" @if ($sparepart->selected_mrk == 3) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-3{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @if (Auth::user()->GroupId == 9)
-                            <th class="min">
-                                <div class="form_radio_btn sto">
-                                    <input id="radio-3{{ $key }}" type="radio" name="selected_service"
-                                        value="3" @if ($sparepart->selected_service == 3) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-3{{ $key }}">&nbsp</label>
-                                </div>
-                            </th>
-                        @endif
-                        @can('company')
+                            @if (Auth::user()->GroupId == 5)
+                                <th class="min">
+                                    <div class="form_radio_btn mrk">
+                                        <input id="radio-3{{ $key }}" type="radio" name="selected_mrk"
+                                            value="3" @if ($sparepart->selected_mrk == 3) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-3{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+                            @if (Auth::user()->GroupId == 9)
+                                <th class="min">
+                                    <div class="form_radio_btn sto">
+                                        <input id="radio-3{{ $key }}" type="radio" name="selected_service"
+                                            value="3" @if ($sparepart->selected_service == 3) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-3{{ $key }}">&nbsp</label>
+                                    </div>
+                                </th>
+                            @endif
+
                             <th
                                 class="
 @if ($sparepart->selected_mrk == 4 && $sparepart->selected_price == 4) zapmrk @endif
@@ -354,32 +358,56 @@
                         @endcan
                         <td id="td_price_service-{{ $key }}" scope="col"
                             class="min 
-      
-      @if ($sparepart->approved) zap 
+      @if ($sparepart->selected_mrk > 0 && $sparepart->selected_mrk < 4) @if ($sparepart->approved) zap 
       @else
-      na @endif
+      na @endif @endif
       "
-                            @if (Auth::user()->GroupId != 5) colspan=2 @endif>
+                            @if (Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
                             @if (old('price_service.' . $key) !== null)
                                 {{ old('price_service.' . $key) }}
                             @else
                                 {{ $sparepart->price_service }}
                             @endif
                         </td>
+                        @if (Auth::user()->GroupId == 9)
+                            <td id="td_price_service-{{ $key }}" scope="col"
+                                class="min 
+      @if ($sparepart->approved) zap 
+      @else
+      na @endif
+      ">
+
+                                <select class=sel id="selected_service" name="selected_service"
+                                    onchange="document.forms['form{{ $key }}'].submit();">
+
+                                    <option value=1 @if ($sparepart->selected_service == 1) selected @endif>Оригинал</option>
+
+                                    <option value=2 @if ($sparepart->selected_service == 2) selected @endif>Аналог</option>
+
+                                    <option value=3 @if ($sparepart->selected_service == 3) selected @endif>Б/У</option>
+
+                                </select>
+
+
+                            </td>
+                        @endif
+
                         @if (Auth::user()->GroupId == 5)
                             <th class="min">
-                                <div class="form_radio_btn zap">
-                                    <input id="radio-5{{ $key }}" type="radio" name="approved"
-                                        value="1" @if ($sparepart->approved) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-5{{ $key }}">+</label>
-                                </div>
-                                <div class="form_radio_btn na">
-                                    <input id="radio-6{{ $key }}" type="radio" name="approved"
-                                        value="0" @if (!$sparepart->approved) checked @endif
-                                        onchange="document.forms['form{{ $key }}'].submit();">
-                                    <label for="radio-6{{ $key }}">-</label>
-                                </div>
+                                @if ($sparepart->selected_mrk > 0 && $sparepart->selected_mrk < 4)
+                                    <div class="form_radio_btn zap">
+                                        <input id="radio-5{{ $key }}" type="radio" name="approved"
+                                            value="1" @if ($sparepart->approved) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-5{{ $key }}">+</label>
+                                    </div>
+                                    <div class="form_radio_btn na">
+                                        <input id="radio-6{{ $key }}" type="radio" name="approved"
+                                            value="0" @if (!$sparepart->approved) checked @endif
+                                            onchange="document.forms['form{{ $key }}'].submit();">
+                                        <label for="radio-6{{ $key }}">-</label>
+                                    </div>
+                                @endif
                             </th>
                         @endif
 

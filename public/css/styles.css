@@ -1083,3 +1083,7 @@ form .nav-link {
     margin-right: 0;
     margin-left: auto;
 }
+
+.sel {
+    color: black;
+}
