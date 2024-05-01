@@ -722,8 +722,6 @@ div.sticky {
 .panel {
     padding: 0 18px;
     border-radius: 18px;
-    background-color: #5c5b5b;
-    color: white;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
