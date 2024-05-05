@@ -47,7 +47,8 @@
             	Echo.channel('chat').listen('MessageSent', (e)=>{
                 this.show=true;
             this.notifications.unshift(e.notification)
-            console.log(e)
+            console.log(e) }
+    )
         },
     methods:{
         getNotifications(){
