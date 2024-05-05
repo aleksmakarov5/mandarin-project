@@ -36,9 +36,7 @@
 <body>
 
     <div class="container">
-        <div id="app1" class="mytoast">
-            <post-notify />
-        </div>
+
         @auth('web')
             <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
         @endauth
@@ -46,6 +44,9 @@
 
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             @auth('web')
+                <div id="app1" class="mytoast">
+                    <post-notify :user="{{ Auth::user()->id }}" />
+                </div>
                 <br>
             @endauth
             <a class="tn-atom t-bgimg loaded" href="/"

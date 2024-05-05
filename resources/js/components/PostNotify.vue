@@ -4,9 +4,9 @@
     <div v-if="show" class="mytoast-body">
 		<div class="mytoast-item"  v-for="(notify,index) in notifications" :key="notify">
             <b>
-                <button v-on:click="notifications.splice(index, 1)">Х</button>
-                {{ notify.message }}{{ notify.app_id }}</b>
-                <a :href=notify.link+notify.app_id class="nav-link">Посмотреть</a>
+                <button @click.prevent="deleteNotify(notify.id)">Х</button>
+                {{ notify.text }}{{ notify.id_application }}</b>
+                <a @click="deleteNotify(notify.id)" :href=notify.link+notify.id_application class="nav-link">Посмотреть</a>
              
 		
 	    </div>
@@ -19,25 +19,48 @@
 <script>
 
 	export default{
+        props:[
+            'user'
+        ],
+
         data(){
+            
             return{
                 notifications:[],
-                show:true
+                show:false
             }
         },
 	    created(){
-
+this.getNotifications()
+console.log(this.notifications)
 
 	    	Echo.channel('chat').listen('MessageSent', (e)=>{
                 this.show=true;
             this.notifications.unshift(e.notification)
-            console.log(this.notifications)
+            console.log(e)
     }
     )
-        
 
+	    },
+        mounted(){
+            this.getNotifications()
+        },
+    methods:{
+        getNotifications(){
+            axios.get(`/api/notifications/${this.user}`)
+            .then(res => {
+                this.notifications=res.data
+            })
 
-	    }
+        },
+        deleteNotify(id){
+            axios.delete(`/api/notifications/${id}`)
+                .then(res => {
+                    this.getNotifications()
+                })
+        }
+    }
        
 	}
+    
 </script>

@@ -20,6 +20,8 @@ use Illuminate\Support\Facades\Mail;
 use App\Models\message;
 use App\Models\address;
 use App\Models\service;
+use App\Models\notify;
+use App\Models\text_notify;
 use App\Models\OurCompany;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
@@ -1288,16 +1290,31 @@ class ApplicationController extends Controller
 
     public function test($id, $id_mes)
     {
+        $notify = new notify;
+        $notify->id_user = 2;
+        $notify->id_application = $id;
+        $notify->id_text = $id_mes;
         switch ($id_mes) {
+
             case 1:
-                broadcast(new MessageSent("Получено письмо от страховой по заявке №", $id, "/mail/"));
+                $notify->link = "/mail/";
+                // broadcast(new MessageSent("Получено письмо от страховой по заявке №", $id, "/mail/"));
                 break;
             case 2:
-                broadcast(new MessageSent("Получено сообщение в чате заявки №", $id, "/chat/"));
+                $notify->link = "/chat/";
+                // broadcast(new MessageSent("Получено сообщение в чате заявки №", $id, "/chat/"));
                 break;
             case 3:
-                broadcast(new MessageSent("Изменен статус по заявке №", $id, "/application/"));
+                $notify->link = "/application/";
+                // broadcast(new MessageSent("Изменен статус по заявке №", $id, "/application/"));
                 break;
         }
+        $notify->save();
+        // $notify->text = text_notify::findOrFail($notify->id_text)->first()->text;
+
+
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
     }
 }

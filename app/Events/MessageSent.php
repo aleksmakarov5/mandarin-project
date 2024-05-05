@@ -9,22 +9,20 @@ use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
+use App\Models\notify;
 
 class MessageSent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $message;
-    public $app_id;
-    public $link;
+    public $notify;
+
     /**
      * Create a new event instance.
      */
-    public function __construct($message, $app_id, $link)
+    public function __construct($notify)
     {
-        $this->message = $message;
-        $this->app_id = $app_id;
-        $this->link = $link;
+        $this->notify = $notify;
     }
 
     /**
@@ -42,17 +40,10 @@ class MessageSent implements ShouldBroadcast
     {
 
 
-        $notification = [
 
-            "message" => $this->message,
-            "app_id" => $this->app_id,
-            "link" => $this->link,
-
-
-        ];
 
         return ([
-            'notification' => $notification
+            'notification' => $this->notify
         ]);
     }
 }
