@@ -47,8 +47,9 @@
     43 => 'ZanySoft\\Zip\\ZipServiceProvider',
     44 => 'App\\Providers\\AppServiceProvider',
     45 => 'App\\Providers\\AuthServiceProvider',
-    46 => 'App\\Providers\\EventServiceProvider',
-    47 => 'App\\Providers\\RouteServiceProvider',
+    46 => 'App\\Providers\\BroadcastServiceProvider',
+    47 => 'App\\Providers\\EventServiceProvider',
+    48 => 'App\\Providers\\RouteServiceProvider',
   ),
   'eager' => 
   array (
@@ -80,8 +81,9 @@
     25 => 'ZanySoft\\Zip\\ZipServiceProvider',
     26 => 'App\\Providers\\AppServiceProvider',
     27 => 'App\\Providers\\AuthServiceProvider',
-    28 => 'App\\Providers\\EventServiceProvider',
-    29 => 'App\\Providers\\RouteServiceProvider',
+    28 => 'App\\Providers\\BroadcastServiceProvider',
+    29 => 'App\\Providers\\EventServiceProvider',
+    30 => 'App\\Providers\\RouteServiceProvider',
   ),
   'deferred' => 
   array (
