@@ -25,6 +25,8 @@ use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
 use App\Mail\user\ic_answer;
 use Carbon\Carbon;
+use App\Events\MessageSent;
+
 
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
@@ -80,8 +82,10 @@ class ApplicationController extends Controller
         }
         $current = carbon::now();
         foreach ($applications as $application) {
+
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
+            $application->created = $application->created_at->toFormattedDateString();
         }
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications],);
@@ -1280,5 +1284,20 @@ class ApplicationController extends Controller
         $history->save();
         $application->save();
         return redirect()->route('directions');
+    }
+
+    public function test($id, $id_mes)
+    {
+        switch ($id_mes) {
+            case 1:
+                broadcast(new MessageSent("Получено письмо от страховой по заявке №", $id, "/mail/"));
+                break;
+            case 2:
+                broadcast(new MessageSent("Получено сообщение в чате заявки №", $id, "/chat/"));
+                break;
+            case 3:
+                broadcast(new MessageSent("Изменен статус по заявке №", $id, "/application/"));
+                break;
+        }
     }
 }
