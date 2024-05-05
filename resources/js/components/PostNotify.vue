@@ -31,8 +31,8 @@
             }
         },
 	    created(){
-this.getNotifications()
-console.log(this.notifications)
+        this.getNotifications()
+        console.log(this.notifications)
 
 	    	Echo.channel('chat').listen('MessageSent', (e)=>{
                 this.show=true;
@@ -44,6 +44,10 @@ console.log(this.notifications)
 	    },
         mounted(){
             this.getNotifications()
+            	Echo.channel('chat').listen('MessageSent', (e)=>{
+                this.show=true;
+            this.notifications.unshift(e.notification)
+            console.log(e)
         },
     methods:{
         getNotifications(){
