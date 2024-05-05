@@ -4,7 +4,7 @@
     <div v-if="show" class="mytoast-body">
 		<div class="mytoast-item"  v-for="(notify,index) in notifications" :key="notify">
             <b>
-                <button v-on:click="notifications.splice(index, 1)">Удалить</button>
+                <button v-on:click="notifications.splice(index, 1)">Х</button>
                 {{ notify.message }}{{ notify.app_id }}</b>
                 <a :href=notify.link+notify.app_id class="nav-link">Посмотреть</a>
              
@@ -26,7 +26,7 @@
             }
         },
 	    created(){
-            
+
 
 	    	Echo.channel('chat').listen('MessageSent', (e)=>{
                 this.show=true;

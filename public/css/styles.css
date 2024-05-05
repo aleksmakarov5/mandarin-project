@@ -722,9 +722,6 @@ div.sticky {
 .panel {
     padding: 0 18px;
     border-radius: 18px;
-    background-color: none;
-    border-color: #eb6700;
-    border-width: 3px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
@@ -1087,4 +1084,31 @@ form .nav-link {
 
 .sel {
     color: black;
+}
+
+.mytoast {
+    position: fixed;
+    bottom: 16px;
+    right: 16px;
+    z-index: 1;
+
+}
+
+.mytoast-body {
+    overflow: auto;
+    position: fixed;
+    max-height: 70%;
+    padding: 10px;
+    bottom: 46px;
+    right: 6px;
+
+}
+
+.mytoast-item {
+    display: block;
+    padding: 10px;
+    background-color: #0b07e86e;
+    margin-bottom: 10px;
+    border: 1px solid transparent;
+    border-radius: 14px;
 }
