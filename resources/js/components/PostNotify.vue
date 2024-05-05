@@ -44,11 +44,7 @@
 	    },
         mounted(){
             this.getNotifications()
-            	Echo.channel('chat').listen('MessageSent', (e)=>{
-                this.show=true;
-            this.notifications.unshift(e.notification)
-            console.log(e) }
-    )
+            
         },
     methods:{
         getNotifications(){
