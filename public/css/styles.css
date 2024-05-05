@@ -1112,3 +1112,30 @@ form .nav-link {
     border: 1px solid transparent;
     border-radius: 14px;
 }
+
+.badge {
+    display: inline-block;
+    padding: 3px 7px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 10px;
+    transition: color.15s ease-in-out, background-color.15s ease-in-out, border-color.15s ease-in-out, box-shadow.15s ease-in-out;
+}
+
+.badge-red {
+    background-color: red;
+}
+
+.badge-green {
+    background-color: green;
+}
+
+
+.badge-blue {
+    background-color: blue;
+}

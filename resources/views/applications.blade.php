@@ -7,117 +7,125 @@
     @can('admin')
         <a href="/applications/create" class="nav-link">Добавить заявку</a>
     @endcan
-    <table id ="applications" class="editable">
-        <thead>
+    <div id="app">
+        <table id ="applications" class="editable">
+            <thead>
 
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Дата заявки</th>
-                <th scope="col">Страховая компания</th>
-                <th scope="col">Номер заявки </th>
-                <th scope="col">Марка машины </th>
-                <th scope="col">ГНЗ </th>
-                <th scope="col">VIN</th>
-                <th scope="col">ФИО клиента</th>
-                <th scope="col">Телефон клиента</th>
-                <th scope="col">Остаток времени, час</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Наша компания</th>
-                <th scope="col"></th>
-
-            </tr>
-            <tr>
-                <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
-                        onkeyup="tableSearch(0,'applications')">
-                </th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Дата заявки" id="search-text1"
-                        onkeyup="tableSearch(1,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Страховая компания"
-                        id="search-text2" onkeyup="tableSearch(2,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Номер заявки " id="search-text3"
-                        onkeyup="tableSearch(3,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Марка машины " id="search-text4"
-                        onkeyup="tableSearch(4,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="ГНЗ" id="search-text5"
-                        onkeyup="tableSearch(5,'applications')"> </th>
-                <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text6"
-                        onkeyup="tableSearch(6,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента" id="search-text7"
-                        onkeyup="tableSearch(7,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Телефон клиента"
-                        id="search-text8" onkeyup="tableSearch(8,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Остаток времени, час"
-                        id="search-text9" onkeyup="tableSearch(9,'applications')"></th>
-                <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10"
-                        onkeyup="tableSearch(10,'applications')"></th>
-                <th scope="col"></th>
-                <th scope="col"></th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-
-
-            @foreach ($applications->all() as $application)
-                <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
-
-                    <td>
-
-                        {{ $application->id }}
-
-                    </td>
-                    <td scope="col" onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ date('d-m-Y', strtotime($application->created_at)) }}</td>
-                    <td scope="col">{{ $application->name }} </td>
-                    <td scope="col" onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->numberInsuranceCompanyApplication }} </td>
-                    <td scope="col" onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->CarModel }} </td>
-                    <td scope="col" onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->gnz }}</td>
-                    <td scope="col" onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->vin }}</td>
-                    <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->ClientName }}</td>
-                    <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->ClientPhone }}</td>
-                    @if ($application->count_hour > 0)
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            <div class="progress">
-                                <div class="progress-bar"
-                                    style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%;"
-                                    role="progressbar" aria-valuenow="{{ $application->count_hour }}" aria-valuemin="0"
-                                    aria-valuemax="{{ $application->max_hour }}}">
-                                    {{ $application->count_hour }} часов
-                                </div>
-                            </div>
-
-
-                        </td>
-                    @else
-                        <td scope="col" class="alert alert-danger"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            Просрочено на
-                            {{ $application->count_hour * -1 }} часов
-                        </td>
-                    @endif
-                    <td scope="col"
-                        onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->StatusName }}</td>
-                    <td scope="col"
-                        onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        {{ $application->our_name }}</td>
-                    <td scope="col">
-                        <a href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
-                                src="/storage/img/delete.png" width="20" alt="delete"></a>
-                    </td>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Дата заявки</th>
+                    <th scope="col">Страховая компания</th>
+                    <th scope="col">Номер заявки </th>
+                    <th scope="col">Марка машины </th>
+                    <th scope="col">ГНЗ </th>
+                    <th scope="col">VIN</th>
+                    <th scope="col">ФИО клиента</th>
+                    <th scope="col">Телефон клиента</th>
+                    <th scope="col">Остаток времени, час</th>
+                    <th scope="col">Статус</th>
+                    <th scope="col">Наша компания</th>
+                    <th scope="col"></th>
 
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
+                <tr>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
+                            onkeyup="tableSearch(0,'applications')">
+                    </th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Дата заявки"
+                            id="search-text1" onkeyup="tableSearch(1,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Страховая компания"
+                            id="search-text2" onkeyup="tableSearch(2,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Номер заявки "
+                            id="search-text3" onkeyup="tableSearch(3,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Марка машины "
+                            id="search-text4" onkeyup="tableSearch(4,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ГНЗ" id="search-text5"
+                            onkeyup="tableSearch(5,'applications')"> </th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text6"
+                            onkeyup="tableSearch(6,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
+                            id="search-text7" onkeyup="tableSearch(7,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон клиента"
+                            id="search-text8" onkeyup="tableSearch(8,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Остаток времени, час"
+                            id="search-text9" onkeyup="tableSearch(9,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10"
+                            onkeyup="tableSearch(10,'applications')"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+                @foreach ($applications->all() as $application)
+                    <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
+
+                        <td>
+                            <notify-counter :unreadable_count=45 :id_app={{ $application->id }}>
+
+
+
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ date('d-m-Y', strtotime($application->created_at)) }}</td>
+                        <td scope="col">{{ $application->name }} </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->numberInsuranceCompanyApplication }} </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->CarModel }} </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->gnz }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->vin }}</td>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->ClientName }}</td>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->ClientPhone }}</td>
+                        @if ($application->count_hour > 0)
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                <div class="progress">
+                                    <div class="progress-bar"
+                                        style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%;"
+                                        role="progressbar" aria-valuenow="{{ $application->count_hour }}"
+                                        aria-valuemin="0" aria-valuemax="{{ $application->max_hour }}}">
+                                        {{ $application->count_hour }} часов
+                                    </div>
+                                </div>
+
+
+                            </td>
+                        @else
+                            <td scope="col" class="alert alert-danger"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                Просрочено на
+                                {{ $application->count_hour * -1 }} часов
+                            </td>
+                        @endif
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->StatusName }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->our_name }}</td>
+                        <td scope="col">
+                            <a href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
+                                    src="/storage/img/delete.png" width="20" alt="delete"></a>
+                        </td>
+
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
     <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
