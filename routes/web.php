@@ -263,3 +263,5 @@ Route::get('/auth/telegram/callback', function () {
 Route::get('/auth/telegram/redirect', function () {
     return Socialite::driver('telegram')->redirect();
 });
+
+Route::get('/test/{id}/{id_mes}', [ApplicationController::class, 'test'])->name('test');

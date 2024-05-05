@@ -7,53 +7,43 @@
     <title>
         @yield('title')
     </title>
-    <script src="/docs/5.3/assets/js/color-modes.js"></script>
-    <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous">
-    </script>
+
 
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
-    <meta name="generator" content="Hugo 0.118.2">
+
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-
-
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
-
-    <link href="/docs/5.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/docs/5.3/assets/img/favicons/apple-touch-icon.png" sizes="180x180">
     <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-32x32.png" sizes="32x32" type="image/png">
     <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon-16x16.png" sizes="16x16" type="image/png">
-    <link rel="manifest" href="/docs/5.3/assets/img/favicons/manifest.json">
     <link rel="mask-icon" href="/docs/5.3/assets/img/favicons/safari-pinned-tab.svg" color="#712cf9">
+
     <link rel="icon" href="/docs/5.3/assets/img/favicons/favicon.ico">
     <meta name="theme-color" content="#712cf9">
     <!-- Custom styles for this template -->
-    <link href="carousel.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-
-
-
+    @vite(['resources/js/app.js'])
 </head>
 
-<body {{-- class="bg-dark text-white " --}}>
-    <div class="container">
+<body>
 
+    <div class="container">
+        <div id="app1" class="mytoast">
+            <post-notify />
+        </div>
         @auth('web')
             <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
         @endauth
+
+
         <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
             @auth('web')
                 <br>
@@ -77,9 +67,11 @@
                 @auth('web')
                     @can('company')
                         <li class="nav-item"><a href="\failures"
-                                class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a></li>
+                                class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
+                        </li>
                         <li class="nav-item"><a href="\lawyers"
-                                class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С автоюристом</a></li>
+                                class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С автоюристом</a>
+                        </li>
                         <li class="nav-item"><a href="\archive"
                                 class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a></li>
                         <li class="nav-item"><a href="\mail"
@@ -89,7 +81,8 @@
                     <li class="nav-item"><a href="\applications"
                             class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Заявки</a></li>
                     <li class="nav-item"><a href="\directions"
-                            class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a></li>
+                            class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
+                    </li>
 
                     &nbsp&nbsp&nbsp&nbsp
                     <li class="nav-item"><a href="\logout"
@@ -107,12 +100,13 @@
             </ul>
         </header>
 
+
         @yield('main_content')
     </div>
     <div class="container">
         <footer class="py-3 my-4 text-white">
 
-            <p class="text-center ">© 2023 Мандарин авто, Inc</p>
+            <p class="text-center ">© 2024 Мандарин авто, Inc</p>
         </footer>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
