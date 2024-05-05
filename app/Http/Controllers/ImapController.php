@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Webklex\PHPIMAP\ClientManager;
 use Webklex\PHPIMAP\Client;
 use greeny\MailLibrary\Drivers\ImapDriver;
@@ -14,9 +15,11 @@ use App\Models\address;
 use App\Models\application;
 use App\Models\history;
 use App\Models\User;
+use App\Models\notify;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 use Illuminate\Support\Facades\Mail as Mail_send;
+use App\Events\MessageSent;
 
 
 
@@ -111,6 +114,19 @@ class ImapController extends Controller
             }
             $user = User::find(2);
             Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
+            $notify = new notify;
+            $notify->id_user = 2;
+            $notify->id_application = $applications->id;
+            $notify->id_text = 1;
+            $notify->link = "/mail/";
+            $notify->save();
+            $notify->save();
+            // $notify->text = text_notify::findOrFail($notify->id_text)->first()->text;
+
+
+            $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                ->select('notifies.*', 'text_notifies.text')->first();
+            broadcast(new MessageSent($notification));
         }
     }
     public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company)
