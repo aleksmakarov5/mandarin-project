@@ -80,7 +80,7 @@
                     @endif
                 </tr>
             @endcan
-            <tr>
+            {{-- <tr>
                 <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
                         onkeyup="tableSearch(0,'demo')">
                 </th>
@@ -107,7 +107,7 @@
 
 
 
-            </tr>
+            </tr> --}}
 
         </thead>
         <tbody>
@@ -123,8 +123,7 @@
                         @csrf
                         <input type="hidden" name="id_application" value='{{ $id }}'>
                         <input type="hidden" name="id" id='id-{{ $key }}' value='{{ $sparepart->id }}'>
-                        <input type="hidden" name="name" id='name-{{ $key }}'
-                            value='{{ $sparepart->name }}'>
+                        <input type="hidden" name="name" id='name-{{ $key }}' value='{{ $sparepart->name }}'>
                         @can('spm')
                             <input type="hidden" name="part_number" id='part_number-{{ $key }}'
                                 value='{{ $sparepart->part_number }}'>

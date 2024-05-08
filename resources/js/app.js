@@ -4,6 +4,7 @@ import { createApp } from 'vue';
 
 import NotifyCounter from './components/NotifyCounter.vue';
 import PostNotify from './components/PostNotify.vue';
+import Troubleshootings from './components/Troubleshootings.vue';
 
 
 
@@ -19,6 +20,7 @@ app1.mount('#app1')
 const app = createApp({
   components: {
     NotifyCounter,
+    Troubleshootings,
     
     
   },

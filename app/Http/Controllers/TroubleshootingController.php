@@ -13,9 +13,9 @@ class TroubleshootingController extends Controller
     {
         $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
         // dd($rewiew->all()) ;
-      
 
-        return view('troubleshooting.index', ['troubleshootings' => $troubleshootings->all(),'id' => $id]);
+
+        return view('troubleshooting.index', ['troubleshootings' => $troubleshootings->all(), 'id' => $id]);
     }
 
     public function create($id)
@@ -28,12 +28,12 @@ class TroubleshootingController extends Controller
     {
         $troubleshooting = new troubleshooting;
         $data = $this->validate($request, [
-            'id_application' =>'required',
-            'PartName' =>'required',
-            'Work' =>'required',
-            'ExpertApinion' =>'nullable',
-            'Сonclusion' =>'nullable'
-             ]);
+            'id_application' => 'required',
+            'PartName' => 'required',
+            'Work' => 'required',
+            'ExpertApinion' => 'nullable',
+            'Сonclusion' => 'nullable'
+        ]);
 
         foreach ($data as $key => $value) {
             $troubleshooting->$key = $value;
@@ -54,12 +54,12 @@ class TroubleshootingController extends Controller
         $troubleshooting = troubleshooting::findOrFail($id);
 
         $data = $this->validate($request, [
-            'id_application' =>'required',
-            'PartName' =>'required',
-            'Work' =>'required',
-            'ExpertApinion' =>'nullable',
-            'Сonclusion' =>'nullable'
-             ]);
+            'id_application' => 'required',
+            'PartName' => 'required',
+            'Work' => 'required',
+            'ExpertApinion' => 'nullable',
+            'Сonclusion' => 'nullable'
+        ]);
 
         foreach ($data as $key => $val) {
             $troubleshooting->$key = $val;
@@ -69,7 +69,7 @@ class TroubleshootingController extends Controller
             ->route('troubleshooting', $troubleshooting->id_application);
     }
 
-    
+
     public function destroy($id)
     {
         $troubleshooting = troubleshooting::findOrFail($id);
