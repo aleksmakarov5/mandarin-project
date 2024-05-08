@@ -23,6 +23,7 @@ use App\Models\service;
 use App\Models\notify;
 use App\Models\text_notify;
 use App\Models\OurCompany;
+use App\Models\status_application;
 use App\Mail\user\mrknotify;
 use App\Mail\user\newmessage;
 use App\Mail\user\ic_answer;
@@ -909,6 +910,12 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 3:
@@ -922,6 +929,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 5:
@@ -935,6 +947,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 6:
@@ -948,6 +965,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 8:
@@ -961,6 +983,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
         }
@@ -1008,6 +1035,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 3:
@@ -1021,6 +1053,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 5:
@@ -1034,6 +1071,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 6:
@@ -1047,6 +1089,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 8:
@@ -1060,6 +1107,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
         }
@@ -1310,6 +1362,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 3:
@@ -1323,6 +1380,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
             case 5:
@@ -1336,6 +1398,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 6:
@@ -1349,6 +1416,11 @@ class ApplicationController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = null;
+                $status_application->save();
 
                 break;
             case 8:
@@ -1362,6 +1434,11 @@ class ApplicationController extends Controller
 
                     $notify->save();
                     $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = null;
+                    $status_application->save();
                 }
                 break;
         }

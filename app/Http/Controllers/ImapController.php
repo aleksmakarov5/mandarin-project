@@ -16,6 +16,7 @@ use App\Models\application;
 use App\Models\history;
 use App\Models\User;
 use App\Models\notify;
+use App\Models\status_message;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 use Illuminate\Support\Facades\Mail as Mail_send;
@@ -125,6 +126,11 @@ class ImapController extends Controller
 
                 $notify->save();
                 $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $user->id;
+                $status_message->id_application = $id;
+                $status_message->is_readed = null;
+                $status_message->save();
             }
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
