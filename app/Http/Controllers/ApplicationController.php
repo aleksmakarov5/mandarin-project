@@ -850,6 +850,16 @@ class ApplicationController extends Controller
         $history->id_status = 3;
         $history->id_application = $id;
         $history->save();
+        $user = user::findorfail($id_MRK);
+        $notify = new notify;
+        $notify->id_user = $user->id;
+        $notify->id_application = $id;
+        $notify->id_text = 3;
+        $notify->link = "/application/";
+        $notify->save();
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
         return redirect()->route('applications');
     }
     public function change_status($id, $variant)
@@ -885,6 +895,78 @@ class ApplicationController extends Controller
         }
         $application->save();
         $history->save();
+        $notify_id = 0;
+        $status_group = ApplicationStatus::findOrFail($application->id_status)->current_group;
+        switch ($status_group) {
+            case 2:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 3:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 5:
+                $user = user::findorfail($application->id_MRK);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 6:
+                $user = user::findorfail($application->id_spm);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 8:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+        }
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
         return redirect()->route('applications');
     }
     public function change_status_km($id, $variant)
@@ -912,6 +994,78 @@ class ApplicationController extends Controller
                     return redirect()->route('answer_fail_sel', $id);
                 }
         }
+        $notify_id = 0;
+        $status_group = ApplicationStatus::findOrFail($application->id_status)->current_group;
+        switch ($status_group) {
+            case 2:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 3:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 5:
+                $user = user::findorfail($application->id_MRK);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 6:
+                $user = user::findorfail($application->id_spm);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 8:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+        }
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
     }
 
     public function answer_fail_sel($id)
@@ -1142,13 +1296,76 @@ class ApplicationController extends Controller
 
         $application->save();
         $history->save();
-        $notify = new notify;
-        $notify->id_user = 2;
-        $notify->id_application = $id;
-        $notify->id_text = 3;
-        $notify->link = "/application/";
-        $notify->save();
-        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+        $notify_id = 0;
+        $status_group = ApplicationStatus::findOrFail($status_id)->current_group;
+        switch ($status_group) {
+            case 2:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 3:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+            case 5:
+                $user = user::findorfail($application->id_MRK);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 6:
+                $user = user::findorfail($application->id_spm);
+
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
+
+                $notify->save();
+                $notify_id = $notify->id;
+
+                break;
+            case 8:
+                $users = user::where('GroupId', '=', $status_group)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify->save();
+                    $notify_id = $notify->id;
+                }
+                break;
+        }
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
         return redirect()->back();
