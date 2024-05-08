@@ -72,7 +72,7 @@
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
 
                         <td>
-                            <notify-counter :unreadable_count=0 :id_app={{ $application->id }}>
+                            <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}>
 
 
 

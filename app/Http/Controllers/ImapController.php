@@ -129,7 +129,7 @@ class ImapController extends Controller
                 $status_message = new status_message;
                 $status_message->id_user = $user->id;
                 $status_message->id_application = $id;
-                $status_message->is_readed = null;
+                $status_message->is_readed = false;
                 $status_message->save();
             }
 

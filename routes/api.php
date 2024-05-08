@@ -4,6 +4,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\TroubleshootingController;
+use App\Http\Controllers\NotifyCountController;
+
+
 
 /*
 |--------------------------------------------------------------------------
@@ -40,6 +43,20 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
     ])->name('troubleshooting.update');
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
+});
+
+Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function () {
+
+    Route::get('/applications/{user_id}', [NotifyCountController::class, 'applications'])
+        ->name('notifycount.applications');
+    Route::get('/directions/{user_id}', [NotifyCountController::class, 'directions'])
+        ->name('notifycount.directions');
+    Route::get('/failures/{user_id}', [NotifyCountController::class, 'failures'])
+        ->name('notifycount.failures');
+    Route::get('/layers/{user_id}', [NotifyCountController::class, 'layers'])
+        ->name('notifycount.layers');
+    Route::get('/application/{id}/{user_id}', [NotifyCountController::class, 'application'])
+        ->name('notifycount.application');
 });
   
 

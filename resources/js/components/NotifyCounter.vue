@@ -2,8 +2,9 @@
  <div>
   
     {{id}}
-    <p class="badge badge-blue" v-if="unreadable-30>10">{{unreadable-30}}</p>
-    <p class="badge badge-red" v-if="unreadable!=0">{{unreadable+2}}</p>
+    <p class="badge badge-blue" v-if="count.application!=0">{{count.application}}</p>
+    <p class="badge badge-red" v-if="count.message!=0">{{count.message}}</p>
+    <p class="badge badge-green" v-if="count.chat!=0">{{count.chat}}</p>
  </div>
 </template>
 
@@ -11,26 +12,40 @@
 export default{
     
     props: [
-        'unreadable_count',
+      'user',
         'id_app'
     ],
     data()
     {
       return{
-        unreadable: this.unreadable_count,
+        count: [],
+        user_id:this.user,
         id: this.id_app
       }
     },
 
   created()
   {
-   
-    Echo.private(`notif.${this.id}`).listen('Notify', (e)=>{
-      this.unreadable = e.notify
+   this.getCounts()
+   	Echo.channel('chat').listen('MessageSent', (e)=>{
+            this.getCounts()   
     }
     )
     
-  }
+  },
+  mounted(){
+            this.getCounts()
+            
+        },
+  methods:{
+        getCounts(){
+            axios.get(`/api/notifycount/application/${this.id}/${this.user_id}`)
+            .then(res => {
+                this.count=res.data
+                console.log(res)
+            })
+
+        },}
 
 }
 </script>

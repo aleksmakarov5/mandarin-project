@@ -30,6 +30,9 @@ use App\Mail\user\ic_answer;
 use Carbon\Carbon;
 use App\Events\MessageSent;
 
+use App\Models\status_chat;
+use App\Models\status_message;
+
 
 use Illuminate\Validation\Rules\Can;
 use Illuminate\Support\Facades\Gate;
@@ -278,6 +281,12 @@ class ApplicationController extends Controller
                     $empty = 1;
                 }
         }
+        $status_application = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+            ->where('is_readed', '=', '0')->get();
+        foreach ($status_application as $status) {
+            $status->is_readed = 1;
+            $status->save();
+        }
 
 
         return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty]);
@@ -436,6 +445,12 @@ class ApplicationController extends Controller
 
     public function message($id)
     {
+        $status_message = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
+            ->where('is_readed', '=', '0')->get();
+        foreach ($status_message as $status) {
+            $status->is_readed = 1;
+            $status->save();
+        }
 
         $messages = DB::table('messages')
             ->where('application_id', '=', $id)
@@ -473,6 +488,12 @@ class ApplicationController extends Controller
     }
     public function chat(Request $request, $id)
     {
+        $status_chat = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
+            ->where('is_readed', '=', '0')->get();
+        foreach ($status_chat as $status) {
+            $status->is_readed = 1;
+            $status->save();
+        }
 
         $users = DB::table('users')->get();
         if ($request->input('only_me') || Gate::allows('service')) {
@@ -505,6 +526,24 @@ class ApplicationController extends Controller
         $chat->to = $request->to;
         $chat->message = $request->message;
         $chat->save();
+
+
+        $notify = new notify;
+        $notify->id_user = $request->to;
+        $notify->id_application = $id;
+        $notify->id_text = 2;
+        $notify->link = "/chat/";
+
+        $notify->save();
+        $status_chat = new status_chat;
+        $status_chat->id_user = $request->to;
+        $status_chat->id_application = $id;
+        $status_chat->is_readed = false;
+        $status_chat->save();
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
+
         // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
         // $this->dispatch($qs);
         Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, $author->name, $request->message));
@@ -858,6 +897,11 @@ class ApplicationController extends Controller
         $notify->id_text = 3;
         $notify->link = "/application/";
         $notify->save();
+        $status_application = new status_application;
+        $status_application->id_user = $user->id;
+        $status_application->id_application = $id;
+        $status_application->is_readed = false;
+        $status_application->save();
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
@@ -914,7 +958,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -932,7 +976,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -950,7 +994,7 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
 
                 break;
@@ -968,7 +1012,7 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
 
                 break;
@@ -986,7 +1030,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1038,7 +1082,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1056,7 +1100,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1074,7 +1118,7 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
 
                 break;
@@ -1092,7 +1136,7 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
 
                 break;
@@ -1110,7 +1154,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1365,7 +1409,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1383,7 +1427,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
@@ -1401,7 +1445,7 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
 
                 break;
@@ -1419,8 +1463,9 @@ class ApplicationController extends Controller
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
                 $status_application->id_application = $id;
-                $status_application->is_readed = null;
+                $status_application->is_readed = false;
                 $status_application->save();
+
 
                 break;
             case 8:
@@ -1437,7 +1482,7 @@ class ApplicationController extends Controller
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
                     $status_application->id_application = $id;
-                    $status_application->is_readed = null;
+                    $status_application->is_readed = false;
                     $status_application->save();
                 }
                 break;
