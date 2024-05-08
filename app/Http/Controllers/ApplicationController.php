@@ -39,11 +39,12 @@ use Illuminate\Support\Facades\Mail as Mail_send;
 class ApplicationController extends Controller
 {
 
-    public function applications()
+    public function applications(Request $request)
     {
+        $only_me = 0;
+        $only_me = $request->get('only_me');
 
-
-        if (Gate::allows('admin')) {
+        if (Gate::allows('admin') || $only_me) {
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '6');
@@ -90,7 +91,7 @@ class ApplicationController extends Controller
             $application->created = $application->created_at->toFormattedDateString();
         }
         session(['rout' => 'applications']);
-        return view('applications', ['applications' => $applications],);
+        return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
     }
 
     public function failures()
@@ -116,7 +117,7 @@ class ApplicationController extends Controller
         session(['rout' => 'failures']);
 
 
-        return view('applications', ['applications' => $applications],);
+        return view('applications', ['applications' => $applications,],);
     }
 
     public function lawyers()
@@ -167,10 +168,13 @@ class ApplicationController extends Controller
         return view('applications', ['applications' => $applications],);
     }
 
-    public function directions()
+    public function directions(Request $request)
     {
+        $only_me = 0;
+        $only_me = $request->get('only_me');
 
-        if (Gate::allows('admin')) {
+        if (Gate::allows('admin') || $only_me) {
+
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
                     ->where('id_status', '<', '24');
@@ -239,7 +243,7 @@ class ApplicationController extends Controller
                 $application->max_hour = 1000;
             }
         }
-        return view('applications', ['applications' => $applications],);
+        return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
     }
 
 
@@ -1060,8 +1064,9 @@ class ApplicationController extends Controller
             ->select('trus.*', 'true_vars.variant')
             ->get();
         $users = DB::table('users')->get();
+        $service = service::findOrFail($application->id_service);
 
-        return view('application.answer_ic_true', ['subject' => $subject, 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to]);
+        return view('application.answer_ic_true', ['subject' => $subject, 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'service' => $service]);
     }
 
     public function answer_ic_true_sent(Request $request, $id)

@@ -63,6 +63,7 @@
 -{{ $item->variant }}
 @endforeach
 @endif
+Автомобиль будет поставлен на сервис {{ $service->service_name }} по адресу {{ $service->service_description }}
 
 Просим прислать направление и калькуляцию
               </textarea>

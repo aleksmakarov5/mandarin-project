@@ -3,7 +3,8 @@
     Работы
 @endsection
 @section('main')
-    <a href="/troubleshooting/{{ $id }}/create" class="nav-link">Добавить</a>
+    <a href="/export_hda/{{ $id }}/11" class="nav-link">Создать печатную форму</a>
+    <a href="/answer_ic_mrk/{{ $id }}" class="nav-link">Отправить в страховую компанию</a>
 
 
 

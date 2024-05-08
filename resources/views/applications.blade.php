@@ -7,6 +7,12 @@
     @can('admin')
         <a href="/applications/create" class="nav-link">Добавить заявку</a>
     @endcan
+    @can('mrk')
+        @if (session('rout') == 'applications' || session('rout') == 'directions')
+            <a href="?only_me={{ isset($only_me) && $only_me ? '0' : '1' }}"
+                class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
+        @endif
+    @endcan
     <div id="app">
         <table id ="applications" class="editable">
             <thead>
@@ -23,6 +29,7 @@
                     <th scope="col">Телефон клиента</th>
                     <th scope="col">Остаток времени, час</th>
                     <th scope="col">Статус</th>
+                    <th scope="col">Тип убытка</th>
                     <th scope="col">Наша компания</th>
                     <th scope="col"></th>
 
@@ -53,6 +60,7 @@
                             onkeyup="tableSearch(10,'applications')"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
+                    <th scope="col"></th>
 
                 </tr>
             </thead>
@@ -64,7 +72,7 @@
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
 
                         <td>
-                            <notify-counter :unreadable_count=45 :id_app={{ $application->id }}>
+                            <notify-counter :unreadable_count=0 :id_app={{ $application->id }}>
 
 
 
@@ -113,6 +121,9 @@
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ $application->StatusName }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ isset($application->ub_type) && $application->ub_type ? 'Каско' : 'Осаго' }}</td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ $application->our_name }}</td>

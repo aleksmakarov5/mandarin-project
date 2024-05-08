@@ -94,33 +94,37 @@
     </div>
 
 </div>
-<div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
-<div class="form-float">
+@can('admin')
 
-    <select class="form-cont" id="id_MRK" name="id_MRK">
-        @foreach ($mrks as $item)
-            <option value="{{ $item->id }}" @if ($item->id === $application->id_MRK) selected @endif>
-                {{ $item->name }}
-            </option>
-        @endforeach
+    <div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
+    <div class="form-float">
 
-    </select>
+        <select class="form-cont" id="id_MRK" name="id_MRK">
+            @foreach ($mrks as $item)
+                <option value="{{ $item->id }}" @if ($item->id === $application->id_MRK) selected @endif>
+                    {{ $item->name }}
+                </option>
+            @endforeach
 
-</div>
-<div class='lbl'>
-    <label for="id_spm">Запчастист</label>
-</div>
-<div class="form-float">
+        </select>
 
-    <select class="form-cont" id="id_spm" name="id_spm">
-        @foreach ($spms as $item)
-            <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>{{ $item->name }}
-            </option>
-        @endforeach
+    </div>
+    <div class='lbl'>
+        <label for="id_spm">Запчастист</label>
+    </div>
+    <div class="form-float">
 
-    </select>
+        <select class="form-cont" id="id_spm" name="id_spm">
+            @foreach ($spms as $item)
+                <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>{{ $item->name }}
+                </option>
+            @endforeach
 
-</div>
+        </select>
+
+    </div>
+
+@endcan
 <div class='lbl'>
     <label for="id_spm">Сервис</label>
 </div>
