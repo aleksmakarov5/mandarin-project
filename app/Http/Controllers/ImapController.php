@@ -120,10 +120,6 @@ class ImapController extends Controller
             $notify->id_text = 1;
             $notify->link = "/mail/";
             $notify->save();
-            $notify->save();
-            // $notify->text = text_notify::findOrFail($notify->id_text)->first()->text;
-
-
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')->first();
             broadcast(new MessageSent($notification));

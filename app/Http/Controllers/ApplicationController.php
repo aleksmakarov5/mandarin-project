@@ -1142,6 +1142,15 @@ class ApplicationController extends Controller
 
         $application->save();
         $history->save();
+        $notify = new notify;
+        $notify->id_user = 2;
+        $notify->id_application = $id;
+        $notify->id_text = 3;
+        $notify->link = "/application/";
+        $notify->save();
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
         return redirect()->back();
     }
 
