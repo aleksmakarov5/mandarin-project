@@ -41,65 +41,69 @@
             <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
         @endauth
 
-
-        <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
-            @auth('web')
-                <div id="app1" class="mytoast">
-                    <post-notify :user="{{ Auth::user()->id }}" />
-                </div>
-                <br>
-            @endauth
-            <a class="tn-atom t-bgimg loaded" href="/"
-                data-original="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png"
-                style="background-image: url(&quot;https://optim.tildacdn.com/tild3035-3764-4461-a632-393433376239/-/cover/97x93/center/center/-/format/webp/c4628e96-a0e1-4301-b.png&quot;);"></a>
-            <a href="/"
-                class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
-                <img class="bi me-2" width="100" height="100"
-                    src="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png">
-
-            </a>
-
-            <ul class="nav nav-pills">
-
-                <li class="nav-item"><a href="\" class="nav-link
-                        {{ session('rout') == 'home' ? 'tn-active' : '' }}">Главная</a></li>
-
-
+        <div id="nb">
+            <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                 @auth('web')
-                    @can('company')
-                        <li class="nav-item"><a href="\failures"
-                                class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
-                        </li>
-                        <li class="nav-item"><a href="\lawyers"
-                                class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С автоюристом</a>
-                        </li>
-                        <li class="nav-item"><a href="\archive"
-                                class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a></li>
-                        <li class="nav-item"><a href="\mail"
-                                class="nav-link {{ session('rout') == 'mail' ? 'tn-active' : '' }}">Почта</a></li>
-                    @endcan
-
-                    <li class="nav-item"><a href="\applications"
-                            class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Заявки</a></li>
-                    <li class="nav-item"><a href="\directions"
-                            class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
-                    </li>
-
-                    &nbsp&nbsp&nbsp&nbsp
-                    <li class="nav-item"><a href="\logout"
-                            class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Выйти</a></li>
+                    <div id="app1" class="mytoast">
+                        <post-notify :user="{{ Auth::user()->id }}" />
+                    </div>
+                    <br>
                 @endauth
-                @guest('web')
-                    &nbsp&nbsp&nbsp&nbsp
-                    <li class="nav-item"><a href="\login"
-                            class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Войти</a></li>
-                @endguest
-                @can('administrator')
-                    <li class="nav-item"><a href="\admin"
-                            class="nav-link {{ session('rout') == 'admin' ? 'tn-active' : '' }}">Админ панель</a></li>
-                @endcan
-            </ul>
-        </header>
+                <a class="tn-atom t-bgimg loaded" href="/"
+                    data-original="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png"
+                    style="background-image: url(&quot;https://optim.tildacdn.com/tild3035-3764-4461-a632-393433376239/-/cover/97x93/center/center/-/format/webp/c4628e96-a0e1-4301-b.png&quot;);"></a>
+                <a href="/"
+                    class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-body-emphasis text-decoration-none">
+                    <img class="bi me-2" width="100" height="100"
+                        src="https://static.tildacdn.com/tild3035-3764-4461-a632-393433376239/c4628e96-a0e1-4301-b.png">
+
+                </a>
+
+                <ul class="nav nav-pills">
+
+                    <li class="nav-item"><a href="\" class="nav-link
+                            {{ session('rout') == 'home' ? 'tn-active' : '' }}">Главная</a></li>
+
+
+                    @auth('web')
+                        @can('company')
+                            <li class="nav-item"><a href="\failures"
+                                    class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
+                            </li>
+                            <li class="nav-item"><a href="\lawyers"
+                                    class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С автоюристом</a>
+                            </li>
+                            <li class="nav-item"><a href="\archive"
+                                    class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a></li>
+                            <li class="nav-item"><a href="\mail"
+                                    class="nav-link {{ session('rout') == 'mail' ? 'tn-active' : '' }}">Почта</a></li>
+                        @endcan
+
+                        <li class="nav-item"><a href="\applications"
+                                class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Заявки</a><notify-buttons
+                                :user="{{ Auth::user()->id }}" />
+
+                        </li>
+                        <li class="nav-item"><a href="\directions"
+                                class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
+                        </li>
+
+                        &nbsp&nbsp&nbsp&nbsp
+                        <li class="nav-item"><a href="\logout"
+                                class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Выйти</a></li>
+                    @endauth
+                    @guest('web')
+                        &nbsp&nbsp&nbsp&nbsp
+                        <li class="nav-item"><a href="\login"
+                                class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Войти</a></li>
+                    @endguest
+                    @can('administrator')
+                        <li class="nav-item"><a href="\admin"
+                                class="nav-link {{ session('rout') == 'admin' ? 'tn-active' : '' }}">Админ панель</a></li>
+                    @endcan
+                </ul>
+            </header>
+        </div>
 
 
         @yield('main_content')

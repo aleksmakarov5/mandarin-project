@@ -1145,3 +1145,8 @@ form .nav-link {
 .d_none {
     display: none;
 }
+
+.badge-buttons {
+    position: relative;
+    top: -30px;
+}
