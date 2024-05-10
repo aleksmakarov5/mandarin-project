@@ -26,7 +26,7 @@ export default{
 
   created()
   {
-  //  this.getCounts()
+   this.getCounts()
    	Echo.channel('chat').listen('MessageSent', (e)=>{
             this.getCounts()   
     }
@@ -34,7 +34,7 @@ export default{
     
   },
   mounted(){
-            // this.getCounts()
+            this.getCounts()
             
         },
   methods:{
