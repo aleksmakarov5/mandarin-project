@@ -28,13 +28,13 @@ export default{
   {
    this.getCounts()
    	Echo.channel('chat').listen('MessageSent', (e)=>{
-            this.getCounts()   
+            // this.getCounts()   
     }
     )
     
   },
   mounted(){
-            this.getCounts()
+            // this.getCounts()
             
         },
   methods:{
