@@ -39,6 +39,17 @@
       'PdfToHtml' => 'Ibnuhalimm\\LaravelPdfToHtml\\Facades\\PdfToHtml',
     ),
   ),
+  'jenssegers/date' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Date\\DateServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Date' => 'Jenssegers\\Date\\Date',
+    ),
+  ),
   'laravel-lang/actions' => 
   array (
     'providers' => 

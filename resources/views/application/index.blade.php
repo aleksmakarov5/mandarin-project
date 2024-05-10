@@ -22,13 +22,13 @@
         <tr>
             <th>Дата заявки</th>
             <th>
-                {{ $application->created_at }}
+                {{ Date::parse($application->created_at)->format('j F Yг. H:i') }}
             </th>
         </tr>
         <tr>
             <th>Дата последнего измененения</th>
             <th>
-                {{ $application->updated_at }}
+                {{ Date::parse($application->updated_at)->format('j F Yг. H:i') }}
             </th>
         </tr>
         <tr>
@@ -82,7 +82,7 @@
         <tr>
             <th>Дата ДТП</th>
             <th>
-                {{ $application->DTPdate }}
+                {{ isset($application->DTPdate) ? Date::parse($application->DTPdate)->format('j F Yг.') : '' }}
             </th>
         </tr>
         <tr>

@@ -80,7 +80,7 @@
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ date('d-m-Y', strtotime($application->created_at)) }}</td>
+                            {{ $application->created_at->diffForHumans() }}</td>
                         <td scope="col">{{ $application->name }} </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">

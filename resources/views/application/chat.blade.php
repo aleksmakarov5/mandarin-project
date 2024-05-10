@@ -57,7 +57,7 @@
                                     <div class="card-header d-flex justify-content-between p-3">
                                         <p class="fw-bold mb-0">Кому: {{ $chat->to_name }}</p>
                                         <p class="text-muted small mb-0"><i class="far fa-clock"></i>
-                                            {{ $chat->created_at }}</p>
+                                            {{ Date::parse($chat->created_at)->format('j F Yг. H:i') }}</p>
                                     </div>
                                     <div class="card-body">
                                         <p class="mb-0">
@@ -73,7 +73,7 @@
                                         <p class="fw-bold mb-0"> От: {{ $chat->from_name }} </p>
                                         <p class=" mb-0 text-muted"> Кому: {{ $chat->to_name }} </p>
                                         <p class="text-muted small mb-0"><i class="far fa-clock"></i>
-                                            {{ $chat->created_at }}</p>
+                                            {{ Date::parse($chat->created_at)->format('j F Yг. H:i') }}</p>
                                     </div>
                                     <div class="card-body">
                                         <p class="mb-0">
