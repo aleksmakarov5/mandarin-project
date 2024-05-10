@@ -35,8 +35,7 @@ export default{
     
   },
   mounted(){
-            this.getCounts()
-            
+            this.getCounts()    
         },
   methods:{
         getCounts(){
