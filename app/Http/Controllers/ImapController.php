@@ -122,7 +122,7 @@ class ImapController extends Controller
                 $notify->id_user = $user->id;
                 $notify->id_application = $id;
                 $notify->id_text = 1;
-                $notify->link = "/application/";
+                $notify->link = "/mail/";
 
                 $notify->save();
                 $notify_id = $notify->id;
