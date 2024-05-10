@@ -121,7 +121,7 @@ class ImapController extends Controller
                 $notify = new notify;
                 $notify->id_user = $user->id;
                 $notify->id_application = $id;
-                $notify->id_text = 3;
+                $notify->id_text = 1;
                 $notify->link = "/application/";
 
                 $notify->save();
