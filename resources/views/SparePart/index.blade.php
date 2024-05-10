@@ -3,15 +3,7 @@
     Запчасти
 @endsection
 @section('main')
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+
     @can('company')
         <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
     @endcan
@@ -480,41 +472,51 @@
 
                     </th>
                     <th>
-                        <input type="text" name="name" id="name" class="form-control">
+                        <div class=" @error('name') alert alert-danger @enderror">
+                            <input type="text" name="name" id="name" class="form-control"
+                                value="{{ old('name') }}">
+                        </div>
                     </th>
                     <th>
 
-                        <input type="text" name="part_number" id="part_number" class="form-control">
+                        <input type="text" name="part_number" id="part_number" class="form-control"
+                            value="{{ old('part_number') }}">
 
                     </th>
                     <th>
 
-                        <input type="text" name="order_number" id="order_number" class="form-control">
+                        <input type="text" name="order_number" id="order_number" class="form-control"
+                            value="{{ old('order_number') }}">
                     </th>
                     @can('company')
                         <th>
 
-                            <input type="text" name="price_ic_full" id="price_ic_full" class="form-control">
+                            <input type="text" name="price_ic_full" id="price_ic_full" class="form-control"
+                                value="{{ old('price_ic_full') }}">
                         </th>
                     @endcan
 
                     <th colspan=2>
 
-                        <input type="text" name="price_original" id="price_original" class="form-control">
+                        <input type="text" name="price_original" id="price_original" class="form-control"
+                            value="{{ old('price_original') }}">
 
                     </th>
                     <th colspan=2>
-                        <input type="text" name="price_analogue" id="price_analogue" class="form-control">
+                        <input type="text" name="price_analogue" id="price_analogue" class="form-control"
+                            value="{{ old('price_analogue') }}">
 
                     </th>
                     <th colspan=2>
-                        <input type="text" name="price_used" id="price_used" class="form-control">
+                        <input type="text" name="price_used" id="price_used" class="form-control"
+                            value="{{ old('price_used') }}">
                     </th>
                     @can('company')
                         <th colspan=4></th>
                     @endcan
                     <th>
-                        <input type="text" name="comment" id="comment" class="form-control">
+                        <input type="text" name="comment" id="comment" class="form-control"
+                            value="{{ old('comment') }}">
 
 
                     </th>
@@ -522,14 +524,17 @@
                     @if (session('rout') == 'directions')
                         <th>
 
-                            <input type="text" name="status" id="status" class="form-control">
+                            <input type="text" name="status" id="status" class="form-control"
+                                value="{{ old('status') }}">
 
                         </th>
                         <th>
-                            <input type="date" name="date_price" id="date_price" class="form-control">
+                            <input type="date" name="date_price" id="date_price" class="form-control"
+                                value="{{ old('date_price') }}">
                         </th>
                         <th>
-                            <input type="date" name="date_wait" id="date_wait" class="form-control">
+                            <input type="date" name="date_wait" id="date_wait" class="form-control"
+                                value="{{ old('date_wait') }}">
 
                         </th>
                     @endif
@@ -538,6 +543,15 @@
             </tr>
         </tbody>
     </table>
+    @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     @can('company')
         <table @can('admin')
             id='demo'

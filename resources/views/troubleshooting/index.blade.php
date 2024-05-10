@@ -72,32 +72,36 @@
                         <input name = "id_application" type="hidden" value="{{ $id }}">
                     </th>
                     <th>
-                        <div class="form-floating">
+                        <div class="form-floating @error('PartName') alert alert-danger @enderror">
 
-                            <input type="text" name="PartName" id="PartName" class="form-control">
+                            <input type="text" name="PartName" id="PartName" class="form-control"
+                                value="{{ old('PartName') }}">
 
                         </div>
                     </th>
                     <th>
 
-                        <div class="form-floating">
-                            <input type="text" name="Work" id="Work" class="form-control">
-
-                        </div>
-
-                    </th>
-                    <th>
-
-                        <div class="form-floating">
-                            <input type="text" name="ExpertApinion" id="ExpertApinion" class="form-control">
+                        <div class="form-floating @error('Work') alert alert-danger @enderror">
+                            <input type="text" name="Work" id="Work" class="form-control"
+                                value="{{ old('Work') }}">
 
                         </div>
 
                     </th>
                     <th>
 
-                        <div class="form-floating">
-                            <input type="text" name="Сonclusion" id="Сonclusion" class="form-control">
+                        <div class="form-floating @error('ExpertApinion') alert alert-danger @enderror">
+                            <input type="text" name="ExpertApinion" id="ExpertApinion" class="form-control"
+                                value="{{ old('ExpertApinion') }}">
+
+                        </div>
+
+                    </th>
+                    <th>
+
+                        <div class="form-floating @error('Сonclusion') alert alert-danger @enderror">
+                            <input type="text" name="Сonclusion" id="Сonclusion" class="form-control"
+                                value="{{ old('Сonclusion') }}">
 
                         </div>
 
@@ -109,6 +113,15 @@
             </tr>
         </tbody>
     </table>
+    @if ($errors->any())
+        <div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
