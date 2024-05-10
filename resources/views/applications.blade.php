@@ -80,7 +80,7 @@
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->created_at->diffForHumans() }}</td>
+                            {{ Date::parse($application->created_at)->format('j F Yг.') }}</td>
                         <td scope="col">{{ $application->name }} </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
