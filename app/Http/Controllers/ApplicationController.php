@@ -287,6 +287,12 @@ class ApplicationController extends Controller
             $status->is_readed = 1;
             $status->save();
         }
+        $notify = notify::where('id_application', '=', $id)
+            ->where('id_user', '=', Auth::user()->id)
+            ->where('id_text', '=', '3')->get()->all();
+        foreach ($notify as $notif) {
+            $notif->delete();
+        }
 
 
         return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty]);
@@ -445,6 +451,13 @@ class ApplicationController extends Controller
 
     public function message($id)
     {
+        $notify = notify::where('id_application', '=', $id)
+            ->where('id_user', '=', Auth::user()->id)
+            ->where('id_text', '=', '1')->get()->all();
+        foreach ($notify as $notif) {
+            $notif->delete();
+        }
+
         $status_message = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
             ->where('is_readed', '=', '0')->get();
         foreach ($status_message as $status) {
@@ -493,6 +506,12 @@ class ApplicationController extends Controller
         foreach ($status_chat as $status) {
             $status->is_readed = 1;
             $status->save();
+        }
+        $notify = notify::where('id_application', '=', $id)
+            ->where('id_user', '=', Auth::user()->id)
+            ->where('id_text', '=', '1')->get()->all();
+        foreach ($notify as $notif) {
+            $notif->delete();
         }
 
         $users = DB::table('users')->get();
