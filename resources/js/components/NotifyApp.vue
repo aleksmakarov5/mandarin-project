@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div class="badge-buttons">
   <template v-if="type==1">
     <p class="badge badge-blue" v-if="count.application!=0">{{count.application}}</p>
   </template>
