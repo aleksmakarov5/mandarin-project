@@ -28,8 +28,6 @@ const app = createApp({
 })
 app.mount('#app')
 
-app1.mount('#app1')
-
 const nb = createApp({
   components: {
     NotifyButtons 

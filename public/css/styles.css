@@ -1148,5 +1148,6 @@ form .nav-link {
 
 .badge-buttons {
     position: relative;
-    top: -30px;
+    top: -55px;
+    left: 5px;
 }

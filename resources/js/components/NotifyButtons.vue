@@ -12,15 +12,16 @@
 export default{
     
     props: [
-      'path_info',
-      'user',
       
+      'user',
+      'pi',
     ],
     data()
     {
       return{
         count: [],
         user_id:this.user,
+        p:this.pi,
 
       }
     },
@@ -35,12 +36,13 @@ export default{
     
   },
   mounted(){
+    console.log(this.pi)
             this.getCounts()
             
         },
   methods:{
         getCounts(){
-            axios.get(`/api/notifycount/applications/${this.user_id}`)
+            axios.get(`/api/notifycount/${this.p}/${this.user_id}`)
             .then(res => {
                 this.count=res.data
                 console.log(res)

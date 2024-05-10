@@ -39,14 +39,14 @@
 
         @auth('web')
             <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
+            <div id="app1" class="mytoast">
+                <post-notify :user="{{ Auth::user()->id }}" />
+            </div>
         @endauth
 
         <div id="nb">
             <header class="d-flex flex-wrap justify-content-center py-3 mb-4 border-bottom">
                 @auth('web')
-                    <div id="app1" class="mytoast">
-                        <post-notify :user="{{ Auth::user()->id }}" />
-                    </div>
                     <br>
                 @endauth
                 <a class="tn-atom t-bgimg loaded" href="/"
@@ -68,10 +68,12 @@
                     @auth('web')
                         @can('company')
                             <li class="nav-item"><a href="\failures"
-                                    class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
+                                    class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a><notify-buttons
+                                    :user="{{ Auth::user()->id }}" :pi=`failures` />
                             </li>
                             <li class="nav-item"><a href="\lawyers"
-                                    class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С автоюристом</a>
+                                    class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С
+                                    автоюристом</a><notify-buttons :user="{{ Auth::user()->id }}" :pi=`lawyers` />
                             </li>
                             <li class="nav-item"><a href="\archive"
                                     class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a></li>
@@ -81,11 +83,12 @@
 
                         <li class="nav-item"><a href="\applications"
                                 class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Заявки</a><notify-buttons
-                                :user="{{ Auth::user()->id }}" />
+                                :user="{{ Auth::user()->id }}" :pi=`applications` />
 
                         </li>
                         <li class="nav-item"><a href="\directions"
-                                class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
+                                class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a><notify-buttons
+                                :user="{{ Auth::user()->id }}" :pi=`directions` />
                         </li>
 
                         &nbsp&nbsp&nbsp&nbsp
