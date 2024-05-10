@@ -32,8 +32,7 @@ type:this.type_in,
 
   created()
   {
-   this.getCounts()
-   	Echo.channel('chat').listen('MessageSent', (e)=>{
+    	Echo.channel('chat').listen('MessageSent', (e)=>{
             this.getCounts()   
     }
     )
@@ -48,8 +47,7 @@ type:this.type_in,
             axios.get(`/api/notifycount/application/${this.id}/${this.user_id}`)
             .then(res => {
                 this.count=res.data
-                console.log(res)
-            })
+             })
 
         },}
 

@@ -94,6 +94,22 @@ class ApplicationController extends Controller
             $application->max_hour = 48;
             $application->created = $application->created_at->toFormattedDateString();
         }
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->count = $count;
+        }
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
     }
@@ -117,7 +133,22 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
         }
-
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->count = $count;
+        }
         session(['rout' => 'failures']);
 
 
@@ -144,7 +175,22 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
         }
-
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->count = $count;
+        }
         return view('applications', ['applications' => $applications],);
     }
 
@@ -168,6 +214,22 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             $application->count_hour = 1;
             $application->max_hour = 1000;
+        }
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->count = $count;
         }
         return view('applications', ['applications' => $applications],);
     }
@@ -218,6 +280,22 @@ class ApplicationController extends Controller
                 ->get()->sortDesc();
 
             // dd($applications);
+        }
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->count = $count;
         }
         session(['rout' => 'directions']);
         //echo (session('rout'));

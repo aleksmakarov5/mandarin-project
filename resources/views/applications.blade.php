@@ -72,7 +72,8 @@
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
 
                         <td>
-                            <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}>
+                            <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
+                                :count_in="{{ json_encode($application->count) }}">
 
 
 

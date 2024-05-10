@@ -75,7 +75,7 @@ class NotifyCountController extends Controller
     }
     public function failures($user_id)
     {
-        $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+
         $applications = DB::table('applications')
             ->where('id_status', '=', '7')
             ->orwhere('id_status', '=', '6')
@@ -85,6 +85,7 @@ class NotifyCountController extends Controller
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
             ->get()->sortDesc();
+        $count = ['application' => 0, 'chat' => 0, 'message' => 0];
         foreach ($applications as $application) {
             $readed = status_application::where('id_user', '=', $user_id)->where('id_application', '=', $application->id)
                 ->where('is_readed', '=', '0')->get();

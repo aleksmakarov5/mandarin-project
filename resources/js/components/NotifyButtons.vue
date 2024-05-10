@@ -28,7 +28,6 @@ export default{
 
   created()
   {
-   this.getCounts()
    	Echo.channel('chat').listen('MessageSent', (e)=>{
             this.getCounts()   
     }
@@ -36,7 +35,6 @@ export default{
     
   },
   mounted(){
-    console.log(this.pi)
             this.getCounts()
             
         },
@@ -45,8 +43,7 @@ export default{
             axios.get(`/api/notifycount/${this.p}/${this.user_id}`)
             .then(res => {
                 this.count=res.data
-                console.log(res)
-            })
+             })
 
         },}
 
