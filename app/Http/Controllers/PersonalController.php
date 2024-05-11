@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\user;
-use App\Models\UserGroup;
+use App\Models\usergroup;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -20,7 +20,7 @@ class PersonalController extends Controller
     public function role()
     {
         $user = User::findOrFail(Auth::user()->id);
-        $usergroups = new UserGroup;
+        $usergroups = new usergroup();
         return view('personal.role', ['user' => $user, 'usergroups' => $usergroups->all()]);
     }
     public function role_update(Request $request)
