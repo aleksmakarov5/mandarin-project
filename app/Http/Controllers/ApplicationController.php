@@ -196,8 +196,6 @@ class ApplicationController extends Controller
 
     public function archive()
     {
-
-
         $applications = DB::table('applications')
             ->where('id_status', '=', '24')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')

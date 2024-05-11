@@ -14,6 +14,7 @@
         @endif
     @endcan
     <div id="app">
+
         <table id ="applications" class="editable">
             <thead>
 

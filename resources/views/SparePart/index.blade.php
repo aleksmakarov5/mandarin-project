@@ -3,7 +3,7 @@
     Запчасти
 @endsection
 @section('main')
-
+    {{-- {{ session('GroupId') }} --}}
     @can('company')
         <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
     @endcan
@@ -25,9 +25,9 @@
                     <th scope="col">Не меняется</th>
                     <th scope="col">Разница от полной цены</th>
                 @endcan
-                <th scope="col" @if (Auth::user()->GroupId != 9) colspan="2" @endif>Цена СТО</th>
+                <th scope="col" @if (session('GroupId') != 9) colspan="2" @endif>Цена СТО</th>
 
-                @if (Auth::user()->GroupId == 9)
+                @if (session('GroupId') == 9)
                     <th scope="col" colspan="1">Вариант СТО</th>
                 @endif
                 <th scope="col">Комментарий</th>
@@ -178,14 +178,14 @@
       @if ($sparepart->selected_price == 1) zap @endif
       @if ($sparepart->selected_service == 1) sto @endif
       "
-                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (session('GroupId') != 6 && session('GroupId') != 5 && session('GroupId') != 9) colspan=2 @endif>
                                 @if (old('price_original.' . $key) !== null)
                                     {{ old('price_original.' . $key) }}
                                 @else
                                     {{ $sparepart->price_original }}
                                 @endif
                             </td>
-                            @if (Auth::user()->GroupId == 6)
+                            @if (session('GroupId') == 6)
                                 <th class="min">
                                     <div class="form_radio_btn zap">
                                         <input id="radio-1{{ $key }}" type="radio" name="selected_price"
@@ -195,7 +195,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 5)
+                            @if ((int) session('GroupId') == 5)
                                 <th class="min">
                                     <div class="form_radio_btn mrk">
                                         <input id="radio-1{{ $key }}" type="radio" name="selected_mrk"
@@ -205,7 +205,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 9)
+                            @if (session('GroupId') == 9)
                                 <th class="min">
                                     <div class="form_radio_btn sto">
                                         <input id="radio-1{{ $key }}" type="radio" name="selected_service"
@@ -225,14 +225,14 @@
       @if ($sparepart->selected_price == 2) zap @endif
       @if ($sparepart->selected_service == 2) sto @endif
       "
-                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (session('GroupId') != 6 && session('GroupId') != 5 && session('GroupId') != 9) colspan=2 @endif>
                                 @if (old('price_analogue.' . $key) !== null)
                                     {{ old('price_analogue.' . $key) }}
                                 @else
                                     {{ $sparepart->price_analogue }}
                                 @endif
                             </td>
-                            @if (Auth::user()->GroupId == 6)
+                            @if (session('GroupId') == 6)
                                 <th class="min">
                                     <div class="form_radio_btn zap">
                                         <input id="radio-2{{ $key }}" type="radio" name="selected_price"
@@ -242,7 +242,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 5)
+                            @if (session('GroupId') == 5)
                                 <th class="min">
                                     <div class="form_radio_btn mrk">
                                         <input id="radio-2{{ $key }}" type="radio" name="selected_mrk"
@@ -252,7 +252,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 9)
+                            @if (session('GroupId') == 9)
                                 <th class="min">
                                     <div class="form_radio_btn sto">
                                         <input id="radio-2{{ $key }}" type="radio" name="selected_service"
@@ -272,14 +272,14 @@
       @if ($sparepart->selected_price == 3) zap @endif
       @if ($sparepart->selected_service == 3) sto @endif
       "
-                                @if (Auth::user()->GroupId != 6 && Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                                @if (session('GroupId') != 6 && session('GroupId') != 5 && session('GroupId') != 9) colspan=2 @endif>
                                 @if (old('price_used.' . $key) !== null)
                                     {{ old('price_used.' . $key) }}
                                 @else
                                     {{ $sparepart->price_used }}
                                 @endif
                             </td>
-                            @if (Auth::user()->GroupId == 6)
+                            @if (session('GroupId') == 6)
                                 <th class="min">
                                     <div class="form_radio_btn zap">
                                         <input id="radio-3{{ $key }}" type="radio" name="selected_price"
@@ -289,7 +289,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 5)
+                            @if (session('GroupId') == 5)
                                 <th class="min">
                                     <div class="form_radio_btn mrk">
                                         <input id="radio-3{{ $key }}" type="radio" name="selected_mrk"
@@ -299,7 +299,7 @@
                                     </div>
                                 </th>
                             @endif
-                            @if (Auth::user()->GroupId == 9)
+                            @if (session('GroupId') == 9)
                                 <th class="min">
                                     <div class="form_radio_btn sto">
                                         <input id="radio-3{{ $key }}" type="radio" name="selected_service"
@@ -316,7 +316,7 @@
       @if ($sparepart->selected_mrk == 4) mrk @endif
       @if ($sparepart->selected_price == 4) zap @endif
 ">
-                                @if (Auth::user()->GroupId == 6)
+                                @if (session('GroupId') == 6)
                                     <div class="form_radio_btn zap">
                                         <input id="radio-4{{ $key }}" type="radio" name="selected_price"
                                             value="4" @if ($sparepart->selected_price == 4) checked @endif
@@ -324,7 +324,7 @@
                                         <label for="radio-4{{ $key }}">&nbsp</label>
                                     </div>
                                 @endif
-                                @if (Auth::user()->GroupId == 5)
+                                @if (session('GroupId') == 5)
                                     <div class="form_radio_btn mrk">
                                         <input id="radio-4{{ $key }}" type="radio" name="selected_mrk"
                                             value="4" @if ($sparepart->selected_mrk == 4) checked @endif
@@ -353,14 +353,14 @@
       @else
       na @endif @endif
       "
-                            @if (Auth::user()->GroupId != 5 && Auth::user()->GroupId != 9) colspan=2 @endif>
+                            @if (session('GroupId') != 5 && session('GroupId') != 9) colspan=2 @endif>
                             @if (old('price_service.' . $key) !== null)
                                 {{ old('price_service.' . $key) }}
                             @else
                                 {{ $sparepart->price_service }}
                             @endif
                         </td>
-                        @if (Auth::user()->GroupId == 9)
+                        @if (session('GroupId') == 9)
                             <td id="td_price_service-{{ $key }}" scope="col"
                                 class="min 
       @if ($sparepart->approved) zap 
@@ -383,7 +383,7 @@
                             </td>
                         @endif
 
-                        @if (Auth::user()->GroupId == 5)
+                        @if (session('GroupId') == 5)
                             <th class="min">
                                 @if ($sparepart->selected_mrk > 0 && $sparepart->selected_mrk < 4)
                                     <div class="form_radio_btn zap">
@@ -445,7 +445,7 @@
                                 </div>
                             </th>
                         @endif
-                        @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == 6 || Auth::user()->GroupId == $sparepart->author)
+                        @if (session('GroupId') == 5 || session('GroupId') == 6 || session('GroupId') == $sparepart->author)
                             <th scope="col"> <a
                                     onclick="if (!confirm('Точно удалить запчасть <{{ $sparepart->name }}?>')) return false"
                                     href="{{ route('SparePart.destroy', $sparepart->id) }}" class="nav-link"><img
@@ -463,7 +463,7 @@
                     @enderror
 
                     <input name = "id_application" type="hidden" value="{{ $id }}">
-                    <input name = "author" type="hidden" value="{{ Auth::user()->GroupId }}">
+                    <input name = "author" type="hidden" value="{{ session('GroupId') }}">
                     <th>
                         <a class="nav-link" href="#">
                             <img src="/storage/img/edit.png" width="30" alt="edit"
