@@ -1,8 +1,8 @@
-@extends('layout')
+@extends('personal.header_menu')
 @section('title')
     Личный кабинет
 @endsection
-@section('main_content')
+@section('main')
     <form method="POST" action="/personal/update">
 
         <h1 class="h3 mb-3 fw-normal">Личный кабинет</h1>
@@ -17,6 +17,9 @@
                 @if ($user->theme == 'light') checked @endif>
             <label for="radio-6">светлая</label>
         </div>
+        <br>
+        <br>
+        <br>
         <div class="form-float">
             <input type="text" name='name' id="name" class="form-cont" id="floatingInput" placeholder="ФИО"
                 value="{{ $user->name }}">
