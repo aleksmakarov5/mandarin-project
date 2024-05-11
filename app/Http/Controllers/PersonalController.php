@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\user;
+use App\Models\UserGroup;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -11,8 +12,25 @@ class PersonalController extends Controller
 {
     public function index()
     {
+
+        session(['rout' => 'personal']);
         $user = User::findOrFail(Auth::user()->id);
         return view('personal.index', ['user' => $user]);
+    }
+    public function role()
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        $usergroups = new UserGroup;
+        return view('personal.role', ['user' => $user, 'usergroups' => $usergroups->all()]);
+    }
+    public function role_update(Request $request)
+    {
+        $data = $this->validate($request, [
+            'role' => 'required'
+        ]);
+        session(['GroupId' => (int)$data['role']]);
+        // dd(session('GroupId'));
+        return redirect()->back();
     }
     public function create()
     {

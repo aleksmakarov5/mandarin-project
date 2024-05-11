@@ -249,6 +249,8 @@ Route::middleware("auth:web")->group(
         Route::prefix('personal')->group(
             function () {
                 Route::get('/', [PersonalController::class, 'index'])->name('personal');
+                Route::get('/role', [PersonalController::class, 'role'])->name('personal.role');
+                Route::post('/role_update', [PersonalController::class, 'role_update'])->name('personal.role_update');
                 Route::get('/create', [PersonalController::class, 'create'])->name('personal.create');
                 Route::post('/store', [PersonalController::class, 'store'])->name('personal.store');
                 Route::post('/update', [PersonalController::class, 'update'])->name('personal.update');

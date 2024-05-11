@@ -38,7 +38,8 @@
     <div class="container">
 
         @auth('web')
-            <p class='user'> <a href="/personal" class='nav-link'>{{ Auth::user()->name }}</a></p>
+            <p class='user'> <a href="/personal"
+                    class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">{{ Auth::user()->name }}</a></p>
             <div id="app1" class="mytoast">
                 <post-notify :user="{{ Auth::user()->id }}" />
             </div>
