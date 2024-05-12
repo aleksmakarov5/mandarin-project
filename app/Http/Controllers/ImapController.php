@@ -113,8 +113,7 @@ class ImapController extends Controller
                     $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
 
                 $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
-                $name = pathinfo($attachment->getFilename());
-                dd(Button::make("bvz")->action("{$path}"));
+                $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $keyboard[$i++] = Button::make("{$name}")->action("{$path}");
             }
             //echo $to;
