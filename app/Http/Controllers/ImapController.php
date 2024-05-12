@@ -102,7 +102,7 @@ class ImapController extends Controller
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
-                $att .= "<a href=" . $path . ">" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+                $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
             }
             //echo $to;
             foreach ($to as $mail) {
