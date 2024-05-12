@@ -570,7 +570,7 @@ class MainController extends Controller
     public function gallery($id, $location, $name)
     {
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
-        // dd($dir);
+        dd($dir);
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
                 $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
