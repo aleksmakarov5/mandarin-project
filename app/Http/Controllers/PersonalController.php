@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Laravel\Socialite\Facades\Socialite;
+
 use App\Models\user;
 use App\Models\usergroup;
 use Illuminate\Support\Facades\Auth;
@@ -59,5 +61,10 @@ class PersonalController extends Controller
     {
         $user = User::findOrFail(Auth::user()->id);
         return view('personal.telegram', ['user' => $user]);
+    }
+    public function callback(Request $request)
+    {
+        $telegramUser = Socialite::driver('telegram')->user();
+        dd($telegramUser);
     }
 }

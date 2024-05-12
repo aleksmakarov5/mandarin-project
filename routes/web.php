@@ -121,13 +121,7 @@ Route::middleware("guest:web")->group(
 
 Route::middleware("auth:web")->group(
     function () {
-        Route::get('/auth/telegram/callback', function () {
-            $telegramUser = Socialite::driver('telegram')->user();
-            dd($telegramUser);
-        });
-        Route::get('/auth/telegram/redirect', function () {
-            return Socialite::driver('telegram')->redirect();
-        });
+
 
         Route::get('/mail',  [MainController::class, 'message'])->name('mail');
         Route::post('/test',  [MainController::class, 'test'])->name('test');
@@ -264,6 +258,12 @@ Route::middleware("auth:web")->group(
                 Route::post('/update', [PersonalController::class, 'update'])->name('personal.update');
             }
         );
+        Route::get('/auth/telegram/callback', [PersonalController::class, 'callback'])->name('telegram.callback');;
+
+
+        Route::get('/auth/telegram/redirect', function () {
+            return Socialite::driver('telegram')->redirect();
+        });
     }
 
 );
