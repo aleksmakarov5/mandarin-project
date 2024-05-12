@@ -101,7 +101,14 @@ class ImapController extends Controller
                 $attach->file_size = $attachment->getSize();
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
-                $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+                if (
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+                )
+                    $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
+                else
+                    $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
                 $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
             }
             //echo $to;
