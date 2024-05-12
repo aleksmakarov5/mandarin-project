@@ -143,7 +143,7 @@ class ImapController extends Controller
 
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
                     echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n{$attach}")
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n{$att}")
 
                         ->send();
                 }
