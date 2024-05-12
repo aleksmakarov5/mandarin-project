@@ -641,8 +641,8 @@ class ApplicationController extends Controller
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
         if ($recipient->telegram_notify) {
-            $chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id);
-            $ch = $chat->html("По заявке {$id} {$author->name} отправил Вам сообщение: <i>{$request->message}</i>")->send();
+            $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
+            $ch = $new_chat->html("По заявке {$id} {$author->name} отправил Вам сообщение: <i>{$request->message}</i>")->send();
         }
 
         // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
