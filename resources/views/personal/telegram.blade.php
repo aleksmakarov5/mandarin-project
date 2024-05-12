@@ -33,7 +33,6 @@
                 </select>
 
             </div>
-            <button class="nav-link" type="submit">Обновить</button>
         </form>
     @else
         <a href="/auth/telegram/redirect" class="nav-link">Добавить телеграмм аккаунт</a>
