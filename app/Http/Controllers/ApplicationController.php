@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Models\application;
 use App\Jobs\QueueSenderChat;
+use DefStudio\Telegraph\Models\TelegraphChat;
 use App\Models\User;
 use App\Models\InsuranceCompany;
 use App\Models\estimate;
@@ -616,6 +617,7 @@ class ApplicationController extends Controller
     {
         $chat = new chat;
         $author = User::findOrFail($request->from);
+        $recipient = User::findOrFail($request->to);
         $chat->id_application = $id;
         $chat->from = $request->from;
         $chat->to = $request->to;
@@ -638,6 +640,10 @@ class ApplicationController extends Controller
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
+        if ($recipient->telegram_notify) {
+            $chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id);
+            $ch = $chat->html("По заявке {$id} {$author->name} отправил Вам сообщение: <i>{$request->message}</i>")->send();
+        }
 
         // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
         // $this->dispatch($qs);
