@@ -82,6 +82,7 @@ class ImapController extends Controller
             $history->save();
             $message->is_parsed = true;
             $message->save();
+            $text = strip_tags($email->getHTMLBody());
             $dir = 'storage/files/' . $applications->id;
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
@@ -135,7 +136,7 @@ class ImapController extends Controller
                 $status_message->save();
                 if ($user->telegram_notify) {
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <i>{$email->getHTMLBody()}</i>")
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <i>{$text}</i>")
                         ->keyboard(
                             Keyboard::make()
                                 ->buttons([Button::make("Открыть в браузере")->action('promotion')->param('app_id', "{$id}"),])
