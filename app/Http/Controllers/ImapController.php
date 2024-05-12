@@ -88,7 +88,7 @@ class ImapController extends Controller
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
             }
-            $attach = "\n <b><u>Вложения</u></b>\n\n";
+            $att = "\n <b><u>Вложения</u></b>\n\n";
             foreach ($attachments as $attachment) {
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
@@ -102,7 +102,7 @@ class ImapController extends Controller
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
-                $attach .= "<a href=" . $path . ">" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+                $att .= "<a href=" . $path . ">" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
             }
             //echo $to;
             foreach ($to as $mail) {
@@ -142,7 +142,7 @@ class ImapController extends Controller
                 if ($user->telegram_notify) {
 
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    echo $attach;
+                    echo $att;
                     $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n{$attach}")
 
                         ->send();
