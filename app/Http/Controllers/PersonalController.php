@@ -7,6 +7,7 @@ use Laravel\Socialite\Facades\Socialite;
 use App\Models\user;
 use App\Models\usergroup;
 use Illuminate\Support\Facades\Auth;
+use DefStudio\Telegraph\Models\TelegraphChat;
 
 use Illuminate\Http\Request;
 
@@ -64,10 +65,17 @@ class PersonalController extends Controller
     }
     public function callback(Request $request)
     {
+        $chat = new TelegraphChat();
         $telegramUser = Socialite::driver('telegram')->user();
         Auth::user()->telegram_id = $telegramUser->id;
         Auth::user()->avatar = $telegramUser->avatar;
         Auth::user()->nickname = $telegramUser->nickname;
+
+        $chat->chat_id = $telegramUser->id;
+        $chat->name = $telegramUser->nickname ?? $telegramUser->name;
+        $chat->telegraph_bot_id = 1;
+        $chat->save();
+
         Auth::user()->save();
         // dd($telegramUser);
 

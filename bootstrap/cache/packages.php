@@ -21,6 +21,17 @@
       'CloudConvert' => 'CloudConvert\\Laravel\\Facades\\CloudConvert',
     ),
   ),
+  'defstudio/telegraph' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'DefStudio\\Telegraph\\TelegraphServiceProvider',
+    ),
+    'aliases' => 
+    array (
+      'Telegraph' => 'DefStudio\\Telegraph\\Facades\\Telegraph',
+    ),
+  ),
   'golchha21/resmushit' => 
   array (
     'providers' => 
