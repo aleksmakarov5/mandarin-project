@@ -21,6 +21,9 @@ use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
 use Illuminate\Support\Facades\Mail as Mail_send;
 use App\Events\MessageSent;
+use DefStudio\Telegraph\Models\TelegraphChat;
+use DefStudio\Telegraph\Keyboard\Button;
+use DefStudio\Telegraph\Keyboard\Keyboard;
 
 
 
@@ -116,14 +119,13 @@ class ImapController extends Controller
             $user = User::find(2);
             Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
-            $users = user::where('GroupId', '=', 2)->get()->all();
+            $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
             foreach ($users as $user) {
                 $notify = new notify;
                 $notify->id_user = $user->id;
                 $notify->id_application = $id;
                 $notify->id_text = 1;
                 $notify->link = "/mail/";
-
                 $notify->save();
                 $notify_id = $notify->id;
                 $status_message = new status_message;
@@ -131,6 +133,15 @@ class ImapController extends Controller
                 $status_message->id_application = $id;
                 $status_message->is_readed = false;
                 $status_message->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <i>{$email->getHTMLBody()}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть в браузере")->action('promotion')->param('app_id', "{$id}"),])
+                        )
+                        ->send();
+                }
             }
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
