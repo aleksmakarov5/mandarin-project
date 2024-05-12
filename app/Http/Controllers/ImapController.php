@@ -82,7 +82,8 @@ class ImapController extends Controller
             $history->save();
             $message->is_parsed = true;
             $message->save();
-            $text = strip_tags($email->getHTMLBody());
+            $text = strip_tags($email->getHTMLBody(), '<br>');
+            $text = preg_replace('<br>', "\n", $text);
             $dir = 'storage/files/' . $applications->id;
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
