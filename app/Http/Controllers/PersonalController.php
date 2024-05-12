@@ -55,4 +55,9 @@ class PersonalController extends Controller
         $user->save();
         return redirect()->back();
     }
+    public function telegram()
+    {
+        $user = User::findOrFail(Auth::user()->id);
+        return view('personal.telegram', ['user' => $user]);
+    }
 }

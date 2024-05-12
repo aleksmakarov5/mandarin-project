@@ -16,7 +16,8 @@
                     aria-current="page">Пароль</a></li>
             <li class="nav-item"><a href="/#" class="nav-link {{ request()->routeIs('users') ? 'tn-active' : '' }}"
                     aria-current="page">email</a></li>
-            <li class="nav-item"><a href="/#" class="nav-link {{ request()->routeIs('users') ? 'tn-active' : '' }}"
+            <li class="nav-item"><a href="/personal/telegram"
+                    class="nav-link {{ request()->routeIs('personal.telegram') ? 'tn-active' : '' }}"
                     aria-current="page">telegram</a></li>
 
 

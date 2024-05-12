@@ -257,6 +257,7 @@ Route::middleware("auth:web")->group(
             function () {
                 Route::get('/', [PersonalController::class, 'index'])->name('personal');
                 Route::get('/role', [PersonalController::class, 'role'])->name('personal.role');
+                Route::get('/telegram', [PersonalController::class, 'telegram'])->name('personal.telegram');
                 Route::post('/role_update', [PersonalController::class, 'role_update'])->name('personal.role_update');
                 Route::get('/create', [PersonalController::class, 'create'])->name('personal.create');
                 Route::post('/store', [PersonalController::class, 'store'])->name('personal.store');
