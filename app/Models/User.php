@@ -23,7 +23,9 @@ class User extends Authenticatable
         'password',
         'phone',
         'GroupId',
-        'theme'
+        'theme',
+        'telegram_id',
+        'avatar',
     ];
 
     /**

@@ -39,7 +39,11 @@
 
         @auth('web')
             <p class='user'> <a href="/personal"
-                    class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">{{ Auth::user()->name }}</a></p>
+                    class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">{{ Auth::user()->name }}</a>
+                @if (isset(Auth::user()->avatar))
+                    <img src="{{ Auth::user()->avatar }}" class="avatar">
+                @endif
+            </p>
             <div id="app1" class="mytoast">
                 <post-notify :user="{{ Auth::user()->id }}" />
             </div>
