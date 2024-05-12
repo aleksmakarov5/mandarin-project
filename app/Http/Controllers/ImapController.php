@@ -114,7 +114,7 @@ class ImapController extends Controller
 
                 $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
                 $name = pathinfo($attachment->getFilename());
-                $keyboard[$i++] = Button::make("{$name}")->url("{$path}");
+                $keyboard[$i++] = Button::make("{$name}")->action("{$path}");
             }
             //echo $to;
             foreach ($to as $mail) {
