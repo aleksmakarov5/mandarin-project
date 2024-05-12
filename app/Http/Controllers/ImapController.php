@@ -101,6 +101,8 @@ class ImapController extends Controller
                 $attach->file_size = $attachment->getSize();
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
+                $keyboard = [];
+                $i = 0;
                 if (
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
@@ -109,7 +111,10 @@ class ImapController extends Controller
                     $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
                 else
                     $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+
                 $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+                $name = pathinfo($attachment->getFilename());
+                $keyboard[$i++] = Button::make("{$name}")->url("{$path}");
             }
             //echo $to;
             foreach ($to as $mail) {
@@ -150,8 +155,11 @@ class ImapController extends Controller
 
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
                     echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n{$att}")
-
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons($keyboard)
+                        )
                         ->send();
                 }
             }
