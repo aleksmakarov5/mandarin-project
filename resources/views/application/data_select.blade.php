@@ -174,7 +174,7 @@
                     <th>Пробег</th>
                     <th>
 
-                        <input type="text" name="mileage" value="{{ $applications['mileage'] }}">
+                        <input type="text" name="mileage" value="{{ (int) $applications['mileage'] }}">
                         {{-- {{ $application-> mileage }} --}}
                     </th>
                 </tr>

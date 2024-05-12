@@ -87,8 +87,8 @@
     alert alert-danger
 @enderror">
 
-    <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont"
-        value="{{ $application->ClientPhone }}">
+    <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont" value="{{ $application->ClientPhone }}"
+        placeholder="+7(000)000-00-00" data-phone-pattern>
     <div class='lbl'>
         <label for="ClientPhone">Телефон клиента</label>
     </div>
