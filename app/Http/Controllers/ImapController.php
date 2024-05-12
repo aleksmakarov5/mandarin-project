@@ -135,12 +135,13 @@ class ImapController extends Controller
                 $status_message->id_application = $id;
                 $status_message->is_readed = false;
                 $status_message->save();
+                $url = "https:/mandarin-portal.ru/mail/" . $id;
                 if ($user->telegram_notify) {
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
                     $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n")
                         ->keyboard(
                             Keyboard::make()
-                                ->buttons([Button::make("Открыть в браузере")->url("https:/mandarin-portal.ru/mail/" . $id),])
+                                ->buttons([Button::make("Открыть в браузере")->url($url),])
                         )
                         ->send();
                 }
