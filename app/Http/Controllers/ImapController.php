@@ -137,8 +137,15 @@ class ImapController extends Controller
                 $status_message->save();
                 $url = "https://mandarin-portal.ru/mail/" . $id;
                 if ($user->telegram_notify) {
+
                     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>")
+                    $attach = "\n <b><u>Вложения</u></b>\n\n";
+                    foreach ($attachments as $attachment) {
+                        $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                        $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+                        $attach .= "<a href=" . $path . ">" . $filename . "</a>\n ";
+                    }
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n{$attach}")
 
                         ->send();
                 }
