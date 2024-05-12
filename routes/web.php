@@ -260,7 +260,8 @@ Route::middleware("auth:web")->group(
 
 );
 Route::get('/auth/telegram/callback', function () {
-    return 'Hello telegram callback';
+    $telegramUser = Socialite::driver('telegram')->user();
+    dd($telegramUser);
 });
 Route::get('/auth/telegram/redirect', function () {
     return Socialite::driver('telegram')->redirect();
