@@ -140,7 +140,7 @@ class ImapController extends Controller
                     $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n")
                         ->keyboard(
                             Keyboard::make()
-                                ->buttons([Button::make("Открыть в браузере")->url("https:/mandarin-portal.ru/mail/{$id}"),])
+                                ->buttons([Button::make("Открыть в браузере")->url("https:/mandarin-portal.ru/mail/" . $id),])
                         )
                         ->send();
                 }
