@@ -67,9 +67,25 @@ class PersonalController extends Controller
         $telegramUser = Socialite::driver('telegram')->user();
         Auth::user()->telegram_id = $telegramUser->id;
         Auth::user()->avatar = $telegramUser->avatar;
+        Auth::user()->nickname = $telegramUser->nickname;
         Auth::user()->save();
         // dd($telegramUser);
 
         return view('personal.telegram');
+    }
+    public function telegram_update(Request $request)
+    {
+        Auth::user()->telegram_notify = $request->telegram_notify;
+        Auth::user()->save();
+        return redirect()->back();
+    }
+    public function telegram_delete(Request $request)
+    {
+        Auth::user()->telegram_id = null;
+        Auth::user()->telegram_notify = null;
+        Auth::user()->avatar = null;
+        Auth::user()->nickname = null;
+        Auth::user()->save();
+        return redirect()->back();
     }
 }

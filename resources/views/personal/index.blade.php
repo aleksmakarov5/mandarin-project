@@ -3,17 +3,18 @@
     Личный кабинет
 @endsection
 @section('main')
-    <form method="POST" action="/personal/update">
+    <form method="POST" action="/personal/update" name="form" id="form">
 
         <h1 class="h3 mb-3 fw-normal">Личный кабинет</h1>
         @csrf
         Выберите тему
         <div class="form_radio_btn dark">
-            <input id="radio-5" type="radio" name="theme" value="dark" @if ($user->theme == 'dark') checked @endif>
+            <input id="radio-5" type="radio" name="theme" value="dark" @if ($user->theme == 'dark') checked @endif
+                onchange="document.forms['form'].submit();">
             <label for="radio-5">темная</label>
         </div>
         <div class="form_radio_btn light">
-            <input id="radio-6" type="radio" name="theme" value="light"
+            <input id="radio-6" type="radio" name="theme" value="light" onchange="document.forms['form'].submit();"
                 @if ($user->theme == 'light') checked @endif>
             <label for="radio-6">светлая</label>
         </div>

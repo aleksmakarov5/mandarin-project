@@ -34,21 +34,19 @@
 </head>
 
 <body>
-
     <div class="container">
 
         @auth('web')
-            <p class='user'>
-                @if (isset(Auth::user()->avatar))
-                    <div class="avatar">
+            <div class='user'>
 
+                <a href="/personal" class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">
+                    @if (isset(Auth::user()->avatar))
                         <img src="{{ Auth::user()->avatar }}" class="avatar">
-                    </div>
-                @endif
-                <a href="/personal"
-                    class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">{{ Auth::user()->name }}</a>
+                    @endif
+                    {{ Auth::user()->name }}
+                </a>
 
-            </p>
+            </div>
             <div id="app1" class="mytoast">
                 <post-notify :user="{{ Auth::user()->id }}" />
             </div>

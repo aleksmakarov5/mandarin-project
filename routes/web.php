@@ -252,7 +252,9 @@ Route::middleware("auth:web")->group(
                 Route::get('/', [PersonalController::class, 'index'])->name('personal');
                 Route::get('/role', [PersonalController::class, 'role'])->name('personal.role');
                 Route::get('/telegram', [PersonalController::class, 'telegram'])->name('personal.telegram');
+                Route::get('/telegram_delete', [PersonalController::class, 'telegram_delete'])->name('personal.telegram_delete');
                 Route::post('/role_update', [PersonalController::class, 'role_update'])->name('personal.role_update');
+                Route::post('/telegram_update', [PersonalController::class, 'telegram_update'])->name('personal.telegram_update');
                 Route::get('/create', [PersonalController::class, 'create'])->name('personal.create');
                 Route::post('/store', [PersonalController::class, 'store'])->name('personal.store');
                 Route::post('/update', [PersonalController::class, 'update'])->name('personal.update');
