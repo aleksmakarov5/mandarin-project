@@ -45,7 +45,7 @@ class Handler extends WebhookHandler
     public function applications(): void
     {
         $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
-        if ($user->GroupId < 5 && $user->GroupId > 6) {
+        if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '6');
