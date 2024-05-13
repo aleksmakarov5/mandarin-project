@@ -10,6 +10,7 @@ use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
 use DefStudio\Telegraph\Keyboard\ReplyButton;
 use DefStudio\Telegraph\DTO\User;
 use App\Models\User as UserSys;
+use App\Models\application;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Stringable;
 use DefStudio\Telegraph\Models\TelegraphChat;
@@ -44,6 +45,44 @@ class Handler extends WebhookHandler
     public function applications(): void
     {
         $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
-        $this->chat->message("{$user->name}")->send();
+        if ($user->GroupId < 5 && $user->GroupId > 6) {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '6');
+            })
+
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()
+                ->sortDesc();
+        } else {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '6');
+            })
+                ->where(function ($query) {
+                    $query->where('applications.id_MRK', '=', $user->id)
+                        ->orWhere('applications.id_spm', '=', $user->id);
+                })
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()->sortDesc();
+        }
+        $i = 0;
+        $keyboard = [];
+
+        foreach ($applications as $application) {
+            $keyboard[$i++] = Button::make("{$application->gnz}|{$application->CarModel}")->action('application')->param('id', "{$application->id}");
+            $this->chat->message("Список заявок")
+                ->keyboard(
+                    Keyboard::make()
+                        ->buttons($keyboard)
+                )->send();
+        }
     }
 }
