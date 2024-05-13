@@ -122,7 +122,7 @@ class Handler extends WebhookHandler
             )
                 $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name;
             else
-                $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->file_name;
+                $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
 
             $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
             $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
@@ -131,7 +131,12 @@ class Handler extends WebhookHandler
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
-            )
+            )->keyboard(Keyboard::make()
+                ->buttons([
+                    Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}"),
+                    Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}"),
+                    Button::make("К списку заявок")->action("applications"),
+                ]))
             ->send();
     }
 }
