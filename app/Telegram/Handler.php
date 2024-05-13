@@ -32,7 +32,7 @@ class Handler extends WebhookHandler
 
     public function about_me(): void
     {
-        $this->chat->message("{$this->chat->chat_id}");
+        $this->chat->message("{$this->chat->chat_id}")->send();
         $this->chat->message('-------------')
             ->replyKeyboard(
                 ReplyKeyboard::make()->buttons([
