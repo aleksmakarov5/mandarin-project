@@ -94,13 +94,7 @@ class Handler extends WebhookHandler
             ->where('applications.id', '=', $this->data->get('id'))
             ->first();
         $this->chat->message(
-            "
-            #|{$application->id}
-            <i>Дата заявки</i>:{$application->created_at}
-            <i>Страховая компания</i>:{$application->name}
-            <i>Марка машины</i>:{$application->CarModel}
-            <i>ГНЗ</i>:{$application->gnz}
-            <i>Статус заявки</i>:{$application->StatusName}
+            "#|{$application->id}\n<i>Дата заявки</i>:{$application->created_at}\n<i>Страховая компания</i>:{$application->name}\n<i>Марка машины</i>:{$application->CarModel}\n<i>ГНЗ</i>:{$application->gnz}\n<i>Статус заявки</i>:{$application->StatusName}
             "
         )->keyboard(Keyboard::make()
             ->buttons([
