@@ -17,3 +17,15 @@ use Illuminate\Support\Facades\Artisan;
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
 })->purpose('Display an inspiring quote');
+
+Artisan::command('tester', function () {
+    /** @var \DefStudio\Telegraph\Models\TelegraphBot $bot */
+    $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
+    dd($bot->registerCommands([
+        'change_city' => 'Изменить город',
+        'promotions' => 'Список акций',
+        'contacts' => 'Контактная информация',
+        'navigation' => 'Кнопки навигации',
+        'about_me' => 'Обо мне'
+    ])->send());
+})->purpose('Display an inspiring quote')->hourly();
