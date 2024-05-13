@@ -28,4 +28,4 @@ Artisan::command('tester', function () {
         'navigation' => 'Кнопки навигации',
         'about_me' => 'Обо мне'
     ])->send());
-})->purpose('Display an inspiring quote')->hourly();
+})->purpose('Display an inspiring quote');
