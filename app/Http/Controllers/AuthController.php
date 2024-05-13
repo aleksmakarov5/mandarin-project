@@ -25,7 +25,7 @@ class AuthController extends Controller
 
         if (auth('web')->attempt($data)) {
             session(['GroupId' => Auth::user()->GroupId]);
-            return redirect()->route('home');
+            return redirect()->back();
         }
 
         return back()->withErrors([
