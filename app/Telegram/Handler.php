@@ -9,6 +9,7 @@ use DefStudio\Telegraph\Keyboard\Keyboard;
 use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
 use DefStudio\Telegraph\Keyboard\ReplyButton;
 use DefStudio\Telegraph\DTO\User;
+use App\Models\User as UserSys;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Stringable;
 use DefStudio\Telegraph\Models\TelegraphChat;
@@ -31,11 +32,17 @@ class Handler extends WebhookHandler
 
     public function about_me(): void
     {
+        $this->chat->html("{$this->chat->id}");
         $this->chat->message('-------------')
             ->replyKeyboard(
                 ReplyKeyboard::make()->buttons([
                     ReplyButton::make('Поделиться контактом')->requestContact(),
                 ])->resize()
             )->send();
+    }
+
+    public function application(): void
+    {
+        $user = UserSys::where('telegram_id', '=', $this->chat->id)->first();
     }
 }
