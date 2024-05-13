@@ -89,6 +89,8 @@ class ImapController extends Controller
                 mkdir($dir, 0777, true);
             }
             $att = "\n <b><u>Вложения</u></b>\n\n";
+            $keyboard = [];
+            $i = 0;
             foreach ($attachments as $attachment) {
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
@@ -101,8 +103,7 @@ class ImapController extends Controller
                 $attach->file_size = $attachment->getSize();
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
-                $keyboard = [];
-                $i = 0;
+
                 if (
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
@@ -114,8 +115,9 @@ class ImapController extends Controller
 
                 $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
                 $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-                $keyboard[$i++] = Button::make("{$name}")->action("{$path}");
+                $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
             }
+            // dd($keyboard);
             //echo $to;
             foreach ($to as $mail) {
                 // dd($mail);
