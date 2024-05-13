@@ -75,7 +75,6 @@ class PersonalController extends Controller
         $chat->name = $telegramUser->nickname ?? $telegramUser->name;
         $chat->telegraph_bot_id = 1;
         $chat->save();
-
         Auth::user()->save();
         // dd($telegramUser);
 
@@ -89,11 +88,14 @@ class PersonalController extends Controller
     }
     public function telegram_delete(Request $request)
     {
+        $chat = TelegraphChat::where('chat_id', '=', 'Auth::user()->telegram_id ');
+        $chat->delete();
         Auth::user()->telegram_id = null;
         Auth::user()->telegram_notify = null;
         Auth::user()->avatar = null;
         Auth::user()->nickname = null;
         Auth::user()->save();
+
         return redirect()->back();
     }
 }
