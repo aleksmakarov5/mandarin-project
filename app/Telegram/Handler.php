@@ -127,16 +127,14 @@ class Handler extends WebhookHandler
             $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
             $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
         }
+        $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("К списку заявок")->action("applications");
         $this->chat->message("Документы")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
-            )->keyboard(Keyboard::make()
-                ->buttons([
-                    Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}"),
-                    Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}"),
-                    Button::make("К списку заявок")->action("applications"),
-                ]))
+            )
             ->send();
     }
 }
