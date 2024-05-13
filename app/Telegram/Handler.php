@@ -86,7 +86,6 @@ class Handler extends WebhookHandler
     {
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
@@ -98,12 +97,10 @@ class Handler extends WebhookHandler
             "
             #|{$application->id}
             <i>Дата заявки</i>:{$application->created_at}
-            <i>Дата последнего изменения</i>:{$application->updated_at}
             <i>Страховая компания</i>:{$application->name}
             <i>Марка машины</i>:{$application->CarModel}
             <i>ГНЗ</i>:{$application->gnz}
             <i>Статус заявки</i>:{$application->StatusName}
-            <i>Организация</i>:{$application->our_name}
             "
         )->keyboard(Keyboard::make()
             ->buttons([
