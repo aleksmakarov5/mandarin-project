@@ -62,10 +62,7 @@ class Handler extends WebhookHandler
                 $query
                     ->where('id_status', '<', '6');
             })
-                ->where(function ($query) {
-                    $query->where('applications.id_MRK', '=', $user->id)
-                        ->orWhere('applications.id_spm', '=', $user->id);
-                })
+                ->where('applications.id_MRK', '=', $user->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
