@@ -84,7 +84,7 @@ class PersonalController extends Controller
     {
         Auth::user()->telegram_notify = $request->telegram_notify;
         Auth::user()->save();
-        return redirect()->back();
+        return view('personal.telegram');
     }
     public function telegram_delete(Request $request)
     {
