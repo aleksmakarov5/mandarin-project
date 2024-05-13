@@ -88,7 +88,7 @@ class PersonalController extends Controller
     }
     public function telegram_delete(Request $request)
     {
-        $chat = TelegraphChat::where('chat_id', '=', 'Auth::user()->telegram_id ');
+        $chat = TelegraphChat::where('chat_id', '=', 'Auth::user()->telegram_id ')->first();
         $chat->delete();
         Auth::user()->telegram_id = null;
         Auth::user()->telegram_notify = null;
