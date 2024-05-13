@@ -21,8 +21,5 @@ Artisan::command('inspire', function () {
 Artisan::command('tester', function () {
     /** @var \DefStudio\Telegraph\Models\TelegraphBot $bot */
     $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
-    dd($bot->registerCommands([
-        'help' => 'Помощь',
-        'about_me' => 'Обо мне'
-    ])->send());
+    dd($bot->unregisterCommands()->send());
 })->purpose('Display an inspiring quote');
