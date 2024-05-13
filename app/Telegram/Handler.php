@@ -99,8 +99,39 @@ class Handler extends WebhookHandler
         )->keyboard(Keyboard::make()
             ->buttons([
                 Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}"),
+                Button::make("Документы")->action("documents")->param('id', "{$application->id}"),
                 Button::make("К списку заявок")->action("applications"),
             ]))
+            ->send();
+        $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
+    }
+    public function documents(): void
+    {
+        $documents = DB::table('attachments')
+            ->where('id_application', '=', $this->data->get('id'))
+            ->get()->all();
+        $i = 0;
+        $keyboard = [];
+        $dir = 'storage/files/' . $this->data->get('id');
+
+        foreach ($documents as $attach) {
+            if (
+                pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+            )
+                $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name;
+            else
+                $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->file_name;
+
+            $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
+            $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+        }
+        $this->chat->message("Документы")
+            ->keyboard(
+                Keyboard::make()
+                    ->buttons($keyboard)
+            )
             ->send();
     }
 }
