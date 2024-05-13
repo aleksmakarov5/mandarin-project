@@ -1013,6 +1013,18 @@ class ApplicationController extends Controller
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
+        if ($user->telegram_notify) {
+            $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+            $status = ApplicationStatus::findOrFail(
+                $application->id_status
+            )->StatusName;
+            $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                ->keyboard(
+                    Keyboard::make()
+                        ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                )
+                ->send();
+        }
         return redirect()->route('applications');
     }
     public function change_status($id, $variant)
@@ -1068,6 +1080,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
             case 3:
@@ -1086,6 +1110,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
             case 5:
@@ -1104,6 +1140,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                }
 
                 break;
             case 6:
@@ -1122,6 +1170,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                }
 
                 break;
             case 8:
@@ -1140,12 +1200,25 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
         }
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
+
         return redirect()->route('applications');
     }
     public function change_status_km($id, $variant)
@@ -1192,6 +1265,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
             case 3:
@@ -1210,6 +1295,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
             case 5:
@@ -1228,6 +1325,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                }
 
                 break;
             case 6:
@@ -1246,6 +1355,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                }
 
                 break;
             case 8:
@@ -1264,6 +1385,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                    }
                 }
                 break;
         }
@@ -1537,6 +1670,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                    }
                 }
                 break;
             case 5:
@@ -1555,6 +1700,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                    ->keyboard(
+                        Keyboard::make()
+                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                    )
+                        ->send();
+                }
 
                 break;
             case 6:
@@ -1573,6 +1730,18 @@ class ApplicationController extends Controller
                 $status_application->id_application = $id;
                 $status_application->is_readed = false;
                 $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                    ->keyboard(
+                        Keyboard::make()
+                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                    )
+                        ->send();
+                }
 
 
                 break;
@@ -1592,6 +1761,18 @@ class ApplicationController extends Controller
                     $status_application->id_application = $id;
                     $status_application->is_readed = false;
                     $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $application->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                    }
                 }
                 break;
         }
