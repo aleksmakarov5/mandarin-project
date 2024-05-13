@@ -84,12 +84,26 @@ class Handler extends WebhookHandler
     }
     public function application(): void
     {
-        $application = application::find($this->data->get('id'));
+        $application = DB::table('applications')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
+            ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'services.service_name', 'spms.name as spm', 'mrks.name as mrk')
+            ->where('applications.id', '=', $this->data->get('id'))
+            ->first();
         $this->chat->message(
             "
-            #|{$application->id}\n
-            <i>Дата заявки</i>:
-            {$application->created_at}\n
+            #|{$application->id}
+            <i>Дата заявки</i>:{$application->created_at}
+            <i>Дата последнего изменения</i>:{$application->updated_at}
+            <i>Страховая компания</i>:{$application->name}
+            <i>Марка машины</i>:{$application->CarModel}
+            <i>ГНЗ</i>:{$application->gnz}
+            <i>Статус заявки</i>:{$application->StatusName}
+            <i>Организация</i>:{$application->our_name}
             "
         )->keyboard(Keyboard::make()
             ->buttons([
