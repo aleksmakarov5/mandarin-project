@@ -74,11 +74,12 @@ class Handler extends WebhookHandler
         $keyboard = [];
 
         foreach ($applications as $application) {
-            $this->chat->message("{$application->id}|{$application->CarModel}")
-                ->keyboard(
-                    Keyboard::make()
-                        ->buttons([Button::make("{$application->gnz}")->action('application')->param('id', "{$application->id}")])
-                )->send();
+            $keyboard[$i++] = Button::make("{$application->id}|{$application->gnz}|{$application->CarModel}")->action('application')->param('id', "{$application->id}");
         }
+        $this->chat->message("Список заявок")
+            ->keyboard(
+                Keyboard::make()
+                    ->buttons($keyboard)
+            )->send();
     }
 }
