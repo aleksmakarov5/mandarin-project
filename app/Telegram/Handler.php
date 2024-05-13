@@ -85,17 +85,17 @@ class Handler extends WebhookHandler
     public function application(): void
     {
         $application = application::find($this->data->get('id'));
-        $this->chat->keyboard::make()
-            ->buttons([
-                Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}"),
-                Button::make("К списку заявок")->action("applications"),
-            ])->message(
-                "
+        $this->chat->message(
+            "
             #|{$application->id}\n
             <i>Дата заявки</i>:
             {$application->created_at}\n
             "
-            )
+        )->keyboard(Keyboard::make()
+            ->buttons([
+                Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}"),
+                Button::make("К списку заявок")->action("applications"),
+            ]))
             ->send();
     }
 }
