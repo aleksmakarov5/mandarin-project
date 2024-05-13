@@ -41,8 +41,9 @@ class Handler extends WebhookHandler
             )->send();
     }
 
-    public function application(): void
+    public function applications(): void
     {
-        $user = UserSys::where('telegram_id', '=', $this->chat->id)->first();
+        $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
+        $this->chat->message("{$user->name}")->send();
     }
 }
