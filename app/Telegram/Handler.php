@@ -83,6 +83,47 @@ class Handler extends WebhookHandler
                     ->buttons($keyboard)
             )->send();
     }
+    public function directions(): void
+    {
+        $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
+        if ($user->GroupId < 5 || $user->GroupId > 6) {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '>', '7')
+                    ->where('id_status', '<', '24');
+            })
+
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()
+                ->sortDesc();
+        } else {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '6');
+            })
+                ->where('applications.id_MRK', '=', $user->id)
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
+                ->get()->sortDesc();
+        }
+        $i = 0;
+        $keyboard = [];
+
+        foreach ($applications as $application) {
+            $keyboard[$i++] = Button::make("{$application->id}|{$application->gnz}")->action('application')->param('id', "{$application->id}");
+        }
+        $this->chat->message("Список заявок")
+            ->keyboard(
+                Keyboard::make()
+                    ->buttons($keyboard)
+            )->send();
+    }
     public function application(): void
     {
         $application = DB::table('applications')
