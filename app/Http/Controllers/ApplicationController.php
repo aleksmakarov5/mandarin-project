@@ -337,8 +337,9 @@ class ApplicationController extends Controller
 
 
 
-    public function application($id)
+    public function application(Request $request, $id)
     {
+        $hide_menu = $request->get('hide_menu');
         // echo (session('rout'));
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -376,7 +377,7 @@ class ApplicationController extends Controller
         }
 
 
-        return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty]);
+        return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty, 'hide_menu' => $hide_menu]);
     }
     //
     public function edit($id)

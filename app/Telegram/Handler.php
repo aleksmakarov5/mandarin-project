@@ -141,7 +141,7 @@ class Handler extends WebhookHandler
             "
         )->keyboard(Keyboard::make()
             ->buttons([
-                Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}"),
+                Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}?hide_menu=1"),
                 Button::make("Документы")->action("documents")->param('id', "{$application->id}"),
 
             ]))
