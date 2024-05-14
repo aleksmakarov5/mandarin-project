@@ -567,8 +567,9 @@ class MainController extends Controller
     {
         dd($request);
     }
-    public function gallery($id, $location, $name)
+    public function gallery(request $request, $id, $location, $name)
     {
+        $hide_menu = $request->get('hide_menu');
         $location = str_replace('%20', ' ', $location);
         $name = str_replace('%20', ' ', $name);
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
@@ -606,7 +607,7 @@ class MainController extends Controller
         } catch (\Exception $e) {
             // dd($e);
         }
-        return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location]);
+        return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location, 'hide_menu' => $hide_menu]);
     }
 
     public function photo_destroy(request $request)

@@ -163,7 +163,7 @@ class Handler extends WebhookHandler
                 pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
                 pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
             )
-                $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name;
+                $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
             else
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
 
