@@ -582,11 +582,7 @@ class ApplicationController extends Controller
             $message_id = 0;
             $subject = '';
             $to_email = '';
-            $attachments = [
-                'file_name' => '',
-                'file_size' => '',
-                'location' => '',
-            ];
+            $attachments = [];
         }
 
 
@@ -1985,9 +1981,14 @@ class ApplicationController extends Controller
     public function delete_message($id)
     {
         $message = message::findOrFail($id);
-        $attachments = attachment::where('message_id', '=', $message->id);
+        $attachments = attachment::where('message_id', '=', $message->id)->get()->all();
+        // dd($attachments);
         foreach ($attachments as $attachment) {
-            unlink('storage/files/' . $attachment->id_application . '/' . $attachment->location);
+            try {
+                unlink('storage/files/' . $attachment->id_application . '/' . $attachment->location);
+            } catch (\Exception $e) {
+                // dd($e);
+            }
             $attachment->delete();
         }
         $message->delete();

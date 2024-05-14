@@ -5,6 +5,7 @@
 @section('main')
     <div class="content-wrapper">
         <div class="email-wrapper wrapper">
+
             <div class="row align-items-stretch">
                 @foreach ($messages as $message)
                     <button class="accordion">
@@ -19,9 +20,9 @@
                                         {{ $message->from->email }}
                                     @endif
                                 </p>
-                                <p class="text-muted small mb-0"><i class="far fa-clock">
+                                <p class=" small mb-0 text-white"><i class="far fa-clock">
                                         @if (isset($message->message_date))
-                                            {{ date('d-m-Y h:m', strtotime($message->message_date)) }}
+                                            {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
                                         @endif
                                     </i>
                                 </p>
@@ -44,18 +45,19 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="btn-toolbar">
-                                        <div class="btn-group">
+                                        {{-- <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-reply text-primary mr-1"></i> Ответить</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-reply-all text-primary mr-1"></i>Ответить всем</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
-                                        </div>
+                                        </div> --}}
                                         <div class="btn-group">
-
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-delete text-primary mr-1"></i>Удалить</button>
+                                                    class="mdi mdi-share text-primary mr-1"></i>
+                                                </i><a class="mdi mdi-delete text-primary mr-1"
+                                                    href="/mail_delete/{{ $message->id }}">Удалить</a></button>
                                         </div>
                                     </div>
                                 </div>
@@ -135,32 +137,34 @@
                             </div>
 
                             <div class="row">
-                                @foreach ($attach as $key => $doc)
-                                    <div class="card" style="width: 20rem;">
-                                        <div class="row g-0">
-                                            <div class="col-md-4">
-                                                <form name="form{{ $key }}" action="data_load" method="POST">
-                                                    @csrf
-                                                    <input type="hidden" name="location" value='{{ $doc->location }}'>
-                                                    <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
-                                                        class="card-img-top"
-                                                        alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
-                                                </form>
-                                            </div>
-
-                                            <div class="col-md-8">
-
-                                                <div class="card-body">
-
-                                                    <h5 class="card-title">{{ $doc->file_name }}</h5>
-                                                    <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                                @if (isset($attach))
+                                    @foreach ($attach as $key => $doc)
+                                        <div class="card" style="width: 20rem;">
+                                            <div class="row g-0">
+                                                <div class="col-md-4">
+                                                    <form name="form{{ $key }}" action="data_load" method="POST">
+                                                        @csrf
+                                                        <input type="hidden" name="location" value='{{ $doc->location }}'>
+                                                        <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
+                                                            class="card-img-top"
+                                                            alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                                                    </form>
                                                 </div>
 
-                                            </div>
-                                        </div>
+                                                <div class="col-md-8">
 
-                                    </div>
-                                @endforeach
+                                                    <div class="card-body">
+
+                                                        <h5 class="card-title">{{ $doc->file_name }}</h5>
+                                                        <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    @endforeach
+                                @endif
                             </div>
                             <input type="submit" class="nav-link">
 
