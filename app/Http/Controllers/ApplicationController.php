@@ -1239,12 +1239,12 @@ class ApplicationController extends Controller
         $history->id_application = $id;
         switch ($variant) {
             case 1: {
-                    $application->id_status = 8;
-                    $history->id_status = 8;
+                    $application->id_status = 2;
+                    $history->id_status = 2;
                     Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                     $application->save();
                     $history->save();
-                    return redirect()->route('directions');
+                    return redirect()->route('applications');
                 }
             case 2: {
                     $application->id_status = 5;
