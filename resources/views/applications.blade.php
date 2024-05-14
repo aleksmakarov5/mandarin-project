@@ -139,7 +139,7 @@
                             <td scope="col" class="alert alert-danger"
                                 onclick="window.location.href='/application/{{ $application->id }}'; return false">
                                 Просрочено на
-                                {{ $application->count_hour * -1 }} часов
+                                {{ $application->count_hour * -1 }} {{ show_hours($application->count_hour) * -1 }}
                             </td>
                         @endif
                         <td scope="col"
