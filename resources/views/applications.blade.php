@@ -3,7 +3,8 @@
     Заявки
 @endsection
 @section('main_content')
-    <h1>Все заявки</h1>
+    <h1>
+        Все заявки</h1>
     @can('admin')
         <a href="/applications/create" class="nav-link">Добавить заявку</a>
     @endcan
@@ -102,20 +103,35 @@
                         @if ($application->count_hour > 0)
                             <td scope="col"
                                 onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                <div class="progress">
-                                    <div class="progress-bar"
-                                        style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%;"
-                                        role="progressbar" aria-valuenow="{{ $application->count_hour }}"
-                                        aria-valuemin="0" aria-valuemax="{{ $application->max_hour }}}">
-                                        {{ $application->count_hour }}
-                                        @if ($application->id_status > 10 && $application->id_status != 18)
-                                            дней
-                                        @else
-                                            часов
-                                        @endif
 
-                                    </div>
+                                <div class="progressbar {{ $application->count_hour > 0 ? 'blue' : 'red' }}">
+                                    <span
+                                        style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%">{{ $application->count_hour > 0 ? $application->count_hour : 'просрочено' }}
+                                        <span>
+                                            @if ($application->id_status > 10 && $application->id_status != 18)
+                                                дней
+                                            @else
+                                                часов
+                                            @endif
+                                        </span>
+                                    </span>
+
                                 </div>
+                                @if ($application->id_status < 5)
+                                    {{-- <div class="progress">
+                                        <div class="progress-bar"
+                                            style="width: {{ ($application->count_five / 5) * 100 }}%;"
+                                            role="progressbar" aria-valuenow="{{ $application->count_five }}"
+                                            aria-valuemin="0" aria-valuemax="5">
+                                            {{ $application->count_five }} часов
+                                        </div>
+                                    </div> --}}
+                                    <div class="progressbar {{ $application->count_five > 0 ? '' : 'red' }}">
+                                        <span
+                                            style="width: {{ ($application->count_five / 5) * 100 }}%">{{ $application->count_five > 0 ? $application->count_five : 'просрочено' }}
+                                            часов</span>
+                                    </div>
+                                @endif
 
 
                             </td>

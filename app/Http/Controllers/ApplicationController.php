@@ -96,6 +96,7 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
             $application->created = $application->created_at->toFormattedDateString();
+            $application->count_five = 5 - $current->diffInHours($application->created_at);
         }
         foreach ($applications as $application) {
             $count = ['application' => 0, 'chat' => 0, 'message' => 0];
@@ -565,17 +566,29 @@ class ApplicationController extends Controller
         }
         // dd($messages);
         // $application = application::findOrFail($id);
-        $message_id = message::where('application_id', '=', $id)->first()->id;
-        $subject =
-            message::where('application_id', '=', $id)->first()->subject;
-        $to_email = DB::table('addresses')
-            ->where('message_id', '=', $message_id)
-            ->where('type', '=', 'from')
-            ->first()
-            ->email;
-        // echo $to;
+        try {
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $subject =
+                message::where('application_id', '=', $id)->first()->subject;
+            $to_email = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first()
+                ->email;
+            // echo $to;
 
-        $attachments = attachment::where('id_application', '=', $id)->get()->all();
+            $attachments = attachment::where('id_application', '=', $id)->get()->all();
+        } catch (\Exception $e) {
+            $message_id = 0;
+            $subject = '';
+            $to_email = '';
+            $attachments = [
+                'file_name' => '',
+                'file_size' => '',
+                'location' => '',
+            ];
+        }
+
 
         return view('application.mail', ['messages' => $messages->all(), 'id' => $id,  'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
     }
@@ -1968,5 +1981,16 @@ class ApplicationController extends Controller
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')->first();
         broadcast(new MessageSent($notification));
+    }
+    public function delete_message($id)
+    {
+        $message = message::findOrFail($id);
+        $attachments = attachment::where('message_id', '=', $message->id);
+        foreach ($attachments as $attachment) {
+            unlink('storage/files/' . $attachment->id_application . '/' . $attachment->location);
+            $attachment->delete();
+        }
+        $message->delete();
+        return redirect()->back();
     }
 }
