@@ -152,7 +152,11 @@
                         @include('document.form_print', ['status_id' => 2, 'template' => 'export_dk'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 3])
+                        @include('document.form_scan', [
+                            'status_id' => 3,
+                            'load_name' => 'Договор с клиентом',
+                            'load_location' => 'dogovor_client',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -161,7 +165,11 @@
                         @include('document.form_print', ['status_id' => 4, 'template' => 'export_ds'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 5])
+                        @include('document.form_scan', [
+                            'status_id' => 5,
+                            'load_name' => 'Дополнительное соглашение с клиентом',
+                            'load_location' => 'ds_client',
+                        ])
                     </th>
                 </tr>
                 <tr>

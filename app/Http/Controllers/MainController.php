@@ -429,6 +429,7 @@ class MainController extends Controller
             // $file = $request->file('userfile');
             // dd($request->file('userfile'));
             if (isset($request->load_name)) {
+
                 $dir = 'storage/files/' . $id . '/' . $request->load_location . '';
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
@@ -442,29 +443,58 @@ class MainController extends Controller
                     $zip = Zip::create($zip_path);
                 }
                 foreach ($request->file('userfile') as $file) {
+                    if ($file->getClientOriginalExtension() == 'pdf') {
+                        // dd($file);
+                        $upload_folder = '' . $id;
+                        $filenameWithExt = $file->getClientOriginalName(); // 
+                        // Имя и расширение файла
+                        // Только оригинальное имя файла
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        // Расширение
+                        $extention = $file->getClientOriginalExtension();
+                        // Путь для сохранения
+                        $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                        // Сохраняем файл
+                        $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
-                    $upload_folder = '' . $id . '/' . $request->load_location;
-                    $filenameWithExt = $file->getClientOriginalName(); // 
-                    // Имя и расширение файла
-                    // Только оригинальное имя файла
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                    // Расширение
-                    $extention = $file->getClientOriginalExtension();
-                    // Путь для сохранения
-                    $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
-                    // Сохраняем файл
-                    $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+                        $filename = 'storage/files/' . $id . '/' . $fileNameToStore;
+                        // dd($file);
 
-                    $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
-
-                    // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
-
-                    $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-                    if ($size) {
-                        Optimize::path($filename);
                         $document = new Attachment();
-                        $zip->setpath($dir)->add($fileNameToStore);
-                        // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $document->file_name = $filename;
+                        $document->message_id = 0;
+                        $document->mime_type = $file->getMimeType();
+                        $document->id_application = $id;
+                        $document->file_size = $file->getSize();
+                        $document->id_status = $request->status_id;
+                        $document->location = $fileNameToStore;
+                        // dd($document);
+                        $document->save();
+                    } else {
+                        $upload_folder = '' . $id . '/' . $request->load_location;
+                        $filenameWithExt = $file->getClientOriginalName(); // 
+                        // Имя и расширение файла
+                        // Только оригинальное имя файла
+                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        // Расширение
+                        $extention = $file->getClientOriginalExtension();
+                        // Путь для сохранения
+                        $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                        // Сохраняем файл
+                        $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+
+                        $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
+
+                        // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
+
+                        $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                        if ($size) {
+                            Optimize::path($filename);
+                            $document = new Attachment();
+                            $zip->setpath($dir)->add($fileNameToStore);
+                            // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        }
                     }
                 }
 

@@ -7,7 +7,8 @@
          <input type="file" name="userfile[]" multiple accept="image/png, image/gif, image/jpeg"
              onchange="this.form.submit()">
      @else
-         <input type="file" name="userfile[]" multiple accept="application/pdf" onchange="this.form.submit()">
+         <input type="file" name="userfile[]" multiple accept="application/pdf image/png, image/gif, image/jpeg"
+             onchange="this.form.submit()">
      @endif
 
      <input type="hidden" name="status_id" value="{{ $status_id }}">
