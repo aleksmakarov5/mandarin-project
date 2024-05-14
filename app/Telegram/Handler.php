@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\city;
 use App\Models\present;
 use App\Models\promotion;
+use Jenssegers\Date\Date;
 
 class Handler extends WebhookHandler
 {
@@ -93,8 +94,9 @@ class Handler extends WebhookHandler
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'services.service_name', 'spms.name as spm', 'mrks.name as mrk')
             ->where('applications.id', '=', $this->data->get('id'))
             ->first();
+        $date = Date::parse($application->created_at)->format('j F Yг. H:i');
         $this->chat->message(
-            "#|{$application->id}\n<i>Дата заявки</i>:{$application->created_at}\n<i>Страховая компания</i>:{$application->name}\n<i>Марка машины</i>:{$application->CarModel}\n<i>ГНЗ</i>:{$application->gnz}\n<i>Статус заявки</i>:{$application->StatusName}\n<i>Клиент</i>:{$application->ClientName}\n<i>Телефон клиента</i>:{$application->ClientPhone}
+            "#|{$application->id}\n<i>Дата заявки</i>:{$date}\n<i>Страховая компания</i>:{$application->name}\n<i>Марка машины</i>:{$application->CarModel}\n<i>ГНЗ</i>:{$application->gnz}\n<i>Статус заявки</i>:{$application->StatusName}\n<i>Клиент</i>:{$application->ClientName}\n<i>Телефон клиента</i>:{$application->ClientPhone}
             "
         )->keyboard(Keyboard::make()
             ->buttons([
