@@ -2,8 +2,9 @@
 @section('title')
     Документы
 @endsection
-@if (!isset($hide_menu))
-    @section('main')
+
+@section('main')
+    @if (!isset($hide_menu))
         @php
             $all = true;
             foreach ($document as $doc) {
