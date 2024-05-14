@@ -156,13 +156,13 @@
             <tr>
                 <th>Дата начала ремонта</th>
                 <th>
-                    {{ $application->start_date }}
+                    {{ $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : '' }}
                 </th>
             </tr>
             <tr>
                 <th>Дата окончания ремонта</th>
                 <th>
-                    {{ $application->end_date }}
+                    {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
                 </th>
             </tr>
             <tr>

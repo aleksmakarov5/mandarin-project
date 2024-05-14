@@ -107,7 +107,13 @@
                                         style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%;"
                                         role="progressbar" aria-valuenow="{{ $application->count_hour }}"
                                         aria-valuemin="0" aria-valuemax="{{ $application->max_hour }}}">
-                                        {{ $application->count_hour }} часов
+                                        {{ $application->count_hour }}
+                                        @if ($application->id_status > 10 && $application->id_status != 18)
+                                            дней
+                                        @else
+                                            часов
+                                        @endif
+
                                     </div>
                                 </div>
 

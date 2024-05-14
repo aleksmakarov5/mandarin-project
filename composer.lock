@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a42b4ad156b5044a1773b4d5a99a10a5",
+    "content-hash": "a175a1d8e6f538306f891cd836e3e3ed",
     "packages": [
         {
             "name": "aspose-cloud/aspose-words-cloud",
@@ -8664,6 +8664,52 @@
                 "source": "https://github.com/tijsverkoyen/CssToInlineStyles/tree/v2.2.7"
             },
             "time": "2023-12-08T13:03:43+00:00"
+        },
+        {
+            "name": "tochka-developers/work-calendar",
+            "version": "v2.2.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/tochka-developers/work-calendar.git",
+                "reference": "ca4fb8bbad53b41bb13de6acea4ef6639557cb60"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/tochka-developers/work-calendar/zipball/ca4fb8bbad53b41bb13de6acea4ef6639557cb60",
+                "reference": "ca4fb8bbad53b41bb13de6acea4ef6639557cb60",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-simplexml": "*",
+                "nesbot/carbon": "^2.",
+                "php": ">=7.2.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^7"
+            },
+            "type": "package",
+            "autoload": {
+                "psr-4": {
+                    "Tochka\\Calendar\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ivanov Sergey",
+                    "email": "ivanov@tochka.com"
+                }
+            ],
+            "description": "Russian Federation production calendar extension for Carbon",
+            "support": {
+                "issues": "https://github.com/tochka-developers/work-calendar/issues",
+                "source": "https://github.com/tochka-developers/work-calendar/tree/v2.2.0"
+            },
+            "time": "2022-01-21T06:26:23+00:00"
         },
         {
             "name": "vlucas/phpdotenv",

@@ -32,7 +32,7 @@ use App\Mail\user\newmessage;
 use App\Mail\user\ic_answer;
 use Carbon\Carbon;
 use App\Events\MessageSent;
-
+use Tochka\Calendar\WorkCalendar;
 use App\Models\status_chat;
 use App\Models\status_message;
 
@@ -318,12 +318,13 @@ class ApplicationController extends Controller
                 $application->max_hour = 72;
             }
             if ($application->id_status == 21) {
-                $application->count_hour = 1008 - $current->diffInHours($application->check_date);
-                $application->max_hour = 1008;
+                $application->count_hour = 42 - $current->diffInDays($application->check_date);
+                $application->max_hour = 42;
             }
             if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
-                $application->count_hour = $current->diffInHours($application->end_date);
-                $application->max_hour = 1000;
+                $application->count_hour = $current->diffInDays($application->end_date);
+                $start = carbon::create($application->napr_date);
+                $application->max_hour = $start->diffInDays($application->end_date);
             }
         }
         return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
@@ -1615,6 +1616,15 @@ class ApplicationController extends Controller
         $history->id_application = $id;
 
         $application->id_status = $status_id;
+        if ($status_id == 11) {
+            $today = WorkCalendar::now();
+            $today->addWorkDays(30);
+            $application->end_date = $today;
+
+            $application->napr_date = carbon::now();
+
+            // dd($today, $application->end_date);
+        }
         // dd ($application->id_status);
         $data["email"] = "aleksmakarov5@yandex.ru";
         $data["title"] = 'По заявке №' . $id . ' изменен статус';
@@ -1676,11 +1686,11 @@ class ApplicationController extends Controller
                             $application->id_status
                         )->StatusName;
                         $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                        )
-                        ->send();
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
                     }
                 }
                 break;
@@ -1706,10 +1716,10 @@ class ApplicationController extends Controller
                         $application->id_status
                     )->StatusName;
                     $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                    )
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
                         ->send();
                 }
 
@@ -1736,10 +1746,10 @@ class ApplicationController extends Controller
                         $application->id_status
                     )->StatusName;
                     $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                    )
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
                         ->send();
                 }
 
@@ -1767,11 +1777,11 @@ class ApplicationController extends Controller
                             $application->id_status
                         )->StatusName;
                         $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                        )
-                        ->send();
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
                     }
                 }
                 break;

@@ -24,6 +24,10 @@ use App\Events\MessageSent;
 use DefStudio\Telegraph\Models\TelegraphChat;
 use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
+use App\Models\status_application;
+use App\Models\ApplicationStatus;
+use Carbon\Carbon;
+use Tochka\Calendar\WorkCalendar;
 
 
 
@@ -91,6 +95,7 @@ class ImapController extends Controller
             $att = "\n <b><u>Вложения</u></b>\n\n";
             $keyboard = [];
             $i = 0;
+
             foreach ($attachments as $attachment) {
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
@@ -103,6 +108,59 @@ class ImapController extends Controller
                 $attach->file_size = $attachment->getSize();
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
+                if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
+                    $history = new history;
+                    $history->id_user = 1;
+                    $history->id_application = $applications->id;
+
+                    $applications->id_status = 11;
+
+                    $today = WorkCalendar::now();
+                    $today->addWorkDays(30);
+                    $applications->end_date = $today;
+
+                    $applications->napr_date = carbon::now();
+                    $history->id_status = 11;
+                    $applications->save();
+                    $history->save();
+
+                    try {
+
+                        $user = user::findorfail($applications->id_MRK);
+                        $notify = new notify;
+                        $notify->id_user = $user->id;
+                        $notify->id_application = $id;
+                        $notify->id_text = 3;
+                        $notify->link = "/application/";
+
+                        $notify->save();
+                        $notify_id = $notify->id;
+                        $status_application = new status_application;
+                        $status_application->id_user = $user->id;
+                        $status_application->id_application = $id;
+                        $status_application->is_readed = false;
+                        $status_application->save();
+                        if ($user->telegram_notify) {
+                            $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                            $status = ApplicationStatus::findOrFail(
+                                $applications->id_status
+                            )->StatusName;
+                            $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                                ->keyboard(
+                                    Keyboard::make()
+                                        ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                                )
+                                ->send();
+                        }
+
+
+                        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                            ->select('notifies.*', 'text_notifies.text')->first();
+                        broadcast(new MessageSent($notification));
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                }
 
                 if (
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||

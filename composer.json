@@ -32,6 +32,7 @@
         "socialiteproviders/telegram": "^4.1",
         "symfony/http-client": "^7.0",
         "symfony/mailgun-mailer": "^7.0",
+        "tochka-developers/work-calendar": "^2.2",
         "webklex/laravel-imap": "^5.3",
         "zanysoft/laravel-zip": "^2.0"
     },
