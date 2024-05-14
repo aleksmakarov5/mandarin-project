@@ -171,7 +171,7 @@ class Handler extends WebhookHandler
             $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
-        $keyboard[$i++] = Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Загрузить документ")->webApp("https://mandarin-portal.ru/document/{$this->data->get('id')}?hide_menu=1");
         $this->chat->message("Документы")
             ->keyboard(
                 Keyboard::make()

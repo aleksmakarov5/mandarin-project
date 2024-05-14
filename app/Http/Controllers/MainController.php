@@ -125,8 +125,9 @@ class MainController extends Controller
         // dd($rewiew->all()) ;
         return view('mail.index', ['messages' => $messages->all()]);
     }
-    public function document($id)
+    public function document(request $request, $id)
     {
+        $hide_menu = $request->get('hide_menu');
         $document = DB::table('attachments')
             ->where('id_application', '=', $id)
             ->get();
@@ -138,7 +139,7 @@ class MainController extends Controller
 
 
         // dd($doc_statuses->all());
-        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def], ['id' => $id]);
+        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'hide_menu' => $hide_menu], ['id' => $id]);
     }
     public function showdoc($id, $locations)
     {
