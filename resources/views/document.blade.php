@@ -178,7 +178,11 @@
                         @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 7])
+                        @include('document.form_scan', [
+                            'status_id' => 7,
+                            'load_name' => 'Информационный акт',
+                            'load_location' => 'infact',
+                        ])
                     </th>
                 </tr>
                 @if ($def == 1)
@@ -191,7 +195,11 @@
                             ])
                         </th>
                         <th scope="col">
-                            @include('document.form_scan', ['status_id' => 25])
+                            @include('document.form_scan', [
+                                'status_id' => 25,
+                                'load_name' => 'Акт приема автомобиля на деффектовку',
+                                'load_location' => 'akt_priem_def',
+                            ])
                         </th>
                     </tr>
                     <tr>
@@ -215,7 +223,11 @@
                             ])
                         </th>
                         <th scope="col">
-                            @include('document.form_scan', ['status_id' => 12])
+                            @include('document.form_scan', [
+                                'status_id' => 12,
+                                'load_name' => 'Акт скрытых повреждений',
+                                'load_location' => 'akt_sp_def',
+                            ])
                         </th>
                     </tr>
                     <tr>
@@ -239,7 +251,11 @@
                             ])
                         </th>
                         <th scope="col">
-                            @include('document.form_scan', ['status_id' => 28])
+                            @include('document.form_scan', [
+                                'status_id' => 28,
+                                'load_name' => 'Акт сдачи автомобиля после дефектовки',
+                                'load_location' => 'akt_sdachi_def',
+                            ])
                         </th>
                     </tr>
                     <tr>
@@ -261,7 +277,11 @@
                         @include('document.form_print', ['status_id' => 8, 'template' => 'export_ap'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 9])
+                        @include('document.form_scan', [
+                            'status_id' => 9,
+                            'load_name' => 'Акт приема автомобиля на ремонт',
+                            'load_location' => 'akt_priema',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -286,7 +306,11 @@
                             ])
                         </th>
                         <th scope="col">
-                            @include('document.form_scan', ['status_id' => 12])
+                            @include('document.form_scan', [
+                                'status_id' => 12,
+                                'load_name' => 'Акт скрытых повреждений',
+                                'load_location' => 'akt_sp',
+                            ])
                         </th>
                     </tr>
                     <tr>
@@ -308,7 +332,11 @@
                         @include('document.form_print', ['status_id' => 13, 'template' => 'export_as'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 14])
+                        @include('document.form_scan', [
+                            'status_id' => 14,
+                            'load_name' => 'Акт сдачи автомобиля после ремонта',
+                            'load_location' => 'akt_sdachi',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -329,7 +357,11 @@
                         @include('document.form_print', ['status_id' => 16, 'template' => 'export_zn'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 17])
+                        @include('document.form_scan', [
+                            'status_id' => 17,
+                            'load_name' => 'Заказ наряд',
+                            'load_location' => 'zakaz-naryad',
+                        ])
                     </th>
                 </tr>
                 <tr>
@@ -338,7 +370,11 @@
                         @include('document.form_print', ['status_id' => 18, 'template' => 'export_sch'])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', ['status_id' => 19])
+                        @include('document.form_scan', [
+                            'status_id' => 19,
+                            'load_name' => 'Счет',
+                            'load_location' => 'schet',
+                        ])
                     </th>
                 </tr>
 
