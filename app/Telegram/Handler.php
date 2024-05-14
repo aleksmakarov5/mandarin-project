@@ -75,7 +75,7 @@ class Handler extends WebhookHandler
         $keyboard = [];
 
         foreach ($applications as $application) {
-            $keyboard[$i++] = Button::make("{$application->id}|{$application->gnz}")->action('application')->param('id', "{$application->id}");
+            $keyboard[$i++] = Button::make("{$application->id}|  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
         $this->chat->message("Список заявок")
             ->keyboard(
@@ -118,7 +118,7 @@ class Handler extends WebhookHandler
         foreach ($applications as $application) {
             $keyboard[$i++] = Button::make("{$application->id}|  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
-        $this->chat->message("Список заявок")
+        $this->chat->message("Список направлений")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
@@ -143,7 +143,7 @@ class Handler extends WebhookHandler
             ->buttons([
                 Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}"),
                 Button::make("Документы")->action("documents")->param('id', "{$application->id}"),
-                Button::make("К списку заявок")->action("applications"),
+
             ]))
             ->send();
         $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
@@ -172,7 +172,6 @@ class Handler extends WebhookHandler
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
-        $keyboard[$i++] = Button::make("К списку заявок")->action("applications");
         $this->chat->message("Документы")
             ->keyboard(
                 Keyboard::make()
