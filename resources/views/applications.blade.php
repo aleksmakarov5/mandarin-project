@@ -109,9 +109,9 @@
                                         style="width: {{ ($application->count_hour / $application->max_hour) * 100 }}%">{{ $application->count_hour > 0 ? $application->count_hour : 'просрочено' }}
                                         <span>
                                             @if ($application->id_status > 10 && $application->id_status != 18)
-                                                дней
+                                                {{ show_days($application->count_hour) }}
                                             @else
-                                                часов
+                                                {{ show_hours($application->count_hour) }}
                                             @endif
                                         </span>
                                     </span>
@@ -129,7 +129,7 @@
                                     <div class="progressbar {{ $application->count_five > 0 ? '' : 'red' }}">
                                         <span
                                             style="width: {{ ($application->count_five / 5) * 100 }}%">{{ $application->count_five > 0 ? $application->count_five : 'просрочено' }}
-                                            часов</span>
+                                            <span>{{ show_hours($application->count_five) }}</span></span>
                                     </div>
                                 @endif
 
