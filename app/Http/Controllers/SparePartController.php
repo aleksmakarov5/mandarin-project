@@ -201,9 +201,13 @@ class SparePartController extends Controller
 
     public function emr10(request $request, $id)
     {
-        $estimate = estimate::where('id_application', '=', $id)->first();
-        $estimate->emr10 = $request->emr10;
-        $estimate->save();
+
+        $estimates = estimate::updateorcreate(
+            ['id_application' => $id],
+            [
+                'emr10' => $request->emr10,
+            ]
+        );
         return redirect()->back();
     }
 
