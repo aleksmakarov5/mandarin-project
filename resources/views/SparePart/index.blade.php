@@ -447,7 +447,9 @@
                                         @endforeach
                                     </select>
                                 @else
-                                    {{ $sparepart->StatusName }}
+                                    @if (isset($item->StatusName))
+                                        {{ $item->StatusName }}
+                                    @endif
                                 @endif
 
                             </td>
