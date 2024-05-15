@@ -121,7 +121,7 @@
                             <input type="hidden" name="order_number" id='order_number{{ $key }}'
                                 value='{{ $sparepart->order_number }}'>
                             <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
-                                value='{{ $sparepart->price_ic_full }}'>
+                                value='{{ $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full }}'>
                             <input type="hidden" name="price_original" id='price_original-{{ $key }}'
                                 value='{{ $sparepart->price_original }}'>
                             <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
@@ -162,7 +162,7 @@
                                 @if (old('price_ic_full.' . $key) !== null)
                                     {{ old('price_ic_full.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_ic_full }}
+                                    {{ round($estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full) }}
                                 @endif
                             </td>
 
@@ -610,94 +610,110 @@
                     </th>
                 </form>
             </tr>
-            <tr>
-                <th>Cтоимость узлов и деталей:</th>
-                <td>
-                    @if (isset($estimate->price_sp_full))
-                        {{ $estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full }}
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость узлов и деталей c учетом износа:</th>
-                <td>
-                    @if (isset($estimate->price_sp_half))
-                        {{ $estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half }}
-                    @endif
-                </td>
-            </tr>
+            <form action="/estimate/{{ $id }}" method="POST" id="form500" name="form500">
+                @csrf
+                <input type="hidden" id="price_sp_full-500" name="price_sp_full" value={{ $estimate->price_sp_full }}>
 
-            <tr>
-                <th>Cтоимость ремонта/замены:</th>
-                <td>
-                    @if (isset($estimate->price_repair))
-                        {{ $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair }}
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость окраски контроля: </th>
-                <td>
-                    @if (isset($estimate->price_paint))
-                        {{ $estimate->emr10 ? $estimate->price_paint * 1.1 : $estimate->price_paint }}
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость расходных материалов: </th>
-                <td>
-                    @if (isset($estimate->price_zip))
-                        {{ $estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip }}
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость работ и материалов: </th>
-                <td>
-                    @if (isset($estimate->price_work))
-                        {{ $estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work }}
-                    @endif
-                </td>
-            </tr>
-            <tr>
-                <th>Cтоимость восстановительного ремонта (Всего) </th>
-                <td>
-                    @if (isset($estimate->price_repair_full))
-                        {{ $estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full }}
-                    @endif
-                </td>
-            </tr>
+                <tr>
+                    <th>Cтоимость узлов и деталей:</th>
+                    <td id='td_price_sp_full-500'>
+                        @if (isset($estimate->price_sp_full))
+                            {{ round($estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_sp_half-500" name="price_sp_half" value={{ $estimate->price_sp_half }}>
 
-            <tr>
-                <th>Фактическая стоимость восстановительного ремонта </th>
-                <td>
-                    @if (isset($summ_order) && isset($summ_service))
-                        {{ $summ_order + $summ_service }}
-                    @endif
-                </td>
+                <tr>
+                    <th>Cтоимость узлов и деталей c учетом износа:</th>
+                    <td id='td_price_sp_half-500'>
+                        @if (isset($estimate->price_sp_half))
+                            {{ round($estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_repair-500" name="price_repair" value={{ $estimate->price_repair }}>
 
-            </tr>
-            <tr>
-                <th>Разница от полной стоимости</th>
-                <th>
-                    @if (isset($estimate->price_repair_full))
-                        <div
-                            class="
+                <tr>
+                    <th>Cтоимость ремонта/замены:</th>
+                    <td id='td_price_repair-500'>
+                        @if (isset($estimate->price_repair))
+                            {{ round($estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_paint-500" name="price_paint" value={{ $estimate->price_paint }}>
+
+                <tr>
+                    <th>Cтоимость окраски контроля: </th>
+                    <td id='td_price_paint-500'>
+                        @if (isset($estimate->price_paint))
+                            {{ round($estimate->emr10 ? $estimate->price_paint * 1.1 : $estimate->price_paint) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_zip-500" name="price_zip" value={{ $estimate->price_zip }}>
+
+                <tr>
+                    <th>Cтоимость расходных материалов: </th>
+                    <td id='td_price_zip-500'>
+                        @if (isset($estimate->price_zip))
+                            {{ round($estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_work-500" name="price_work" value={{ $estimate->price_work }}>
+
+                <tr>
+                    <th>Cтоимость работ и материалов: </th>
+                    <td id='td_price_work-500'>
+                        @if (isset($estimate->price_work))
+                            {{ round($estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work) }}
+                        @endif
+                    </td>
+                </tr>
+                <input type="hidden" id="price_repair_full-500" name="price_repair_full"
+                    value={{ $estimate->price_repair_full }}>
+
+                <tr>
+                    <th>Cтоимость восстановительного ремонта (Всего) </th>
+                    <td id='td_price_repair_full-500'>
+                        @if (isset($estimate->price_repair_full))
+                            {{ round($estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full) }}
+                        @endif
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>Фактическая стоимость восстановительного ремонта </th>
+                    <th>
+                        @if (isset($summ_order) && isset($summ_service))
+                            {{ $summ_order + $summ_service }}
+                        @endif
+                    </th>
+
+                </tr>
+                <tr>
+                    <th>Разница от полной стоимости</th>
+                    <th>
+                        @if (isset($estimate->price_repair_full))
+                            <div
+                                class="
                     @if ($summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) < 0) alert alert-success
                     @else
                         alert alert-danger @endif
                     ">
-                            @if ($estimate->emr10)
-                                {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full * 1.1) }}
-                            @else
-                                {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) }}
-                            @endif
+                                @if ($estimate->emr10)
+                                    {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full * 1.1) }}
+                                @else
+                                    {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) }}
+                                @endif
 
-                        </div>
-                    @endif
-                </th>
-            </tr>
-
+                            </div>
+                        @endif
+                    </th>
+                </tr>
+            </form>
 
         </table>
     @endcan

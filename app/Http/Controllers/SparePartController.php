@@ -261,7 +261,11 @@ class SparePartController extends Controller
         // dd($request);
 
         $sparepart = sparepart::findOrFail($request->id);
-
+        try {
+            $emr10 = estimate::where('id_application', '=', $id)->first()->emr10;
+        } catch (\Exception $e) {
+            $emr10 = 0;
+        }
 
         $data = $this->validate($request, [
             'id_application' => 'required',
@@ -284,6 +288,9 @@ class SparePartController extends Controller
             'approved' => 'nullable',
             'status_id' => 'nullable'
         ]);
+        if ($emr10)
+            $data['price_ic_full'] = $data['price_ic_full']  / 1.1;
+
         //  dd($data);
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;
