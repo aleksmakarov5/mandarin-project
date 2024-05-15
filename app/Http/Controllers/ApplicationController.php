@@ -1003,6 +1003,7 @@ class ApplicationController extends Controller
         Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
         $application = application::findOrFail($id);
         $application->id_status = 3;
+        $application->check_date = carbon::now();
         $application->save();
         $history = new history;
         $history->id_user = Auth::user()->id;

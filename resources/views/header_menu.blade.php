@@ -339,6 +339,19 @@
                                         @endcan
 
                                         <li><a href="">Установить статус</a>
+                                            @can('admin')
+                                                @if ($app->id_status == 3)
+                                                    <ul class="submenu">
+                                                        @foreach ($status as $stat)
+                                                            @if ($stat->id == 2)
+                                                                <li><a
+                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                                </li>
+                                                            @endif
+                                                        @endforeach
+                                                    </ul>
+                                                @endif
+                                            @endcan
                                             @canany(['mrk', 'admin', 'km'])
                                                 @if ($app->id_status > 7 && $app->id_status < 15)
                                                     <ul class="submenu">
