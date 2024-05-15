@@ -599,10 +599,22 @@
 
             </tr>
             <tr>
+                <form action="/emr10/{{ $id }}" method="POST" id="form_emr" name="form_emr">
+                    @csrf
+                    <th>ЕМР+10:</th>
+                    <th>
+                        <select class=sel id="emr10" name="emr10" onchange="document.forms['form_emr'].submit();">
+                            <option value=0 @if ($estimate->emr10 == 0) selected @endif>нет</option>
+                            <option value=1 @if ($estimate->emr10 == 1) selected @endif>да</option>
+                        </select>
+                    </th>
+                </form>
+            </tr>
+            <tr>
                 <th>Cтоимость узлов и деталей:</th>
                 <td>
                     @if (isset($estimate->price_sp_full))
-                        {{ $estimate->price_sp_full }}
+                        {{ $estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full }}
                     @endif
                 </td>
             </tr>
@@ -610,7 +622,7 @@
                 <th>Cтоимость узлов и деталей c учетом износа:</th>
                 <td>
                     @if (isset($estimate->price_sp_half))
-                        {{ $estimate->price_sp_half }}
+                        {{ $estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half }}
                     @endif
                 </td>
             </tr>
@@ -619,7 +631,7 @@
                 <th>Cтоимость ремонта/замены:</th>
                 <td>
                     @if (isset($estimate->price_repair))
-                        {{ $estimate->price_repair }}
+                        {{ $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair }}
                     @endif
                 </td>
             </tr>
@@ -627,7 +639,7 @@
                 <th>Cтоимость окраски контроля: </th>
                 <td>
                     @if (isset($estimate->price_paint))
-                        {{ $estimate->price_paint }}
+                        {{ $estimate->emr10 ? $estimate->price_paint * 1.1 : $estimate->price_paint }}
                     @endif
                 </td>
             </tr>
@@ -635,7 +647,7 @@
                 <th>Cтоимость расходных материалов: </th>
                 <td>
                     @if (isset($estimate->price_zip))
-                        {{ $estimate->price_zip }}
+                        {{ $estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip }}
                     @endif
                 </td>
             </tr>
@@ -643,7 +655,7 @@
                 <th>Cтоимость работ и материалов: </th>
                 <td>
                     @if (isset($estimate->price_work))
-                        {{ $estimate->price_work }}
+                        {{ $estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work }}
                     @endif
                 </td>
             </tr>
@@ -651,7 +663,7 @@
                 <th>Cтоимость восстановительного ремонта (Всего) </th>
                 <td>
                     @if (isset($estimate->price_repair_full))
-                        {{ $estimate->price_repair_full }}
+                        {{ $estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full }}
                     @endif
                 </td>
             </tr>
@@ -675,7 +687,12 @@
                     @else
                         alert alert-danger @endif
                     ">
-                            {{ $summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) }}
+                            @if ($estimate->emr10)
+                                {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full * 1.1) }}
+                            @else
+                                {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) }}
+                            @endif
+
                         </div>
                     @endif
                 </th>

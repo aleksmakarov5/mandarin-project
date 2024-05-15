@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\SparePart;
 use App\Models\application;
 use App\Models\sparepart_status;
+use App\Models\estimate;
 use Illuminate\Support\Facades\Gate;
 
 
@@ -195,6 +196,53 @@ class SparePartController extends Controller
         $app->sertificat = $request->sertificat;
         $app->save();
         dd($app);
+        return redirect()->back();
+    }
+
+    public function emr10(request $request, $id)
+    {
+        $estimate = estimate::where('id_application', '=', $id)->first();
+        $estimate->emr10 = $request->emr10;
+        $estimate->save();
+        return redirect()->back();
+    }
+
+    public function estimate(request $request, $id)
+    {
+        try {
+            $emr10 = estimate::where('id_application', '=', $id)->first()->emr10;
+        } catch (\Exception $e) {
+            $emr10 = 0;
+        }
+
+        if ($emr10)
+            $estimates = estimate::updateorcreate(
+                ['id_application' => $id],
+                [
+                    'price_sp_full' => $request->price_sp_full / 1.1,
+                    'price_sp_half' => $request->price_sp_half / 1.1,
+                    'price_repair' => $request->price_repair / 1.1,
+                    'price_paint' => $request->price_paint / 1.1,
+                    'price_zip' => $request->price_zip / 1.1,
+                    'price_work' => $request->price_work / 1.1,
+                    'price_repair_full' => $request->price_repair_full / 1.1,
+                    'price_repair_half' => $request->price_repair_half / 1.1
+                ]
+            );
+        else
+            $estimates = estimate::updateorcreate(
+                ['id_application' => $id],
+                [
+                    'price_sp_full' => $request->price_sp_full / 1.1,
+                    'price_sp_half' => $request->price_sp_half / 1.1,
+                    'price_repair' => $request->price_repair / 1.1,
+                    'price_paint' => $request->price_paint / 1.1,
+                    'price_zip' => $request->price_zip / 1.1,
+                    'price_work' => $request->price_work / 1.1,
+                    'price_repair_full' => $request->price_repair_full / 1.1,
+                    'price_repair_half' => $request->price_repair_half / 1.1
+                ]
+            );
         return redirect()->back();
     }
 

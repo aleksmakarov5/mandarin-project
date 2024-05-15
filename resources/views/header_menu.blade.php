@@ -36,12 +36,23 @@
         }
     }
     if (isset($estimates->price_repair_full)) {
-        $eco_delta_full =
-            (float) str_replace(' ', '', $estimates->price_repair_full) -
-            $summ_order -
-            $summ_service -
-            $app->sertificat;
-        $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+        if ($estimates->emr10) {
+            $eco_delta_full =
+                (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
+                $summ_order -
+                $summ_service -
+                $app->sertificat;
+            $proc = round(
+                ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
+            );
+        } else {
+            $eco_delta_full =
+                (float) str_replace(' ', '', $estimates->price_repair_full) -
+                $summ_order -
+                $summ_service -
+                $app->sertificat;
+            $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+        }
     } else {
         $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
         if ($summ_ic_full + $summ_service_ic != 0) {
