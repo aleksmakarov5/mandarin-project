@@ -121,7 +121,7 @@
                             <input type="hidden" name="order_number" id='order_number{{ $key }}'
                                 value='{{ $sparepart->order_number }}'>
                             <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
-                                value='{{ $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full }}'>
+                                value='{{ isset($estimate->emr10) && $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full }}'>
                             <input type="hidden" name="price_original" id='price_original-{{ $key }}'
                                 value='{{ $sparepart->price_original }}'>
                             <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
@@ -162,7 +162,7 @@
                                 @if (old('price_ic_full.' . $key) !== null)
                                     {{ old('price_ic_full.' . $key) }}
                                 @else
-                                    {{ round($estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full) }}
+                                    {{ round(isset($estimate->emr10) && $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full) }}
                                 @endif
                             </td>
 
@@ -618,7 +618,7 @@
                     <th>Cтоимость узлов и деталей:</th>
                     <td id='td_price_sp_full-500'>
                         @if (isset($estimate->price_sp_full))
-                            {{ round($estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full) }}
                         @endif
                     </td>
                 </tr>
@@ -628,7 +628,7 @@
                     <th>Cтоимость узлов и деталей c учетом износа:</th>
                     <td id='td_price_sp_half-500'>
                         @if (isset($estimate->price_sp_half))
-                            {{ round($estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half) }}
                         @endif
                     </td>
                 </tr>
@@ -638,7 +638,7 @@
                     <th>Cтоимость ремонта/замены:</th>
                     <td id='td_price_repair-500'>
                         @if (isset($estimate->price_repair))
-                            {{ round($estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair) }}
                         @endif
                     </td>
                 </tr>
@@ -648,7 +648,7 @@
                     <th>Cтоимость окраски контроля: </th>
                     <td id='td_price_paint-500'>
                         @if (isset($estimate->price_paint))
-                            {{ round($estimate->emr10 ? $estimate->price_paint * 1.1 : $estimate->price_paint) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_paint * 1.1 : $estimate->price_paint) }}
                         @endif
                     </td>
                 </tr>
@@ -658,7 +658,7 @@
                     <th>Cтоимость расходных материалов: </th>
                     <td id='td_price_zip-500'>
                         @if (isset($estimate->price_zip))
-                            {{ round($estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip) }}
                         @endif
                     </td>
                 </tr>
@@ -668,7 +668,7 @@
                     <th>Cтоимость работ и материалов: </th>
                     <td id='td_price_work-500'>
                         @if (isset($estimate->price_work))
-                            {{ round($estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work) }}
                         @endif
                     </td>
                 </tr>
@@ -679,7 +679,7 @@
                     <th>Cтоимость восстановительного ремонта (Всего) </th>
                     <td id='td_price_repair_full-500'>
                         @if (isset($estimate->price_repair_full))
-                            {{ round($estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full) }}
                         @endif
                     </td>
                 </tr>
