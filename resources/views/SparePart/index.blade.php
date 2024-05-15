@@ -604,8 +604,8 @@
                     <th>ЕМР+10:</th>
                     <th>
                         <select class=sel id="emr10" name="emr10" onchange="document.forms['form_emr'].submit();">
-                            <option value=0 @if ($estimate->emr10 == 0) selected @endif>нет</option>
-                            <option value=1 @if ($estimate->emr10 == 1) selected @endif>да</option>
+                            <option value=0 @if (isset($estimate->emr10) && $estimate->emr10 == 0) selected @endif>нет</option>
+                            <option value=1 @if (isset($estimate->emr10) && $estimate->emr10 == 1) selected @endif>да</option>
                         </select>
                     </th>
                 </form>
