@@ -440,7 +440,9 @@
                                         @foreach ($statuses as $item)
                                             <option value="{{ $item->id }}"
                                                 @if ($item->id === $sparepart->status_id) selected @endif>
-                                                {{ $item->StatusName }}
+                                                @if (isset($item->StatusName))
+                                                    {{ $item->StatusName }}
+                                                @endif
                                             </option>
                                         @endforeach
                                     </select>
