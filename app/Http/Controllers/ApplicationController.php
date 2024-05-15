@@ -306,19 +306,19 @@ class ApplicationController extends Controller
 
         $current = carbon::now();
         foreach ($applications as $application) {
-            if ($application->id_status < 10) {
+            if ($application->id_status < 11) {
                 $application->count_hour = 48 - $current->diffInHours($application->created_at);
                 $application->max_hour = 48;
             }
-            if ($application->id_status == 10) {
+            if ($application->id_status == 11) {
                 $application->count_hour = 168 - $current->diffInHours($application->check_date);
                 $application->max_hour = 168;
             }
-            if ($application->id_status == 18) {
+            if ($application->id_status == 19) {
                 $application->count_hour = 72 - $current->diffInHours($application->check_date);
                 $application->max_hour = 72;
             }
-            if ($application->id_status == 21) {
+            if ($application->id_status == 22) {
                 $application->count_hour = 42 - $current->diffInDays($application->check_date);
                 $application->max_hour = 42;
             }
