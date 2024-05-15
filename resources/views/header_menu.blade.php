@@ -267,7 +267,7 @@
                                                 <li><a href="#">Передать на СТО</a></li>
                                             @endif
 
-                                            @if ($app->id_status == 8)
+                                            @if ($app->id_status == 9)
                                                 <li><a href="/answer_true_sel/{{ $id }}">Подготовить ответ</a></li>
                                             @endif
                                             @if ($app->id_status == 3)
@@ -287,7 +287,7 @@
                                                         нецелесообразности ремонта</a></li>
                                             @endif
 
-                                            @if ($app->id_status > 10 && $app->id_status < 21)
+                                            @if ($app->id_status > 11 && $app->id_status < 22)
                                                 <li><a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую акт
                                                         скрытых
                                                         повреждений</a>
@@ -320,17 +320,17 @@
                                                         ск</a></li>
                                                 <br>
                                             @endif
-                                            @if ($app->id_status == 9)
+                                            @if ($app->id_status == 10)
                                                 <li><a href="/answer_ic_true/{{ $id }}">Подготовить ответ в
                                                         ск</a></li>
                                                 <br>
                                             @endif
-                                            @if ($app->id_status == 20)
+                                            @if ($app->id_status == 21)
                                                 <li><a href="/answer_ic_sch/{{ $id }}">Отправить счет и ПЗН в СК</a>
                                                 </li>
                                                 <br>
                                             @endif
-                                            @if ($app->id_status == 24 || $app->id_status == 25)
+                                            @if ($app->id_status == 25 || $app->id_status == 26)
                                                 <li><a href="/applications/{{ $id }}/change_st/2">Вернуть в
                                                         работу</a>
                                                 </li>
@@ -340,10 +340,10 @@
 
                                         <li><a href="">Установить статус</a>
                                             @canany(['mrk', 'admin', 'km'])
-                                                @if ($app->id_status > 7 && $app->id_status < 14)
+                                                @if ($app->id_status > 7 && $app->id_status < 15)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id > 2 && $stat->id < 14)
+                                                            @if ($stat->id > 2 && $stat->id < 15)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -351,10 +351,10 @@
                                                         @endforeach
                                                     </ul>
                                                 @endif
-                                                @if (($app->id_status > 16 && $app->id_status < 21) || $app->id_status == 14)
+                                                @if (($app->id_status > 17 && $app->id_status < 22) || $app->id_status == 15)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if (($stat->id > 17 && $stat->id < 21) || $stat->id == 16)
+                                                            @if (($stat->id > 18 && $stat->id < 22) || $stat->id == 17)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -362,10 +362,10 @@
                                                         @endforeach
                                                     </ul>
                                                 @endif
-                                                @if ($app->id_status == 15)
+                                                @if ($app->id_status == 16)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id == 13)
+                                                            @if ($stat->id == 14)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -373,10 +373,10 @@
                                                         @endforeach
                                                     </ul>
                                                 @endif
-                                                @if ($app->id_status == 18)
+                                                @if ($app->id_status == 19)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id == 13)
+                                                            @if ($stat->id == 14)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -386,10 +386,10 @@
                                                 @endif
                                             @endcanany
                                             @canany(['buh', 'km'])
-                                                @if ($app->id_status > 12 && $app->id_status < 17)
+                                                @if ($app->id_status > 13 && $app->id_status < 18)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id > 13 && $stat->id < 16)
+                                                            @if ($stat->id > 14 && $stat->id < 17)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -399,10 +399,10 @@
                                                 @endif
                                             @endcanany
                                             @canany(['spm', 'km'])
-                                                @if ($app->id_status == 16)
+                                                @if ($app->id_status == 17)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id == 17)
+                                                            @if ($stat->id == 18)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -412,10 +412,10 @@
                                                 @endif
                                             @endcanany
                                             @can('admin')
-                                                @if ($app->id_status > 20 && $app->id_status < 25)
+                                                @if ($app->id_status > 21 && $app->id_status < 26)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id > 19 && $stat->id < 25)
+                                                            @if ($stat->id > 20 && $stat->id < 26)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>

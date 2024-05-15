@@ -113,14 +113,14 @@ class ImapController extends Controller
                     $history->id_user = 1;
                     $history->id_application = $applications->id;
 
-                    $applications->id_status = 11;
+                    $applications->id_status = 12;
 
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
 
                     $applications->napr_date = carbon::now();
-                    $history->id_status = 11;
+                    $history->id_status = 12;
                     $applications->save();
                     $history->save();
 

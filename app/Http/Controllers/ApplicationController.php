@@ -96,7 +96,7 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
             $application->created = $application->created_at->toFormattedDateString();
-            $application->count_five = 5 - $current->diffInHours($application->created_at);
+            $application->count_five = 5 - $current->diffInHours($application->check_date);
         }
         foreach ($applications as $application) {
             $count = ['application' => 0, 'chat' => 0, 'message' => 0];
@@ -164,7 +164,7 @@ class ApplicationController extends Controller
 
 
         $applications = DB::table('applications')
-            ->where('id_status', '=', '25')
+            ->where('id_status', '=', '26')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -201,7 +201,7 @@ class ApplicationController extends Controller
     public function archive()
     {
         $applications = DB::table('applications')
-            ->where('id_status', '=', '24')
+            ->where('id_status', '=', '25')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -245,7 +245,7 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
-                    ->where('id_status', '<', '24');
+                    ->where('id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -269,7 +269,7 @@ class ApplicationController extends Controller
         } else {
             $applications = application::where(function ($query) {
                 $query->where('id_status', '>', '7')
-                    ->where('id_status', '<', '24');
+                    ->where('id_status', '<', '25');
             })
                 ->where(function ($query) {
                     $query->where('applications.id_MRK', '=', Auth::user()->id)
@@ -1458,17 +1458,21 @@ class ApplicationController extends Controller
             ->join('failure_vars', 'failures.id_var', '=', 'failure_vars.id')
             ->select('failures.*', 'failure_vars.variant')
             ->get();
-        $message_id = message::where('application_id', '=', $id)->first()->id;
-        $subject =
-            message::where('application_id', '=', $id)->first()->subject;
+        try {
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $subject =
+                message::where('application_id', '=', $id)->first()->subject;
 
-        $message_id = message::where('application_id', '=', $id)->first()->id;
-        $to = DB::table('addresses')
-            ->where('message_id', '=', $message_id)
-            ->where('type', '=', 'from')
-            ->first()
-            ->email;
-
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $to = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first()
+                ->email;
+        } catch (\Exception $e) {
+            $subject = "";
+            $to = "";
+        }
         return view('application.answer_ic', ['subject' => $subject, 'to' => $to, 'fail_vars' => $fail_vars->all(), 'application' => $application, 'id' => $id]);
     }
     public function answer_ic_sent(Request $request, $id)
@@ -1476,7 +1480,7 @@ class ApplicationController extends Controller
         $application = application::findOrFail($id);
 
         $data["email"] = "aleksmakarov5@yandex.ru";
-        $data["title"] = $request->subject;
+        $data["title"] = $request->subject ?? $application->numberInsuranceCompanyApplication;
         $data["body"] = $request->message;
         $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
         $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
@@ -1487,7 +1491,7 @@ class ApplicationController extends Controller
                 ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
         });
-        $application->id_status = 24;
+        $application->id_status = 25;
         $history = new history;
         $messages = new message();
         $messages->application_id = $id;
@@ -1508,7 +1512,7 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 24;
+        $history->id_status = 25;
         $history->save();
         $application->save();
         return redirect()
@@ -1525,10 +1529,10 @@ class ApplicationController extends Controller
         $variants = $request->variant;
         $application = application::findOrFail($id);
         $application->comment_true = $request->comment;
-        $application->id_status = 9;
+        $application->id_status = 10;
         $history = new history;
         $history->id_user = Auth::user()->id;
-        $history->id_status = 9;
+        $history->id_status = 10;
         $history->id_application = $id;
         $history->comment = $request->comment;
         $history->save();
@@ -1587,7 +1591,7 @@ class ApplicationController extends Controller
                 ->subject($data["title"]);
         });
 
-        $application->id_status = 10;
+        $application->id_status = 11;
         $application->check_date = carbon::now();
         $history = new history;
 
@@ -1611,7 +1615,7 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 10;
+        $history->id_status = 11;
         $history->save();
         $application->save();
         return redirect()
@@ -1626,7 +1630,7 @@ class ApplicationController extends Controller
         $history->id_application = $id;
 
         $application->id_status = $status_id;
-        if ($status_id == 11) {
+        if ($status_id == 12) {
             $today = WorkCalendar::now();
             $today->addWorkDays(30);
             $application->end_date = $today;
@@ -1845,7 +1849,7 @@ class ApplicationController extends Controller
         });
 
         $application = application::findOrFail($id);
-        $application->id_status = 18;
+        $application->id_status = 19;
         $application->check_date = carbon::now();
         $history = new history;
 
@@ -1869,7 +1873,7 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 18;
+        $history->id_status = 19;
         $history->save();
         $application->save();
         return redirect()->route('directions');
@@ -1917,10 +1921,10 @@ class ApplicationController extends Controller
             }
         });
         $application = application::findOrFail($id);
-        $application->id_status = 21;
+        $application->id_status = 22;
         $history = new history;
         $history->id_user = Auth::user()->id;
-        $history->id_status = 21;
+        $history->id_status = 22;
         $history->id_application = $id;
         $history->comment = $request->comment;
         $history->save();
@@ -1944,7 +1948,7 @@ class ApplicationController extends Controller
         $address->save();
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $history->id_status = 18;
+        $history->id_status = 22;
         $history->save();
         $application->save();
         return redirect()->route('directions');
