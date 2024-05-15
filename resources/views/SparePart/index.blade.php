@@ -612,7 +612,8 @@
             </tr>
             <form action="/estimate/{{ $id }}" method="POST" id="form500" name="form500">
                 @csrf
-                <input type="hidden" id="price_sp_full-500" name="price_sp_full" value={{ $estimate->price_sp_full }}>
+                <input type="hidden" id="price_sp_full-500" name="price_sp_full"
+                    value=@if (isset($estimate->price_sp_full)) {{ $estimate->price_sp_full }} @endif>
 
                 <tr>
                     <th>Cтоимость узлов и деталей:</th>
@@ -622,7 +623,8 @@
                         @endif
                     </td>
                 </tr>
-                <input type="hidden" id="price_sp_half-500" name="price_sp_half" value={{ $estimate->price_sp_half }}>
+                <input type="hidden" id="price_sp_half-500" name="price_sp_half"
+                    value=@if (isset($estimate->price_sp_half)) {{ $estimate->price_sp_half }} @endif>
 
                 <tr>
                     <th>Cтоимость узлов и деталей c учетом износа:</th>
@@ -632,7 +634,8 @@
                         @endif
                     </td>
                 </tr>
-                <input type="hidden" id="price_repair-500" name="price_repair" value={{ $estimate->price_repair }}>
+                <input type="hidden" id="price_repair-500" name="price_repair"
+                    value=@if (isset($estimate->price_repair)) {{ $estimate->price_repair }} @endif>
 
                 <tr>
                     <th>Cтоимость ремонта/замены:</th>
@@ -642,7 +645,8 @@
                         @endif
                     </td>
                 </tr>
-                <input type="hidden" id="price_paint-500" name="price_paint" value={{ $estimate->price_paint }}>
+                <input type="hidden" id="price_paint-500" name="price_paint"
+                    value=@if (isset($estimate->price_paint)) {{ $estimate->price_paint }} @endif>
 
                 <tr>
                     <th>Cтоимость окраски контроля: </th>
@@ -652,7 +656,8 @@
                         @endif
                     </td>
                 </tr>
-                <input type="hidden" id="price_zip-500" name="price_zip" value={{ $estimate->price_zip }}>
+                <input type="hidden" id="price_zip-500" name="price_zip"
+                    value=@if (isset($estimate->price_zip)) {{ $estimate->price_zip }} @endif>
 
                 <tr>
                     <th>Cтоимость расходных материалов: </th>
@@ -662,7 +667,8 @@
                         @endif
                     </td>
                 </tr>
-                <input type="hidden" id="price_work-500" name="price_work" value={{ $estimate->price_work }}>
+                <input type="hidden" id="price_work-500" name="price_work"
+                    value=@if (isset($estimate->price_work)) {{ $estimate->price_work }} @endif>
 
                 <tr>
                     <th>Cтоимость работ и материалов: </th>
@@ -673,7 +679,7 @@
                     </td>
                 </tr>
                 <input type="hidden" id="price_repair_full-500" name="price_repair_full"
-                    value={{ $estimate->price_repair_full }}>
+                    value=@if (isset($estimate->price_repair_full)) {{ $estimate->price_repair_full }} @endif>
 
                 <tr>
                     <th>Cтоимость восстановительного ремонта (Всего) </th>
