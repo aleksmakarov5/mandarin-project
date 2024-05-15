@@ -1196,3 +1196,43 @@ form .nav-link {
     background-color: #f0a3a3;
     background-image: linear-gradient(to bottom, #f0a3a3, #f42323);
 }
+
+.red {
+    background-color: red;
+}
+
+.green {
+    background-color: green;
+}
+
+.yellow {
+    background-color: yellow;
+}
+
+.orange {
+    background-color: orange;
+}
+
+.purple {
+    background-color: purple;
+}
+
+.pink {
+    background-color: pink;
+}
+
+.brown {
+    background-color: brown;
+}
+
+.gray {
+    background-color: gray;
+}
+
+.teal {
+    background-color: teal;
+}
+
+.blue {
+    background-color: blue;
+}

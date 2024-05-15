@@ -36,10 +36,14 @@
         }
     }
     if (isset($estimates->price_repair_full)) {
-        $eco_delta_full = (float) str_replace(' ', '', $estimates->price_repair_full) - $summ_order - $summ_service;
+        $eco_delta_full =
+            (float) str_replace(' ', '', $estimates->price_repair_full) -
+            $summ_order -
+            $summ_service -
+            $app->sertificat;
         $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
     } else {
-        $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service;
+        $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
         if ($summ_ic_full + $summ_service_ic != 0) {
             $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
         }
@@ -49,7 +53,6 @@
     } else {
         $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
     }
-
 @endphp
 @extends('layout')
 @section('title')
@@ -72,6 +75,7 @@
                                     </td>
                                     <td> Стоимость запчастей</td>
                                     <td>Стоимость работ</td>
+                                    <td>ЗП</td>
                                 </tr>
                                 <tr>
 
@@ -100,6 +104,16 @@
                                             {{ $summ_service }} руб;
                                         </div>
 
+                                    </td>
+                                    <td>
+                                        <div
+                                            class="
+       @if ($eco_delta_full > 0) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                            {{ $eco_delta_full / 10 }} руб;
+                                        </div>
                                     </td>
                                 @endcan
                             </tr>

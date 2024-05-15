@@ -7,7 +7,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use App\Models\SparePart;
 use App\Models\application;
+use App\Models\sparepart_status;
 use Illuminate\Support\Facades\Gate;
+
 
 class SparePartController extends Controller
 {
@@ -88,6 +90,13 @@ class SparePartController extends Controller
         } else
             $spareparts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
+                ->leftJoin(
+                    'sparepart_statuses',
+                    'sparepart_statuses.id',
+                    '=',
+                    'spare_parts.status_id'
+                )
+                ->select('spare_parts.*', 'sparepart_statuses.StatusName')
                 ->get();
 
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
@@ -130,20 +139,22 @@ class SparePartController extends Controller
                     break;
             }
         }
-
+        $statuses = new sparepart_status;
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
+        $sertificat = application::findOrFail($id)->sertificat;
         return view('SparePart.index', [
             'spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
             'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_ic_half' => $summ_ic_half,
             'summ_order' => $summ_order, 'estimate' => $estimates, 'summ_service' => $summ_service,
-            'eco' => $eco
+            'eco' => $eco, 'statuses' => $statuses->all(), 'sertificat' => $sertificat,
         ]);
     }
 
     public function create($id)
     {
         $sparepart = new SparePart;
+
         return view('SparePart.create', ['sparepart' => $sparepart->all()], ['id' => $id]);
     }
 
@@ -164,7 +175,8 @@ class SparePartController extends Controller
             'comment' => 'nullable',
             'date_price' => 'nullable',
             'author' => 'integer',
-            'date_wait' => 'nullable'
+            'date_wait' => 'nullable',
+            'status_id' => 'nullable',
         ]);
         $request->flash();
 
@@ -175,6 +187,15 @@ class SparePartController extends Controller
         $sparepart->save();
         return redirect()
             ->route('SparePart', $sparepart->id_application);
+    }
+
+    public function sertificat(Request $request, $id)
+    {
+        $app = application::findOrFail($id);
+        $app->sertificat = $request->sertificat;
+        $app->save();
+        dd($app);
+        return redirect()->back();
     }
 
     public function edit($id)
@@ -213,9 +234,7 @@ class SparePartController extends Controller
             'selected_service' => 'nullable',
             'price_service' => 'nullable',
             'approved' => 'nullable',
-
-
-
+            'status_id' => 'nullable'
         ]);
         //  dd($data);
         foreach ($data as $key => $value) {

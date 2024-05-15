@@ -60,9 +60,8 @@
                         </div>
                     </th>
 
-                    <th scope="col"></th>
+                    <th scope="col" colspan=2></th>
                     @if (session('rout') == 'directions')
-                        <th scope="col"></th>
                         <th scope="col"></th>
 
 
@@ -413,12 +412,42 @@
                         <input type="hidden" name="comment" id='comment-{{ $key }}'
                             value='{{ $sparepart->comment }}'>
                         @if (session('rout') == 'directions')
-                            <td id="td_status-{{ $key }}" scope="col">
-                                @if (old('status.' . $key) !== null)
-                                    {{ old('status.' . $key) }}
+                            <td id="td_status_id-{{ $key }}" scope="col"
+                                @switch($sparepart->status_id)
+                                @case(1)
+                                    class='yellow'
+                                    @break
+                                @case(2)
+                                    class='green'
+                                    @break
+                                  @case(3)
+                                    class='teal'
+                                    @break  
+                                    @case(4)
+                                    class='blue'
+                                    @break
+                                @default
+                                class='gray'
+                                    
+                            @endswitch>
+                                @if (session('GroupId') == 6 || session('GroupId') == 5)
+
+
+                                    <select id="status_id" name="status_id"
+                                        onchange="document.forms['form{{ $key }}'].submit();">
+                                        <option value="0" @if ($sparepart->status_id == null) selected @endif>-------
+                                        </option>
+                                        @foreach ($statuses as $item)
+                                            <option value="{{ $item->id }}"
+                                                @if ($item->id === $sparepart->status_id) selected @endif>
+                                                {{ $item->StatusName }}
+                                            </option>
+                                        @endforeach
+                                    </select>
                                 @else
-                                    {{ $sparepart->status }}
+                                    {{ $sparepart->StatusName }}
                                 @endif
+
                             </td>
                             <input type="hidden" name="status" id='status-{{ $key }}'
                                 value='{{ $sparepart->status }}'>
@@ -553,11 +582,22 @@
         </div>
     @endif
     @can('company')
-        <table @can('admin')
-            id='demo'
-        @endcan
-            class="table table-striped-columns table-hover table-group-divider table-responsive">
+        <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
+            <tr>
+                <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
+                    @csrf
+                    <input type="hidden" id="sertificat-400" name="sertificat" value={{ $sertificat }}>
+                    <th>Сертификат:</th>
+                    <td id="td_sertificat-400">
+                        @if (isset($sertificat))
+                            {{ $sertificat }}
+                        @endif
+                    </td>
+                </form>
+            </tr>
+            <tr>
 
+            </tr>
             <tr>
                 <th>Cтоимость узлов и деталей:</th>
                 <td>

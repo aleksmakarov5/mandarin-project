@@ -30,9 +30,7 @@
         @endforeach
 
     </select>
-    <div class='lbl'>
 
-    </div>
 </div>
 
 <div class="form-float">

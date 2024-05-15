@@ -187,6 +187,8 @@ Route::middleware("auth:web")->group(
             ->name('SparePart.create');
         Route::get('SparePart/{id}/doc_load', [SparePartController::class, 'doc_load'])->name('SparePart.doc_load');
         Route::post('SparePart/{id}/data_load', [SparePartController::class, 'data_load'])->name('SparePart.data_load');
+        Route::post('sertificat/{id}', [SparePartController::class, 'sertificat'])->name('SparePart.sertificat');
+
         Route::post('SparePart/{id}/data_save', [SparePartController::class, 'data_save'])->name('SparePart.data_save');
 
         Route::post('SpareParts/store', [SparePartController::class, 'store'])
