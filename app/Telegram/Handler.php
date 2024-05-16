@@ -90,7 +90,7 @@ class Handler extends WebhookHandler
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '>', '7')
-                    ->where('id_status', '<', '24');
+                    ->where('id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -102,7 +102,8 @@ class Handler extends WebhookHandler
         } else {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '6');
+                    ->where('id_status', '>', '7')
+                    ->where('id_status', '<', '25');
             })
                 ->where('applications.id_MRK', '=', $user->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
