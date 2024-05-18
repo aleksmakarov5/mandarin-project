@@ -296,20 +296,18 @@ td.mrksto {
 .editable {
     border-collapse: collapse;
     border-color: rgb(80, 80, 80);
+    white-space: nowrap;
 }
 
 .editable td {
 
-    min-width: 150px;
     padding-left: 5px;
     padding-right: 5px;
 
 }
 
-.editable th {
-
-    min-width: 90px;
-
+.editable tbody {
+    cursor: pointer;
 }
 
 .editable th,
@@ -1235,4 +1233,10 @@ form .nav-link {
 
 .blue {
     background-color: blue;
+}
+
+.editable td {}
+
+#search-text0 {
+    width: 35px;
 }

@@ -22,7 +22,7 @@
                 <tr>
                     <th scope="col">#</th>
                     <th scope="col">Дата заявки</th>
-                    <th scope="col">Страховая компания</th>
+                    <th scope="col">СК</th>
                     <th scope="col">Номер заявки </th>
                     <th scope="col">Марка машины </th>
                     <th scope="col">ГНЗ </th>
@@ -38,28 +38,28 @@
                 </tr>
                 <tr>
                     <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
-                            onkeyup="tableSearch(0,'applications')">
+                            onkeydown="tableSearch(0,'applications')" width="10px">
                     </th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Дата заявки"
-                            id="search-text1" onkeyup="tableSearch(1,'applications')"></th>
+                            id="search-text1" onkeydown="tableSearch(1,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Страховая компания"
-                            id="search-text2" onkeyup="tableSearch(2,'applications')"></th>
+                            id="search-text2" onkeydown="tableSearch(2,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Номер заявки "
-                            id="search-text3" onkeyup="tableSearch(3,'applications')"></th>
+                            id="search-text3" onkeydown="tableSearch(3,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Марка машины "
-                            id="search-text4" onkeyup="tableSearch(4,'applications')"></th>
+                            id="search-text4" onkeydown="tableSearch(4,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="ГНЗ" id="search-text5"
-                            onkeyup="tableSearch(5,'applications')"> </th>
+                            onkeydown="tableSearch(5,'applications')"> </th>
                     <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text6"
-                            onkeyup="tableSearch(6,'applications')"></th>
+                            onkeydown="tableSearch(6,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
-                            id="search-text7" onkeyup="tableSearch(7,'applications')"></th>
+                            id="search-text7" onkeydown="tableSearch(7,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Телефон клиента"
-                            id="search-text8" onkeyup="tableSearch(8,'applications')"></th>
+                            id="search-text8" onkeydown="tableSearch(8,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Остаток времени, час"
-                            id="search-text9" onkeyup="tableSearch(9,'applications')"></th>
+                            id="search-text9" onkeydown="tableSearch(9,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10"
-                            onkeyup="tableSearch(10,'applications')"></th>
+                            onkeydown="tableSearch(10,'applications')"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -73,7 +73,7 @@
                 @foreach ($applications->all() as $application)
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
 
-                        <td>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
                                 :count_in="{{ json_encode($application->count) }}">
 
