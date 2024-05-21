@@ -1035,7 +1035,7 @@ nav a {
 
 .submenu {
     position: absolute;
-    left: 40%;
+    left: 10%;
     z-index: 5;
     min-width: 500px;
     background: white;
