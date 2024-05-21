@@ -15,7 +15,6 @@
         @endif
     @endcan
 
-    </div>
     <div id="app">
 
         <table id ="applications" class="editable">
