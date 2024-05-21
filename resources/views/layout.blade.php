@@ -96,6 +96,11 @@
                                     :user="{{ Auth::user()->id }}" :pi=`applications` />
 
                             </li>
+                            <li class="nav-item"><a href="\waiting"
+                                    class="nav-link {{ session('rout') == 'waiting' ? 'tn-active' : '' }}">В
+                                    обработке</a><notify-buttons :user="{{ Auth::user()->id }}" :pi=`waiting` />
+
+                            </li>
                             <li class="nav-item"><a href="\directions"
                                     class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a><notify-buttons
                                     :user="{{ Auth::user()->id }}" :pi=`directions` />

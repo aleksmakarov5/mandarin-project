@@ -313,7 +313,9 @@ td.mrksto {
 .editable th,
 .editable td {
     border: 1px solid #000;
-    padding-left: 3px;
+    padding-left: 5px;
+    padding-right: 5px;
+
     border-color: rgb(80, 80, 80);
     padding-top: 0px;
     padding-bottom: 0px;
@@ -322,11 +324,11 @@ td.mrksto {
 }
 
 .editable th {
-    color: #000000;
-    background: #c6c4c4;
+    color: #ffffff;
+    background: #30a9d8;
     border-color: white;
     padding-left: 3px;
-    font-size: 16px;
+    font-size: 12px;
 
 }
 
@@ -1235,8 +1237,173 @@ form .nav-link {
     background-color: blue;
 }
 
-.editable td {}
+.td_round {
+    border-radius: 10px;
+    padding: 2px;
+    font-size: 10px;
+}
 
-#search-text0 {
-    width: 35px;
+.auto {
+    background-color: #0b07e835;
+    color: #0a07e8;
+}
+
+.adm {
+    background-color: #07e8ca40;
+    color: #07e8ca;
+}
+
+.app_mrk {
+    background-color: #8500f933;
+    color: #8500f9;
+}
+
+.app_spm {
+    background-color: #29f90030;
+    color: #29f900;
+}
+
+.otkaz {
+    background-color: #00000033;
+    color: #000000;
+}
+
+.necel {
+    background-color: #ed92923b;
+    color: #ed9292;
+}
+
+.otk_client {
+    background-color: #f743432a;
+    color: #f74343;
+}
+
+.prinyata {
+    background-color: #70fb8536;
+    color: #70fb85;
+}
+
+.podpisan {
+    background-color: #12dbfe4b;
+    color: #12dafe;
+}
+
+.otvet_sk {
+    background-color: #ffd50037;
+    color: #ffd500;
+}
+
+.ozh_nap {
+    background-color: #ff95003a;
+    color: #ff9500;
+}
+
+.napravlenie {
+    background-color: #02f9403e;
+    color: #02f940;
+}
+
+.zakaz {
+    background-color: #1ddad444;
+    color: #1ddad3;
+}
+
+.zakaz_full {
+    background-color: #1ddad444;
+    color: #1ddad3;
+}
+
+.sklad {
+    background-color: #a814b93e;
+    color: #a814b9;
+}
+
+.waiting {
+    background-color: #fa0e0e2a;
+    color: #fa0e0e;
+}
+
+.vyzov {
+    background-color: #f313c62d;
+    color: #f313c6;
+}
+
+.akt_sp {
+    background-color: #fff70023;
+    color: #fff700;
+}
+
+.remont {
+    background-color: #0400ff37;
+    color: #0400ff;
+}
+
+.full {
+    background-color: #5e420142;
+    color: #5e4201;
+}
+
+.soglas {
+    background-color: #0071083a;
+    color: #007108;
+}
+
+.schet {
+    background-color: #0071083a;
+    color: #003171;
+}
+
+.oplata {
+    background-color: #1702823a;
+    color: #180282;
+}
+
+.sto-full {
+    background-color: #71005e31;
+    color: #71005e;
+}
+
+.archiv {
+    background-color: #00000033;
+    color: #000000;
+}
+
+.law {
+    background-color: #00000033;
+    color: #000000;
+}
+
+.vsk {
+    background-color: #1702823a;
+    color: #180282;
+}
+
+.tin {
+    background-color: #0071083a;
+    color: #007108;
+}
+
+.ingos {
+    background-color: #f313c62d;
+    color: #f313c6;
+}
+
+.kuzov {
+    background-color: #0071083a;
+    color: #007108;
+}
+
+.pokraska {
+    background-color: #0400ff37;
+    color: #0400ff;
+}
+
+.elit {
+    background-color: #fff70023;
+    color: #fff700;
+}
+
+.redstar {
+    background-color: #f0a3a3;
+    color: #f42323;
 }

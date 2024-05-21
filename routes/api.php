@@ -51,6 +51,8 @@ Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function
         ->name('notifycount.applications');
     Route::get('/directions/{user_id}', [NotifyCountController::class, 'directions'])
         ->name('notifycount.directions');
+    Route::get('/waiting/{user_id}', [NotifyCountController::class, 'waiting'])
+        ->name('notifycount.waiting');
     Route::get('/failures/{user_id}', [NotifyCountController::class, 'failures'])
         ->name('notifycount.failures');
     Route::get('/lawyers/{user_id}', [NotifyCountController::class, 'lawyers'])

@@ -151,6 +151,7 @@ Route::middleware("auth:web")->group(
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
         Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
+        Route::get('/waiting',  [ApplicationController::class, 'waiting'])->name('waiting');
         Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');
         Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
             ->name('applications.edit');

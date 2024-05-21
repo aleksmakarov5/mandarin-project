@@ -14,52 +14,78 @@
                 class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
         @endif
     @endcan
+
+    </div>
     <div id="app">
 
         <table id ="applications" class="editable">
             <thead>
 
                 <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Дата заявки</th>
-                    <th scope="col">СК</th>
-                    <th scope="col">Номер заявки </th>
-                    <th scope="col">Марка машины </th>
-                    <th scope="col">ГНЗ </th>
-                    <th scope="col">VIN</th>
-                    <th scope="col">ФИО клиента</th>
-                    <th scope="col">Телефон клиента</th>
-                    <th scope="col">Остаток времени, час</th>
                     <th scope="col">Статус</th>
+                    <th scope="col">Тайминг</th>
+                    <th scope="col">#</th>
+                    <th scope="col">СК</th>
+                    <th scope="col">СТО</th>
+                    <th scope="col">Юрист</th>
+                    <th scope="col">№ убытка</th>
+                    <th scope="col">Клиент</th>
+                    <th scope="col">Телефон</th>
+                    <th scope="col">Авто</th>
+                    <th scope="col">ГРЗ </th>
+                    <th scope="col">Дата</th>
+                    <th scope="col">VIN</th>
                     <th scope="col">Тип убытка</th>
-                    <th scope="col">Наша компания</th>
+                    <th scope="col">СТОА</th>
+                    <th scope="col">Сумма З/Ч</th>
+                    <th scope="col">Сумма ремонта</th>
+                    <th scope="col">Затраты на ремонт</th>
+                    <th scope="col">Оплата СК</th>
+                    <th scope="col">Дата оплаты</th>
+                    <th scope="col">Оплаты СТО</th>
+                    <th scope="col">Остаток</th>
                     <th scope="col"></th>
 
                 </tr>
                 <tr>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
-                            onkeydown="tableSearch(0,'applications')" width="10px">
+
+                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text0"
+                            onkeyup="tableSearch(0,'applications')"></th>
+
+                    <th scope="col"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
+                            onkeyup="tableSearch(2,'applications')">
                     </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Дата заявки"
-                            id="search-text1" onkeydown="tableSearch(1,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Страховая компания"
-                            id="search-text2" onkeydown="tableSearch(2,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Номер заявки "
-                            id="search-text3" onkeydown="tableSearch(3,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Марка машины "
-                            id="search-text4" onkeydown="tableSearch(4,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ГНЗ" id="search-text5"
-                            onkeydown="tableSearch(5,'applications')"> </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text6"
-                            onkeydown="tableSearch(6,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text3"
+                            onkeyup="tableSearch(3,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text4"
+                            onkeyup="tableSearch(4,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text5"
+                            onkeyup="tableSearch(5,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text6"
+                            onkeyup="tableSearch(6,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
-                            id="search-text7" onkeydown="tableSearch(7,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон клиента"
-                            id="search-text8" onkeydown="tableSearch(8,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Остаток времени, час"
-                            id="search-text9" onkeydown="tableSearch(9,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text10"
-                            onkeydown="tableSearch(10,'applications')"></th>
+                            id="search-text7" onkeyup="tableSearch(7,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text8"
+                            onkeyup="tableSearch(8,'applications')"></th>
+
+
+                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text9"
+                            onkeyup="tableSearch(9,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text10"
+                            onkeyup="tableSearch(10,'applications')"> </th>
+                    <th scope="col"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text12"
+                            onkeyup="tableSearch(12,'applications')"></th>
+
+                    <th scope="col"><input class="form-control" type="text" placeholder="Тип убытка"
+                            id="search-text13" onkeyup="tableSearch(13,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text14"
+                            onkeyup="tableSearch(14,'applications')"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
@@ -72,34 +98,12 @@
 
                 @foreach ($applications->all() as $application)
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
-
-                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
-                                :count_in="{{ json_encode($application->count) }}">
-
-
-
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            <div class="td_round {{ $application->status_theme }}">
+                                {{ $application->StatusName }}
+                            </div>
                         </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ Date::parse($application->created_at)->format('j F Yг.') }}</td>
-                        <td scope="col">{{ $application->name }} </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->numberInsuranceCompanyApplication }} </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->CarModel }} </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->gnz }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->vin }}</td>
-                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->ClientName }}</td>
-                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->ClientPhone }}</td>
                         @if ($application->count_hour > 0)
                             <td scope="col"
                                 onclick="window.location.href='/application/{{ $application->id }}'; return false">
@@ -138,13 +142,50 @@
                         @else
                             <td scope="col" class="alert alert-danger"
                                 onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                Просрочено на
-                                {{ $application->count_hour * -1 }} {{ show_hours($application->count_hour * -1) }}
+                                Просрочено
                             </td>
                         @endif
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
+                                :count_in="{{ json_encode($application->count) }}">
+                        </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->StatusName }}</td>
+                            <div class="td_round  {{ $application->insurance_companies_theme }}">
+                                {{ $application->name }} </div>
+                        </td>
+                        <td
+                            scope="col"onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            <div class="td_round  {{ $application->services_theme }}"> {{ $application->service_name }}
+                            </div>
+                        </td>
+                        <td
+                            scope="col"onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            <div class="td_round  {{ $application->lawyers_theme }}"> {{ $application->lawyer_name }}
+                            </div>
+                        </td>
+
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->numberInsuranceCompanyApplication }} </td>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->ClientName }}</td>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->ClientPhone }}</td>
+
+
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->CarModel }} </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->gnz }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ Date::parse($application->created_at)->format('j F Yг.') }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->vin }}</td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ isset($application->ub_type) && $application->ub_type ? 'Каско' : 'Осаго' }}</td>
@@ -167,7 +208,7 @@
             var table = document.getElementById(table);
             var regPhrase = new RegExp(phrase.value, 'i');
             var flag = false;
-            for (var i = 3; i < table.rows.length; i++) {
+            for (var i = 2; i < table.rows.length; i++) {
                 flag = false;
                 flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
                 if (flag) {
@@ -199,7 +240,7 @@
                 editable.selected = cell;
                 // НАЖМИТЕ ENTER ИЛИ ЩЕЛКНИТЕ ВНЕ, ЧТОБЫ ЗАВЕРШИТЬ РЕДАКТИРОВАНИЕ
                 window.addEventListener("click", editable.close);
-                cell.onkeydown = (evt) => {
+                cell.onkeyup = (evt) => {
                     if (evt.key == "Enter") {
                         editable.close(true);
                         return false;
