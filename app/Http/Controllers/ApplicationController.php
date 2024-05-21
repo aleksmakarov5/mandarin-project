@@ -1238,10 +1238,12 @@ class ApplicationController extends Controller
         ]);
         // dd($data);
         foreach ($data as $key => $value) {
-            if ($key == 'DTPdate') {
-                $value = date('Y-m-d', strtotime($value));
+            if ($value !== null) {
+                if ($key == 'DTPdate') {
+                    $value = date('Y-m-d', strtotime($value));
+                }
+                $application->$key = $value;
             }
-            $application->$key = $value;
         }
         $application->save();
 
