@@ -1035,9 +1035,9 @@ nav a {
 
 .submenu {
     position: absolute;
-    right: 40%;
+    left: 40%;
     z-index: 5;
-    min-width: 400px;
+    min-width: 500px;
     background: white;
     border-top: 1px solid #CBCBCC;
     border-left: 1px solid #CBCBCC;
@@ -1047,6 +1047,11 @@ nav a {
     transform-origin: 0% 0%;
     transform: rotateX(-90deg);
     transition: .3s linear;
+}
+
+.submenu .submenu {
+    max-height: 400px;
+    overflow: scroll;
 }
 
 .submenu li {
