@@ -356,9 +356,12 @@
                                                 @if ($app->id_status > 2 && $app->id_status < 26)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id > 2 && $stat->id < 26)
+                                                            @if ($stat->id > 7 && $stat->id < 26)
                                                                 <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
+                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">
+                                                                        <div class="td_round  {{ $stat->status_theme }}">
+                                                                            {{ $stat->StatusName }}</div>
+                                                                    </a>
                                                                 </li>
                                                             @endif
                                                         @endforeach

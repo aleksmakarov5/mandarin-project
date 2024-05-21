@@ -1238,6 +1238,7 @@ form .nav-link {
 }
 
 .td_round {
+    padding-left: 7px;
     border-radius: 10px;
     padding: 2px;
     font-size: 10px;
