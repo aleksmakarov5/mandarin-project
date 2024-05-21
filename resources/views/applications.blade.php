@@ -192,10 +192,33 @@
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ $application->our_name }}</td>
-                        <td scope="col">
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->summ_order }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->summ_service }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->summ_order + $application->summ_service }}</td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->eco_delta_full }}</td>
+
+
+                        <th scope="col">
                             <a href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
                                     src="/storage/img/delete.png" width="20" alt="delete"></a>
-                        </td>
+                        </th>
 
                     </tr>
                 @endforeach
