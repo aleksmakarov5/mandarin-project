@@ -353,7 +353,7 @@
                                                 @endif
                                             @endcan
                                             @canany(['mrk', 'admin', 'km'])
-                                                @if ($app->id_status > 7 && $app->id_status < 15)
+                                                @if ($app->id_status > 2 && $app->id_status < 26)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
                                                             @if ($stat->id > 2 && $stat->id < 26)
@@ -364,17 +364,20 @@
                                                         @endforeach
                                                     </ul>
                                                 @endif
+                                            @endcanany
 
-                                            </li>
-                                        </ul>
-                                    </li>
 
-                                </ul>
-                            </nav>
-                        </li>
-                    </ul>
-                </header>
-            </div>
-        @endif
-        @yield('main')
-    @endsection
+
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        </nav>
+                    </li>
+                </ul>
+            </header>
+        </div>
+    @endif
+    @yield('main')
+@endsection
