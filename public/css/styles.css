@@ -1037,7 +1037,6 @@ nav a {
     position: absolute;
     left: 10%;
     z-index: 5;
-    min-width: 500px;
     background: white;
     border-top: 1px solid #CBCBCC;
     border-left: 1px solid #CBCBCC;
@@ -1047,6 +1046,7 @@ nav a {
     transform-origin: 0% 0%;
     transform: rotateX(-90deg);
     transition: .3s linear;
+    white-space: nowrap;
 }
 
 .submenu .submenu {
@@ -1065,12 +1065,6 @@ nav a {
     border-bottom: 1px solid #CBCBCC;
 }
 
-.submenu .submenu {
-    position: absolute;
-    right: 50%;
-    top: -4px;
-    transition: .3s linear;
-}
 
 nav li:hover>.submenu {
     transform: rotateX(0deg);
