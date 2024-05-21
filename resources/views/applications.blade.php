@@ -211,11 +211,19 @@
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->eco_delta_full }}</td>
+                            <div
+                                class="
+       @if ($application->proc > 61) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                {{ $application->eco_delta_full }} руб. ({{ $application->proc }}%)</div>
+                        </td>
 
 
                         <th scope="col">
-                            <a href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
+                            <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
+                                href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
                                     src="/storage/img/delete.png" width="20" alt="delete"></a>
                         </th>
 
