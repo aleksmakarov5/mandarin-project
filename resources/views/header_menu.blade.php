@@ -356,7 +356,7 @@
                                                 @if ($app->id_status > 7 && $app->id_status < 15)
                                                     <ul class="submenu">
                                                         @foreach ($status as $stat)
-                                                            @if ($stat->id > 2 && $stat->id < 15)
+                                                            @if ($stat->id > 2 && $stat->id < 26)
                                                                 <li><a
                                                                         href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
                                                                 </li>
@@ -364,89 +364,17 @@
                                                         @endforeach
                                                     </ul>
                                                 @endif
-                                                @if (($app->id_status > 17 && $app->id_status < 22) || $app->id_status == 15)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if (($stat->id > 18 && $stat->id < 22) || $stat->id == 17)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                                @if ($app->id_status == 16)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id == 14)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                                @if ($app->id_status == 19)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id == 14)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcanany
-                                            @canany(['buh', 'km'])
-                                                @if ($app->id_status > 13 && $app->id_status < 18)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id > 14 && $stat->id < 17)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcanany
-                                            @canany(['spm', 'km'])
-                                                @if ($app->id_status == 17)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id == 18)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcanany
-                                            @can('admin')
-                                                @if ($app->id_status > 21 && $app->id_status < 26)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id > 20 && $stat->id < 26)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcan
-                                        </li>
-                                    </ul>
-                                </li>
 
-                            </ul>
-                        </nav>
-                    </li>
-                </ul>
-            </header>
-        </div>
-    @endif
-    @yield('main')
-@endsection
+                                            </li>
+                                        </ul>
+                                    </li>
+
+                                </ul>
+                            </nav>
+                        </li>
+                    </ul>
+                </header>
+            </div>
+        @endif
+        @yield('main')
+    @endsection
