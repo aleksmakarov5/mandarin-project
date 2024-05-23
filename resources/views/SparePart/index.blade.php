@@ -714,7 +714,7 @@
                         alert alert-danger @endif
                     ">
                                 @if ($estimate->emr10)
-                                    {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full * 1.1) }}
+                                    {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) * 1.1 }}
                                 @else
                                     {{ $summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) }}
                                 @endif
