@@ -23,7 +23,7 @@
                     <th scope="col" colspan="2">Аналог</th>
                     <th scope="col" colspan="2">Б/у</th>
 
-                    <th scope="col">Не меняется</th>
+                    <th scope="col">-</th>
                     <th scope="col">Разница </th>
                 @endcan
                 <th scope="col" @if (session('GroupId') != 9) colspan="2" @endif>Цена СТО</th>
