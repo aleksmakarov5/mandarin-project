@@ -7,6 +7,7 @@
     @can('company')
         <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
     @endcan
+    </div>
     <table id="demo" class="editable">
         <thead>
 
