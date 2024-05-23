@@ -35,6 +35,7 @@ use App\Events\MessageSent;
 use Tochka\Calendar\WorkCalendar;
 use App\Models\status_chat;
 use App\Models\status_message;
+use Illuminate\Support\Number;
 
 
 use Illuminate\Validation\Rules\Can;
@@ -46,6 +47,94 @@ use Illuminate\Support\Facades\Mail as Mail_send;
 class ApplicationController extends Controller
 {
 
+    public function configure($applications)
+    {
+        foreach ($applications as $application) {
+            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
+            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
+            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
+            $summ_service = 0;
+            $summ_service_ic = 0;
+            foreach ($Works_serv as $work) {
+                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
+                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
+            }
+
+            // dd($rewiew->all()) ;
+            $summ_ic_full = 0;
+            $summ_ic_half = 0;
+            $summ_order = 0;
+            $eco_delta_full = 0;
+            foreach ($spareparts as $i => $sparepart) {
+                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
+                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
+                switch ($sparepart->selected_price) {
+                    case 1:
+                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
+                        break;
+                    case 2:
+                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
+                        break;
+                    case 3:
+                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
+                        break;
+                }
+            }
+
+            $proc = 0;
+            if (isset($estimates->price_repair_full)) {
+                if ($estimates->emr10) {
+                    $eco_delta_full =
+                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
+                        $summ_order -
+                        $summ_service -
+                        $application->sertificat;
+                    $proc = round(
+                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
+                    );
+                } else {
+                    $eco_delta_full =
+                        (float) str_replace(' ', '', $estimates->price_repair_full) -
+                        $summ_order -
+                        $summ_service -
+                        $application->sertificat;
+                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+                }
+            } else {
+                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
+                if ($summ_ic_full + $summ_service_ic != 0) {
+                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
+                }
+            }
+            if (isset($estimates->price_repair_half)) {
+                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
+            } else {
+                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
+            }
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+            $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
+            $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
+            $application->summ_ic_full = Number::Currency(isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full, 'RUR', 'ru');
+            $application->summ_service = Number::Currency($summ_service, 'RUR', 'ru');
+            $application->summ_full =
+                Number::Currency($summ_service + $summ_order, 'RUR', 'ru');
+            $application->proc = $proc;
+            $application->count = $count;
+        }
+        return $applications;
+    }
     public function applications(Request $request)
     {
         $only_me = 0;
@@ -138,88 +227,7 @@ class ApplicationController extends Controller
             $application->created = $application->created_at->toFormattedDateString();
             $application->count_five = 5 - $current->diffInHours($application->check_date);
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
     }
@@ -256,87 +264,7 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         session(['rout' => 'failures']);
 
 
@@ -376,87 +304,7 @@ class ApplicationController extends Controller
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         return view('applications', ['applications' => $applications],);
     }
 
@@ -492,87 +340,7 @@ class ApplicationController extends Controller
             $application->count_hour = 1;
             $application->max_hour = 1000;
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         return view('applications', ['applications' => $applications],);
     }
 
@@ -662,87 +430,7 @@ class ApplicationController extends Controller
 
             // dd($applications);
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         session(['rout' => 'directions']);
         //echo (session('rout'));
 
@@ -860,87 +548,7 @@ class ApplicationController extends Controller
 
             // dd($applications);
         }
-        foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
-            $summ_service = 0;
-            $summ_service_ic = 0;
-            foreach ($Works_serv as $work) {
-                $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-                $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            }
-
-            // dd($rewiew->all()) ;
-            $summ_ic_full = 0;
-            $summ_ic_half = 0;
-            $summ_order = 0;
-            $eco_delta_full = 0;
-            foreach ($spareparts as $i => $sparepart) {
-                $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-                $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
-                switch ($sparepart->selected_price) {
-                    case 1:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
-                        break;
-                    case 2:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
-                        break;
-                    case 3:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
-                        break;
-                }
-            }
-            $proc = 0;
-            if (isset($estimates->price_repair_full)) {
-                if ($estimates->emr10) {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
-                } else {
-                    $eco_delta_full =
-                        (float) str_replace(' ', '', $estimates->price_repair_full) -
-                        $summ_order -
-                        $summ_service -
-                        $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
-                }
-            } else {
-                $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;
-                if ($summ_ic_full + $summ_service_ic != 0) {
-                    $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
-                }
-            }
-            if (isset($estimates->price_repair_half)) {
-                $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-            } else {
-                $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-            }
-            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
-            $application->eco_delta_full = $eco_delta_full;
-            $application->summ_order = $summ_order;
-            $application->summ_ic_full = isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full;
-            $application->summ_service = $summ_service;
-            $application->proc = $proc;
-            $application->count = $count;
-        }
+        $applications = $this->configure($applications);
         session(['rout' => 'waiting']);
         //echo (session('rout'));
 

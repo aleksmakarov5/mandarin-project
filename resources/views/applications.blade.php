@@ -199,7 +199,7 @@
                             {{ $application->summ_service }}</td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->summ_order + $application->summ_service }}</td>
+                            {{ $application->summ_full }}</td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                         </td>

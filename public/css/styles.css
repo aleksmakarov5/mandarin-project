@@ -329,6 +329,7 @@ td.mrksto {
     border-color: white;
     padding-left: 3px;
     font-size: 12px;
+    text-align: center;
 
 }
 
@@ -1355,12 +1356,12 @@ form .nav-link {
 
 .oplata {
     background-color: #1702823a;
-    color: #180282;
+    color: #820202;
 }
 
 .sto-full {
     background-color: #71005e31;
-    color: #71005e;
+    color: #fe0a0a;
 }
 
 .archiv {
