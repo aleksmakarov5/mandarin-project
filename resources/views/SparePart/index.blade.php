@@ -689,7 +689,7 @@
                     <th>Cтоимость восстановительного ремонта (Всего) </th>
                     <td id='td_price_repair_full-500'>
                         @if (isset($estimate->price_repair_full))
-                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair_full * 1.1 : $estimate->price_repair_full) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair_full * 1.1 : (float) $estimate->price_repair_full) }}
                         @endif
                     </td>
                 </tr>
