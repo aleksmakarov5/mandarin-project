@@ -577,237 +577,238 @@
             </tr>
         </tbody>
     </table>
-    @if ($errors->any())
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
-    @can('company')
-        <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
-            <tr>
-                <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
+    <div class="container">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+        @can('company')
+            <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
+                <tr>
+                    <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
+                        @csrf
+                        <input type="hidden" id="sertificat-400" name="sertificat" value={{ $sertificat }}>
+                        <th>Сертификат:</th>
+                        <td id="td_sertificat-400">
+                            @if (isset($sertificat))
+                                {{ Number::Currency($sertificat, 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </form>
+                </tr>
+                <tr>
+
+                </tr>
+                <tr>
+                    <form action="/emr10/{{ $id }}" method="POST" id="form_emr" name="form_emr">
+                        @csrf
+                        <th>ЕМР+10:</th>
+                        <th>
+                            <select class=sel id="emr10" name="emr10" onchange="document.forms['form_emr'].submit();">
+                                <option value=0 @if (isset($estimate->emr10) && $estimate->emr10 == 0) selected @endif>нет</option>
+                                <option value=1 @if (isset($estimate->emr10) && $estimate->emr10 == 1) selected @endif>да</option>
+                            </select>
+                        </th>
+                    </form>
+                </tr>
+                <form action="/estimate/{{ $id }}" method="POST" id="form500" name="form500">
                     @csrf
-                    <input type="hidden" id="sertificat-400" name="sertificat" value={{ $sertificat }}>
-                    <th>Сертификат:</th>
-                    <td id="td_sertificat-400">
-                        @if (isset($sertificat))
-                            {{ Number::Currency($sertificat, 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </form>
-            </tr>
-            <tr>
+                    <input type="hidden" id="price_sp_full-500" name="price_sp_full"
+                        value=@if (isset($estimate->price_sp_full)) {{ Number::Currency($estimate->price_sp_full, 'RUR', 'ru') }} @endif>
 
-            </tr>
-            <tr>
-                <form action="/emr10/{{ $id }}" method="POST" id="form_emr" name="form_emr">
-                    @csrf
-                    <th>ЕМР+10:</th>
-                    <th>
-                        <select class=sel id="emr10" name="emr10" onchange="document.forms['form_emr'].submit();">
-                            <option value=0 @if (isset($estimate->emr10) && $estimate->emr10 == 0) selected @endif>нет</option>
-                            <option value=1 @if (isset($estimate->emr10) && $estimate->emr10 == 1) selected @endif>да</option>
-                        </select>
-                    </th>
-                </form>
-            </tr>
-            <form action="/estimate/{{ $id }}" method="POST" id="form500" name="form500">
-                @csrf
-                <input type="hidden" id="price_sp_full-500" name="price_sp_full"
-                    value=@if (isset($estimate->price_sp_full)) {{ Number::Currency($estimate->price_sp_full, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость узлов и деталей:</th>
+                        <td id='td_price_sp_full-500'>
+                            @if (isset($estimate->price_sp_full))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_sp_half-500" name="price_sp_half"
+                        value=@if (isset($estimate->price_sp_half)) {{ Number::Currency((float) $estimate->price_sp_half, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость узлов и деталей:</th>
-                    <td id='td_price_sp_full-500'>
-                        @if (isset($estimate->price_sp_full))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_full * 1.1 : $estimate->price_sp_full), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_sp_half-500" name="price_sp_half"
-                    value=@if (isset($estimate->price_sp_half)) {{ Number::Currency((float) $estimate->price_sp_half, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость узлов и деталей c учетом износа:</th>
+                        <td id='td_price_sp_half-500'>
+                            @if (isset($estimate->price_sp_half))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_repair-500" name="price_repair"
+                        value=@if (isset($estimate->price_repair)) {{ Number::Currency((float) $estimate->price_repair, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость узлов и деталей c учетом износа:</th>
-                    <td id='td_price_sp_half-500'>
-                        @if (isset($estimate->price_sp_half))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_sp_half * 1.1 : $estimate->price_sp_half), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_repair-500" name="price_repair"
-                    value=@if (isset($estimate->price_repair)) {{ Number::Currency((float) $estimate->price_repair, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость ремонта/замены:</th>
+                        <td id='td_price_repair-500'>
+                            @if (isset($estimate->price_repair))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_paint-500" name="price_paint"
+                        value=@if (isset($estimate->price_paint)) {{ Number::Currency((float) $estimate->price_paint, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость ремонта/замены:</th>
-                    <td id='td_price_repair-500'>
-                        @if (isset($estimate->price_repair))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_paint-500" name="price_paint"
-                    value=@if (isset($estimate->price_paint)) {{ Number::Currency((float) $estimate->price_paint, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость окраски контроля: </th>
+                        <td id='td_price_paint-500'>
+                            @if (isset($estimate->price_paint))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_zip-500" name="price_zip"
+                        value=@if (isset($estimate->price_zip)) {{ Number::Currency($estimate->price_zip, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость окраски контроля: </th>
-                    <td id='td_price_paint-500'>
-                        @if (isset($estimate->price_paint))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_zip-500" name="price_zip"
-                    value=@if (isset($estimate->price_zip)) {{ Number::Currency($estimate->price_zip, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость расходных материалов: </th>
+                        <td id='td_price_zip-500'>
+                            @if (isset($estimate->price_zip))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_work-500" name="price_work"
+                        value=@if (isset($estimate->price_work)) {{ Number::Currency((float) $estimate->price_work, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость расходных материалов: </th>
-                    <td id='td_price_zip-500'>
-                        @if (isset($estimate->price_zip))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_work-500" name="price_work"
-                    value=@if (isset($estimate->price_work)) {{ Number::Currency((float) $estimate->price_work, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость работ и материалов: </th>
+                        <td id='td_price_work-500'>
+                            @if (isset($estimate->price_work))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
+                    <input type="hidden" id="price_repair_full-500" name="price_repair_full"
+                        value=@if (isset($estimate->price_repair_full)) {{ Number::Currency((float) $estimate->price_repair_full, 'RUR', 'ru') }} @endif>
 
-                <tr>
-                    <th>Cтоимость работ и материалов: </th>
-                    <td id='td_price_work-500'>
-                        @if (isset($estimate->price_work))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
-                <input type="hidden" id="price_repair_full-500" name="price_repair_full"
-                    value=@if (isset($estimate->price_repair_full)) {{ Number::Currency((float) $estimate->price_repair_full, 'RUR', 'ru') }} @endif>
+                    <tr>
+                        <th>Cтоимость восстановительного ремонта (Всего) </th>
+                        <td id='td_price_repair_full-500'>
+                            @if (isset($estimate->price_repair_full))
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair_full * 1.1 : (float) $estimate->price_repair_full), 'RUR', 'ru') }}
+                            @endif
+                        </td>
+                    </tr>
 
-                <tr>
-                    <th>Cтоимость восстановительного ремонта (Всего) </th>
-                    <td id='td_price_repair_full-500'>
-                        @if (isset($estimate->price_repair_full))
-                            {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair_full * 1.1 : (float) $estimate->price_repair_full), 'RUR', 'ru') }}
-                        @endif
-                    </td>
-                </tr>
+                    <tr>
+                        <th>Фактическая стоимость восстановительного ремонта </th>
+                        <th>
+                            @if (isset($summ_order) && isset($summ_service))
+                                {{ Number::Currency($summ_order + $summ_service, 'RUR', 'ru') }}
+                            @endif
+                        </th>
 
-                <tr>
-                    <th>Фактическая стоимость восстановительного ремонта </th>
-                    <th>
-                        @if (isset($summ_order) && isset($summ_service))
-                            {{ Number::Currency($summ_order + $summ_service, 'RUR', 'ru') }}
-                        @endif
-                    </th>
-
-                </tr>
-                <tr>
-                    <th>Разница от полной стоимости</th>
-                    <th>
-                        @if (isset($estimate->price_repair_full))
-                            <div
-                                class="
+                    </tr>
+                    <tr>
+                        <th>Разница от полной стоимости</th>
+                        <th>
+                            @if (isset($estimate->price_repair_full))
+                                <div
+                                    class="
                     @if ($summ_order + $summ_service - (int) str_replace(' ', '', $estimate->price_repair_full) < 0) alert alert-success
                     @else
                         alert alert-danger @endif
                     ">
-                                @if ($estimate->emr10)
-                                    {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) * 1.1, 'RUR', 'ru') }}
-                                @else
-                                    {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full), 'RUR', 'ru') }}
-                                @endif
+                                    @if ($estimate->emr10)
+                                        {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) * 1.1, 'RUR', 'ru') }}
+                                    @else
+                                        {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full), 'RUR', 'ru') }}
+                                    @endif
 
-                            </div>
-                        @endif
-                    </th>
-                </tr>
-            </form>
+                                </div>
+                            @endif
+                        </th>
+                    </tr>
+                </form>
 
-        </table>
-    @endcan
-    <script>
-        function tableSearch(k, table) {
-            var phrase = document.getElementById('search-text' + k);
-            var table = document.getElementById(table);
-            var regPhrase = new RegExp(phrase.value, 'i');
-            var flag = false;
-            for (var i = 3; i < table.rows.length; i++) {
-                flag = false;
-                flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
-                if (flag) {
-                    table.rows[i].style.display = "";
-                } else {
-                    table.rows[i].style.display = "none";
-                }
-
-            }
-        }
-        // ИНИЦИАЛИЗАЦИЯ - ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ ЯЧЕЙКИ
-        window.addEventListener("DOMContentLoaded", () => {
-            for (let cell of document.querySelectorAll("#demo td")) {
-                cell.ondblclick = () => {
-                    editable.edit(cell);
-                };
-            }
-        });
-        let editable = {
-            // "ПРЕОБРАЗОВАТЬ" В РЕДАКТИРОВАННУЮ ЯЧЕЙКУ
-            edit: (cell) => {
-                // УДАЛИТЬ "ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ"
-                cell.ondblclick = "";
-                // РЕДАКТИРУЕМОЕ СОДЕРЖИМОЕ
-                cell.contentEditable = true;
-                cell.focus();
-                // "ОТМЕТИТЬ" ТЕКУЩУЮ ВЫБРАННУЮ ЯЧЕЙКУ
-                cell.classList.add("edit");
-                editable.selected = cell;
-                // НАЖМИТЕ ENTER ИЛИ ЩЕЛКНИТЕ ВНЕ, ЧТОБЫ ЗАВЕРШИТЬ РЕДАКТИРОВАНИЕ
-                window.addEventListener("click", editable.close);
-                cell.onkeydown = (evt) => {
-                    if (evt.key == "Enter") {
-                        editable.close(true);
-                        return false;
+            </table>
+        @endcan
+        <script>
+            function tableSearch(k, table) {
+                var phrase = document.getElementById('search-text' + k);
+                var table = document.getElementById(table);
+                var regPhrase = new RegExp(phrase.value, 'i');
+                var flag = false;
+                for (var i = 3; i < table.rows.length; i++) {
+                    flag = false;
+                    flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
+                    if (flag) {
+                        table.rows[i].style.display = "";
+                    } else {
+                        table.rows[i].style.display = "none";
                     }
-                };
-            },
-            // ЗАВЕРШИТЬ "РЕЖИМ РЕДАКТИРОВАНИЯ"
-            selected: null, // текущая выбранная ячейка
-            close: (evt) => {
-                if (evt.target != editable.selected) {
 
-                    // УДАЛИТЬ "РЕДАКТИРОВАНИЕ"
-                    window.getSelection().removeAllRanges();
-                    editable.selected.contentEditable = false;
-                    // ВОССТАНОВИТЬ КЛИК-СЛУШАТЕЛИ
-                    window.removeEventListener("click", editable.close);
-
-                    let cell = editable.selected;
+                }
+            }
+            // ИНИЦИАЛИЗАЦИЯ - ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ ЯЧЕЙКИ
+            window.addEventListener("DOMContentLoaded", () => {
+                for (let cell of document.querySelectorAll("#demo td")) {
                     cell.ondblclick = () => {
                         editable.edit(cell);
                     };
-                    // "СНЯТЬ ПОМЕТКУ" ТЕКУЩЕЙ ВЫБРАННОЙ ЯЧЕЙКИ
-                    editable.selected.classList.remove("edit");
-                    editable.selected = null;
-                    // newvar = "Третий способ вывода переменной";
-                    let str = cell.id;
-                    let start = str.indexOf("_");
-                    let isid = document.getElementById(str.substring(start + 1, str.length));
-                    start = str.indexOf("-");
-                    let id = str.substring(start + 1, str.length);
-                    isid.value = cell.innerHTML;
-                    let form = document.getElementById('form' + id);
-                    let params = new FormData(form);
-                    let url = form.getAttribute('action');
-
-                    fetch(url, {
-                        method: 'POST',
-                        body: params
-                    });
                 }
-            }
-        };
-    </script>
-@endsection
+            });
+            let editable = {
+                // "ПРЕОБРАЗОВАТЬ" В РЕДАКТИРОВАННУЮ ЯЧЕЙКУ
+                edit: (cell) => {
+                    // УДАЛИТЬ "ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ"
+                    cell.ondblclick = "";
+                    // РЕДАКТИРУЕМОЕ СОДЕРЖИМОЕ
+                    cell.contentEditable = true;
+                    cell.focus();
+                    // "ОТМЕТИТЬ" ТЕКУЩУЮ ВЫБРАННУЮ ЯЧЕЙКУ
+                    cell.classList.add("edit");
+                    editable.selected = cell;
+                    // НАЖМИТЕ ENTER ИЛИ ЩЕЛКНИТЕ ВНЕ, ЧТОБЫ ЗАВЕРШИТЬ РЕДАКТИРОВАНИЕ
+                    window.addEventListener("click", editable.close);
+                    cell.onkeydown = (evt) => {
+                        if (evt.key == "Enter") {
+                            editable.close(true);
+                            return false;
+                        }
+                    };
+                },
+                // ЗАВЕРШИТЬ "РЕЖИМ РЕДАКТИРОВАНИЯ"
+                selected: null, // текущая выбранная ячейка
+                close: (evt) => {
+                    if (evt.target != editable.selected) {
+
+                        // УДАЛИТЬ "РЕДАКТИРОВАНИЕ"
+                        window.getSelection().removeAllRanges();
+                        editable.selected.contentEditable = false;
+                        // ВОССТАНОВИТЬ КЛИК-СЛУШАТЕЛИ
+                        window.removeEventListener("click", editable.close);
+
+                        let cell = editable.selected;
+                        cell.ondblclick = () => {
+                            editable.edit(cell);
+                        };
+                        // "СНЯТЬ ПОМЕТКУ" ТЕКУЩЕЙ ВЫБРАННОЙ ЯЧЕЙКИ
+                        editable.selected.classList.remove("edit");
+                        editable.selected = null;
+                        // newvar = "Третий способ вывода переменной";
+                        let str = cell.id;
+                        let start = str.indexOf("_");
+                        let isid = document.getElementById(str.substring(start + 1, str.length));
+                        start = str.indexOf("-");
+                        let id = str.substring(start + 1, str.length);
+                        isid.value = cell.innerHTML;
+                        let form = document.getElementById('form' + id);
+                        let params = new FormData(form);
+                        let url = form.getAttribute('action');
+
+                        fetch(url, {
+                            method: 'POST',
+                            body: params
+                        });
+                    }
+                }
+            };
+        </script>
+    @endsection
