@@ -14,16 +14,16 @@
                 <th scope="col">#</th>
                 <th scope="col">Наименование</th>
                 <th scope="col">Кат. номер</th>
-                <th scope="col">Заказанный номер</th>
+                <th scope="col">Зак. номер</th>
                 @can('company')
                     <th scope="col">Цена СК</th>
 
-                    <th scope="col" colspan="2">Цена оригинал</th>
-                    <th scope="col" colspan="2">Цена аналог</th>
-                    <th scope="col" colspan="2">Цена б/у</th>
+                    <th scope="col" colspan="2">Оригинал</th>
+                    <th scope="col" colspan="2">Аналог</th>
+                    <th scope="col" colspan="2">Б/у</th>
 
                     <th scope="col">Не меняется</th>
-                    <th scope="col">Разница от полной цены</th>
+                    <th scope="col">Разница </th>
                 @endcan
                 <th scope="col" @if (session('GroupId') != 9) colspan="2" @endif>Цена СТО</th>
 
@@ -34,7 +34,7 @@
                 @if (session('rout') == 'directions')
                     <th scope="col">Статус</th>
                     <th scope="col">Дата заказа</th>
-                    <th scope="col">Ожидаемая дата получения</th>
+                    <th scope="col">Ожидаемая дата</th>
                 @endif
 
 

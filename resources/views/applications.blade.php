@@ -14,7 +14,7 @@
                 class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
         @endif
     @endcan
-
+    </div>
     <div id="app">
 
         <table id ="applications" class="editable">
@@ -36,14 +36,18 @@
                     <th scope="col">VIN</th>
                     <th scope="col">Тип убытка</th>
                     <th scope="col">СТОА</th>
-                    <th scope="col">Сумма З/Ч</th>
-                    <th scope="col">Сумма ремонта</th>
-                    <th scope="col">Затраты на ремонт</th>
-                    <th scope="col">Оплата СК</th>
-                    <th scope="col">Дата оплаты</th>
-                    <th scope="col">Оплаты СТО</th>
-                    <th scope="col">Остаток</th>
-                    <th scope="col"></th>
+                    @can('company')
+                        <th scope="col">Сумма СК</th>
+                        <th scope="col">Сумма З/Ч</th>
+                        <th scope="col">Сумма ремонта</th>
+                        <th scope="col">Затраты на ремонт</th>
+                        <th scope="col">Оплата СК</th>
+                        <th scope="col">Дата оплаты</th>
+                        <th scope="col">Оплаты СТО</th>
+                        <th scope="col">Остаток</th>
+                        <th scope="col"></th>
+                    @endcan
+
 
                 </tr>
                 <tr>
@@ -81,13 +85,17 @@
                             id="search-text13" onkeyup="tableSearch(13,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text14"
                             onkeyup="tableSearch(14,'applications')"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
-                    <th scope="col"></th>
+                    @can('company')
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    @endcan
 
                 </tr>
             </thead>
@@ -191,41 +199,46 @@
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ $application->our_name }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->summ_order }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->summ_service }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->summ_full }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                        </td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            <div
-                                class="
+                        @can('company')
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                {{ $application->summ_ic_full }}</td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                {{ $application->summ_order }}</td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                {{ $application->summ_service }}</td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                {{ $application->summ_full }}</td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            </td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            </td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            </td>
+                            <td scope="col"
+                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                <div
+                                    class="
        @if ($application->proc > 61) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                {{ $application->eco_delta_full }} руб. ({{ $application->proc }}%)</div>
-                        </td>
+                                    {{ $application->eco_delta_full }} ({{ $application->proc }}%)</div>
+                            </td>
 
 
-                        <th scope="col">
-                            <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
-                                href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
-                                    src="/storage/img/delete.png" width="20" alt="delete"></a>
-                        </th>
+                            <th scope="col">
+                                <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
+                                    href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
+                                        src="/storage/img/delete.png" width="20" alt="delete"></a>
+                            </th>
+                        @endcan
 
                     </tr>
                 @endforeach

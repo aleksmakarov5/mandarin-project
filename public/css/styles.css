@@ -179,7 +179,7 @@ div.container {
 
 .form_radio_btn {
     display: inline-block;
-    margin-right: 10px;
+    margin-right: 2px;
 }
 
 .form_radio_btn input[type=radio] {
@@ -189,16 +189,14 @@ div.container {
 .form_radio_btn label {
     display: inline-block;
     cursor: pointer;
-    padding-left: 7px;
-    padding-right: 7px;
-    padding-top: 3px;
-    padding-bottom: 3px;
-    margin-top: 2px;
-    line-height: 14px;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 1px;
+    padding-bottom: 1px;
+    line-height: 10px;
     border: 1px solid #999;
     border-radius: 2px;
     user-select: none;
-    margin: 0;
 }
 
 /* Checked */
@@ -297,6 +295,7 @@ td.mrksto {
     border-collapse: collapse;
     border-color: rgb(80, 80, 80);
     white-space: nowrap;
+    margin-left: 5px;
 }
 
 .editable td {
