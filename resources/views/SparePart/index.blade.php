@@ -594,7 +594,7 @@
                     <th>Сертификат:</th>
                     <td id="td_sertificat-400">
                         @if (isset($sertificat))
-                            {{ $sertificat }}
+                            {{ Number::Currency($sertificat, 'RUR', 'ru') }}
                         @endif
                     </td>
                 </form>
@@ -667,23 +667,23 @@
                     <th>Cтоимость расходных материалов: </th>
                     <td id='td_price_zip-500'>
                         @if (isset($estimate->price_zip))
-                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_zip * 1.1 : $estimate->price_zip) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip) }}
                         @endif
                     </td>
                 </tr>
                 <input type="hidden" id="price_work-500" name="price_work"
-                    value=@if (isset($estimate->price_work)) {{ $estimate->price_work }} @endif>
+                    value=@if (isset($estimate->price_work)) {{ (float) $estimate->price_work }} @endif>
 
                 <tr>
                     <th>Cтоимость работ и материалов: </th>
                     <td id='td_price_work-500'>
                         @if (isset($estimate->price_work))
-                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_work * 1.1 : $estimate->price_work) }}
+                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work) }}
                         @endif
                     </td>
                 </tr>
                 <input type="hidden" id="price_repair_full-500" name="price_repair_full"
-                    value=@if (isset($estimate->price_repair_full)) {{ $estimate->price_repair_full }} @endif>
+                    value=@if (isset($estimate->price_repair_full)) {{ (float) $estimate->price_repair_full }} @endif>
 
                 <tr>
                     <th>Cтоимость восстановительного ремонта (Всего) </th>
