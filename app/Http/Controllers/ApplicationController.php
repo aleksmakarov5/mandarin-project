@@ -126,7 +126,7 @@ class ApplicationController extends Controller
                 $count['message']++;
             $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
             $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
-            $application->summ_ic_full = Number::Currency((float)isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full, 'RUR', 'ru');
+            $application->summ_ic_full = Number::Currency(((float)isset($estimates->price_repair_full) ? $estimates->price_repair_full : $summ_ic_full), 'RUR', 'ru');
             $application->summ_service = Number::Currency($summ_service, 'RUR', 'ru');
             $application->summ_full =
                 Number::Currency($summ_service + $summ_order, 'RUR', 'ru');
