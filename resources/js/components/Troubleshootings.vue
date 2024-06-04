@@ -38,10 +38,10 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td><input type="text" id="PartName" v-model="PartName" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" id="ExpertApinion" v-model="ExpertApinion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" id="Сonclusion" v-model="Сonclusion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
+                    <td><div contenteditable="true"><input type="text" id="PartName" v-model="PartName" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
+                    <td><div contenteditable="true"><input type="text" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
+                    <td><div contenteditable="true"><input type="text" id="ExpertApinion" v-model="ExpertApinion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
+                    <td><div contenteditable="true"><input type="text" id="Сonclusion" v-model="Сonclusion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
                     <td scope="col"> <a @click.prevent="deletetroubleshooting(troubleshooting.id)">
                         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
                     </td>
@@ -50,8 +50,8 @@
               <tr>
                     <td scope="col">
                     </td>
-                    <td><input type="text" id="PartName" v-model="PartName_Cr" class="w-100"></td>
-                    <td><input type="text" id="Work" v-model="Work_Cr" class="w-100"></td>
+                    <td><input type="text" id="PartName" v-model="PartName_Cr" ></td>
+                    <td><input type="text" id="Work" v-model="Work_Cr" ></td>
                     <td><input type="text" id="ExpertApinion" v-model="ExpertApinion_Cr" ></td>
                     <td><input type="text" id="Сonclusion" v-model="Сonclusion_Cr"></td>
                     <td scope="col" @click.prevent="createTroubleshooting()">
@@ -138,7 +138,12 @@ axios.delete(`/api/troubleshootings/${id}`)
             })
            .then(res => {
             this.getTroubleshutings()
-        })}
+           })
+            this.PartName_Cr = ''
+            this.Work_Cr = ''
+            this.ExpertApinion_Cr = ''
+            this.Conclusion_Cr = ''
+        }
 
         
     }
