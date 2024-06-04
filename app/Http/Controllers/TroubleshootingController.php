@@ -13,15 +13,18 @@ class TroubleshootingController extends Controller
     {
         $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
         // dd($rewiew->all()) ;
-
-
         return view('troubleshooting.index', ['troubleshootings' => $troubleshootings->all(), 'id' => $id]);
     }
 
+    public function show($id)
+    {
+        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
+        return  $troubleshootings->all();
+    }
     public function create($id)
     {
         $troubleshooting = new troubleshooting;
-        return view('troubleshooting.create', ['troubleshooting' => $troubleshooting->all()], ['id' => $id]);
+        return  $troubleshooting->all();
     }
 
     public function store(Request $request)
@@ -29,8 +32,8 @@ class TroubleshootingController extends Controller
         $troubleshooting = new troubleshooting;
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'PartName' => 'required',
-            'Work' => 'required',
+            'PartName' => 'nullable',
+            'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
             'Сonclusion' => 'nullable'
         ]);
@@ -39,8 +42,7 @@ class TroubleshootingController extends Controller
             $troubleshooting->$key = $value;
         }
         $troubleshooting->save();
-        return redirect()
-            ->route('troubleshooting', $troubleshooting->id_application);
+        return $troubleshooting;
     }
 
     public function edit($id)
@@ -52,11 +54,11 @@ class TroubleshootingController extends Controller
     public function update(Request $request, $id)
     {
         $troubleshooting = troubleshooting::findOrFail($id);
-
+        // dd($troubleshooting);
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'PartName' => 'required',
-            'Work' => 'required',
+            'PartName' => 'nullable',
+            'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
             'Сonclusion' => 'nullable'
         ]);
@@ -65,8 +67,7 @@ class TroubleshootingController extends Controller
             $troubleshooting->$key = $val;
         }
         $troubleshooting->save();
-        return redirect()
-            ->route('troubleshooting', $troubleshooting->id_application);
+        return $troubleshooting;
     }
 
 
@@ -74,7 +75,6 @@ class TroubleshootingController extends Controller
     {
         $troubleshooting = troubleshooting::findOrFail($id);
         $troubleshooting->delete();
-        return redirect()
-            ->route('troubleshooting', $troubleshooting->id_application);
+        return  $troubleshooting;
     }
 }

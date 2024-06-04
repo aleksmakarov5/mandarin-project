@@ -5,7 +5,7 @@
 @section('main')
     <a href="/export_hda/{{ $id }}/11" class="nav-link">Создать печатную форму</a>
     <a href="/answer_ic_mrk/{{ $id }}" class="nav-link">Отправить в страховую компанию</a>
-
+    {{-- 
 
 
     <table class="editable" id="demo">
@@ -121,7 +121,11 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
+    <div id="app">
+        <troubleshootings :app_id={{ $id }}>
+
+    </div>
     <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);

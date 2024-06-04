@@ -30,23 +30,34 @@
                         {{ troubleshooting.ExpertApinion }}</td>
                     <td @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.ExpertApinion,troubleshooting.Сonclusion)">   
                         {{ troubleshooting.Сonclusion }}</td>
-                    <td scope="col"> <a @click.prevent="deleteTroubleshuting(troubleshooting.id)">
-                        <img src="/storage/img/delete.png" width="30" alt="delete"></a>
+                    <td scope="col" @click.prevent="deletetroubleshooting(troubleshooting.id)">
+                        <img src="/storage/img/delete.png" width="30" alt="delete">
                     </td>
                 </tr>
                    <tr :class="isEdit(troubleshooting.id)?'':'d_none'">
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td><input type="text" name="PartName" v-model="PartName" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" name="Work" v-model="Work " class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" name="ExpertApinion" v-model="ExpertApinion " @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td><input type="text" name="Сonclusion" v-model="Сonclusion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
-                    <td scope="col"> <a @click.prevent="deleteTroubleshuting(troubleshooting.id)">
+                    <td><input type="text" id="PartName" v-model="PartName" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
+                    <td><input type="text" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
+                    <td><input type="text" id="ExpertApinion" v-model="ExpertApinion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
+                    <td><input type="text" id="Сonclusion" v-model="Сonclusion" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></td>
+                    <td scope="col"> <a @click.prevent="deletetroubleshooting(troubleshooting.id)">
                         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
                     </td>
                 </tr>
             </template>
+              <tr>
+                    <td scope="col">
+                    </td>
+                    <td><input type="text" id="PartName" v-model="PartName_Cr" class="w-100"></td>
+                    <td><input type="text" id="Work" v-model="Work_Cr" class="w-100"></td>
+                    <td><input type="text" id="ExpertApinion" v-model="ExpertApinion_Cr" ></td>
+                    <td><input type="text" id="Сonclusion" v-model="Сonclusion_Cr"></td>
+                    <td scope="col" @click.prevent="createTroubleshooting()">
+                        <img src="/storage/img/edit.png" width="30" alt="create">
+                    </td>
+                </tr>
         </tbody>
     </table>
 </div>
@@ -65,10 +76,14 @@
                 troubleshootings:[],
                 id_app:this.app_id,
                 EditTroubleshootingId:null,
-                PartName:'',
-                Work:'',
-                ExpertApinion:'',
-                Сonclusion:'',
+                PartName: '',
+                Work: '',
+                ExpertApinion: '',
+                Сonclusion: '',
+                PartName_Cr: '',
+                Work_Cr: '',
+                ExpertApinion_Cr: '',
+                Сonclusion_Cr: '',
             }
         },
 	   
@@ -85,11 +100,15 @@
             })
 
         },
-        deletetroubleshooting(id){
-            axios.delete(`/api/troubleshootings/${id}`)
+        deletetroubleshooting(id) {
+            if (confirm('Точно удалить?')) 
+            {
+axios.delete(`/api/troubleshootings/${id}`)
                 .then(res => {
                     this.getTroubleshutings()
                 })
+            }
+            
         },
         changeEditTroubleshootingId(id,PartName,Work,ExpertApinion,Conclusion) {
             this.EditTroubleshootingId=id
@@ -103,8 +122,20 @@
         },
         updateTroubleshooting(id)
         {
-            this.changeEditTroubleshootingId(null)
-            axios.post(`/api/troubleshootings/${id}/update`,{id_application: this.app_id,PartName:this.PartName,Work:this.Work,ExpertApinion:this.ExpertApinion,Conclusion:this.Conclusion})
+            axios.post(`/api/troubleshootings/${id}/update`, {
+                id_application: this.app_id, PartName: this.PartName, Work: this.Work, ExpertApinion: this.ExpertApinion, Conclusion: this.Conclusion
+            })
+           .then(res => {
+            this.getTroubleshutings() 
+           })
+           this.changeEditTroubleshootingId(null)
+            
+        },
+        createTroubleshooting()
+        {
+             axios.post(`/api/troubleshootings/create`, {
+                id_application: this.app_id, PartName: this.PartName_Cr, Work: this.Work_Cr, ExpertApinion: this.ExpertApinion_Cr, Conclusion: this.Conclusion_Cr
+            })
            .then(res => {
             this.getTroubleshutings()
         })}

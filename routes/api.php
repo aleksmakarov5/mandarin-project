@@ -34,13 +34,14 @@ Route::group(['namespace' => 'Notification', 'prefix' => 'notifications'], funct
 Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'], function () {
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');
-    Route::get('/{id}', [TroubleshootingController::class, 'create'])
+    Route::get('/{id}', [TroubleshootingController::class, 'show'])
         ->name('troubleshooting.index');
-    Route::post('/{id}', [TroubleshootingController::class, 'create'])
-        ->name('troubleshooting.index');
+    Route::post('/create', [TroubleshootingController::class, 'store'])
+        ->name('troubleshooting.create');
     Route::post('/{id}/update', [
         TroubleshootingController::class, 'update'
     ])->name('troubleshooting.update');
+    Route::delete('/{id}', [TroubleshootingController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });
