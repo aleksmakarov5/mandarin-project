@@ -165,6 +165,7 @@ class WordController extends Controller
     $document->save();
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
 
+    exec('chmod 755 "' . $pathToSave . '"');
     return redirect()->route('document', $id);
   }
 
@@ -262,6 +263,7 @@ class WordController extends Controller
     $document->id_status = 2;
     $document->save();
 
+    exec('chmod 755 "' . $pathToSave . '"');
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
@@ -356,6 +358,7 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = $status_id;
     $document->save();
+    exec('chmod 755 "' . $pathToSave . '"');
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
@@ -451,6 +454,7 @@ class WordController extends Controller
     // echo $pathToSave;
     $document->save();
 
+    exec('chmod 755 "' . $pathToSave . '"');
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
@@ -552,6 +556,7 @@ class WordController extends Controller
     $document->save();
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
 
+    exec('chmod 755 "' . $pathToSave . '"');
     return redirect()->route('document', $id);
   }
 
@@ -677,6 +682,7 @@ class WordController extends Controller
     $document->id_status = 4;
     $document->save();
 
+    exec('chmod 755 "' . $pathToSave . '"');
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
     return redirect()->route('document', $id);
   }
@@ -808,6 +814,7 @@ class WordController extends Controller
     $document->location = $filename;
     $document->id_status = 16;
     $document->save();
+    exec('chmod 755 "' . $pathToSave . '"');
     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
 
 
@@ -902,6 +909,7 @@ class WordController extends Controller
     $pathToSave = $dir . '/' . $filename;
     // dd($templateProcessor);
     $templateProcessor->saveAs($pathToSave);
+    exec('chmod 755 "' . $pathToSave . '"');
     $document = new Attachment();
     $document->file_name = "Счет №" . $num . ' от ' . $date . ".docx";
     $document->message_id = 0;
