@@ -146,6 +146,7 @@ axios.delete(`/api/troubleshootings/${id}`)
         }
 
         
+        
     }
        
 	}

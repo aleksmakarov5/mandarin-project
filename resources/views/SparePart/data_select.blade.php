@@ -1,5 +1,5 @@
-@extends('layout')
-@section('main_content')
+@extends('header_menu')
+@section('main')
     <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Назад</a>
     <h1>Проверьте данные</h1>
     <form action="data_save" method="post">
