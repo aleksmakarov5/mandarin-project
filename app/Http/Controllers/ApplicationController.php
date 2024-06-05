@@ -274,6 +274,51 @@ class ApplicationController extends Controller
         return view('applications', ['applications' => $applications,],);
     }
 
+    public function find(Request $request)
+    {
+
+        $data = $this->validate($request, [
+            'find' => 'required',
+        ]);
+
+        $applications = DB::table('applications')
+            ->where('gnz', 'LIKE', '%' . $data['find'] . '%')
+            ->orwhere('numberInsuranceCompanyApplication', 'LIKE', '%' . $data['find'] . '%')
+            ->orwhere('ClientName', 'LIKE', '%' . $data['find'] . '%')
+            ->orwhere('CarModel', 'LIKE', '%' . $data['find'] . '%')
+            ->orwhere('ClientPhone', 'LIKE', '%' . $data['find'] . '%')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.lawyers_theme',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name'
+            )->get()->sortDesc();
+        // dd($applications);
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 48 - $current->diffInHours($application->created_at);
+            $application->max_hour = 48;
+        }
+        $applications = $this->configure($applications);
+        session(['rout' => 'failures']);
+
+
+        return view('applications', ['applications' => $applications,],);
+    }
+
     public function lawyers()
     {
 

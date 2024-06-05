@@ -52,6 +52,13 @@
                 <div id="app1" class="mytoast">
                     <post-notify :user="{{ Auth::user()->id }}" />
                 </div>
+                <div class="d1">
+                    <form action="/find" method="POST">
+                        @csrf
+                        <input type="text" placeholder="Поиск" name="find">
+                        <button type="submit"></button>
+                    </form>
+                </div>
             @endauth
 
             <div id="nb">
@@ -121,10 +128,12 @@
                             </li>
                         @endcan
                     </ul>
+
                 </header>
             </div>
 
         @endif
+
         @yield('main_content')
     </div>
     <div class="container">

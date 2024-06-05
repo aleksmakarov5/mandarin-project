@@ -149,6 +149,8 @@ Route::middleware("auth:web")->group(
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
         Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
+        Route::post('/find',  [ApplicationController::class, 'find'])->name('find');
+
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
         Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
         Route::get('/waiting',  [ApplicationController::class, 'waiting'])->name('waiting');
