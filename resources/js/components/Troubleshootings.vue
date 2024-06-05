@@ -54,8 +54,8 @@
                     <td><input type="text" id="Work" v-model="Work_Cr" ></td>
                     <td><input type="text" id="ExpertApinion" v-model="ExpertApinion_Cr" ></td>
                     <td><input type="text" id="Сonclusion" v-model="Сonclusion_Cr"></td>
-                    <td scope="col" @click.prevent="createTroubleshooting()">
-                        <img src="/storage/img/edit.png" width="30" alt="create">
+                    <td scope="col"><a  @click.prevent="createTroubleshooting()">
+                        <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
                 </tr>
         </tbody>

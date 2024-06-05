@@ -75,6 +75,10 @@
             <tr>
                 <td>
                     <h1>Заявка № {{ $id }} </h1>
+                    <h5>{{ $app->CarModel }}</h5>
+                    <h5>{{ $app->gnz }}</h5>
+                    <h5>{{ $app->ClientName }}</h5>
+                    <h5>{{ $app->ClientPhone }}</h5>
                 </td>
                 @can('company')
                     <td>
@@ -270,11 +274,11 @@
                     </li>
                     <li class="nav-item"><a href="/SparePart/{{ $id }}"
                             class="nav-link  {{ request()->routeIs('SparePart') ? 'tn-active' : '' }}"
-                            aria-current="page">Запчасти</a></li>
-                    <li class="nav-item"><a href="/Work/{{ $id }}"
+                            aria-current="page">Смета</a></li>
+                    {{-- <li class="nav-item"><a href="/Work/{{ $id }}"
                             class="nav-link  {{ request()->routeIs('Work') ? 'tn-active' : '' }}"
                             aria-current="page">Работы</a>
-                    </li>
+                    </li> --}}
 
                     @can('company')
                         @if (session('rout') == 'directions')
