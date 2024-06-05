@@ -144,11 +144,33 @@ class SparePartController extends Controller
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
         $sertificat = application::findOrFail($id)->sertificat;
+        $eco = '';
+
+        $Works_ic = DB::table('works')
+            ->where('id_application', '=', $id)
+            ->where('summ', '<>', 0)
+            ->get();
+        $Works_serv = DB::table('works')
+            ->where('id_application', '=', $id)
+            ->where('price_service', '<>', 0)
+            ->get();
+        // dd($rewiew->all()) ;
+        $summ_ic = 0;
+        $summ_service = 0;
+        foreach ($Works_ic as $work) {
+            $summ_ic = $summ_ic + (int)str_replace(' ', '', $work->summ);
+        }
+        foreach ($Works_serv as $work) {
+            $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
+        }
+        $delta = $summ_service - $summ_ic;
         return view('SparePart.index', [
             'spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
             'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_ic_half' => $summ_ic_half,
             'summ_order' => $summ_order, 'estimate' => $estimates, 'summ_service' => $summ_service,
-            'eco' => $eco, 'statuses' => $statuses->all(), 'sertificat' => $sertificat,
+            'eco' => $eco, 'statuses' => $statuses->all(), 'sertificat' => $sertificat, 'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
+            'delta' => $delta,
+            'summ_ic' => $summ_ic,
         ]);
     }
 

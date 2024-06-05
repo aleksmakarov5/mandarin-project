@@ -119,14 +119,14 @@ class WorkController extends Controller
         }
         $Work->save();
         return redirect()
-            ->route('Work', $Work->id_application);
+            ->route('SparePart', $Work->id_application);
     }
 
     public function edit($id)
     {
         $Work = Work::findOrFail($id);
 
-        return view('Work.edit', ['Work' => $Work]);
+        return view('SparePart.edit', ['Work' => $Work]);
     }
     public function update(Request $request, $id)
     {
@@ -145,7 +145,7 @@ class WorkController extends Controller
         }
         $Work->save();
         return redirect()
-            ->to(route('Work', $Work->id_application) . '#' . $request->id);
+            ->to(route('SparePart', $Work->id_application) . '#' . $request->id);
     }
 
     public function doc_load($id)
@@ -488,13 +488,13 @@ class WorkController extends Controller
             );
         }
 
-        return redirect()->route('Work', $id);
+        return redirect()->route('SparePart', $id);
     }
     public function destroy($id)
     {
         $Work = Work::findOrFail($id);
         $Work->delete();
         return redirect()
-            ->route('Work', $Work->id_application);
+            ->route('SparePart', $Work->id_application);
     }
 }

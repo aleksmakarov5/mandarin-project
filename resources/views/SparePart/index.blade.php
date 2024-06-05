@@ -598,6 +598,234 @@
     @endif
     @can('company')
         <button class="accordion">
+            Работы по калькуляции
+        </button>
+        <div class="panel">
+            <table class="editable" id='demo'>
+                <thead class="accordion">
+                    <tr>
+                        <th scope="col" colspan=4>Данные из калькуляции</th>
+                        <th scope="col" colspan=4>
+                            <a href="/Work/{{ $id }}/doc_load" class="nav-link">Загрузить</a>
+                        </th>
+
+
+
+                    </tr>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Наименование</th>
+
+                        <th scope="col">Цена страховой</th>
+                        <th scope="col">Цена сервиса</th>
+                        {{-- <th scope="col">Цена сервиса</th> --}}
+                        <th scope="col"></th>
+
+                    </tr>
+                    <tr>
+                        <th scope="col"></th>
+                        <th scope="col">Итого</th>
+                        <th scope="col">{{ $summ_ic }}</th>
+                        {{-- <th scope="col">{{$summ_service}}</th> --}}
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+
+
+                    @foreach ($Works as $key => $Work)
+                        <tr>
+                            <form name="form{{ $key }}" id='form{{ $key }}'
+                                action="/Work/{{ $Work->id }}/update" method="POST">
+
+                                @csrf
+                                <input type="hidden" name="id_application" value='{{ $id }}'>
+
+                                <td scope="col" id="td_id-{{ $key }}">
+                                    {{ $key + 1 }}
+                                    <a name="{{ $Work->id }}"></a>
+                                </td>
+
+                                <input type="hidden" name="id" id='id-{{ $key }}'
+                                    value=' {{ $Work->id }}'>
+                                <td scope="col" id="td_name-{{ $key }}">{{ $Work->name }}</td>
+                                <input type="hidden" name="name" id='name-{{ $key }}'
+                                    value='{{ $Work->name }}'>
+
+                                <td scope="col" id="td_summ-{{ $key }}">{{ $Work->summ }}</td>
+
+                                <input type="hidden" name="summ" id='summ-{{ $key }}'
+                                    value='{{ $Work->summ }}'>
+                                <td scope="col" id="td_price_service-{{ $key }}">{{ $Work->price_service }}
+                                </td>
+                                <input type="hidden" name="price_service" id='price_service-{{ $key }}'
+                                    value='{{ $Work->price_service }}'>
+                                <td scope="col">
+                                    @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)
+                                        <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                            href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                                src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                    @endif
+                                </td>
+                        </tr>
+                        </form>
+                    @endforeach
+                    <tr>
+
+                        <form action="/Works/store" method="POST">
+                            @csrf
+                            <th>
+                                <input name = "id_application" type="hidden" value="{{ $id }}">
+                            </th>
+                            <th>
+                                <div class="form-floating">
+
+                                    <input type="text" name="name" id="name" class="form-control">
+
+                                </div>
+                            </th>
+                            <th>
+
+                                <div class="form-floating">
+                                    <input type="text" name="summ" id="summ" class="form-control" value=0>
+
+                                </div>
+
+                            </th>
+                            <th>
+                                <input type="submit" value="Создать" class="nav-link">
+                            </th>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    @endcan
+    <button class="accordion">
+        Фактические работы
+    </button>
+    <div class="panel">
+        <table class="editable" id='demo'>
+            <thead>
+                <tr>
+                    <th scope="col" colspan=4>Фактические работы</th>
+
+
+
+                </tr>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Наименование</th>
+
+                    {{-- <th scope="col">Сумма</th> --}}
+                    <th scope="col">Цена сервиса</th>
+                    <th scope="col">
+                        @can('company')
+                            Разница стоимости
+                        @endcan
+                    </th>
+
+                </tr>
+                <tr>
+                    <th scope="col"></th>
+                    <th scope="col">Итого</th>
+                    {{-- <th scope="col">{{$summ_ic}}</th> --}}
+                    <th scope="col">{{ $summ_service }}</th>
+                    <th scope="col">
+                        @can('company')
+                            <div
+                                class="
+       @if ($delta < 0) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+
+                                {{ $delta }}</div>
+                        @endcan
+                    </th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+
+
+                @foreach ($Works_serv as $key => $Work)
+                    <tr @if ($Work->author == 9) class="sto" @endif>
+                        <form name="form-{{ $key }}" id='form-{{ $key }}'
+                            action="/Work/{{ $Work->id }}/update" method="POST">
+
+                            @csrf
+                            <input type="hidden" name="id_application" value='{{ $id }}'>
+
+                            <td scope="col" id="td_id--{{ $key }}">
+                                {{ $key + 1 }}
+                                <a name="{{ $Work->id }}"></a>
+                            </td>
+
+                            <input type="hidden" name="id" id='id--{{ $key }}'
+                                value=' {{ $Work->id }}'>
+                            <td scope="col" id="td_name--{{ $key }}">{{ $Work->name }}</td>
+                            <input type="hidden" name="name" id='name--{{ $key }}'
+                                value='{{ $Work->name }}'>
+
+                            <td id="td_price_service--{{ $key }}" scope="col">{{ $Work->price_service }}
+                            </td>
+                            <input type="hidden" name="price_service" id='price_service--{{ $key }}'
+                                value='{{ $Work->price_service }}'>
+                            <input type="hidden" name="summ" id='summ--{{ $key }}'
+                                value='{{ $Work->summ }}'>
+
+                            <td scope="col">
+                                @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)
+                                    <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                        href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                            src="/storage/img/delete.png" width="20" alt="delete">
+                                    </a>
+                                @endif
+                            </td>
+                    </tr>
+                    </form>
+                @endforeach
+                <tr>
+
+                    <form action="/Works/store" method="POST">
+                        @csrf
+                        <th>
+                            <input name = "id_application" type="hidden" value="{{ $id }}">
+                        </th>
+                        <th>
+                            <div class="form-floating">
+
+                                <input type="text" name="name" id="name" class="form-control">
+
+                            </div>
+
+                            <div class="form-floating">
+                                <input type="hidden" name="summ" id="summ" class="form-control" value=0>
+
+                            </div>
+                        </th>
+                        <th>
+                            <div class="form-floating">
+                                <input type="text" name="price_service" id="price_service" class="form-control">
+
+                                <input name = "author" type="hidden" value="{{ Auth::user()->GroupId }}">
+                            </div>
+                        </th>
+                        <th>
+                            <input type="submit" value="Создать" class="nav-link">
+                        </th>
+                    </form>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    @can('company')
+        <button class="accordion">
             Итого
         </button>
         <div class="panel">
