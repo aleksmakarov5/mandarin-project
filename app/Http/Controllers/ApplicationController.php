@@ -89,16 +89,19 @@ class ApplicationController extends Controller
                         $summ_order -
                         $summ_service -
                         $application->sertificat;
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
-                    );
+                    if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0)
+                        $proc = round(
+                            ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
+                        );
                 } else {
                     $eco_delta_full =
                         (float) str_replace(' ', '', $estimates->price_repair_full) -
                         $summ_order -
                         $summ_service -
                         $application->sertificat;
-                    $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+                    // dd($estimates);
+                    if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0)
+                        $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
                 }
             } else {
                 $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $application->sertificat;

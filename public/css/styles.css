@@ -701,7 +701,8 @@ div.sticky {
     margin-right: 0;
 }
 
-.accordion {
+.accordion,
+.accordion-est {
     background-color: #393939;
     color: #f7efef;
     cursor: pointer;
@@ -713,6 +714,8 @@ div.sticky {
     outline: none;
     transition: 0.4s;
 }
+
+
 
 /* Add a background color to the button if it is clicked on (add the .active class with JS), and when you move the mouse over it (hover) */
 .active,
@@ -736,6 +739,16 @@ div.sticky {
     color: #fffcfc;
     float: right;
     margin-top: -30px;
+}
+
+.accordion-est::after {
+    content: '\02795';
+    /* Unicode character for "plus" sign (+) */
+    font-size: 13px;
+    color: #fffcfc;
+    float: right;
+    margin-top: -5px;
+
 }
 
 

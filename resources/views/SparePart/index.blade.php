@@ -6,7 +6,7 @@
     {{-- {{ session('GroupId') }} --}}
 
     </div>
-    <button class="accordion">
+    <button class="accordion-est">
         Запчасти
     </button>
 
@@ -597,12 +597,12 @@
         </div>
     @endif
     @can('company')
-        <button class="accordion">
+        <button class="accordion-est">
             Работы по калькуляции
         </button>
         <div class="panel">
             <table class="editable" id='demo'>
-                <thead class="accordion">
+                <thead class="accordion-est">
                     <tr>
                         <th scope="col" colspan=4>Данные из калькуляции</th>
                         <th scope="col" colspan=4>
@@ -704,7 +704,7 @@
             </table>
         </div>
     @endcan
-    <button class="accordion">
+    <button class="accordion-est">
         Фактические работы
     </button>
     <div class="panel">
@@ -825,7 +825,7 @@
         </table>
     </div>
     @can('company')
-        <button class="accordion">
+        <button class="accordion-est">
             Итого
         </button>
         <div class="panel">
@@ -1053,7 +1053,7 @@
             }
         };
 
-        var acc = document.getElementsByClassName("accordion");
+        var acc = document.getElementsByClassName("accordion-est");
         var i;
 
         for (i = 0; i < acc.length; i++) {
