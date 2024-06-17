@@ -350,7 +350,9 @@ class SparePartController extends Controller
         $file = html_entity_decode(strip_tags($file, ['br']));
         dd($file);
         $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
+
         $file = preg_replace("/&#160/", '<br/>', $file);
+        $file = str_replace('&#160;', '</br>', $file);
 
         // dd($file);
 
