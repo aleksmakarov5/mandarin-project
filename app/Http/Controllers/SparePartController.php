@@ -357,7 +357,6 @@ class SparePartController extends Controller
 
         $file = str_replace('&#160', '</br>', $file);
         $file = str_replace("\u{A0}", '</br>', $file);
-        dd($file);
         // dd($file);
 
         $app = Application::findorfail($id);
