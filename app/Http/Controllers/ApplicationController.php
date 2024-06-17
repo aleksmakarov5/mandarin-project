@@ -983,254 +983,363 @@ class ApplicationController extends Controller
         $price = [];
 
         $smeta = false;
-        if ($loc == "passport") {
-            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-            exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
-            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-            $output = file_get_contents('storage/files/' . $id . '/output.txt');
-            $data = array(
-                "mimeType" => "application/pdf",
-                "languageCodes" => ["*"],
-                "model" => "vehicle-registration-front",
-                "content" => $output
-            );
+        $napr = mb_strripos('_' . $request['location'], 'Направление') || mb_strripos('_' . $request['location'], 'направление');
+        if ($napr) {
+            if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+                rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+                $output = file_get_contents('storage/files/' . $id . '/output.txt');
+                $data = array(
+                    "mimeType" => "application/pdf",
+                    "languageCodes" => ["*"],
+                    "model" => "table",
+                    "content" => $output
+                );
 
 
-            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
-            curl_setopt(
-                $ch,
-                CURLOPT_HTTPHEADER,
-                array(
-                    'Content-Type:application/json',
-                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                    'x-folder-id: b1gcnqkpepfcp6fulsah',
-                    'x-data-logging-enabled: true'
-                )
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_POST,
-                1
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_POSTFIELDS,
-                json_encode($data, JSON_UNESCAPED_UNICODE)
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_RETURNTRANSFER,
-                true
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_SSL_VERIFYPEER,
-                false
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_HEADER,
-                false
-            );
-            $res = curl_exec($ch);
-            curl_close($ch);
+                $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    array(
+                        'Content-Type:application/json',
+                        'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        'x-data-logging-enabled: true'
+                    )
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_POST,
+                    1
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_POSTFIELDS,
+                    json_encode($data, JSON_UNESCAPED_UNICODE)
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_RETURNTRANSFER,
+                    true
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_SSL_VERIFYPEER,
+                    false
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HEADER,
+                    false
+                );
+                $res = curl_exec($ch);
+                curl_close($ch);
 
-            $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+                $res = json_decode($res, JSON_UNESCAPED_UNICODE);
 
-            // echo $res['id'];
+                // echo $res['id'];
 
-            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
-            curl_setopt(
-                $ch,
-                CURLOPT_RETURNTRANSFER,
-                true
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_HTTPHEADER,
-                array(
-                    'Content-Type:application/json',
-                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                    'x-folder-id: b1gcnqkpepfcp6fulsah',
-                    'x-data-logging-enabled: true'
-                )
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_SSL_VERIFYPEER,
-                false
-            );
-            curl_setopt(
-                $ch,
-                CURLOPT_HEADER,
-                false
-            );
-            $html = curl_exec($ch);
-            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-            if (isset($html['error']['httpCode']))
-                while (isset($html['error'])) {
-                    // echo ($html['error']['httpCode'] . '<br>');
-                    $html = curl_exec($ch);
-                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+                curl_setopt(
+                    $ch,
+                    CURLOPT_RETURNTRANSFER,
+                    true
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    array(
+                        'Content-Type:application/json',
+                        'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        'x-data-logging-enabled: true'
+                    )
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_SSL_VERIFYPEER,
+                    false
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HEADER,
+                    false
+                );
+                $html = curl_exec($ch);
+                $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                if (isset($html['error']['httpCode']))
+                    while (isset($html['error'])) {
+                        // echo ($html['error']['httpCode'] . '<br>');
+                        $html = curl_exec($ch);
+                        $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                    }
+                $html = curl_exec($ch);
+                $html = explode("}}", $html);
+                curl_close($ch);
+                $file = '';
+                foreach ($html as $result) {
+                    $result .= '}}';
+                    $result = json_decode($result, JSON_UNESCAPED_UNICODE);
+
+                    if (isset($result['result']['textAnnotation']['fullText']))
+                        $file .= $result['result']['textAnnotation']['fullText'];
                 }
-            $html = curl_exec($ch);
-            $html = explode("\n", $html);
-            $passport = [];
-            $i = 0;
-            foreach ($html as $key => $value) {
-                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+                file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
             }
-            curl_close($ch);
-            dd($passport);
-            // $data = $passport[0]['textAnnotation']['entities'];
-            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
-
-                $applications[$entity['name']] = $entity['text'];
-            }
-            $applications['issued_by'] = mb_convert_case($applications['issued_by'], MB_CASE_UPPER, "UTF-8");
-            $applications['number'] = mb_substr($applications['number'], 0, 4) . ' ' . mb_substr($applications['number'], 4, 6);
-            $applications['ClientName']
-                = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
-            //dd($applications);
+            $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
+            dd($file);
         } else {
-            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-            exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
-            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-
-            $html = 'works.html';
-            $file = file_get_contents('storage/files/' . $id . '/'  . $html);
-            $file = html_entity_decode(strip_tags($file, ['br']));
-
-
-
-            $app = Application::findorfail($id);
-            if ($app->id_insuranceCompany == 1) {
-                $application_start = mb_strpos($file, 'Марка, модель');
-                $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
-                $estimate_end = mb_strlen($file);
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+            if ($loc == "passport") {
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+                rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+                $output = file_get_contents('storage/files/' . $id . '/output.txt');
+                $data = array(
+                    "mimeType" => "application/pdf",
+                    "languageCodes" => ["*"],
+                    "model" => "vehicle-registration-front",
+                    "content" => $output
+                );
 
 
-                    $estimate = explode('<br/>', $estimate);
+                $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    array(
+                        'Content-Type:application/json',
+                        'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        'x-data-logging-enabled: true'
+                    )
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_POST,
+                    1
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_POSTFIELDS,
+                    json_encode($data, JSON_UNESCAPED_UNICODE)
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_RETURNTRANSFER,
+                    true
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_SSL_VERIFYPEER,
+                    false
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HEADER,
+                    false
+                );
+                $res = curl_exec($ch);
+                curl_close($ch);
 
-                    if (is_numeric(str_replace(' ', '', $estimate[1])))
-                        $price[0] = str_replace(' ', '', $estimate[1]);
-                    else
-                        $price[0] = str_replace(' ', '', $estimate[2]);
+                $res = json_decode($res, JSON_UNESCAPED_UNICODE);
 
-                    if (is_numeric(str_replace(' ', '', $estimate[3])))
-                        $price[1] = str_replace(' ', '', $estimate[3]);
-                    else
-                        $price[1] = str_replace(' ', '', $estimate[4]);
-                }
-                $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
+                // echo $res['id'];
 
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
+                $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+                curl_setopt(
+                    $ch,
+                    CURLOPT_RETURNTRANSFER,
+                    true
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HTTPHEADER,
+                    array(
+                        'Content-Type:application/json',
+                        'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        'x-data-logging-enabled: true'
+                    )
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_SSL_VERIFYPEER,
+                    false
+                );
+                curl_setopt(
+                    $ch,
+                    CURLOPT_HEADER,
+                    false
+                );
+                $html = curl_exec($ch);
+                $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                if (isset($html['error']['httpCode']))
+                    while (isset($html['error'])) {
+                        // echo ($html['error']['httpCode'] . '<br>');
+                        $html = curl_exec($ch);
+                        $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                     }
-                    // dd($estimate);
-                    if (is_numeric(str_replace(' ', '', $estimate[1])))
-                        $price[2] = str_replace(' ', '', $estimate[1]);
-                    else
-                        $price[2] = str_replace(' ', '', $estimate[2]);
-                    if (is_numeric(str_replace(' ', '', $estimate[3])))
-                        $price[3] = str_replace(' ', '', $estimate[3]);
-                    else
-                        $price[3] = str_replace(' ', '', $estimate[4]);
-                    if (is_numeric(str_replace(' ', '', $estimate[5])))
-                        $price[4] = str_replace(' ', '', $estimate[5]);
-                    else
-                        $price[4] = str_replace(' ', '', $estimate[6]);
-                    if (is_numeric(str_replace(' ', '', $estimate[7])))
-                        $price[5] = str_replace(' ', '', $estimate[7]);
-                    else
-                        $price[5] = str_replace(' ', '', $estimate[8]);
-                    if (trim($estimate[9]) == 'ВСЕГО:') {
-                        if (is_numeric(str_replace(' ', '', $estimate[10])))
-                            $price[6] = str_replace(' ', '', $estimate[10]);
+                $html = curl_exec($ch);
+                $html = explode("\n", $html);
+                $passport = [];
+                $i = 0;
+                foreach ($html as $key => $value) {
+                    $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+                }
+                curl_close($ch);
+                dd($passport);
+                // $data = $passport[0]['textAnnotation']['entities'];
+                foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
+
+                    $applications[$entity['name']] = $entity['text'];
+                }
+                $applications['issued_by'] = mb_convert_case($applications['issued_by'], MB_CASE_UPPER, "UTF-8");
+                $applications['number'] = mb_substr($applications['number'], 0, 4) . ' ' . mb_substr($applications['number'], 4, 6);
+                $applications['ClientName']
+                    = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
+                //dd($applications);
+            } else {
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+                rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+
+                $html = 'works.html';
+                $file = file_get_contents('storage/files/' . $id . '/'  . $html);
+                $file = html_entity_decode(strip_tags($file, ['br']));
+
+
+
+                $app = Application::findorfail($id);
+                if ($app->id_insuranceCompany == 1) {
+                    $application_start = mb_strpos($file, 'Марка, модель');
+                    $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
+                    $estimate_end = mb_strlen($file);
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+
+
+                        $estimate = explode('<br/>', $estimate);
+
+                        if (is_numeric(str_replace(' ', '', $estimate[1])))
+                            $price[0] = str_replace(' ', '', $estimate[1]);
                         else
-                            $price[6] = str_replace(' ', '', $estimate[11]);
-                        if (is_numeric(str_replace(' ', '', $estimate[12])))
-                            $price[7] = str_replace(' ', '', $estimate[12]);
+                            $price[0] = str_replace(' ', '', $estimate[2]);
+
+                        if (is_numeric(str_replace(' ', '', $estimate[3])))
+                            $price[1] = str_replace(' ', '', $estimate[3]);
                         else
-                            $price[7] = str_replace(' ', '', $estimate[13]);
+                            $price[1] = str_replace(' ', '', $estimate[4]);
+                    }
+                    $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        // dd($estimate);
+                        if (is_numeric(str_replace(' ', '', $estimate[1])))
+                            $price[2] = str_replace(' ', '', $estimate[1]);
+                        else
+                            $price[2] = str_replace(' ', '', $estimate[2]);
+                        if (is_numeric(str_replace(' ', '', $estimate[3])))
+                            $price[3] = str_replace(' ', '', $estimate[3]);
+                        else
+                            $price[3] = str_replace(' ', '', $estimate[4]);
+                        if (is_numeric(str_replace(' ', '', $estimate[5])))
+                            $price[4] = str_replace(' ', '', $estimate[5]);
+                        else
+                            $price[4] = str_replace(' ', '', $estimate[6]);
+                        if (is_numeric(str_replace(' ', '', $estimate[7])))
+                            $price[5] = str_replace(' ', '', $estimate[7]);
+                        else
+                            $price[5] = str_replace(' ', '', $estimate[8]);
+                        if (trim($estimate[9]) == 'ВСЕГО:') {
+                            if (is_numeric(str_replace(' ', '', $estimate[10])))
+                                $price[6] = str_replace(' ', '', $estimate[10]);
+                            else
+                                $price[6] = str_replace(' ', '', $estimate[11]);
+                            if (is_numeric(str_replace(' ', '', $estimate[12])))
+                                $price[7] = str_replace(' ', '', $estimate[12]);
+                            else
+                                $price[7] = str_replace(' ', '', $estimate[13]);
+                        } else {
+                            if (is_numeric(str_replace(' ', '', $estimate[9])))
+                                $price[6] = str_replace(' ', '', $estimate[9]);
+                            else
+                                $price[6] = str_replace(' ', '', $estimate[10]);
+                            if (is_numeric(str_replace(' ', '', $estimate[11])))
+                                $price[7] = str_replace(' ', '', $estimate[11]);
+                            else
+                                $price[7] = str_replace(' ', '', $estimate[12]);
+                        }
+                    }
+
+                    // dd($price);
+                    if ($application_start) {
+                        $smeta = true;
+                    }
+
+                    // echo $application_start;
+                    $application_end = mb_strpos($file, 'Точное');
+                    // echo $application_end . 'Раб_фин<br /><br />';
+                    $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
+                    $application_array = explode('<br/>', $application);
+                    // dd($application_array);
+                    if ($smeta) {
+                        $applications['CarModel'] = $application_array[1];
+                        $applications['gnz'] = $application_array[11];
+                        $applications['vin'] = $application_array[3];
+                        $applications['vehicle_passport'] = $application_array[7];
+                        $applications['Color'] = $application_array[15];
+                        $applications['mileage'] = $application_array[5];
+                        $applications['DTPdate'] = $application_array[9];
+                        if (isset($application_array[20]))
+                            $applications['ClientName'] = $application_array[20];
+                        else
+                            $applications['ClientName'] = $application_array[19];
                     } else {
-                        if (is_numeric(str_replace(' ', '', $estimate[9])))
-                            $price[6] = str_replace(' ', '', $estimate[9]);
-                        else
-                            $price[6] = str_replace(' ', '', $estimate[10]);
-                        if (is_numeric(str_replace(' ', '', $estimate[11])))
-                            $price[7] = str_replace(' ', '', $estimate[11]);
-                        else
-                            $price[7] = str_replace(' ', '', $estimate[12]);
+                        $applications['ClientName'] = $application_array[2];
+                        $applications['gnz'] = $application_array[18];
+                        $applications['vin'] = $application_array[23];
+                        $applications['CarModel'] = $application_array[17];
+                        $applications['dogovor'] = $application_array[19];
+                        $applications['mnf_year'] = $application_array[24];
+                        $applications['mileage'] = $application_array[25];
+                        $applications['ub_number'] = $application_array[1];
+                        $applications['CarModel'] = mb_substr($application_array[11], mb_strpos($application_array[11], '/') + 1, mb_strlen($application_array[11]) - mb_strpos($application_array[11], '/'));
                     }
-                }
 
-                // dd($price);
-                if ($application_start) {
-                    $smeta = true;
-                }
+                    // dd($applications);
+                } else if ($app->id_insuranceCompany == 3) {
+                    $file = str_replace("/\u{A0}/", '', $file);
+                    $application_start = mb_strpos($file, '<br/>Объект');
+                    $application_end = mb_strpos($file, 'Заключение');
+                    $application = mb_substr($file, $application_start + 20, $application_end - $application_start);
+                    $smeta = false;
+                    if ($application_start)
+                        $smeta = true;
 
-                // echo $application_start;
-                $application_end = mb_strpos($file, 'Точное');
-                // echo $application_end . 'Раб_фин<br /><br />';
-                $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
-                $application_array = explode('<br/>', $application);
-                // dd($application_array);
-                if ($smeta) {
-                    $applications['CarModel'] = $application_array[1];
-                    $applications['gnz'] = $application_array[11];
-                    $applications['vin'] = $application_array[3];
-                    $applications['vehicle_passport'] = $application_array[7];
-                    $applications['Color'] = $application_array[15];
-                    $applications['mileage'] = $application_array[5];
-                    $applications['DTPdate'] = $application_array[9];
-                    if (isset($application_array[20]))
-                        $applications['ClientName'] = $application_array[20];
-                    else
-                        $applications['ClientName'] = $application_array[19];
-                } else {
-                    $applications['ClientName'] = $application_array[2];
-                    $applications['gnz'] = $application_array[18];
-                    $applications['vin'] = $application_array[23];
-                    $applications['CarModel'] = $application_array[17];
-                    $applications['dogovor'] = $application_array[19];
-                    $applications['mnf_year'] = $application_array[24];
-                    $applications['mileage'] = $application_array[25];
-                    $applications['ub_number'] = $application_array[1];
-                    $applications['CarModel'] = mb_substr($application_array[11], mb_strpos($application_array[11], '/') + 1, mb_strlen($application_array[11]) - mb_strpos($application_array[11], '/'));
-                }
-
-                // dd($applications);
-            } else if ($app->id_insuranceCompany == 3) {
-                $file = str_replace("/\u{A0}/", '', $file);
-                $application_start = mb_strpos($file, '<br/>Объект');
-                $application_end = mb_strpos($file, 'Заключение');
-                $application = mb_substr($file, $application_start + 20, $application_end - $application_start);
-                $smeta = false;
-                if ($application_start)
-                    $smeta = true;
-
-                $application_array = explode('<br/>', $application);
-                if (isset($application_array['1'])) {
-                    $applications['CarModel'] = $application_array[15];
-                    $applications['gnz'] = $application_array[2];
-                    $applications['vin'] = $application_array[9];
-                    $applications['Color'] = $application_array[45];
-                    $applications['mnf_year'] = $application_array[27];
-                    $applications['mileage'] = (int)$application_array[33];
-                    $applications['vehicle_passport'] = $application_array[68];
-                    $applications['ClientName'] = $application_array[74];
-                    //dd($application_array);
+                    $application_array = explode('<br/>', $application);
+                    if (isset($application_array['1'])) {
+                        $applications['CarModel'] = $application_array[15];
+                        $applications['gnz'] = $application_array[2];
+                        $applications['vin'] = $application_array[9];
+                        $applications['Color'] = $application_array[45];
+                        $applications['mnf_year'] = $application_array[27];
+                        $applications['mileage'] = (int)$application_array[33];
+                        $applications['vehicle_passport'] = $application_array[68];
+                        $applications['ClientName'] = $application_array[74];
+                        //dd($application_array);
+                    }
                 }
             }
         }
