@@ -352,6 +352,8 @@ class SparePartController extends Controller
         $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
         $file = preg_replace("/&#160/", '<br/>', $file);
+
+        $file = preg_replace("/\u{A0}/", '<br/>', $file);
         $file = str_replace('&#160', '</br>', $file);
         $file = str_replace("\u{A0}", '</br>', $file);
 
