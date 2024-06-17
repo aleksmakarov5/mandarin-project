@@ -10,7 +10,7 @@
         Запчасти
     </button>
 
-    <div class="panel">
+    <div class="panel" style="max-height: 10008px;">
         @can('company')
             <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
         @endcan
@@ -600,7 +600,7 @@
         <button class="accordion-est">
             Работы по калькуляции
         </button>
-        <div class="panel">
+        <div class="panel" style="max-height: 10008px;">
             <table class="editable" id='demo'>
                 <thead class="accordion-est">
                     <tr>
@@ -707,7 +707,7 @@
     <button class="accordion-est">
         Фактические работы
     </button>
-    <div class="panel">
+    <div class="panel" style="max-height: 10008px;">
         <table class="editable" id='demo'>
             <thead>
                 <tr>
@@ -828,7 +828,7 @@
         <button class="accordion-est">
             Итого
         </button>
-        <div class="panel">
+        <div class="panel" style="max-height: 10008px;">
             <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
                     <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
