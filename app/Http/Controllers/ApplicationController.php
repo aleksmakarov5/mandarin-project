@@ -984,6 +984,8 @@ class ApplicationController extends Controller
 
         $smeta = false;
         $napr = mb_strripos('_' . $request['location'], 'Направление') || mb_strripos('_' . $request['location'], 'направление');
+        $napr = false;
+
         if ($napr) {
             if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
                 rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
