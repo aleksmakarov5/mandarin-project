@@ -1185,6 +1185,7 @@ class ApplicationController extends Controller
                 // echo $application_end . 'Раб_фин<br /><br />';
                 $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
                 $application_array = explode('<br/>', $application);
+                dd($application_array);
                 if ($smeta) {
                     $applications['CarModel'] = $application_array[1];
                     $applications['gnz'] = $application_array[11];
