@@ -427,25 +427,26 @@ class ImapController extends Controller
     }
     public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company)
     {
-        echo $subject;
+        echo $subject . '<br>';
 
         $array_subject = explode(' ', $subject);
         $gnz = '';
         $app_number = '';
 
-        foreach ($array_subject as $item) {
-            if (preg_match("/\D[0-9]{3}\D\D[0-9]{3}/", $item) == 1 || preg_match("/\D[0-9]{3}\D\D[0-9]{2}/", $item) == 1) {
-                $gnz = $item;
-            }
-            if (preg_match("/[0-9]{7}/", $item) == 1 && strlen($item) < 8) {
-                $app_number = $item;
-            }
-        }
-
-
+        $trim = mb_strripos($subject, ' ');
+        $subject = mb_substr($subject, 0, $trim);
+        $start_pos_gnz = mb_strripos($subject, ' ');
+        $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
         echo $gnz . '<br>';
-        echo $app_number . '<br>';
+        $subject = mb_substr($subject, 0, $start_pos_gnz);
+        $start_pos = mb_strpos($subject, '-') - 3;
+        $finish_pos = mb_strripos($subject, 'Возьмете') - 1;
 
+        $app_number = mb_substr($subject, $start_pos, $finish_pos - $start_pos);
+        echo $app_number . '<br>';
+        $start_pos = mb_strpos($subject, 'ремонт');
+        $model = mb_substr($subject, $start_pos + 7, iconv_strlen($subject) - $start_pos);
+        echo $model . '<br>';
 
         $applications = application::firstorcreate(
             ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 3, 'our_company' => $our_company],
@@ -453,7 +454,7 @@ class ImapController extends Controller
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 3,
                 'gnz' => $gnz,
-                'CarModel' => 'model',
+                'CarModel' => $model,
                 'id_status' => 1,
                 'our_company' => $our_company
             ]
