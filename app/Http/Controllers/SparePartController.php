@@ -361,6 +361,7 @@ class SparePartController extends Controller
 
         $app = Application::findorfail($id);
         if ($app->id_insuranceCompany == 1) {
+            dd($file);
             $SparePart_start = mb_strpos($file, 'износом, Рубли');
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
