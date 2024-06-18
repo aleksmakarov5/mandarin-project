@@ -359,7 +359,7 @@ class SparePartController extends Controller
         $file = str_replace("<br/><br/>", '<br/>', $file);
         $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
 
-        dd($file);
+
 
         $app = Application::findorfail($id);
         if ($app->id_insuranceCompany == 1) {
