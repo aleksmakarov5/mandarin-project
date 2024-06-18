@@ -348,7 +348,6 @@ class SparePartController extends Controller
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode($file);
         $file = html_entity_decode(strip_tags($file, ['br']));
-        dd($file);
         $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
         $file = preg_replace("/&#160/", '<br/>', $file);
@@ -357,7 +356,7 @@ class SparePartController extends Controller
 
         $file = str_replace('&#160', '</br>', $file);
         $file = str_replace("\u{A0}", ' ', $file);
-        // dd($file);
+        dd($file);
 
         $app = Application::findorfail($id);
         if ($app->id_insuranceCompany == 1) {
