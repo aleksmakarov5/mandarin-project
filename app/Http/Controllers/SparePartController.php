@@ -348,7 +348,7 @@ class SparePartController extends Controller
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode($file);
         $file = html_entity_decode(strip_tags($file, ['br']));
-
+        dd($file);
         $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
         $file = preg_replace("/&#160/", '<br/>', $file);
@@ -361,7 +361,7 @@ class SparePartController extends Controller
 
         $app = Application::findorfail($id);
         if ($app->id_insuranceCompany == 1) {
-            dd($file);
+
             $SparePart_start = mb_strpos($file, 'износом, Рубли');
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
