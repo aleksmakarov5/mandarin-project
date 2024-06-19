@@ -49,6 +49,7 @@ class ImapController extends Controller
         $finish_pos_app_number = mb_strripos($subject, '_');
 
         $app_number = mb_substr($subject, $start_pos_app_number, $finish_pos_app_number - $start_pos_app_number);
+        $$app_number=trim($app_number);
         //dd($finish_pos_app_number);
         if (!$finish_pos_app_number) {
             $start_pos_app_number = strripos($subject, 'Направление');
@@ -61,6 +62,7 @@ class ImapController extends Controller
             } else {
                 $start_pos_app_number += 14;
                 $app_number = mb_substr($subject, $start_pos_app_number, 7);
+                $app_number = trim($app_number);
             }
             if (!$start_pos_app_number) {
             } else {
@@ -443,6 +445,8 @@ class ImapController extends Controller
         $finish_pos = mb_strripos($subject, 'Возьмете') - 1;
 
         $app_number = mb_substr($subject, $start_pos, $finish_pos - $start_pos);
+        $app_number = trim($app_number);
+
         echo $app_number . '<br>';
         $start_pos = mb_strpos($subject, 'ремонт');
         $model = mb_substr($subject, $start_pos + 7, iconv_strlen($subject) - $start_pos);
