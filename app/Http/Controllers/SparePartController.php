@@ -512,6 +512,7 @@ class SparePartController extends Controller
                             $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                         }
                     $html = curl_exec($ch);
+                    // dd($html);
                     $html = explode("}}", $html);
                     curl_close($ch);
                     $file = '';
