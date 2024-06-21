@@ -170,7 +170,7 @@
                                     @if (old('price_ic_full.' . $key) !== null)
                                         {{ old('price_ic_full.' . $key) }}
                                     @else
-                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full) }}
+                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full) }}
                                     @endif
                                 </td>
 
