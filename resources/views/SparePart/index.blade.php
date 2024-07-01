@@ -129,7 +129,7 @@
                                 <input type="hidden" name="order_number" id='order_number{{ $key }}'
                                     value='{{ $sparepart->order_number }}'>
                                 <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
-                                    value='{{ isset($estimate->emr10) && $estimate->emr10 ? $sparepart->price_ic_full * 1.1 : $sparepart->price_ic_full }}'>
+                                    value='{{ isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full }}'>
                                 <input type="hidden" name="price_original" id='price_original-{{ $key }}'
                                     value='{{ $sparepart->price_original }}'>
                                 <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
