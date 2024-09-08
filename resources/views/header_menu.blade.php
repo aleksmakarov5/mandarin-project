@@ -285,11 +285,9 @@
                     </li> --}}
 
                     @can('company')
-                        @if (session('rout') == 'directions')
-                            <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
-                                    class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
-                                    aria-current="page">Дефектовка</a></li>
-                        @endif
+                        <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
+                                class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
+                                aria-current="page">Дефектовка</a></li>
                         <li class="nav-item"><a href="/mail/{{ $id }}"
                                 class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}"
                                 aria-current="page">Переписка

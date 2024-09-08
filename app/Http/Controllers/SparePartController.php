@@ -111,12 +111,14 @@ class SparePartController extends Controller
 
         // dd($rewiew->all()) ;
         $summ_ic_full = 0;
+        $summ_sto = 0;
         $summ_ic_half = 0;
         $summ_order = 0;
         $delta_full = [];
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
             $summ_ic_full = $summ_ic_full + (float)str_replace(' ', '', $sparepart->price_ic_full);
+            $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_sto);
             $summ_ic_half = $summ_ic_half + (float)str_replace(' ', '', $sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:
@@ -166,7 +168,7 @@ class SparePartController extends Controller
         $delta = $summ_service - $summ_ic;
         return view('SparePart.index', [
             'spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
-            'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_ic_half' => $summ_ic_half,
+            'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_sto' => $summ_sto, 'summ_ic_half' => $summ_ic_half,
             'summ_order' => $summ_order, 'estimate' => $estimates, 'summ_service' => $summ_service,
             'eco' => $eco, 'statuses' => $statuses->all(), 'sertificat' => $sertificat, 'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
             'delta' => $delta,
@@ -190,6 +192,7 @@ class SparePartController extends Controller
             'part_number' => 'nullable',
             'order_number' => 'nullable',
             'price_ic_full' => 'nullable',
+            'price_sto' => 'nullable',
             'price_analogue' => 'nullable',
             'price_original' => 'nullable',
             'price_ic_half' => 'nullable',
@@ -302,6 +305,7 @@ class SparePartController extends Controller
             'price_analogue' => 'nullable',
             'price_used' => 'nullable',
             'price_ic_full' => 'nullable',
+            'price_sto' => 'nullable',
             'price_ic_half' => 'nullable',
             'status' => 'nullable',
             'comment' => 'nullable',

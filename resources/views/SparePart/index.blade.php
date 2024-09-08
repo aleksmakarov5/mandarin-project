@@ -24,6 +24,7 @@
                     <th scope="col">Зак. номер</th>
                     @can('company')
                         <th scope="col">Цена СК</th>
+                        <th scope="col">Цена СТО</th>
 
                         <th scope="col" colspan="2">Оригинал</th>
                         <th scope="col" colspan="2">Аналог</th>
@@ -55,6 +56,7 @@
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col">{{ $summ_ic_full }}</th>
+                        <th scope="col">{{ $summ_sto }}</th>
                         <th scope="col" colspan="7"></th>
                         <th scope="col">
                             <div
@@ -123,20 +125,22 @@
                             <input type="hidden" name="id" id='id-{{ $key }}' value='{{ $sparepart->id }}'>
                             <input type="hidden" name="name" id='name-{{ $key }}'
                                 value='{{ $sparepart->name }}'>
-                            @can('spm')
+                            @canany(['mrk', 'admin', 'spm'])
                                 <input type="hidden" name="part_number" id='part_number-{{ $key }}'
                                     value='{{ $sparepart->part_number }}'>
                                 <input type="hidden" name="order_number" id='order_number{{ $key }}'
                                     value='{{ $sparepart->order_number }}'>
                                 <input type="hidden" name="price_ic_full" id='price_ic_full-{{ $key }}'
                                     value='{{ isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full }}'>
+                                <input type="hidden" name="price_sto" id='price_sto-{{ $key }}'
+                                    value='{{ isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto }}'>
                                 <input type="hidden" name="price_original" id='price_original-{{ $key }}'
                                     value='{{ $sparepart->price_original }}'>
                                 <input type="hidden" name="price_analogue" id='price_analogue-{{ $key }}'
                                     value='{{ $sparepart->price_analogue }}'>
                                 <input type="hidden" name="price_used" id='price_used-{{ $key }}'
                                     value='{{ $sparepart->price_used }}'>
-                            @endcan
+                            @endcanany
                             @can('service')
                                 <input type="hidden" name="price_service" id='price_service-{{ $key }}'
                                     value='{{ $sparepart->price_used }}'>
@@ -171,6 +175,13 @@
                                         {{ old('price_ic_full.' . $key) }}
                                     @else
                                         {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full) }}
+                                    @endif
+                                </td>
+                                <td id="td_price_sto-{{ $key }}" scope="col" class="ic_price">
+                                    @if (old('price_sto.' . $key) !== null)
+                                        {{ old('price_sto.' . $key) }}
+                                    @else
+                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto) }}
                                     @endif
                                 </td>
 

@@ -135,7 +135,7 @@ class WordController extends Controller
     $i = 1;
 
     foreach ($troubleshooting as $trouble) {
-      $array[] = array('PartName' => $trouble->PartName, 'Work' => $trouble->Work);
+      $array[] = array('id_row' => $i, 'PartName' => $trouble->PartName, 'Work' => $trouble->Work);
       $i++;
     }
     // dd($array);
@@ -823,6 +823,138 @@ class WordController extends Controller
     return redirect()->route('document', $id);
   }
 
+  public function export_pzn($id)
+  {
+    $application = DB::table('applications')
+      ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+      ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+      ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+      ->where('applications.id', '=', $id)
+      ->first();
+    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/pzn.docx');
+    //dd($application);
+    $num = date('Hi');
+    $month = date('m');
+    $month_name = '';
+    switch ($month) {
+      case 1:
+        $month_name = 'января';
+        break;
+      case 2:
+        $month_name = 'февраля';
+        break;
+      case 3:
+        $month_name = 'марта';
+        break;
+      case 4:
+        $month_name = 'апреля';
+        break;
+      case 5:
+        $month_name = 'мая';
+        break;
+      case 6:
+        $month_name = 'июня';
+        break;
+      case 7:
+        $month_name = 'июля';
+        break;
+      case 8:
+        $month_name = 'августа';
+        break;
+      case 9:
+        $month_name = 'сентября';
+        break;
+      case 10:
+        $month_name = 'октября';
+        break;
+      case 11:
+        $month_name = 'ноября';
+        break;
+      case 12:
+        $month_name = 'декабря';
+        break;
+    }
+    $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+    $estimate = estimate::where('id_application', '=', $id)->first();
+    // dd($estimate);
+    $templateProcessor->setValue('Client', $application->ClientName);
+    $templateProcessor->setValue('num', $num);
+    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('Date', $date);
+    $templateProcessor->setValue('mnf_date', $application->mnf_year);
+    $templateProcessor->setValue('CarModel', $application->CarModel);
+    $templateProcessor->setValue('gnz', $application->gnz);
+    $templateProcessor->setValue('vin', $application->vin);
+    $array = [];
+    $SpareParts = DB::table('spare_parts')
+      ->where('id_application', '=', $id)
+      ->where('price', '<>', '0')
+      ->orderBy('npp')
+      ->get();
+    $i = 1;
+
+    foreach ($SpareParts as $sparepart) {
+      $array[] = array(
+        'SparePart' => $sparepart->name, 'price' => $sparepart->price, 'count' => $sparepart->count, 'summ' => $sparepart->price_sto,
+        'iznos' => $sparepart->iznos, 'sum_half' => $sparepart->price_ic_half, 'part_number' => $sparepart->part_number
+      );
+    }
+    $templateProcessor->cloneRowAndSetValues('SparePart', $array);
+    $array1 = [];
+    $Works = DB::table('works')
+      ->where('id_application', '=', $id)
+      ->where('price', '<>', '0')
+      ->orderBy('npp')
+      ->get();
+
+    foreach ($Works as $work) {
+      $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
+    }
+    // dd($array1);
+
+    $templateProcessor->cloneRowAndSetValues('name', $array1);
+    if (isset($estimate->price_repair)) {
+      $templateProcessor->setValue('price_repair', $estimate->price_repair);
+      $templateProcessor->setValue('price_paint', $estimate->price_paint);
+      $templateProcessor->setValue('price_zip', $estimate->price_zip);
+      $templateProcessor->setValue('price_work', $estimate->price_work);
+      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $estimate->zn_number = $num . ' от ' . $date . 'г.';
+      $estimate->save();
+    }
+
+
+
+    // dd($array, $array1);
+
+    $filename = "Предварительный заказ-наряд №" . date('d-m-y_hms') . ".docx";
+
+    $dir = 'storage/files/' . $id;
+    if (!is_dir($dir)) {
+      mkdir($dir, 0777, true);
+    }
+    $i = 1;
+    if (file_exists($dir . '/' . $filename)) {
+      while (file_exists($dir . '/' . $filename))
+        $filename .= '(' . $i++ . ')';
+    }
+    $pathToSave = $dir . '/' . $filename;
+    // dd($templateProcessor);
+    $templateProcessor->saveAs($pathToSave);
+    $document = new Attachment();
+    $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . $date . ".docx";
+    $document->message_id = 0;
+    $document->mime_type = mime_content_type($pathToSave);
+    $document->id_application = $id;
+    $document->file_size = filesize($pathToSave);
+    $document->location = $filename;
+    $document->id_status = 16;
+    $document->save();
+    exec('chmod 755 "' . $pathToSave . '"');
+    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+    // dd($estimate);
+    return redirect()->route('document', $id);
+  }
   public function export_sch($id)
   {
     $application = DB::table('applications')
