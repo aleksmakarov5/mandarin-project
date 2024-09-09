@@ -405,38 +405,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
             }
             // dd($SpareParts);
-        } else if ($app->id_insuranceCompany == 3) {
-
-            if (mb_strpos($file, 'www.autoins.ru')) {
-                $SparePart_start = mb_strpos($file, '№ по каталогу');
-                // echo $SparePart_start . 'Раб_Старт<br /><br />';
-                $iskl = $request['iskl'];
-                if ($request['reset']) {
-                    $iskl = [];
-                }
-
-                $SparePart_end = mb_strpos($file, 'www.autoins.ru');
-                // echo $SparePart_end . 'Раб_фин<br /><br />';
-                $SparePart = mb_substr($file, $SparePart_start + 34, $SparePart_end - $SparePart_start - 95);
-                $SparePart_array = explode('<br/>', $SparePart);
-                // dd($SparePart_array);
-                $j = 0;
-                $reset = 0;
-                $SpareParts = [];
-                for ($i = 0; $i < count($SparePart_array); $i++) {
-                    if ($request['iskl']) {
-                        foreach ($iskl as $key => $value) {
-                            if ($i == $value) {
-                                $i++;
-                                $reset++;
-                            }
-                        }
-                    }
-                    $SpareParts[$j++] = $SparePart_array[$i];
-                    // echo $SparePart_array[$i] . '<br />';
-
-                }
-            } else {
+        } else if ($app->id_insuranceCompany == 3) { {
                 if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
                     rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
                     exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
@@ -445,7 +414,7 @@ class SparePartController extends Controller
                     $data = array(
                         "mimeType" => "application/pdf",
                         "languageCodes" => ["*"],
-                        "model" => "page",
+                        "model" => "table",
                         "content" => $output
                     );
 
@@ -542,7 +511,7 @@ class SparePartController extends Controller
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
                 $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
-                // dd($file);
+                dd($file);
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
                 // echo $SparePart_start . 'Раб_Старт<br /><br />';
                 $iskl = $request['iskl'];

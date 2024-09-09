@@ -805,6 +805,10 @@ class ApplicationController extends Controller
         $application->save();
 
         $history->id_application = $application->id;
+        $dir = 'storage/files/' . $application->id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
         $history->save();
         return redirect()
             ->route('application', $application->id);
