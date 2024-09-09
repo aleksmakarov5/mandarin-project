@@ -895,7 +895,7 @@ class WordController extends Controller
 
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->name, 'price' => $sparepart->price, 'count' => $sparepart->count, 'summ' => $sparepart->price_sto,
+        'SparePart' => $sparepart->name, 'price' => $sparepart->price, 'count' => $sparepart->count, 'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
         'iznos' => $sparepart->iznos, 'sum_half' => $sparepart->price_ic_half, 'part_number' => $sparepart->part_number
       );
     }

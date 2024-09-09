@@ -118,7 +118,11 @@ class SparePartController extends Controller
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
             $summ_ic_full = $summ_ic_full + (float)str_replace(' ', '', $sparepart->price_ic_full);
-            $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_sto);
+            if ((float)str_replace(' ', '', $sparepart->price_sto) == 0)
+                $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_ic_full);
+            else
+                $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_sto);
+
             $summ_ic_half = $summ_ic_half + (float)str_replace(' ', '', $sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:

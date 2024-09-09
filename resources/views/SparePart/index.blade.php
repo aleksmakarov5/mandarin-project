@@ -181,7 +181,11 @@
                                     @if (old('price_sto.' . $key) !== null)
                                         {{ old('price_sto.' . $key) }}
                                     @else
-                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto) }}
+                                        @if ($sparepart->price_sto == 0)
+                                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full) }}
+                                        @else
+                                            {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto) }}
+                                        @endif
                                     @endif
                                 </td>
 
