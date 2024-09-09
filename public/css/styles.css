@@ -1,5 +1,7 @@
 body {
     font-size: 12px;
+
+    --bs-body-color: rgb(0, 0, 0);
 }
 
 .nav-link {
@@ -307,6 +309,11 @@ td.mrksto {
 
 .editable tbody {
     cursor: pointer;
+
+}
+
+.editable thead {
+    color: white;
 }
 
 .editable th,
@@ -323,7 +330,6 @@ td.mrksto {
 }
 
 .editable th {
-    color: #ffffff;
     background: #30a9d8;
     border-color: white;
     padding-left: 3px;
