@@ -29,8 +29,8 @@ class TroubleshootingController extends Controller
         $troubleshooting = new troubleshooting;
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'PartName' => 'required',
-            'Work' => 'required',
+            'PartName' => 'nullable',
+            'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
             'Сonclusion' => 'nullable'
         ]);
@@ -55,8 +55,8 @@ class TroubleshootingController extends Controller
 
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'PartName' => 'required',
-            'Work' => 'required',
+            'PartName' => 'nullable',
+            'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
             'Сonclusion' => 'nullable'
         ]);

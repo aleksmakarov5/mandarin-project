@@ -14,10 +14,8 @@
             <tr>
                 <th scope="col">#</th>
                 <th scope="col">Наименование детали автомобиля</th>
-
+                <th scope="col">Повреждение</th>
                 <th scope="col">Требуемое ремонтное воздействие</th>
-                <th scope="col">Мнение эксперта</th>
-                <th scope="col">Заключение</th>
                 <th scope="col"></th>
 
 
@@ -44,18 +42,15 @@
                             {{ $troubleshooting->PartName }}</td>
                         <input type="hidden" name="PartName" id='PartName-{{ $key }}'
                             value=' {{ $troubleshooting->PartName }}'>
-                        <td id="td_Work-{{ $key }}">
-                            {{ $troubleshooting->Work }}</td>
-                        <input type="hidden" name="Work" id='Work-{{ $key }}'
-                            value=' {{ $troubleshooting->Work }}'>
-                        <td id="td_ExpertApinion-{{ $key }}">
-                            {{ $troubleshooting->ExpertApinion }}</td>
-                        <input type="hidden" name="ExpertApinion" id='ExpertApinion-{{ $key }}'
-                            value=' {{ $troubleshooting->ExpertApinion }}'>
                         <td id="td_Сonclusion-{{ $key }}">
                             {{ $troubleshooting->Сonclusion }}</td>
                         <input type="hidden" name="Сonclusion" id='Сonclusion-{{ $key }}'
                             value=' {{ $troubleshooting->Сonclusion }}'>
+
+                        <td id="td_Work-{{ $key }}">
+                            {{ $troubleshooting->Work }}</td>
+                        <input type="hidden" name="Work" id='Work-{{ $key }}'
+                            value=' {{ $troubleshooting->Work }}'>
                         <td scope="col"> <a
                                 onclick="if (!confirm('Точно удалить позицию <{{ $troubleshooting->PartName }}?>')) return false"
                                 href="{{ route('troubleshooting.destroy', $troubleshooting->id) }}" class="nav-link"><img
@@ -81,24 +76,6 @@
                     </th>
                     <th>
 
-                        <div class="form-floating @error('Work') alert alert-danger @enderror">
-                            <input type="text" name="Work" id="Work" class="form-control"
-                                value="{{ old('Work') }}">
-
-                        </div>
-
-                    </th>
-                    <th>
-
-                        <div class="form-floating @error('ExpertApinion') alert alert-danger @enderror">
-                            <input type="text" name="ExpertApinion" id="ExpertApinion" class="form-control"
-                                value="{{ old('ExpertApinion') }}">
-
-                        </div>
-
-                    </th>
-                    <th>
-
                         <div class="form-floating @error('Сonclusion') alert alert-danger @enderror">
                             <input type="text" name="Сonclusion" id="Сonclusion" class="form-control"
                                 value="{{ old('Сonclusion') }}">
@@ -106,6 +83,17 @@
                         </div>
 
                     </th>
+                    <th>
+
+                        <div class="form-floating @error('Work') alert alert-danger @enderror">
+                            <input type="text" name="Work" id="Work" class="form-control"
+                                value="{{ old('Work') }}">
+
+                        </div>
+
+                    </th>
+
+
                     <th>
                         <input type="submit" value="Создать" class="nav-link">
                     </th>

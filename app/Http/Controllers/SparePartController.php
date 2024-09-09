@@ -10,6 +10,7 @@ use App\Models\application;
 use App\Models\sparepart_status;
 use App\Models\estimate;
 use Illuminate\Support\Facades\Gate;
+use App\Models\troubleshooting;
 
 
 class SparePartController extends Controller
@@ -210,11 +211,18 @@ class SparePartController extends Controller
         ]);
         $request->flash();
 
+
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;
         }
 
         $sparepart->save();
+        if ($data['author'] == 5) {
+            $troubleshooting = new troubleshooting;
+            $troubleshooting->PartName = $data['name'];
+            $troubleshooting->id_application = $data['id_application'];
+            $troubleshooting->save();
+        }
         return redirect()
             ->route('SparePart', $sparepart->id_application);
     }
