@@ -1759,7 +1759,7 @@ class ApplicationController extends Controller
         $history->comment = $request->comment;
         $history->save();
         $application->save();
-        if (isset($variants[0])) {
+        if (is_array($variants)) {
             foreach ($variants as $key => $value) {
                 $failure = new failure;
                 $failure->id_application = $id;
