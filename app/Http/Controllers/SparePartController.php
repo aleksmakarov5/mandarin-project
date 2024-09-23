@@ -389,9 +389,11 @@ class SparePartController extends Controller
         $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
 
         $app = Application::findorfail($id);
+        $id_ic = $app->id_insuranceCompany;
         if ($app->id_insuranceCompany == 1) {
 
             $SparePart_start = mb_strpos($file, 'износом, Рубли');
+
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
             if ($request['reset']) {
@@ -419,166 +421,198 @@ class SparePartController extends Controller
             }
             // dd($SpareParts);
         } else if ($app->id_insuranceCompany == 3) { {
-                if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
-                    rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-                    exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
-                    rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-                    $output = file_get_contents('storage/files/' . $id . '/output.txt');
-                    $data = array(
-                        "mimeType" => "application/pdf",
-                        "languageCodes" => ["*"],
-                        "model" => "table",
-                        "content" => $output
-                    );
+                $SparePart_start = mb_strpos($file, 'износом, Рубли');
+                if ($SparePart_start) {
+                    // echo $SparePart_start . 'Раб_Старт<br /><br />';
+                    $iskl = $request['iskl'];
+                    if ($request['reset']) {
+                        $iskl = [];
+                    }
 
-
-                    $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_HTTPHEADER,
-                        array(
-                            'Content-Type:application/json',
-                            'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                            'x-folder-id: b1gcnqkpepfcp6fulsah',
-                            'x-data-logging-enabled: true'
-                        )
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_POST,
-                        1
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_POSTFIELDS,
-                        json_encode($data, JSON_UNESCAPED_UNICODE)
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_RETURNTRANSFER,
-                        true
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_SSL_VERIFYPEER,
-                        false
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_HEADER,
-                        false
-                    );
-                    $res = curl_exec($ch);
-                    curl_close($ch);
-
-                    $res = json_decode($res, JSON_UNESCAPED_UNICODE);
-
-                    // echo $res['id'];
-
-                    $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_RETURNTRANSFER,
-                        true
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_HTTPHEADER,
-                        array(
-                            'Content-Type:application/json',
-                            'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                            'x-folder-id: b1gcnqkpepfcp6fulsah',
-                            'x-data-logging-enabled: true'
-                        )
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_SSL_VERIFYPEER,
-                        false
-                    );
-                    curl_setopt(
-                        $ch,
-                        CURLOPT_HEADER,
-                        false
-                    );
-                    $html = curl_exec($ch);
-                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                    if (isset($html['error']['httpCode']))
-                        while (isset($html['error'])) {
-                            // echo ($html['error']['httpCode'] . '<br>');
-                            $html = curl_exec($ch);
-                            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                        }
-                    $html = curl_exec($ch);
-                    // dd($html);
-                    $html = explode("}}", $html);
-                    curl_close($ch);
-                    $file = '';
-                    foreach ($html as $result) {
-                        $result .= '}}';
-                        $result = json_decode($result, JSON_UNESCAPED_UNICODE);
-
-                        if (isset($result['result']['textAnnotation']['tables'])) {
-                            foreach ($result['result']['textAnnotation']['tables'] as $table) {
-                                foreach ($table['cells'] as $row) {
-                                    $text = $row['text'];
-                                    $text = preg_replace('/\xc2\xa0/', ' ', $text);
-
-                                    $text = preg_replace(
-                                        "/&#160/",
-                                        ' ',
-                                        $text
-                                    );
-
-                                    $text = preg_replace("/\u{A0}/", ' ', $text);
-
-                                    $text = str_replace(
-                                        '&#160',
-                                        ' ',
-                                        $text
-                                    );
-                                    $text = str_replace("\u{A0}", ' ', $text);
-
-                                    $file .= $text . "<br/>";
+                    $SparePart_end = mb_strpos($file, 'ИТОГО');
+                    // echo $SparePart_end . 'Раб_фин<br /><br />';
+                    $SparePart = mb_substr($file, $SparePart_start + 14, $SparePart_end - $SparePart_start + 14);
+                    $SparePart_array = explode('<br/>', $SparePart);
+                    $j = 0;
+                    $reset = 0;
+                    $SpareParts = [];
+                    for ($i = 0; $i < count($SparePart_array); $i++) {
+                        if ($request['iskl']) {
+                            foreach ($iskl as $key => $value) {
+                                if ($i == $value) {
+                                    $i++;
+                                    $reset++;
                                 }
                             }
                         }
+                        $SpareParts[$j++] = $SparePart_array[$i];
+                        // echo $SparePart_array[$i] . '<br />';
                     }
-                    file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
-                }
-                $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
-                // dd($file);
-                $SparePart_start = mb_strpos($file, 'износом, Рубли');
-                // echo $SparePart_start . 'Раб_Старт<br /><br />';
-                $iskl = $request['iskl'];
-                if ($request['reset']) {
-                    $iskl = [];
-                }
+                    $id_ic = 1;
+                } else {
 
-                $SparePart_end = mb_strpos($file, 'ИТОГ');
-                // echo $SparePart_end . 'Раб_фин<br /><br />';
-                $SparePart = mb_substr($file, $SparePart_start + 24, $SparePart_end - $SparePart_start - 34);
-                $SparePart_array = explode("<br/>", $SparePart);
-                $j = 0;
-                $reset = 0;
-                $SpareParts = [];
-                for ($i = 0; $i < count($SparePart_array); $i++) {
-                    if ($request['iskl']) {
-                        foreach ($iskl as $key => $value) {
-                            if ($i == $value) {
-                                $i++;
-                                $reset++;
+                    if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
+                        rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                        exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+                        rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+                        $output = file_get_contents('storage/files/' . $id . '/output.txt');
+                        $data = array(
+                            "mimeType" => "application/pdf",
+                            "languageCodes" => ["*"],
+                            "model" => "table",
+                            "content" => $output
+                        );
+
+
+                        $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_HTTPHEADER,
+                            array(
+                                'Content-Type:application/json',
+                                'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                                'x-folder-id: b1gcnqkpepfcp6fulsah',
+                                'x-data-logging-enabled: true'
+                            )
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_POST,
+                            1
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_POSTFIELDS,
+                            json_encode($data, JSON_UNESCAPED_UNICODE)
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_RETURNTRANSFER,
+                            true
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_SSL_VERIFYPEER,
+                            false
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_HEADER,
+                            false
+                        );
+                        $res = curl_exec($ch);
+                        curl_close($ch);
+
+                        $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+                        // echo $res['id'];
+
+                        $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_RETURNTRANSFER,
+                            true
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_HTTPHEADER,
+                            array(
+                                'Content-Type:application/json',
+                                'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                                'x-folder-id: b1gcnqkpepfcp6fulsah',
+                                'x-data-logging-enabled: true'
+                            )
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_SSL_VERIFYPEER,
+                            false
+                        );
+                        curl_setopt(
+                            $ch,
+                            CURLOPT_HEADER,
+                            false
+                        );
+                        $html = curl_exec($ch);
+                        $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                        if (isset($html['error']['httpCode']))
+                            while (isset($html['error'])) {
+                                // echo ($html['error']['httpCode'] . '<br>');
+                                $html = curl_exec($ch);
+                                $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                            }
+                        $html = curl_exec($ch);
+                        // dd($html);
+                        $html = explode("}}", $html);
+                        curl_close($ch);
+                        $file = '';
+                        foreach ($html as $result) {
+                            $result .= '}}';
+                            $result = json_decode($result, JSON_UNESCAPED_UNICODE);
+
+                            if (isset($result['result']['textAnnotation']['tables'])) {
+                                foreach ($result['result']['textAnnotation']['tables'] as $table) {
+                                    foreach ($table['cells'] as $row) {
+                                        $text = $row['text'];
+                                        $text = preg_replace('/\xc2\xa0/', ' ', $text);
+
+                                        $text = preg_replace(
+                                            "/&#160/",
+                                            ' ',
+                                            $text
+                                        );
+
+                                        $text = preg_replace("/\u{A0}/", ' ', $text);
+
+                                        $text = str_replace(
+                                            '&#160',
+                                            ' ',
+                                            $text
+                                        );
+                                        $text = str_replace("\u{A0}", ' ', $text);
+
+                                        $file .= $text . "<br/>";
+                                    }
+                                }
                             }
                         }
+                        file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                     }
-                    $SpareParts[$j++] = $SparePart_array[$i];
-                    // echo $SparePart_array[$i] . '<br />';
+                    $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
+                    // dd($file);
+                    $SparePart_start = mb_strpos($file, 'износом, Рубли');
+                    // echo $SparePart_start . 'Раб_Старт<br /><br />';
+                    $iskl = $request['iskl'];
+                    if ($request['reset']) {
+                        $iskl = [];
+                    }
+
+                    $SparePart_end = mb_strpos($file, 'ИТОГ');
+                    // echo $SparePart_end . 'Раб_фин<br /><br />';
+                    $SparePart = mb_substr($file, $SparePart_start + 24, $SparePart_end - $SparePart_start - 34);
+                    $SparePart_array = explode("<br/>", $SparePart);
+                    $j = 0;
+                    $reset = 0;
+                    $SpareParts = [];
+                    for ($i = 0; $i < count($SparePart_array); $i++) {
+                        if ($request['iskl']) {
+                            foreach ($iskl as $key => $value) {
+                                if ($i == $value) {
+                                    $i++;
+                                    $reset++;
+                                }
+                            }
+                        }
+                        $SpareParts[$j++] = $SparePart_array[$i];
+                        // echo $SparePart_array[$i] . '<br />';
+                    }
                 }
             }
         }
 
+
         // dd($SparePart_array);
-        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $app->id_insuranceCompany]);
+        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic]);
     }
     public function data_save(Request $request, $id)
     {
