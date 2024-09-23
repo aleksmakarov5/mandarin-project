@@ -1860,13 +1860,14 @@ class ApplicationController extends Controller
         $application->save();
 
         // dd($variants);
+        if (is_array($variants))
+            foreach ($variants as $key => $value) {
+                $tru = new tru;
+                $tru->id_application = $id;
+                $tru->id_var = $value;
+                $tru->save();
+            }
 
-        foreach ($variants as $key => $value) {
-            $tru = new tru;
-            $tru->id_application = $id;
-            $tru->id_var = $value;
-            $tru->save();
-        }
 
         return redirect()->route('applications');
     }
