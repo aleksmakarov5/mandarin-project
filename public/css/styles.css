@@ -1466,7 +1466,7 @@ form .nav-link {
     overflow: auto;
     position: fixed;
     max-height: 70%;
-    max-width: 100px;
+    max-width: 150px;
     padding: 10px;
     top: 246px;
     right: 6px;
