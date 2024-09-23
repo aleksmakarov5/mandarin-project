@@ -1859,8 +1859,8 @@ class ApplicationController extends Controller
 
         $application->save();
 
-        // dd($variants);
-        if (isset($variants[0])) {
+        dd($variants);
+        if (isset($variants)) {
             foreach ($variants as $key => $value) {
                 $tru = new tru;
                 $tru->id_application = $id;
