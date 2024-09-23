@@ -510,7 +510,7 @@ class SparePartController extends Controller
                             $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                         }
                     $html = curl_exec($ch);
-                    dd($html);
+                    // dd($html);
                     $html = explode("}}", $html);
                     curl_close($ch);
                     $file = '';
@@ -518,8 +518,31 @@ class SparePartController extends Controller
                         $result .= '}}';
                         $result = json_decode($result, JSON_UNESCAPED_UNICODE);
 
-                        if (isset($result['result']['textAnnotation']['fullText']))
-                            $file .= $result['result']['textAnnotation']['fullText'];
+                        if (isset($result['result']['textAnnotation']['tables'])) {
+                            foreach ($result['result']['textAnnotation']['tables'] as $table) {
+                                foreach ($table['cells'] as $row) {
+                                    $text = $row['text'];
+                                    $text = preg_replace('/\xc2\xa0/', ' ', $text);
+
+                                    $text = preg_replace(
+                                        "/&#160/",
+                                        ' ',
+                                        $text
+                                    );
+
+                                    $text = preg_replace("/\u{A0}/", ' ', $text);
+
+                                    $text = str_replace(
+                                        '&#160',
+                                        ' ',
+                                        $text
+                                    );
+                                    $text = str_replace("\u{A0}", ' ', $text);
+
+                                    $file .= $text . "<br/>";
+                                }
+                            }
+                        }
                     }
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
@@ -532,10 +555,10 @@ class SparePartController extends Controller
                     $iskl = [];
                 }
 
-                $SparePart_end = mb_strpos($file, 'ИТОГО');
+                $SparePart_end = mb_strpos($file, 'ИТОГ');
                 // echo $SparePart_end . 'Раб_фин<br /><br />';
-                $SparePart = mb_substr($file, $SparePart_start + 14, $SparePart_end - $SparePart_start + 14);
-                $SparePart_array = explode("\n", $SparePart);
+                $SparePart = mb_substr($file, $SparePart_start + 24, $SparePart_end - $SparePart_start - 34);
+                $SparePart_array = explode("<br/>", $SparePart);
                 $j = 0;
                 $reset = 0;
                 $SpareParts = [];
