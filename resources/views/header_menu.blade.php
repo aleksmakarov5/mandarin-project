@@ -3,6 +3,7 @@
     use App\Models\ApplicationStatus;
     $app = application::where('id', '=', $id)->first();
     $status = ApplicationStatus::get()->all();
+    $currentStatus = ApplicationStatus::where('id', '=', $app->id_status)->first();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
     $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
     $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
@@ -74,6 +75,9 @@
     Домашняя
 @endsection
 @section('main_content')
+    <div class="next-step">
+        {{ $currentStatus->next_step }}
+    </div>
     @if (!isset($hide_menu))
         <table class="table">
             <tr>
@@ -142,6 +146,7 @@
 
             </tr>
         </table>
+
         <div id="na">
             <header class="d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
