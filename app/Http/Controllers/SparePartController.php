@@ -460,7 +460,7 @@ class SparePartController extends Controller
 
                         $SparePart_end = mb_strpos($file, 'www.autoins.ru');
                         // echo $SparePart_end . 'Раб_фин<br /><br />';
-                        $SparePart = mb_substr($file, $SparePart_start + 13, $SparePart_end - $SparePart_start - 80);
+                        $SparePart = mb_substr($file, $SparePart_start + 13, $SparePart_end - $SparePart_start - 20);
                         $SparePart_array = explode('<br/>', $SparePart);
                         $j = 0;
                         $reset = 0;
