@@ -88,9 +88,12 @@ class WorkController extends Controller
         }
         $delta = $summ_service - $summ_ic;
         return view('Work.index', [
-            'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
-            'id' => $id, 'delta' => $delta,
-            'summ_ic' => $summ_ic, 'summ_service' => $summ_service,
+            'Works' => $Works_ic->all(),
+            "Works_serv" => $Works_serv->all(),
+            'id' => $id,
+            'delta' => $delta,
+            'summ_ic' => $summ_ic,
+            'summ_service' => $summ_service,
             'eco' => $eco
         ]);
     }
@@ -208,7 +211,39 @@ class WorkController extends Controller
             // dd($works);
             session(['works' => $works]);
         } else if ($app->id_insuranceCompany == 3) {
-            if (mb_strpos($file, 'www.autoins.ru')) {
+            $work_start = mb_strpos($file, 'н-час');
+            if ($work_start) {
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+                $work_array = explode('<br/>', $work);
+                // dd($work_array);
+                $j = 0;
+
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час"
+
+
+                    ) {
+                    } else
+
+
+                        $works[$j++] = $work_array[$i];
+                    // echo $work_array[$i] . '<br />';
+                }
+                // dd($works);
+                session(['works' => $works]);
+            } else if (mb_strpos($file, 'www.autoins.ru')) {
                 $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
                 // dd($file);
                 $work_start = mb_strpos($file, 'Ремонтные работы, рубли');

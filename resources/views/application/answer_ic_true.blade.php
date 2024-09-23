@@ -56,6 +56,8 @@
                             <div class="form-outline">
                                 <textarea class="form-cont" id="textAreaExample2" rows="15" name=message>
 Добрый день! 
+
+
 По заявке {{ $application->numberInsuranceCompanyApplication }} принято положительное решение @if (isset($true_vars[0]))
 со следующими условиями:
 
@@ -63,7 +65,10 @@
 -{{ $item->variant }}
 @endforeach
 @endif
-Автомобиль будет поставлен на сервис {{ $service->service_name }} по адресу {{ $service->service_description }}
+
+
+Автомобиль будет поставлен на сервис "ИП "Ананьин Михаил Юрьевич" по адресу {{ $service->service_description }}
+
 
 Просим прислать направление и калькуляцию
               </textarea>
