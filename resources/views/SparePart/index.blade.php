@@ -39,7 +39,7 @@
                         <th scope="col" colspan="1">Вариант СТО</th>
                     @endif
                     <th scope="col">Комментарий</th>
-                    @if (session('rout') == 'directions')
+                    @if (session('rout') == 'applications')
                         <th scope="col">Статус</th>
                         <th scope="col">Дата заказа</th>
                         <th scope="col">Ожидаемая дата</th>
@@ -70,7 +70,7 @@
                         </th>
 
                         <th scope="col" colspan=2></th>
-                        @if (session('rout') == 'directions')
+                        @if (session('rout') == 'applications')
                             <th scope="col"></th>
 
 
@@ -435,7 +435,7 @@
                             </td>
                             <input type="hidden" name="comment" id='comment-{{ $key }}'
                                 value='{{ $sparepart->comment }}'>
-                            @if (session('rout') == 'directions')
+                            @if (session('rout') == 'applications')
                                 <td id="td_status_id-{{ $key }}" scope="col"
                                     @switch($sparepart->status_id)
                                 @case(1)
@@ -579,7 +579,7 @@
 
                         </th>
 
-                        @if (session('rout') == 'directions')
+                        @if (session('rout') == 'applications')
                             <th>
 
                                 <input type="text" name="status" id="status" class="form-control"
