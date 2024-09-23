@@ -1468,8 +1468,8 @@ form .nav-link {
     max-height: 70%;
     max-width: 150px;
     padding: 10px;
-    top: 246px;
-    right: 6px;
+    top: 16px;
+    left: 16px;
     background: rgba(244, 246, 181, 0.8);
     border-radius: 10px;
     border: 1px;
