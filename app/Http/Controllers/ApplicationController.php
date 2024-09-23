@@ -1892,8 +1892,9 @@ class ApplicationController extends Controller
             ->get();
         $users = DB::table('users')->get();
         $service = service::findOrFail($application->id_service);
+        $attachments = attachment::where('id_application', '=', $id)->get()->all();
 
-        return view('application.answer_ic_true', ['subject' => $subject, 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'service' => $service]);
+        return view('application.answer_ic_true', ['subject' => $subject, 'true_vars' => $true_vars->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'service' => $service, 'attach' => $attachments]);
     }
 
     public function answer_ic_true_sent(Request $request, $id)
@@ -1905,11 +1906,19 @@ class ApplicationController extends Controller
         $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
         $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
         $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+        $files = [];
+        for ($i = 0; $i < count($request->location); $i++) {
+            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+        }
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
+
+        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["email"])
-                ->from($data['from'], $data['name'])
+                ->from('robot@mandarinportal.ru', 'Мандарин')
                 ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
         });
 
         $application->id_status = 11;
