@@ -74,37 +74,37 @@
               </textarea>
 
                             </div>
-                        </li>
 
-                        <div class="row">
-                            @foreach ($attach as $key => $doc)
-                                <div class="card" style="width: 20rem;">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <form name="form{{ $key }}" action="data_load" method="POST">
-                                                @csrf
-                                                <input type="hidden" name="location" value='{{ $doc->location }}'>
-                                                <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
-                                                    class="card-img-top"
-                                                    alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
-                                            </form>
-                                        </div>
 
-                                        <div class="col-md-8">
-
-                                            <div class="card-body">
-
-                                                <h5 class="card-title">{{ $doc->file_name }}</h5>
-                                                <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                            <div class="row">
+                                @foreach ($attach as $key => $doc)
+                                    <div class="card" style="width: 20rem;">
+                                        <div class="row g-0">
+                                            <div class="col-md-4">
+                                                <form name="form{{ $key }}" action="data_load" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="location" value='{{ $doc->location }}'>
+                                                    <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
+                                                        class="card-img-top"
+                                                        alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                                                </form>
                                             </div>
 
-                                        </div>
-                                    </div>
+                                            <div class="col-md-8">
 
-                                </div>
-                            @endforeach
-                        </div>
-                        <input type="submit" class="nav-link">
+                                                <div class="card-body">
+
+                                                    <h5 class="card-title">{{ $doc->file_name }}</h5>
+                                                    <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                @endforeach
+                            </div>
+                            <input type="submit" class="nav-link">
                 </ul>
                 </form>
             </div>
