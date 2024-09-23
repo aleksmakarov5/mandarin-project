@@ -172,10 +172,23 @@ class SparePartController extends Controller
         }
         $delta = $summ_service - $summ_ic;
         return view('SparePart.index', [
-            'spareparts' => $spareparts->all(), 'delta_res_full' => $delta_res_full, 'delta_res_half' => $delta_res_half, 'delta_full' => $delta_full, 'delta_half' => $delta_half,
-            'id' => $id, 'summ_ic_full' => $summ_ic_full, 'summ_sto' => $summ_sto, 'summ_ic_half' => $summ_ic_half,
-            'summ_order' => $summ_order, 'estimate' => $estimates, 'summ_service' => $summ_service,
-            'eco' => $eco, 'statuses' => $statuses->all(), 'sertificat' => $sertificat, 'Works' => $Works_ic->all(), "Works_serv" => $Works_serv->all(),
+            'spareparts' => $spareparts->all(),
+            'delta_res_full' => $delta_res_full,
+            'delta_res_half' => $delta_res_half,
+            'delta_full' => $delta_full,
+            'delta_half' => $delta_half,
+            'id' => $id,
+            'summ_ic_full' => $summ_ic_full,
+            'summ_sto' => $summ_sto,
+            'summ_ic_half' => $summ_ic_half,
+            'summ_order' => $summ_order,
+            'estimate' => $estimates,
+            'summ_service' => $summ_service,
+            'eco' => $eco,
+            'statuses' => $statuses->all(),
+            'sertificat' => $sertificat,
+            'Works' => $Works_ic->all(),
+            "Works_serv" => $Works_serv->all(),
             'delta' => $delta,
             'summ_ic' => $summ_ic,
         ]);
@@ -497,7 +510,7 @@ class SparePartController extends Controller
                             $html = json_decode($html, JSON_UNESCAPED_UNICODE);
                         }
                     $html = curl_exec($ch);
-                    // dd($html);
+                    dd($html);
                     $html = explode("}}", $html);
                     curl_close($ch);
                     $file = '';
@@ -511,7 +524,7 @@ class SparePartController extends Controller
                     file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
                 }
                 $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
-                dd($file);
+                // dd($file);
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
                 // echo $SparePart_start . 'Раб_Старт<br /><br />';
                 $iskl = $request['iskl'];

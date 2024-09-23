@@ -39,7 +39,8 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
     Route::post('/create', [TroubleshootingController::class, 'store'])
         ->name('troubleshooting.create');
     Route::post('/{id}/update', [
-        TroubleshootingController::class, 'update'
+        TroubleshootingController::class,
+        'update'
     ])->name('troubleshooting.update');
     Route::delete('/{id}', [TroubleshootingController::class, 'destroy']);
     // Route::post('/', 'StoreController');
@@ -58,6 +59,8 @@ Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function
         ->name('notifycount.failures');
     Route::get('/lawyers/{user_id}', [NotifyCountController::class, 'lawyers'])
         ->name('notifycount.lawyers');
+    Route::get('/archive/{user_id}', [NotifyCountController::class, 'archive'])
+        ->name('notifycount.archive');
     Route::get('/application/{id}/{user_id}', [NotifyCountController::class, 'application'])
         ->name('notifycount.application');
 });

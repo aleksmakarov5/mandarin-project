@@ -93,7 +93,9 @@
                                         автоюристом</a><notify-buttons :user="{{ Auth::user()->id }}" :pi=`lawyers` />
                                 </li>
                                 <li class="nav-item"><a href="\archive"
-                                        class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a></li>
+                                        class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive` />
+                                </li>
                                 <li class="nav-item"><a href="\mail"
                                         class="nav-link {{ session('rout') == 'mail' ? 'tn-active' : '' }}">Почта</a></li>
                             @endcan
@@ -103,15 +105,7 @@
                                     :user="{{ Auth::user()->id }}" :pi=`applications` />
 
                             </li>
-                            <li class="nav-item"><a href="\waiting"
-                                    class="nav-link {{ session('rout') == 'waiting' ? 'tn-active' : '' }}">В
-                                    обработке</a><notify-buttons :user="{{ Auth::user()->id }}" :pi=`waiting` />
 
-                            </li>
-                            <li class="nav-item"><a href="\directions"
-                                    class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a><notify-buttons
-                                    :user="{{ Auth::user()->id }}" :pi=`directions` />
-                            </li>
 
                             &nbsp&nbsp&nbsp&nbsp
                             <li class="nav-item"><a href="\logout"
