@@ -120,6 +120,12 @@
                             <li class="nav-item"><a href="\admin"
                                     class="nav-link {{ session('rout') == 'admin' ? 'tn-active' : '' }}">Админ панель</a>
                             </li>
+                            @if (session('current'))
+                                <li class="nav-item"><a href="\application\{{ session('current') }}"
+                                        class="nav-link ">Вернуться к
+                                        заявке</a>
+                                </li>
+                            @endif
                         @endcan
                     </ul>
 

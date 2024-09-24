@@ -647,6 +647,7 @@ class ApplicationController extends Controller
 
     public function application(Request $request, $id)
     {
+        session(key: ['current' => $id]);
         $hide_menu = $request->get('hide_menu');
         // echo (session('rout'));
         $application = DB::table('applications')

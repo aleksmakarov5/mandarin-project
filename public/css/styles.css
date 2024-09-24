@@ -298,6 +298,7 @@ td.mrksto {
     border-color: rgb(80, 80, 80);
     white-space: nowrap;
     margin-left: 5px;
+    margin-right: 5px;
 }
 
 .editable td {
