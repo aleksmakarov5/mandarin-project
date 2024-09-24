@@ -507,6 +507,15 @@ class WorkController extends Controller
         $price = $request['price'];
         $count_hours = $request['count_hours'];
         $id_application = $request['id_application'];
+        $works = Work::where('id_application', '=', $id_application)
+            ->where('summ', '<>', 0)
+            ->get();
+
+        foreach ($works as $work) {
+            $work->delete();
+        }
+        // dd($works);
+
         //dd($request->name);
         for ($i = 1; $i <= count($name); $i++) {
             Work::updateOrCreate(
