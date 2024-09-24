@@ -19,7 +19,8 @@ export default{
       'user',
         'id_app',
         'type_in'
-    ],
+  ],
+    
     data()
     {
       return{

@@ -6,6 +6,7 @@ import NotifyCounter from './components/NotifyCounter.vue';
 import NotifyButtons from './components/NotifyButtons.vue';
 import NotifyApp from './components/NotifyApp.vue';
 import PostNotify from './components/PostNotify.vue';
+import NextStep from './components/NextStep.vue';
 import Troubleshootings from './components/Troubleshootings.vue';
 
 
@@ -38,7 +39,8 @@ nb.mount('#nb')
 
 const na = createApp({
   components: {
-    NotifyApp
+    NotifyApp,
+    NextStep
   },
 })
 na.mount('#na')

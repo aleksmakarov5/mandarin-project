@@ -13,13 +13,13 @@
 
 	export default{
         props:[
-            'user'
+            'text'
         ],
 
         data(){
             
             return{
-                text:'',
+                text:this.text,
                 show:false
             }
         },
