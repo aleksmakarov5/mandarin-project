@@ -23,15 +23,7 @@
                 show:false
             }
         },
-	    created(){
-         },
-        mounted(){
-            
-        },
-    methods:{
-        
-
-        },
+	  
        
     }
        
