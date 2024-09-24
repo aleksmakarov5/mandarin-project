@@ -128,8 +128,8 @@ class SparePartController extends Controller
             switch ($sparepart->selected_price) {
                 case 1:
                     $summ_order = $summ_order + (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_original);
-                    $delta_full[$i] = (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
-                    $delta_half[$i] = (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
+                    $delta_full[$i] = (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+                    $delta_half[$i] = (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
                     break;
                 case 2:
                     $summ_order = $summ_order + (float)preg_replace("/[^,.0-9]/", '', $sparepart->price_analogue);
