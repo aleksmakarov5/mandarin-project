@@ -149,10 +149,11 @@
      alert alert-success
        
        ">
-                                            {{ $sum_teor +
+                                            {{ $sum_teor }}
+                                            {{-- +
                                                 (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair)) +
                                                 (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint)) +
-                                                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip)) }}
+                                                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip)) }} --}}
                                             руб;
                                         </div>
                                     </td>
