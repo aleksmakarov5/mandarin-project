@@ -44,4 +44,10 @@ const na = createApp({
   },
 })
 na.mount('#na')
+const ns = createApp({
+  components: {
+    NextStep
+  },
+})
+ns.mount('#ns')
  

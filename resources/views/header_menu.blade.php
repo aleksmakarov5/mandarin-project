@@ -75,9 +75,11 @@
     Домашняя
 @endsection
 @section('main_content')
-    {{-- <div class="next-step">
+    <div id="ns">
 
-    </div> --}}
+        <next-step :txt={{ $currentStatus->next_step }}>
+    </div>
+
     @if (!isset($hide_menu))
         <table class="table">
             <tr>
@@ -325,8 +327,7 @@
 
                 </ul>
             </header>
-            {{-- 
-            <next-step :txt={{ $currentStatus->next_step }}> --}}
+
         </div>
     @endif
     @yield('main')
