@@ -118,32 +118,32 @@ class SparePartController extends Controller
         $delta_full = [];
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
-            $summ_ic_full = $summ_ic_full + (float)str_replace(' ', '', $sparepart->price_ic_full);
-            if ((float)str_replace(' ', '', $sparepart->price_sto) == 0)
-                $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_ic_full);
+            $summ_ic_full = $summ_ic_full + preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+            if (preg_replace("/[^,.0-9]/", '', $sparepart->price_sto) == 0)
+                $summ_sto = $summ_sto + preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
             else
-                $summ_sto = $summ_sto + (float)str_replace(' ', '', $sparepart->price_sto);
+                $summ_sto = $summ_sto + preg_replace("/[^,.0-9]/", '', $sparepart->price_sto);
 
-            $summ_ic_half = $summ_ic_half + (float)str_replace(' ', '', $sparepart->price_ic_half);
+            $summ_ic_half = $summ_ic_half + preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:
-                    $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_original);
-                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_original) - (float)str_replace(' ', '', $sparepart->price_ic_full);
-                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_original) - (float)str_replace(' ', '', $sparepart->price_ic_half);
+                    $summ_order = $summ_order + preg_replace("/[^,.0-9]/", '', $sparepart->price_original);
+                    $delta_full[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+                    $delta_half[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_original) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
                     break;
                 case 2:
-                    $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_analogue);
-                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_analogue) - (float)str_replace(' ', '', $sparepart->price_ic_full);
-                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_analogue) - (float)str_replace(' ', '', $sparepart->price_ic_half);
+                    $summ_order = $summ_order + preg_replace("/[^,.0-9]/", '', $sparepart->price_analogue);
+                    $delta_full[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_analogue) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+                    $delta_half[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_analogue) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
                     break;
                 case 3:
-                    $summ_order = $summ_order + (float)str_replace(' ', '', $sparepart->price_used);
-                    $delta_full[$i] = (float)str_replace(' ', '', $sparepart->price_used) - (float)str_replace(' ', '', $sparepart->price_ic_full);
-                    $delta_half[$i] = (float)str_replace(' ', '', $sparepart->price_used) - (float)str_replace(' ', '', $sparepart->price_ic_half);
+                    $summ_order = $summ_order + preg_replace("/[^,.0-9]/", '', $sparepart->price_used);
+                    $delta_full[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_used) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+                    $delta_half[$i] = preg_replace("/[^,.0-9]/", '', $sparepart->price_used) - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
                     break;
                 default:
-                    $delta_full[$i] = 0 - (float)str_replace(' ', '', $sparepart->price_ic_full);
-                    $delta_half[$i] = 0 - (float)str_replace(' ', '', $sparepart->price_ic_half);
+                    $delta_full[$i] = 0 - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_full);
+                    $delta_half[$i] = 0 - preg_replace("/[^,.0-9]/", '', $sparepart->price_ic_half);
                     break;
             }
         }
@@ -273,28 +273,29 @@ class SparePartController extends Controller
             $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
                 [
-                    'price_sp_full' => $request->price_sp_full / 1.1,
-                    'price_sp_half' => $request->price_sp_half / 1.1,
-                    'price_repair' => $request->price_repair / 1.1,
-                    'price_paint' => $request->price_paint / 1.1,
-                    'price_zip' => $request->price_zip / 1.1,
-                    'price_work' => $request->price_work / 1.1,
-                    'price_repair_full' => $request->price_repair_full / 1.1,
-                    'price_repair_half' => $request->price_repair_half / 1.1
+                'price_sp_full' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_sp_full))/1.1,2),
+                'price_sp_half' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_sp_half))/1.1,2),
+                'price_repair' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair))/1.1,2),
+                'price_paint' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_paint))/1.1,2),
+                'price_zip' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_zip))/1.1,2),
+                'price_work' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_work))/1.1,2),
+                'price_repair_full' =>  round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair_full))/1.1,2),
+                'price_repair_half' => round(str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair_half))/1.1,2)
+          
                 ]
             );
         else
             $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
                 [
-                    'price_sp_full' => (float)str_replace(' ', '', $request->price_sp_full),
-                    'price_sp_half' => (float)str_replace(' ', '', $request->price_sp_half),
-                    'price_repair' => (float)str_replace(' ', '', $request->price_repair),
-                    'price_paint' => (float)str_replace(' ', '', $request->price_paint),
-                    'price_zip' => (float)str_replace(' ', '', $request->price_zip),
-                    'price_work' => (float)str_replace(' ', '', $request->price_work),
-                    'price_repair_full' => (float)str_replace(' ', '', $request->price_repair_full),
-                    'price_repair_half' => (float)str_replace(' ', '', $request->price_repair_half)
+                    'price_sp_full' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_sp_full)),
+                    'price_sp_half' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_sp_half)),
+                    'price_repair' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair)),
+                    'price_paint' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_paint)),
+                    'price_zip' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_zip)),
+                    'price_work' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_work)),
+                    'price_repair_full' =>  str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair_full)),
+                    'price_repair_half' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair_half))
                 ]
             );
         return redirect()->back();
@@ -664,11 +665,11 @@ class SparePartController extends Controller
                 ],
                 [
 
-                    'price' => (float)str_replace(' ', '', $price[$i]),
-                    'price_ic_full' => (float)str_replace(' ', '', $price_ic_full[$i]),
-                    'price_ic_half' => (float)str_replace(' ', '', $price_ic_half[$i]),
+                    'price' => preg_replace("/[^,.0-9]/", '', $price[$i]),
+                    'price_ic_full' => preg_replace("/[^,.0-9]/", '', $price_ic_full[$i]),
+                    'price_ic_half' => preg_replace("/[^,.0-9]/", '', $price_ic_half[$i]),
                     'count' => (float) str_replace(' ', '', $count[$i]),
-                    'iznos' => (float)str_replace(' ', '', $iznos[$i]),
+                    'iznos' => preg_replace("/[^,.0-9]/", '', $iznos[$i]),
                     'npp' => $i
                 ]
 
