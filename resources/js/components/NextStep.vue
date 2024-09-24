@@ -2,9 +2,9 @@
 
 
     <div v-if="show" class="next-step">
-		{{ mytext }}
+		{{ this.txt }} 
     </div>
-    <button v-on:click="show=!show">{{ show ? 'Скрыть подсказку' : 'Показать подсказку' }}</button>
+    <button v-on:click="show=!show">{{ show ? 'Скрыть подсказку' : '?' }}</button>
 
 
 </template>
@@ -12,9 +12,9 @@
 <script>
 
 	export default{
-        props:[
-            'txt'
-        ],
+    props: [
+            "txt",
+    ],
 
         data(){
             

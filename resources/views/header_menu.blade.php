@@ -76,8 +76,8 @@
 @endsection
 @section('main_content')
     <div id="ns">
-
-        <next-step :txt=`{{ $currentStatus->next_step }}`>
+        <next-step :txt="`{{ $currentStatus->next_step }}`"></next-step>
+        {{--  --}}
     </div>
 
     @if (!isset($hide_menu))
