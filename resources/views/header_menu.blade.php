@@ -23,18 +23,46 @@
     $eco_delta_full = 0;
     $eco_delta_half = 0;
     foreach ($spareparts as $i => $sparepart) {
-        $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
-        $sum_teor += $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto;
-        $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
+        $summ_ic_full =
+            $summ_ic_full + str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full));
+        $sum_teor +=
+            $sparepart->price_sto == 0
+                ? str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
+                : str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
+        $summ_ic_half =
+            $summ_ic_half +
+            (float) str_replace(
+                ' ',
+                '',
+                str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_half)),
+            );
         switch ($sparepart->selected_price) {
             case 1:
-                $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_original);
+                $summ_order =
+                    $summ_order +
+                    (float) str_replace(
+                        ' ',
+                        '',
+                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_original)),
+                    );
                 break;
             case 2:
-                $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_analogue);
+                $summ_order =
+                    $summ_order +
+                    (float) str_replace(
+                        ' ',
+                        '',
+                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_analogue)),
+                    );
                 break;
             case 3:
-                $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
+                $summ_order =
+                    $summ_order +
+                    (float) str_replace(
+                        ' ',
+                        '',
+                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_used)),
+                    );
                 break;
         }
     }

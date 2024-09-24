@@ -660,11 +660,11 @@ class SparePartController extends Controller
             SparePart::updateOrCreate(
                 [
                     'id_application' => $id_application,
-                    'name' => $name[$i],
+
                     'part_number' => $part_number[$i]
                 ],
                 [
-
+                    'name' => $name[$i],
                     'price' => preg_replace("/[^,.0-9]/", '', $price[$i]),
                     'price_ic_full' => preg_replace("/[^,.0-9]/", '', $price_ic_full[$i]),
                     'price_ic_half' => preg_replace("/[^,.0-9]/", '', $price_ic_half[$i]),
