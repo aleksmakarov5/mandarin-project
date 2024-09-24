@@ -13,13 +13,13 @@
 
 	export default{
         props:[
-            'text'
+            'txt'
         ],
 
         data(){
             
             return{
-                mytext:this.text,
+                mytext:this.txt,
                 show:false
             }
         },

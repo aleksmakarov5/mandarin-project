@@ -149,7 +149,6 @@
 
         <div id="na">
 
-            {{-- <next-step :text={{ $currentStatus->next_step }}> --}}
             <header class="d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
                     <li>
@@ -326,6 +325,8 @@
 
                 </ul>
             </header>
+
+            <next-step :txt={{ $currentStatus->next_step }}>
         </div>
     @endif
     @yield('main')
