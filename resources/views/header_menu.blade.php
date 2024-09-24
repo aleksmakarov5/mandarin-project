@@ -325,8 +325,8 @@
 
                 </ul>
             </header>
-
-            <next-step :txt={{ $currentStatus->next_step }}>
+            {{-- 
+            <next-step :txt={{ $currentStatus->next_step }}> --}}
         </div>
     @endif
     @yield('main')
