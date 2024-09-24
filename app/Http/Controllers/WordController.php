@@ -900,7 +900,7 @@ class WordController extends Controller
     $price_sp_full = 0;
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : "<b>" . $sparepart->name . "</b>",
+        'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : "!" . $sparepart->name,
         'price' => $sparepart->price,
         'count' => $sparepart->count,
         'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
