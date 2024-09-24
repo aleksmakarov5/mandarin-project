@@ -759,8 +759,13 @@ class WordController extends Controller
 
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->name, 'price' => $sparepart->price, 'count' => $sparepart->count, 'summ' => $sparepart->price_ic_full,
-        'iznos' => $sparepart->iznos, 'sum_half' => $sparepart->price_ic_half, 'part_number' => $sparepart->part_number
+        'SparePart' => $sparepart->name,
+        'price' => $sparepart->price,
+        'count' => $sparepart->count,
+        'summ' => $sparepart->price_ic_full,
+        'iznos' => $sparepart->iznos,
+        'sum_half' => $sparepart->price_ic_half,
+        'part_number' => $sparepart->part_number
       );
     }
     $templateProcessor->cloneRowAndSetValues('SparePart', $array);
@@ -781,7 +786,7 @@ class WordController extends Controller
       $templateProcessor->setValue('price_repair', $estimate->price_repair);
       $templateProcessor->setValue('price_paint', $estimate->price_paint);
       $templateProcessor->setValue('price_zip', $estimate->price_zip);
-      $templateProcessor->setValue('price_work', $estimate->price_work);
+      $templateProcessor->setValue('price_sp_full', $estimate->price_sp_full);
       $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
       $estimate->zn_number = $num . ' от ' . $date . 'г.';
       $estimate->save();
@@ -895,8 +900,13 @@ class WordController extends Controller
 
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->name, 'price' => $sparepart->price, 'count' => $sparepart->count, 'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
-        'iznos' => $sparepart->iznos, 'sum_half' => $sparepart->price_ic_half, 'part_number' => $sparepart->part_number
+        'SparePart' => $sparepart->name,
+        'price' => $sparepart->price,
+        'count' => $sparepart->count,
+        'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
+        'iznos' => $sparepart->iznos,
+        'sum_half' => $sparepart->price_ic_half,
+        'part_number' => $sparepart->part_number
       );
     }
     $templateProcessor->cloneRowAndSetValues('SparePart', $array);
