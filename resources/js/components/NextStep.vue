@@ -2,7 +2,7 @@
 
 
     <div v-if="show" class="next-step">
-		{{ text }}
+		{{ mytext }}
     </div>
     <button v-on:click="show=!show">{{ show ? 'Скрыть подсказку' : 'Показать подсказку' }}</button>
 
@@ -19,7 +19,7 @@
         data(){
             
             return{
-                text:this.text,
+                mytext:this.text,
                 show:false
             }
         },

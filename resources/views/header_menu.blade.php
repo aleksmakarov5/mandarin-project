@@ -148,6 +148,7 @@
         </table>
 
         <div id="na">
+
             <next-step :text={{ $currentStatus->next_step }}>
                 <header class="d-flex justify-content-center py-3">
                     <ul class="nav nav-pills">
