@@ -903,7 +903,7 @@
                         <th>Cтоимость ремонта/замены:</th>
                         <td id='td_price_repair-500'>
                             @if (isset($estimate->price_repair))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair), 'RUR', 'ru') }}
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
@@ -914,7 +914,7 @@
                         <th>Cтоимость окраски контроля: </th>
                         <td id='td_price_paint-500'>
                             @if (isset($estimate->price_paint))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint), 'RUR', 'ru') }}
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
@@ -925,7 +925,7 @@
                         <th>Cтоимость расходных материалов: </th>
                         <td id='td_price_zip-500'>
                             @if (isset($estimate->price_zip))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip), 'RUR', 'ru') }}
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
@@ -936,7 +936,7 @@
                         <th>Cтоимость работ и материалов: </th>
                         <td id='td_price_work-500'>
                             @if (isset($estimate->price_work))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work), 'RUR', 'ru') }}
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>

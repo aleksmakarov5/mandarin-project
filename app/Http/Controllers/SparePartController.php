@@ -287,14 +287,14 @@ class SparePartController extends Controller
             $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
                 [
-                    'price_sp_full' => $request->price_sp_full,
-                    'price_sp_half' => $request->price_sp_half,
-                    'price_repair' => $request->price_repair,
-                    'price_paint' => $request->price_paint,
-                    'price_zip' => $request->price_zip,
-                    'price_work' => $request->price_work,
-                    'price_repair_full' => $request->price_repair_full,
-                    'price_repair_half' => $request->price_repair_half
+                    'price_sp_full' => (float)str_replace(' ', '', $request->price_sp_full),
+                    'price_sp_half' => (float)str_replace(' ', '', $request->price_sp_half),
+                    'price_repair' => (float)str_replace(' ', '', $request->price_repair),
+                    'price_paint' => (float)str_replace(' ', '', $request->price_paint),
+                    'price_zip' => (float)str_replace(' ', '', $request->price_zip),
+                    'price_work' => (float)str_replace(' ', '', $request->price_work),
+                    'price_repair_full' => (float)str_replace(' ', '', $request->price_repair_full),
+                    'price_repair_half' => (float)str_replace(' ', '', $request->price_repair_half)
                 ]
             );
         return redirect()->back();
