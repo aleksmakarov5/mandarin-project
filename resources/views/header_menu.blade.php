@@ -69,6 +69,11 @@
     } else {
         $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
     }
+    $teor = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
+    $proc_t = 0;
+    if ($summ_ic_full + $summ_service_ic != 0) {
+        $proc_t = round(($teor / ($summ_ic_full + $summ_service_ic)) * 100);
+    }
 @endphp
 @extends('layout')
 @section('title')
@@ -96,6 +101,9 @@
                             <table class="table-count">
                                 <tr>
                                     <td>
+                                        Теоретическая выгода:
+                                    </td>
+                                    <td>
                                         Остаток от полной стоимости:
                                     </td>
                                     <td> Стоимость запчастей</td>
@@ -103,7 +111,16 @@
                                     <td>ЗП</td>
                                 </tr>
                                 <tr>
-
+                                    <td>
+                                        <div
+                                            class="
+       @if ($proc > 61) alert alert-success
+       @else
+       alert alert-danger @endif
+       ">
+                                            {{ $teor }} руб; ({{ $proc_t }}%)
+                                        </div>
+                                    </td>
                                     <td>
                                         <div
                                             class="
