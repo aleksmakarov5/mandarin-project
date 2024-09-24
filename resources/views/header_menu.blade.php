@@ -131,6 +131,9 @@
                             <table class="table-count">
                                 <tr>
                                     <td>
+                                        Ожидаемая сумма:
+                                    </td>
+                                    <td>
                                         Теоретическая выгода:
                                     </td>
                                     <td>
@@ -141,6 +144,14 @@
                                     <td>ЗП</td>
                                 </tr>
                                 <tr>
+                                    <td>
+                                        <div class="
+     alert alert-success
+       
+       ">
+                                            {{ $sum_teor }} руб;
+                                        </div>
+                                    </td>
                                     <td>
                                         <div
                                             class="
