@@ -18,11 +18,13 @@
     $summ_ic_full = 0;
     $summ_ic_half = 0;
     $summ_order = 0;
+    $sum_teor = 0;
     $proc = 0;
     $eco_delta_full = 0;
     $eco_delta_half = 0;
     foreach ($spareparts as $i => $sparepart) {
         $summ_ic_full = $summ_ic_full + (float) str_replace(' ', '', $sparepart->price_ic_full);
+        $sum_teor += $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto;
         $summ_ic_half = $summ_ic_half + (float) str_replace(' ', '', $sparepart->price_ic_half);
         switch ($sparepart->selected_price) {
             case 1:
@@ -69,7 +71,7 @@
     } else {
         $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
     }
-    $teor = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
+    $teor = $sum_teor + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
     $proc_t = 0;
     if ($summ_ic_full + $summ_service_ic != 0) {
         $proc_t = round(($teor / ($summ_ic_full + $summ_service_ic)) * 100);
@@ -114,7 +116,7 @@
                                     <td>
                                         <div
                                             class="
-       @if ($proc > 61) alert alert-success
+       @if ($proc_t > 59) alert alert-success
        @else
        alert alert-danger @endif
        ">
@@ -124,7 +126,7 @@
                                     <td>
                                         <div
                                             class="
-       @if ($proc > 61) alert alert-success
+       @if ($proc > 59) alert alert-success
        @else
        alert alert-danger @endif
        ">
