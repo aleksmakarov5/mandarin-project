@@ -897,10 +897,10 @@ class WordController extends Controller
       ->orderBy('npp')
       ->get();
     $i = 1;
-
+    $price_sp_full = 0;
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->name,
+        'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : "<b>" . $sparepart->name . "</b>",
         'price' => $sparepart->price,
         'count' => $sparepart->count,
         'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
@@ -908,6 +908,10 @@ class WordController extends Controller
         'sum_half' => $sparepart->price_ic_half,
         'part_number' => $sparepart->part_number
       );
+      $price_sp_full
+        += $sparepart->price_sto == 0
+        ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
+        : (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
     }
     $templateProcessor->cloneRowAndSetValues('SparePart', $array);
     $array1 = [];
@@ -921,14 +925,17 @@ class WordController extends Controller
       $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
     }
     // dd($array1);
-
+    $price_repair_full = $price_sp_full +
+      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
+      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
+      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip));
     $templateProcessor->cloneRowAndSetValues('name', $array1);
     if (isset($estimate->price_repair)) {
       $templateProcessor->setValue('price_repair', $estimate->price_repair);
       $templateProcessor->setValue('price_paint', $estimate->price_paint);
       $templateProcessor->setValue('price_zip', $estimate->price_zip);
-      $templateProcessor->setValue('price_work', $estimate->price_work);
-      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $templateProcessor->setValue('price_sp_full', $price_sp_full);
+      $templateProcessor->setValue('price_repair_full', $price_repair_full);
       $estimate->zn_number = $num . ' от ' . $date . 'г.';
       $estimate->save();
     }
