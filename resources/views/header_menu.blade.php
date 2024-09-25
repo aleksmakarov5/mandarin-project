@@ -149,11 +149,16 @@
      alert alert-success
        
        ">
-                                            {{ $sum_teor }}
-                                            {{-- +
-                                                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair)) +
-                                                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint)) +
-                                                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip)) }} --}}
+                                            {{ $sum_teor +
+                                                (isset($estimates->price_repair)
+                                                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair))
+                                                    : $summ_service_ic) +
+                                                (isset($estimates->price_paint)
+                                                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint))
+                                                    : 0) +
+                                                (isset($estimates->price_zip)
+                                                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
+                                                    : 0) }}
                                             руб;
                                         </div>
                                     </td>
