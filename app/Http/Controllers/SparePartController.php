@@ -298,6 +298,7 @@ class SparePartController extends Controller
                     'price_repair_half' => str_replace(',', '.', preg_replace("/[^,.0-9]/", '', $request->price_repair_half))
                 ]
             );
+        dd($estimates);
         return redirect()->back();
     }
 
