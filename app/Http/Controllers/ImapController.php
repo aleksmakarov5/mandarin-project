@@ -463,6 +463,10 @@ class ImapController extends Controller
         if (!$find707) {
             $app_number = "707-75-" . $app_number;
         }
+        $find24 = mb_strpos($app_number, '/');
+        if (!$find24) {
+            $app_number =  $app_number . "/24";
+        }
         // dd($app_number);
         // echo $app_number . '<br>';
         // $start_pos = mb_strpos($subject, 'ремонт');
