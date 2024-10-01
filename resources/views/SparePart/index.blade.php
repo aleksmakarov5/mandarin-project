@@ -598,7 +598,7 @@
             </tr>
         </tbody>
     </table>
-
+    </div>
     @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
@@ -878,7 +878,7 @@
                         <th>Cтоимость узлов и деталей:</th>
                         <td id='td_price_sp_full-500'>
                             @if (isset($estimate->price_sp_full))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_sp_full * 1.1 : (float) $estimate->price_sp_full, 2), 'RUR', 'ru') }}
+                                {{ Number::Currency((float) $estimate->price_sp_full, 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
@@ -889,7 +889,7 @@
                         <th>Cтоимость узлов и деталей c учетом износа:</th>
                         <td id='td_price_sp_half-500'>
                             @if (isset($estimate->price_sp_half))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_sp_half * 1.1 : (float) $estimate->price_sp_half, 2), 'RUR', 'ru') }}
+                                {{ Number::Currency((float) $estimate->price_sp_half, 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
@@ -900,7 +900,7 @@
                         <th>Cтоимость ремонта/замены:</th>
                         <td id='td_price_repair-500'>
                             @if (isset($estimate->price_repair))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair * 1.1 : (float) $estimate->price_repair, 2), 'RUR', 'ru') }}
+                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? $estimate->price_repair * 1.1 : $estimate->price_repair, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
                     </tr>
