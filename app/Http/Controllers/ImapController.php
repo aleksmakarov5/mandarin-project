@@ -441,6 +441,14 @@ class ImapController extends Controller
         // $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
         // echo $gnz . '<br>';
         // $subject = mb_substr($subject, 0, $start_pos_gnz);
+        $subject = str_replace('Fwd:', '', $subject);
+        $subject = str_replace('Re:', '', $subject);
+
+        $subject = str_replace('FWD:', '', $subject);
+        $subject = str_replace('RE:', '', $subject);
+
+        $subject = str_replace('fwd:', '', $subject);
+        $subject = str_replace('re:', '', $subject);
         $start_pos = mb_strpos($subject, '707-');
         $subject = mb_substr($subject, $start_pos);
         $subject = preg_replace("/\t/", ' ', $subject);
@@ -448,6 +456,10 @@ class ImapController extends Controller
         // dd($start_pos);
         $app_number = mb_substr($subject, 0, $finish_pos);
         $app_number = trim($app_number);
+        $find707 = mb_strpos($app_number, '-');
+        if (!$find707) {
+            $app_number = "707-75-" + $app_number;
+        }
         // dd($app_number);
         // echo $app_number . '<br>';
         // $start_pos = mb_strpos($subject, 'ремонт');
