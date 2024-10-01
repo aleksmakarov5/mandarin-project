@@ -31,3 +31,10 @@ if (!function_exists('show_days')) {
         return ' дней';
     }
 }
+if (!function_exists('str2number')) {
+    function str2number($str)
+    {
+        $str = str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $str));
+        return round((float)($str), 2);
+    }
+}
