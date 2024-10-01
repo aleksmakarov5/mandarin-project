@@ -445,6 +445,8 @@ class ImapController extends Controller
         $subject = str_replace('Re:', '', $subject);
 
         $subject = str_replace('FWD:', '', $subject);
+
+        $subject = str_replace('FW:', '', $subject);
         $subject = str_replace('RE:', '', $subject);
 
         $subject = str_replace('fwd:', '', $subject);
