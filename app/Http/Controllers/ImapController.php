@@ -443,22 +443,27 @@ class ImapController extends Controller
         // $subject = mb_substr($subject, 0, $start_pos_gnz);
         $start_pos = mb_strpos($subject, '707-');
         $subject = mb_substr($subject, $start_pos);
-        $finish_pos = mb_strripos($subject, ' ');
-
+        $subject = preg_replace("/\t/", ' ', $subject);
+        $finish_pos = mb_strpos($subject, ' ');
+        // dd($start_pos);
         $app_number = mb_substr($subject, 0, $finish_pos);
         $app_number = trim($app_number);
-
-        echo $app_number . '<br>';
-        $start_pos = mb_strpos($subject, 'ремонт');
-        $model = mb_substr($subject, $start_pos + 7, iconv_strlen($subject) - $start_pos);
-        echo $model . '<br>';
+        // dd($app_number);
+        // echo $app_number . '<br>';
+        // $start_pos = mb_strpos($subject, 'ремонт');
+        // $model = mb_substr($subject, $start_pos + 7, iconv_strlen($subject) - $start_pos);
+        // echo $model . '<br>';
 
         $applications = application::firstorcreate(
             ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 3, 'our_company' => $our_company],
             [
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 3,
+                'CarModel' => " ",
+                'gnz' => $gnz,
                 'id_status' => 1,
+                'vin' => " ",
+                'ub_type' => true,
                 'our_company' => $our_company
             ]
         );
