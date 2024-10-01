@@ -1404,7 +1404,7 @@ class ApplicationController extends Controller
                         else
                             $price[4] = str2number($estimate[2]);
                     }
-                    $estimate_start = mb_strpos($file, 'стоимость всех ремонтных работ:');
+                    $estimate_start = mb_strpos($file, 'всех ремонтных работ:');
                     $estimate_end = mb_strlen($file);
                     $estimate = '';
 
@@ -1423,6 +1423,8 @@ class ApplicationController extends Controller
                         else
                             $price[5] = str2number($estimate[2]);
                     }
+                    if (!isset($price[5]))
+                        $price[5] = $price[2] + $price[3];
                     $estimate_start = mb_strpos($file, 'ремонта АТС');
                     $estimate_end = mb_strlen($file);
                     $estimate = '';
@@ -1461,6 +1463,7 @@ class ApplicationController extends Controller
                         else
                             $price[7] = str2number($estimate[2]);
                     }
+
                     // dd($price);
                 }
             }
