@@ -478,7 +478,7 @@ class ImapController extends Controller
                 'gnz' => $gnz,
                 'id_status' => 1,
                 'vin' => " ",
-                'ub_type' => true,
+                'ub_type' => false,
                 'our_company' => $our_company
             ]
         );
