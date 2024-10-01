@@ -1323,7 +1323,9 @@ class ApplicationController extends Controller
                         }
                     }
                 } else {
-                    $estimate_start = mb_strpos($file, 'Стоимость запчастей, использованных для ремонта');
+                    $file = preg_replace("(\u{A0})", ' ', $file);
+
+                    $estimate_start = mb_strpos($file, 'использованных для ремонта');
                     $estimate_end = mb_strlen($file);
                     // dd($file);
                     if ($estimate_start !== false && $estimate_end !== false) {
@@ -1343,10 +1345,10 @@ class ApplicationController extends Controller
                         else
                             $price[1] = str2number($estimate[4]);
                     }
-                    $estimate_start = mb_strpos($file, 'стоимость ремонтных работ:');
+                    $estimate_start = mb_strpos($file, 'ремонтных работ');
                     $estimate_end = mb_strlen($file);
                     $estimate = '';
-
+                    // dd($file);
                     if ($estimate_start !== false && $estimate_end !== false) {
                         $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
                         $estimate = preg_replace("(\u{A0})", ' ', $estimate);
