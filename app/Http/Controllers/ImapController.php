@@ -435,16 +435,17 @@ class ImapController extends Controller
         $gnz = '';
         $app_number = '';
 
-        $trim = mb_strripos($subject, ' ');
-        $subject = mb_substr($subject, 0, $trim);
-        $start_pos_gnz = mb_strripos($subject, ' ');
-        $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
-        echo $gnz . '<br>';
-        $subject = mb_substr($subject, 0, $start_pos_gnz);
-        $start_pos = mb_strpos($subject, '-') - 3;
-        $finish_pos = mb_strripos($subject, 'Возьмете') - 1;
+        // $trim = mb_strripos($subject, ' ');
+        // $subject = mb_substr($subject, 0, $trim);
+        // $start_pos_gnz = mb_strripos($subject, ' ');
+        // $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
+        // echo $gnz . '<br>';
+        // $subject = mb_substr($subject, 0, $start_pos_gnz);
+        $start_pos = mb_strpos($subject, '707-');
+        $subject = mb_substr($subject, $start_pos);
+        $finish_pos = mb_strripos($subject, ' ');
 
-        $app_number = mb_substr($subject, $start_pos, $finish_pos - $start_pos);
+        $app_number = mb_substr($subject, 0, $finish_pos);
         $app_number = trim($app_number);
 
         echo $app_number . '<br>';
@@ -457,8 +458,6 @@ class ImapController extends Controller
             [
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 3,
-                'gnz' => $gnz,
-                'CarModel' => $model,
                 'id_status' => 1,
                 'our_company' => $our_company
             ]
@@ -630,19 +629,19 @@ class ImapController extends Controller
         //Get all Mailboxes
         /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
         $folders = $client->getFolders();
-
+        // dd($folders);
         //Loop through every Mailbox
         /** @var \Webklex\PHPIMAP\Folder $folder */
         foreach ($folders as $folder) {
 
             //Get all Messages of the current Mailbox $folder
             /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $emailes = $folder->messages()->UNSEEN()->get();
-            //dd($folder);
+            $emailes = $folder->messages()->unseen()->get();
+
             /** @var \Webklex\PHPIMAP\Message $message */
             foreach ($emailes as $email) {
 
-                //dd($email);
+                // dd($email);
                 $email->setFlag('Seen');
                 $attachments = $email->getAttachments();
 
@@ -655,11 +654,11 @@ class ImapController extends Controller
 
                 if (mb_strpos($body_html, 'vsk.ru') !== false) {
                     $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
-                }
-                if (mb_strpos($body_html, 'ingos') !== false) {
+                } elseif (mb_strpos($body_html, 'ingos') !== false) {
                     echo "Ingos";
 
                     $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);
+                } else {
                 }
             }
         }
