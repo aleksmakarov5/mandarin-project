@@ -454,6 +454,7 @@ class ImapController extends Controller
         $start_pos = mb_strpos($subject, '707-');
         $subject = mb_substr($subject, $start_pos);
         $subject = preg_replace("/\t/", ' ', $subject);
+        $subject = trim($subject);
         $finish_pos = mb_strpos($subject, ' ');
         // dd($start_pos);
         $app_number = mb_substr($subject, 0, $finish_pos);
