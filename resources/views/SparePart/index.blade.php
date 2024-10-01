@@ -888,7 +888,7 @@
                     <tr>
                         <th>Cтоимость узлов и деталей c учетом износа:</th>
                         <td id='td_price_sp_half-500'>
-                            @if @if (isset($estimate->price_sp_half))
+                            @if (isset($estimate->price_sp_half))
                                 {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_sp_half * 1.1 : (float) $estimate->price_sp_half, 2), 'RUR', 'ru') }}
                             @endif
                         </td>
