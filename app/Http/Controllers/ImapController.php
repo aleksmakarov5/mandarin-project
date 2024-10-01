@@ -458,7 +458,7 @@ class ImapController extends Controller
         $app_number = trim($app_number);
         $find707 = mb_strpos($app_number, '-');
         if (!$find707) {
-            $app_number = "707-75-" + $app_number;
+            $app_number = "707-75-" . $app_number;
         }
         // dd($app_number);
         // echo $app_number . '<br>';
