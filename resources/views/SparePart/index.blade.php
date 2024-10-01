@@ -841,6 +841,8 @@
             Итого
         </button>
         <div class="panel" style="max-height: 10008px;">
+
+            <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
             <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
                     <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
