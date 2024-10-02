@@ -96,7 +96,7 @@
                                         $body = str_replace('mail.ru', '', $body);
                                         echo $body;
                                     @endphp --}}
-                                    {{ $body }}
+                                    {{ $message->body_html }}
                                 </div>
                                 <div class="attachments-sections">
                                     <ul>
