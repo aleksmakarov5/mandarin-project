@@ -693,7 +693,7 @@ class ImapController extends Controller
             foreach ($emailes as $uid => $email) {
 
                 $messages = $folder->messages()->where(['uid' => $uid])->get();
-                dd($messages, $uid);
+                // dd($messages, $uid);
                 foreach ($messages as $message) {
                     $subject = $message->getSubject();
                     echo $subject . "<br/>";
