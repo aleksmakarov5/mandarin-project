@@ -56,15 +56,7 @@
                         </div>
                     </button>
                     <div class="panel">
-                        Кому: @foreach ($message->to as $to)
-                            <p class="text-muted small mb-0">
-                                <i class="far fa-clock">
-                                    @if (isset($to->email))
-                                        {{ $to->email }};
-                                    @endif
-                                </i>
-                            </p>
-                        @endforeach
+
                         <p>
 
                         <div class="mail-view">
@@ -101,7 +93,7 @@
                                         $body = str_replace('color', '', $body);
 
                                         $body = str_replace('font-size:', '', $body);
-                                        $body = str_replace('mail', '', $body);
+                                        $body = str_replace('mail.ru', '', $body);
                                         echo $body;
                                     @endphp
                                 </div>
