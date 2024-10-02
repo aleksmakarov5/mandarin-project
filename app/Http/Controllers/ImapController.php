@@ -16,6 +16,7 @@ use App\Models\application;
 use App\Models\history;
 use App\Models\User;
 use App\Models\notify;
+use App\Models\mailbox;
 use App\Models\status_message;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
@@ -686,39 +687,53 @@ class ImapController extends Controller
 
             //Get all Messages of the current Mailbox $folder
             /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-
-            $emailes = $folder->overview($sequence = "350:*");
+            $mailbox = DB::table('mailboxes')->where('mailboxes.id', '=', 1)->first();
+            $start_uid = $mailbox->last_message_uid + 1;
+            $emailes = $folder->overview($sequence = "$start_uid:*");
             /** @var \Webklex\PHPIMAP\Message $message */
-
+            $last_uid = -1;
             foreach ($emailes as $uid => $email) {
 
+                echo $uid . "<br />";
+                $last_uid = $uid;
                 $messages = $folder->messages()->where(['uid' => $uid])->get();
                 // dd($messages, $uid);
                 foreach ($messages as $message) {
                     $subject = $message->getSubject();
                     echo $subject . "<br/>";
+
+
+                    $attachments = $message->getAttachments();
+
+                    $from = $message->getFrom()->toarray();
+                    $to = $message->getTo()->toArray();
+                    $subject = $message->getSubject();
+                    $subject = trim($subject);
+                    echo $subject . "<br>";
+                    $body_html = $message->getHTMLBody();
+                    $our_company = 1;
+
+                    if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company);
+                    } elseif (mb_strpos($body_html, 'ingos') !== false) {
+                        echo "Ingos";
+
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company);
+                    } else {
+                        $mess = new Message();
+                        $mess->subject = $message->getSubject();
+                        $mess->body_html = $message->getHTMLBody();
+                        $mess->body_text = $message->getTextBody();
+                        $mess->header = $message->getHeaders();
+                        $mess->message_date = $message->getdate();
+                        $mess->save();
+                    }
                 }
-                // dd($message);
-                // dd($message);
-                // $email->setFlag('Seen');
-                // $attachments = $email->getAttachments();
-
-                // $from = $email->getFrom()->toarray();
-                // $to = $email->getTo()->toArray();
-                // $subject = $email->getSubject();
-                // $subject = trim($subject);
-                // echo $subject . "<br>";
-                // $body_html = $email->getHTMLBody();
-                // $our_company = 1;
-
-                // if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                //     $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
-                // } elseif (mb_strpos($body_html, 'ingos') !== false) {
-                //     echo "Ingos";
-
-                //     $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);
-                // } else {
-                // }
+            }
+            if ($last_uid != (-1)) {
+                $mailbox = mailbox::where('id', '=', 1)->first();
+                $mailbox->last_message_uid = $last_uid;
+                $mailbox->save();
             }
         }
         // dd($emailes);
