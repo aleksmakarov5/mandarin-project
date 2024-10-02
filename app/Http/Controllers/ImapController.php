@@ -727,6 +727,22 @@ class ImapController extends Controller
                         $mess->header = $message->getHeaders();
                         $mess->message_date = $message->getdate();
                         $mess->save();
+                        foreach ($to as $mail) {
+                            // dd($mail);
+                            $address = new address;
+                            $address->message_id = $mess->id;
+                            $address->email = $mail->mail;
+                            $address->type = 'to';
+                            $address->save();
+                        }
+                        //dd($from, $to, $address);
+                        foreach ($from as $mail) {
+                            $address = new address;
+                            $address->message_id = $mess->id;
+                            $address->email = $mail->mail;
+                            $address->type = 'from';
+                            $address->save();
+                        }
                     }
                 }
             }
