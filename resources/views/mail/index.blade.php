@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    Почта
+    Все письма
 @endsection
 @section('main_content')
     <h1>Все письма</h1>
