@@ -101,7 +101,7 @@
                                         $body = str_replace('color', '', $body);
 
                                         $body = str_replace('font-size:', '', $body);
-                                        $body = str_replace('mail.ru', '', $body);
+                                        $body = str_replace('mail', '', $body);
                                         echo $body;
                                     @endphp
                                 </div>
