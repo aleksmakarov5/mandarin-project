@@ -83,7 +83,7 @@
                             <div class="message-body">
 
                                 <div class="message-content">
-                                    @php
+                                    {{-- @php
                                         $body = $message->body_html;
                                         $body_start = mb_strpos($body, '<body');
                                         $body_end = mb_strpos($body, '</body>');
@@ -95,7 +95,8 @@
                                         $body = str_replace('font-size:', '', $body);
                                         $body = str_replace('mail.ru', '', $body);
                                         echo $body;
-                                    @endphp
+                                    @endphp --}}
+                                    {{ $body }}
                                 </div>
                                 <div class="attachments-sections">
                                     <ul>
