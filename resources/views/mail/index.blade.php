@@ -95,9 +95,10 @@
                                         $body = str_replace('font-size:', '', $body);
                                         $body = str_replace('mail.ru', '', $body);
                                         $body = str_replace('<br>', '\n', $body);
+                                        echo strip_tags($body, '<br>');
 
                                     @endphp
-                                    {{ strip_tags($body, '<br>') }}
+
                                 </div>
                                 <div class="attachments-sections">
                                     <ul>
