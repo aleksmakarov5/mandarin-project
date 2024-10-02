@@ -93,9 +93,9 @@
                                         $body = str_replace('color', '', $body);
 
                                         $body = str_replace('font-size:', '', $body);
-                                        $body = str_replace('mail.ru', '', $body);
+                                        $body = str_replace('Отправлено из мобильной Почты Mail.ru', '', $body);
                                         $body = str_replace('\n', '<br>', $body);
-                                        echo strip_tags($body, '<br>');
+                                        echo $body;
 
                                     @endphp
 
