@@ -31,6 +31,7 @@
 
     <div class="content-wrapper">
         <div class="email-wrapper wrapper">
+
             <div class="row align-items-stretch">
                 @foreach ($messages as $message)
                     <button class="accordion">
@@ -40,17 +41,17 @@
                                     {{ $message->subject }}
                                 </p>
                                 <p class="sender-email">
-                                    От кого@if (isset($message->from->email))
+                                    <i class="far fa-clock"> От кого: </i>
+                                    @if (isset($message->from->email))
                                         {{ $message->from->email }}
                                     @endif
                                 </p>
-                                <p class="text-muted small mb-0"><i class="far fa-clock">
+                                <p class=" small mb-0 text-white"><i class="far fa-clock">
                                         @if (isset($message->message_date))
-                                            {{ date('d-m-Y h:m', strtotime($message->message_date)) }}
+                                            {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
                                         @endif
                                     </i>
                                 </p>
-
                             </div>
                         </div>
                     </button>
@@ -70,18 +71,19 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="btn-toolbar">
-                                        <div class="btn-group">
+                                        {{-- <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-reply text-primary mr-1"></i> Ответить</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-reply-all text-primary mr-1"></i>Ответить всем</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
-                                        </div>
+                                        </div> --}}
                                         <div class="btn-group">
-
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-delete text-primary mr-1"></i>Удалить</button>
+                                                    class="mdi mdi-share text-primary mr-1"></i>
+                                                </i><a class="mdi mdi-delete text-primary mr-1"
+                                                    href="/mail_delete/{{ $message->id }}">Удалить</a></button>
                                         </div>
                                     </div>
                                 </div>
@@ -134,6 +136,8 @@
             </div>
         </div>
     </div>
+
+
     <script type="text/javascript">
         var acc = document.getElementsByClassName("accordion");
         var i;
