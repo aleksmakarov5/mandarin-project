@@ -79,9 +79,7 @@ class MainController extends Controller
         // dd($rewiew->all()) ;
         return view('review', ['reviews' => $rewiews->all()]);
     }
-    public function new_application()
-    {
-    }
+    public function new_application() {}
     public function review_check(Request $request)
     {
 
@@ -105,7 +103,7 @@ class MainController extends Controller
     public function message()
     {
         $messages = DB::table('messages')
-            ->get();
+            ->get()->sortDesc();
         // dd($messages);
         foreach ($messages as $message) {
             $message->attachment = DB::table('attachments')
@@ -121,7 +119,7 @@ class MainController extends Controller
                 ->get();
         }
 
-        session(['rout' => 'mail']);
+        session(['rout' => 'message']);
         // dd($rewiew->all()) ;
         return view('mail.index', ['messages' => $messages->all()]);
     }
