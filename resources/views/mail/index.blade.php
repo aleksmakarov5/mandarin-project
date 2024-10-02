@@ -94,9 +94,9 @@
 
                                         $body = str_replace('font-size:', '', $body);
                                         $body = str_replace('mail.ru', '', $body);
+                                        echo '<object data="' . $body . '" width="550" height="150"></object>';
                                         // echo $body;
                                     @endphp
-                                    {{ $body }}
                                 </div>
                                 <div class="attachments-sections">
                                     <ul>
