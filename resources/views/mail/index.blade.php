@@ -94,7 +94,7 @@
 
                                         $body = str_replace('font-size:', '', $body);
                                         $body = str_replace('mail.ru', '', $body);
-                                        $body = str_replace('<br>', '\n', $body);
+                                        $body = str_replace('\n', '<br>', $body);
                                         echo strip_tags($body, '<br>');
 
                                     @endphp
