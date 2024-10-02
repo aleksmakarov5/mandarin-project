@@ -652,7 +652,33 @@ class ImapController extends Controller
 
         //Get all Mailboxes
         /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-        $folders = $client->getFolders();
+        $folders = $client->getFolders(true, "INBOX");
+
+        // dd($folders);
+        //Loop through every Mailbox
+        /** @var \Webklex\PHPIMAP\Folder $folder */
+        // dd(date('Y-m-d', strtotime(carbon::now())));
+        // foreach ($folders as $folder) {
+
+        //     //Get all Messages of the current Mailbox $folder
+        //     /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+        //     $emailes = $folder->messages()->where(['on' => carbon::now()])->get();
+        //     // dd($emailes);
+        //     /** @var \Webklex\PHPIMAP\Message $message */
+        //     foreach ($emailes as $email) {
+
+        //         // dd($email);
+        //         $uid = $email->getUID();
+        //         $message = message::firstorcreate(
+        //             ['mailbox_id' => 1, 'uid' => $uid],
+        //             [
+        //                 'mailbox_id' => 1,
+        //                 'uid' => $uid
+        //             ]
+        //         );
+        //     }
+        // }
+        // $folders = $client->getFolders();
         // dd($folders);
         //Loop through every Mailbox
         /** @var \Webklex\PHPIMAP\Folder $folder */
@@ -660,32 +686,42 @@ class ImapController extends Controller
 
             //Get all Messages of the current Mailbox $folder
             /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $emailes = $folder->messages()->unseen()->get();
 
+            $emailes = $folder->overview($sequence = "300:*");
             /** @var \Webklex\PHPIMAP\Message $message */
-            foreach ($emailes as $email) {
 
-                // dd($email);
-                $email->setFlag('Seen');
-                $attachments = $email->getAttachments();
+            foreach ($emailes as $uid => $email) {
 
-                $from = $email->getFrom()->toarray();
-                $to = $email->getTo()->toArray();
-                $subject = $email->getSubject();
-                $subject = trim($subject);
-                $body_html = $email->getHTMLBody();
-                $our_company = 1;
-
-                if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                    $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
-                } elseif (mb_strpos($body_html, 'ingos') !== false) {
-                    echo "Ingos";
-
-                    $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);
-                } else {
+                $messages = $folder->messages()->where(['uid' => $uid])->get();
+                dd($messages, $uid);
+                foreach ($messages as $message) {
+                    $subject = $message->getSubject();
+                    echo $subject . "<br/>";
                 }
+                // dd($message);
+                // dd($message);
+                // $email->setFlag('Seen');
+                // $attachments = $email->getAttachments();
+
+                // $from = $email->getFrom()->toarray();
+                // $to = $email->getTo()->toArray();
+                // $subject = $email->getSubject();
+                // $subject = trim($subject);
+                // echo $subject . "<br>";
+                // $body_html = $email->getHTMLBody();
+                // $our_company = 1;
+
+                // if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                //     $this->vsk_parse($subject, $email, $from, $to, $attachments, $our_company);
+                // } elseif (mb_strpos($body_html, 'ingos') !== false) {
+                //     echo "Ingos";
+
+                //     $this->ingos_parse($subject, $email, $from, $to, $attachments, $our_company);
+                // } else {
+                // }
             }
         }
+        // dd($emailes);
 
         // // $client1 = $cm->account('makarov');
         // //   dd($client);
