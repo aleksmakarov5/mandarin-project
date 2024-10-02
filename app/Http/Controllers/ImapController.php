@@ -687,7 +687,7 @@ class ImapController extends Controller
             //Get all Messages of the current Mailbox $folder
             /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
 
-            $emailes = $folder->overview($sequence = "300:*");
+            $emailes = $folder->overview($sequence = "350:*");
             /** @var \Webklex\PHPIMAP\Message $message */
 
             foreach ($emailes as $uid => $email) {
