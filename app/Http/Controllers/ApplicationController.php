@@ -1423,7 +1423,7 @@ class ApplicationController extends Controller
                         else
                             $price[5] = str2number($estimate[2]);
                     }
-                    if (!isset($price[5]))
+                    if (!isset($price[5]) && isset($price[2]) && isset($price[3]))
                         $price[5] = $price[2] + $price[3];
                     $estimate_start = mb_strpos($file, 'ремонта АТС');
                     $estimate_end = mb_strlen($file);
