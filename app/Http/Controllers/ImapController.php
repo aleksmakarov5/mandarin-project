@@ -106,6 +106,7 @@ class ImapController extends Controller
                 $history->id_user = 2;
                 $history->save();
                 $message->is_parsed = true;
+                $message->mailbox_id = $our_company;
                 $message->save();
                 $text = strip_tags($email->getHTMLBody());
                 // dd($text);
@@ -502,6 +503,8 @@ class ImapController extends Controller
         $history->id_user = 2;
         $history->save();
         $message->is_parsed = true;
+
+        $message->mailbox_id = $our_company;
         $message->save();
         $dir = 'storage/files/' . $applications->id;
         if (!is_dir($dir)) {
@@ -654,35 +657,6 @@ class ImapController extends Controller
         //Get all Mailboxes
         /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
         $folders = $client->getFolders(true, "INBOX");
-
-        // dd($folders);
-        //Loop through every Mailbox
-        /** @var \Webklex\PHPIMAP\Folder $folder */
-        // dd(date('Y-m-d', strtotime(carbon::now())));
-        // foreach ($folders as $folder) {
-
-        //     //Get all Messages of the current Mailbox $folder
-        //     /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-        //     $emailes = $folder->messages()->where(['on' => carbon::now()])->get();
-        //     // dd($emailes);
-        //     /** @var \Webklex\PHPIMAP\Message $message */
-        //     foreach ($emailes as $email) {
-
-        //         // dd($email);
-        //         $uid = $email->getUID();
-        //         $message = message::firstorcreate(
-        //             ['mailbox_id' => 1, 'uid' => $uid],
-        //             [
-        //                 'mailbox_id' => 1,
-        //                 'uid' => $uid
-        //             ]
-        //         );
-        //     }
-        // }
-        // $folders = $client->getFolders();
-        // dd($folders);
-        //Loop through every Mailbox
-        /** @var \Webklex\PHPIMAP\Folder $folder */
         foreach ($folders as $folder) {
 
             //Get all Messages of the current Mailbox $folder
@@ -726,6 +700,7 @@ class ImapController extends Controller
                         $mess->body_text = $message->getTextBody();
                         $mess->header = $message->getHeaders();
                         $mess->message_date = $message->getdate();
+                        $mess->mailbox_id = 1;
                         $mess->save();
                         foreach ($to as $mail) {
                             // dd($mail);
@@ -748,6 +723,85 @@ class ImapController extends Controller
             }
             if ($last_uid != (-1)) {
                 $mailbox = mailbox::where('id', '=', 1)->first();
+                $mailbox->last_message_uid = $last_uid;
+                $mailbox->save();
+            }
+        }
+
+        $client1 = $cm->account('kotlas');
+        //   dd($client);
+        //Connect to the IMAP Server
+        $client1->connect();
+
+        //Get all Mailboxes
+        /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
+        $folders = $client1->getFolders(true, "INBOX");
+        foreach ($folders as $folder) {
+
+            //Get all Messages of the current Mailbox $folder
+            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+            $mailbox = DB::table('mailboxes')->where('mailboxes.id', '=', 2)->first();
+            $start_uid = $mailbox->last_message_uid + 1;
+            $emailes = $folder->overview($sequence = "$start_uid:*");
+            /** @var \Webklex\PHPIMAP\Message $message */
+            $last_uid = -1;
+            foreach ($emailes as $uid => $email) {
+
+                echo $uid . "<br />";
+                $last_uid = $uid;
+                $messages = $folder->messages()->where(['uid' => $uid])->get();
+                // dd($messages, $uid);
+                foreach ($messages as $message) {
+                    $subject = $message->getSubject();
+                    echo $subject . "<br/>";
+
+
+                    $attachments = $message->getAttachments();
+
+                    $from = $message->getFrom()->toarray();
+                    $to = $message->getTo()->toArray();
+                    $subject = $message->getSubject();
+                    $subject = trim($subject);
+                    echo $subject . "<br>";
+                    $body_html = $message->getHTMLBody();
+                    $our_company = 2;
+
+                    if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company);
+                    } elseif (mb_strpos($body_html, 'ingos') !== false) {
+                        echo "Ingos";
+
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company);
+                    } else {
+                        $mess = new Message();
+                        $mess->subject = $message->getSubject();
+                        $mess->body_html = $message->getHTMLBody();
+                        $mess->body_text = $message->getTextBody();
+                        $mess->header = $message->getHeaders();
+                        $mess->message_date = $message->getdate();
+                        $mess->mailbox_id = 2;
+                        $mess->save();
+                        foreach ($to as $mail) {
+                            // dd($mail);
+                            $address = new address;
+                            $address->message_id = $mess->id;
+                            $address->email = $mail->mail;
+                            $address->type = 'to';
+                            $address->save();
+                        }
+                        //dd($from, $to, $address);
+                        foreach ($from as $mail) {
+                            $address = new address;
+                            $address->message_id = $mess->id;
+                            $address->email = $mail->mail;
+                            $address->type = 'from';
+                            $address->save();
+                        }
+                    }
+                }
+            }
+            if ($last_uid != (-1)) {
+                $mailbox = mailbox::where('id', '=', 2)->first();
                 $mailbox->last_message_uid = $last_uid;
                 $mailbox->save();
             }
