@@ -141,7 +141,7 @@ class MainController extends Controller
             $body = str_replace('font-size:', '', $body);
             if (isset($message->application_id)) {
                 $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
-                $body = preg_replace("/gif@[a-zA-Z0-9]{,9}/", 'gif', $body);
+                $body = preg_replace("/gif@[a-zA-Z0-9.]{,9}/", 'gif', $body);
             }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)
