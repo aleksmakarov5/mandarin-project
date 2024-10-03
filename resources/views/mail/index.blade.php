@@ -1,35 +1,9 @@
 @extends('layout')
 @section('title')
-    Все письма
+    Все Ящики
 @endsection
 @section('main_content')
-    <h1>Все письма</h1>
-
-    {{-- @foreach ($messages as $message)
-        <div class="alert alert-warning">
-            <h3>
-                {{ $message->subject }}
-
-            </h3>
-            <p>
-
-                @php
-                    $body = $message->body_html;
-                    $body_start = mb_strpos($body, '<body');
-                    $body_end = mb_strpos($body, '</body>');
-                    if ($body_start) {
-                        $body = mb_substr($body, $body_start, $body_end - $body_start);
-                    }
-                    echo $body;
-                @endphp
-
-
-            </p>
-        </div>
-       
-    @endforeach --}}
-
-    <div class="content-wrapper">
+    {{-- <div class="content-wrapper">
         <div class="email-wrapper wrapper">
 
             <div class="row align-items-stretch">
@@ -63,14 +37,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="btn-toolbar">
-                                        {{-- <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-reply text-primary mr-1"></i> Ответить</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-reply-all text-primary mr-1"></i>Ответить всем</button>
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
-                                        </div> --}}
+                                        
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>
@@ -131,23 +98,105 @@
                 @endforeach
             </div>
         </div>
-    </div>
+    </div> --}}
+    <center>
+        <table id ="companies" class="editable">
+            <thead>
 
+                <tr>
+                    <th scope="col">Компания</th>
+                </tr>
+                <tr>
 
-    <script type="text/javascript">
-        var acc = document.getElementsByClassName("accordion");
-        var i;
+                    <th scope="col"><input class="form-control" type="text" placeholder="Компания" id="search-text0"
+                            onkeyup="tableSearch(0,'companies')"></th>
 
-        for (i = 0; i < acc.length; i++) {
-            acc[i].addEventListener("click", function() {
-                this.classList.toggle("active");
-                var panel = this.nextElementSibling;
-                if (panel.style.maxHeight) {
-                    panel.style.maxHeight = null;
+            </thead>
+            <tbody>
+                @foreach ($our_companies as $company)
+                    <tr>
+                        <td onclick="window.location.href='/mailbox/0/{{ $company->id }}'; return false">
+                            <a href="/mailbox/{{ $company->id }}" class="nav-link">{{ $company->our_name }}</a>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </center>
+    <script>
+        function tableSearch(k, table) {
+            var phrase = document.getElementById('search-text' + k);
+            var table = document.getElementById(table);
+            var regPhrase = new RegExp(phrase.value, 'i');
+            var flag = false;
+            for (var i = 2; i < table.rows.length; i++) {
+                flag = false;
+                flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
+                if (flag) {
+                    table.rows[i].style.display = "";
                 } else {
-                    panel.style.maxHeight = panel.scrollHeight + "px";
+                    table.rows[i].style.display = "none";
                 }
-            });
+
+            }
         }
+        // ИНИЦИАЛИЗАЦИЯ - ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ ЯЧЕЙКИ
+        window.addEventListener("DOMContentLoaded", () => {
+            for (let cell of document.querySelectorAll("#demo td")) {
+                cell.ondblclick = () => {
+                    editable.edit(cell);
+                };
+            }
+        });
+        let editable = {
+            // "ПРЕОБРАЗОВАТЬ" В РЕДАКТИРОВАННУЮ ЯЧЕЙКУ
+            edit: (cell) => {
+                // УДАЛИТЬ "ДВОЙНОЙ ЩЕЛЧОК ДЛЯ РЕДАКТИРОВАНИЯ"
+                cell.ondblclick = "";
+                // РЕДАКТИРУЕМОЕ СОДЕРЖИМОЕ
+                cell.contentEditable = true;
+                cell.focus();
+                // "ОТМЕТИТЬ" ТЕКУЩУЮ ВЫБРАННУЮ ЯЧЕЙКУ
+                cell.classList.add("edit");
+                editable.selected = cell;
+                // НАЖМИТЕ ENTER ИЛИ ЩЕЛКНИТЕ ВНЕ, ЧТОБЫ ЗАВЕРШИТЬ РЕДАКТИРОВАНИЕ
+                window.addEventListener("click", editable.close);
+                cell.onkeyup = (evt) => {
+                    if (evt.key == "Enter") {
+                        editable.close(true);
+                        return false;
+                    }
+                };
+            },
+            // ЗАВЕРШИТЬ "РЕЖИМ РЕДАКТИРОВАНИЯ"
+            selected: null, // текущая выбранная ячейка
+            close: (evt) => {
+                if (evt.target != editable.selected) {
+
+                    // УДАЛИТЬ "РЕДАКТИРОВАНИЕ"
+                    window.getSelection().removeAllRanges();
+                    editable.selected.contentEditable = false;
+                    // ВОССТАНОВИТЬ КЛИК-СЛУШАТЕЛИ
+                    window.removeEventListener("click", editable.close);
+
+                    let cell = editable.selected;
+                    cell.ondblclick = () => {
+                        editable.edit(cell);
+                    };
+                    // "СНЯТЬ ПОМЕТКУ" ТЕКУЩЕЙ ВЫБРАННОЙ ЯЧЕЙКИ
+                    editable.selected.classList.remove("edit");
+                    editable.selected = null;
+                    // newvar = "Третий способ вывода переменной";
+                    let str = cell.id;
+                    let start = str.indexOf("_");
+                    let isid = document.getElementById(str.substring(start + 1, str.length));
+                    start = str.indexOf("-");
+                    let id = str.substring(start + 1, str.length);
+                    isid.value = cell.innerHTML;
+                    let form = document.getElementById('form' + id);
+                    form.submit();
+                }
+            }
+        };
     </script>
 @endsection

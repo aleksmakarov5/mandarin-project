@@ -124,6 +124,7 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/message',  [MainController::class, 'message'])->name('message');
+        Route::get('/mailbox/{type}/{id}',  [MainController::class, 'mailbox'])->name('mailbox');
 
         Route::get('/mail_delete/{id}',  [ApplicationController::class, 'delete_message'])->name('delete_message');
         Route::post('/test',  [MainController::class, 'test'])->name('test');

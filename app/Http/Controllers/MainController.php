@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\doc_status;
+use App\Models\OurCompany;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -102,7 +103,31 @@ class MainController extends Controller
 
     public function message()
     {
-        $messages = DB::table('messages')
+        // $messages = DB::table('messages')
+        //     ->get()->sortDesc();
+        // // dd($messages);
+        // foreach ($messages as $message) {
+        //     $message->attachment = DB::table('attachments')
+        //         ->where('message_id', '=', $message->id)
+        //         ->get();
+        //     $message->from = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'from')
+        //         ->first();
+        //     $message->to = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'to')
+        //         ->get();
+        // }
+        $our_companies = new OurCompany;
+
+        session(['rout' => 'message']);
+        // dd($rewiew->all()) ;
+        return view('mail.index', ['our_companies' => $our_companies->all()]);
+    }
+    public function mailbox($type, $id)
+    {
+        $messages = DB::table('messages')->where('mailbox_id', '=', $id)
             ->get()->sortDesc();
         // dd($messages);
         foreach ($messages as $message) {
@@ -121,8 +146,9 @@ class MainController extends Controller
 
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
-        return view('mail.index', ['messages' => $messages->all()]);
+        return view('mail.show', ['messages' => $messages->all(), 'type' => $type]);
     }
+
     public function document(request $request, $id)
     {
         $hide_menu = $request->get('hide_menu');
