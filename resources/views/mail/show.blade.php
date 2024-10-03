@@ -19,8 +19,8 @@
                     @foreach ($messages as $message)
                         <tr>
                             <td
-                                onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}'; return false">
-                                <div
+                                onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}#{{ $message->id }}'; return false">
+                                <div id="{{ $message->id }}"
                                     class="@if ($message->id == $message_id) current @else
                                     
                                     message-name @endif
