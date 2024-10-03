@@ -139,6 +139,9 @@ class MainController extends Controller
             $body = str_replace('color', '', $body);
 
             $body = str_replace('font-size:', '', $body);
+            if (isset($message->application_id)) {
+                $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
+            }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)
             ->get()->sortDesc();
