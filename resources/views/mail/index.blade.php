@@ -100,15 +100,13 @@
         </div>
     </div> --}}
     <center>
-        <table id ="companies" class="editable">
+        <table id ="companies">
             <thead>
 
-                <tr>
-                    <th scope="col">Компания</th>
-                </tr>
+
                 <tr>
 
-                    <th scope="col"><input class="form-control" type="text" placeholder="Компания" id="search-text0"
+                    <th scope="col"><input class="form-control" type="text" placeholder="Поиск" id="search-text0"
                             onkeyup="tableSearch(0,'companies')"></th>
 
             </thead>
