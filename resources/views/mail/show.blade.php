@@ -18,36 +18,42 @@
                 <tbody>
                     @foreach ($messages as $message)
                         <tr>
-                            <td>
-                                <div
-                                    class="message-name  @if (isset($message->application_id)) green" @endif>
+                            <td
+                                onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}'; return false">
+                                <div class=@if ($message->id == $message_id) "current" @else
+                                    
+                                
+                                    "message-name  @if (isset($message->application_id)) green" @endif
+                                    @endif>
                                     <div class="details">
-                                    <p class="msg-subject">
-                                        {{ $message->subject }}
-                                    </p>
-                                    <p class="sender-email">
-                                        <i class="far fa-clock"> От кого: </i>
-                                        @if (isset($message->from->email))
-                                            {{ $message->from->email }}
-                                        @endif
-                                    </p>
-                                    <p class=""><i class="far fa-clock">
-                                            @if (isset($message->message_date))
-                                                {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
+                                        <p class="msg-subject">
+                                            {{ $message->subject }}
+                                        </p>
+                                        <p class="sender-email">
+                                            <i class="far fa-clock"> От кого: </i>
+                                            @if (isset($message->from->email))
+                                                {{ $message->from->email }}
                                             @endif
-                                        </i>
-                                    </p>
+                                        </p>
+                                        <p class=""><i class="far fa-clock">
+                                                @if (isset($message->message_date))
+                                                    {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
+                                                @endif
+                                            </i>
+                                        </p>
+                                    </div>
                                 </div>
+                            </td>
+                        </tr>
+                    @endforeach
+            </table>
+
         </div>
-        </td>
-        </tr>
-        @endforeach
-        </table>
-
-    </div>
-    <div class="message-show">
-
-    </div>
+        <div class="message-show">
+            @php
+                echo $body;
+            @endphp
+        </div>
     </div>
     <script>
         function tableSearch(k, table) {

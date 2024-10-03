@@ -125,8 +125,21 @@ class MainController extends Controller
         // dd($rewiew->all()) ;
         return view('mail.index', ['our_companies' => $our_companies->all()]);
     }
-    public function mailbox($type, $id)
+    public function mailbox($type, $id, $message_id)
     {
+        $body = "";
+        if ($message_id != 0) {
+            $message = DB::table('messages')->where('id', '=', $message_id)->first();
+            $body = $message->body_html;
+            $body_start = mb_strpos($body, '<body');
+            $body_end = mb_strpos($body, '</body>');
+            if ($body_start) {
+                $body = mb_substr($body, $body_start, $body_end - $body_start);
+            }
+            $body = str_replace('color', '', $body);
+
+            $body = str_replace('font-size:', '', $body);
+        }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)
             ->get()->sortDesc();
         // dd($messages);
@@ -146,7 +159,13 @@ class MainController extends Controller
 
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
-        return view('mail.show', ['messages' => $messages->all(), 'type' => $type]);
+        return view('mail.show', [
+            'messages' => $messages->all(),
+            'type' => $type,
+            'message_id' => $message_id,
+            'body' => $body,
+            'company_id' => $id
+        ]);
     }
 
     public function document(request $request, $id)

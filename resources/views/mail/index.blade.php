@@ -115,7 +115,7 @@
             <tbody>
                 @foreach ($our_companies as $company)
                     <tr>
-                        <td onclick="window.location.href='/mailbox/0/{{ $company->id }}'; return false">
+                        <td onclick="window.location.href='/mailbox/0/{{ $company->id }}/0'; return false">
                             <a href="/mailbox/{{ $company->id }}" class="nav-link">{{ $company->our_name }}</a>
                         </td>
                     </tr>
