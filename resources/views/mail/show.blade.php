@@ -20,11 +20,11 @@
                         <tr>
                             <td
                                 onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}'; return false">
-                                <div class=@if ($message->id == $message_id) "current" @else
+                                <div
+                                    class="@if ($message->id == $message_id) current @else
                                     
-                                
-                                    "message-name  @if (isset($message->application_id)) green" @endif
-                                    @endif>
+                                    message-name @endif
+                                    @if (isset($message->application_id)) green @endif">
                                     <div class="details">
                                         <p class="msg-subject">
                                             {{ $message->subject }}
