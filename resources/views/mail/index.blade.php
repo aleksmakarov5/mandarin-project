@@ -127,7 +127,7 @@
             var table = document.getElementById(table);
             var regPhrase = new RegExp(phrase.value, 'i');
             var flag = false;
-            for (var i = 2; i < table.rows.length; i++) {
+            for (var i = 1; i < table.rows.length; i++) {
                 flag = false;
                 flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
                 if (flag) {
