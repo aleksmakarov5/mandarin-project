@@ -24,6 +24,8 @@
                     <th scope="col">Статус</th>
                     <th scope="col">Тайминг</th>
                     <th scope="col">#</th>
+
+                    <th scope="col">МРК</th>
                     <th scope="col">СК</th>
                     <th scope="col">СТО</th>
                     <th scope="col">Юрист</th>
@@ -33,20 +35,22 @@
                     <th scope="col">Авто</th>
                     <th scope="col">ГРЗ </th>
                     <th scope="col">Дата</th>
-                    <th scope="col">VIN</th>
                     <th scope="col">Тип убытка</th>
                     <th scope="col">СТОА</th>
-                    @can('company')
-                        <th scope="col">Сумма СК</th>
-                        <th scope="col">Сумма З/Ч</th>
-                        <th scope="col">Сумма ремонта</th>
-                        <th scope="col">Затраты на ремонт</th>
-                        <th scope="col">Оплата СК</th>
-                        <th scope="col">Дата оплаты</th>
-                        <th scope="col">Оплаты СТО</th>
-                        <th scope="col">Остаток</th>
-                        <th scope="col"></th>
-                    @endcan
+                    @if (session('rout') == 'directions')
+                        @can('company')
+                            <th scope="col">Сумма СК</th>
+                            <th scope="col">Сумма З/Ч</th>
+                            <th scope="col">Сумма ремонта</th>
+                            <th scope="col">Затраты на ремонт</th>
+                            <th scope="col">Оплата СК</th>
+                            <th scope="col">Дата оплаты</th>
+                            <th scope="col">Оплаты СТО</th>
+                            <th scope="col">Остаток</th>
+                            <th scope="col"></th>
+                        @endcan
+                    @endif
+
 
 
                 </tr>
@@ -59,43 +63,46 @@
                     <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
                             onkeyup="tableSearch(2,'applications')">
                     </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text3"
+                    <th scope="col"><input class="form-control" type="text" placeholder="МРК" id="search-text3"
                             onkeyup="tableSearch(3,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text4"
+                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text4"
                             onkeyup="tableSearch(4,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text5"
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text5"
                             onkeyup="tableSearch(5,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text6"
+                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text6"
                             onkeyup="tableSearch(6,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text7"
+                            onkeyup="tableSearch(7,'applications')"></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
-                            id="search-text7" onkeyup="tableSearch(7,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text8"
-                            onkeyup="tableSearch(8,'applications')"></th>
-
-
-                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text9"
+                            id="search-text7" onkeyup="tableSearch(8,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text9"
                             onkeyup="tableSearch(9,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text10"
-                            onkeyup="tableSearch(10,'applications')"> </th>
+
+
+                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text10"
+                            onkeyup="tableSearch(10,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text11"
+                            onkeyup="tableSearch(11,'applications')"> </th>
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="VIN" id="search-text12"
-                            onkeyup="tableSearch(12,'applications')"></th>
+
 
                     <th scope="col"><input class="form-control" type="text" placeholder="Тип убытка"
-                            id="search-text13" onkeyup="tableSearch(13,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text14"
-                            onkeyup="tableSearch(14,'applications')"></th>
-                    @can('company')
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                    @endcan
+                            id="search-text12" onkeyup="tableSearch(12,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text13"
+                            onkeyup="tableSearch(13,'applications')"></th>
+                    @if (session('rout') == 'directions')
+                        @can('company')
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                            <th scope="col"></th>
+                        @endcan
+                    @endif
 
                 </tr>
             </thead>
@@ -158,6 +165,17 @@
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            @php
+                                $mrk = $application->MRK_name;
+                                $finish = mb_strpos($mrk, ' ');
+                                if ($finish) {
+                                    $mrk = mb_substr($mrk, 0, $finish);
+                                }
+                            @endphp
+                            {{ $mrk }}
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <div class="td_round  {{ $application->insurance_companies_theme }}">
                                 {{ $application->name }} </div>
                         </td>
@@ -190,55 +208,55 @@
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ Date::parse($application->created_at)->format('j F Yг.') }}</td>
-                        <td scope="col"
-                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            {{ $application->vin }}</td>
+
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ isset($application->ub_type) && $application->ub_type ? 'Каско' : 'Осаго' }}</td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             {{ $application->our_name }}</td>
-                        @can('company')
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                {{ $application->summ_ic_full }}</td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                {{ $application->summ_order }}</td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                {{ $application->summ_service }}</td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                {{ $application->summ_full }}</td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            </td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            </td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            </td>
-                            <td scope="col"
-                                onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                <div
-                                    class="
+                        @if (session('rout') == 'directions')
+                            @can('company')
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->summ_ic_full }}</td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->summ_order }}</td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->summ_service }}</td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->summ_full }}</td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                </td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                </td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                </td>
+                                <td scope="col"
+                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    <div
+                                        class="
        @if ($application->proc > 61) alert alert-success
        @else
        alert alert-danger @endif
        ">
-                                    {{ $application->eco_delta_full }} ({{ $application->proc }}%)</div>
-                            </td>
+                                        {{ $application->eco_delta_full }} ({{ $application->proc }}%)</div>
+                                </td>
 
 
-                            <th scope="col">
-                                <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
-                                    href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
-                                        src="/storage/img/delete.png" width="20" alt="delete"></a>
-                            </th>
-                        @endcan
+                                <th scope="col">
+                                    <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
+                                        href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
+                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                </th>
+                            @endcan
+                        @endif
 
                     </tr>
                 @endforeach

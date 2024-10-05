@@ -124,6 +124,7 @@
                     <h5>{{ $app->gnz }}</h5>
                     <h5>{{ $app->ClientName }}</h5>
                     <h5>{{ $app->ClientPhone }}</h5>
+                    <h5>{{ $app->vin }}</h5>
                 </td>
                 @can('company')
                     <td>
