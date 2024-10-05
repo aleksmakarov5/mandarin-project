@@ -925,10 +925,12 @@ class WordController extends Controller
       $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
     }
     // dd($array1);
-    $price_repair_full = $price_sp_full +
-      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
-      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
-      (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip));
+    if (isset($estimate->price_repair)) {
+      $price_repair_full = $price_sp_full +
+        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
+        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
+        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip));
+    }
     $templateProcessor->cloneRowAndSetValues('name', $array1);
     if (isset($estimate->price_repair)) {
       $templateProcessor->setValue('price_repair', $estimate->price_repair);

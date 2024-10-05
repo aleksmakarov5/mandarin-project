@@ -243,20 +243,13 @@
                                             @if ($app->id_status == 3)
                                                 <li><a href="/applications/{{ $id }}/change_status/1">Передать
                                                         запчастисту
-                                                        для
-                                                        предварительного расчета</a></li>
+                                                    </a></li>
                                                 <li><a href="/applications/{{ $id }}/change_status/2">Принять в
                                                         работу</a>
                                                 </li>
-                                                <li><a href="/applications/{{ $id }}/change_status/3">Отклонить
-                                                        по
-                                                        причине
-                                                        отказа
-                                                        клиента</a></li>
+
                                                 <li><a href="/applications/{{ $id }}/change_status/4">Отклонить
-                                                        по
-                                                        причине
-                                                        нецелесообразности ремонта</a></li>
+                                                    </a></li>
                                             @endif
 
                                             @if ($app->id_status > 11 && $app->id_status < 22)
