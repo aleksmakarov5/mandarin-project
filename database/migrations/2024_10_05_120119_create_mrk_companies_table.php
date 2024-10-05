@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('mrk_companies', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedInteger('id_city');
+            $table->unsignedInteger('id_mrk');
             $table->unsignedInteger('id_company');
         });
     }

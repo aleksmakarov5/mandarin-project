@@ -138,6 +138,22 @@
     </select>
 
 </div>
+<div class='lbl'>
+    <label for="id_spm">Город</label>
+</div>
+<div class="form-float">
+
+    <select class="form-cont" id="id_city" name="id_city">
+        @foreach ($cities as $item)
+            <option value="{{ $item->id }}" @if ($item->id === $application->id_city) selected @endif>
+                {{ $item->name }}
+            </option>
+        @endforeach
+
+    </select>
+
+</div>
+
 
 @if (session('rout') == 'directions')
     <hr>

@@ -118,6 +118,12 @@
             </th>
         </tr>
         <tr>
+            <th>Город</th>
+            <th>
+                {{ $application->city }}
+            </th>
+        </tr>
+        <tr>
             <th>Текущий статус</th>
             <th>
                 {{ $application->StatusName }}

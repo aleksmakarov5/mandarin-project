@@ -157,6 +157,8 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
 
                 ->select(
                     'applications.*',
@@ -171,6 +173,7 @@ class ApplicationController extends Controller
                     'application_statuses.current_group',
                     'our_companies.our_name',
                     'users.name as MRK_name',
+                    'cities.name as city'
                 )
                 ->get()
 
@@ -189,6 +192,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -201,7 +205,8 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
+                    'cities.name as city'
                 )->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
@@ -222,6 +227,7 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -234,7 +240,8 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
+                    'cities.name as city'
                 )->get()->sortDesc();
             // dd($applications);
         }
@@ -271,6 +278,7 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -283,7 +291,8 @@ class ApplicationController extends Controller
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
                 'our_companies.our_name',
-                'users.name as MRK_name'
+                'users.name as MRK_name',
+                'cities.name as city'
             )->get()->sortDesc();
         // dd($applications);
         $current = carbon::now();
@@ -323,6 +332,7 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -335,7 +345,8 @@ class ApplicationController extends Controller
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
                 'our_companies.our_name',
-                'users.name as MRK_name'
+                'users.name as MRK_name',
+                'cities.name as city'
             )->get()->sortDesc();
         // dd($applications);
         $current = carbon::now();
@@ -370,6 +381,7 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -382,7 +394,8 @@ class ApplicationController extends Controller
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
                 'our_companies.our_name',
-                'users.name as MRK_name'
+                'users.name as MRK_name',
+                'cities.name as city'
             )->get()->sortDesc();
         // dd($applications);
 
@@ -412,6 +425,7 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -424,7 +438,8 @@ class ApplicationController extends Controller
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
                 'our_companies.our_name',
-                'users.name as MRK_name'
+                'users.name as MRK_name',
+                'cities.name as city'
             )->get()->sortDesc();
         // dd($applications);
 
@@ -462,6 +477,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -474,7 +490,8 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
+                    'cities.name as city'
                 )->get()->sortDesc();
         } else if (Auth::user()->GroupId == 9) {
             $applications = application::where(function ($query) {
@@ -491,6 +508,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -503,7 +521,8 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
+                    'cities.name as city'
                 )->get()->sortDesc();
         } else {
             $applications = application::where(function ($query) {
@@ -520,6 +539,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -532,7 +552,8 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
+                    'cities.name as city'
                 )->get()->sortDesc();
 
             // dd($applications);
@@ -710,7 +731,16 @@ class ApplicationController extends Controller
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'services.service_name', 'spms.name as spm', 'mrks.name as mrk')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->select(
+                'applications.*',
+                'insurance_companies.name',
+                'application_statuses.StatusName',
+                'services.service_name',
+                'spms.name as spm',
+                'mrks.name as mrk',
+                'cities.name as city'
+            )
             ->where('applications.id', '=', $id)
             ->first();
         //   dd($application);
@@ -752,12 +782,11 @@ class ApplicationController extends Controller
     //
     public function edit($id)
     {
-        $mrks = DB::table('users')
-            ->where('GroupId', '=', 5)
-            ->get();
+
         $spms = DB::table('users')
             ->where('GroupId', '=', 6)
             ->get();
+
         $services = DB::table('services')->get();
         $lawyers = DB::table('lawyers')->get();
 
@@ -767,6 +796,17 @@ class ApplicationController extends Controller
             ->select('applications.*', 'insurance_companies.name')
             ->where('applications.id', '=', $id)
             ->first();
+        $cities = DB::table('cities')
+            ->join('city_companies', 'cities.id', '=', 'city_companies.id_city')
+            ->where('city_companies.id_company', '=', $application->our_company)
+            ->select('cities.*', 'city_companies.id_city as city_companies_id')
+            ->get();
+        $mrks = DB::table('users')
+            ->join('mrk_companies', 'users.id', '=', 'mrk_companies.id_mrk')
+            ->where('users.GroupId', '=', 5)
+            ->where('mrk_companies.id_company', '=', $application->our_company)
+            ->get();
+        // dd($cities);
         return view(
             'application.edit',
             [
@@ -774,7 +814,9 @@ class ApplicationController extends Controller
                 'InsuranceCompany' => $InsuranceCompany->all(),
                 'mrks' => $mrks,
                 'services' => $services,
-                'spms' => $spms
+                'spms' => $spms,
+                'lawyers' => $lawyers,
+                'cities' => $cities
             ]
         );
     }
@@ -823,6 +865,7 @@ class ApplicationController extends Controller
                 'ClientPasport_number' => 'nullable|string',
                 'ClientPasport_struct' => 'nullable|string',
                 'ClientPasport_date' => 'nullable|date',
+                'id_city' => 'nullable|integer'
 
             ]);
             // dd($data);

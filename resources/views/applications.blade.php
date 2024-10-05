@@ -27,6 +27,7 @@
                     <th scope="col">#</th>
 
                     <th scope="col">МРК</th>
+                    <th scope="col">Город</th>
                     <th scope="col">СК</th>
                     <th scope="col">СТО</th>
                     <th scope="col">Юрист</th>
@@ -57,40 +58,42 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text0"
-                            onkeyup="tableSearch(0,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text1"
+                            onkeyup="tableSearch(1,'applications')"></th>
 
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text2"
-                            onkeyup="tableSearch(2,'applications')">
+                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
+                            onkeyup="tableSearch(3,'applications')">
                     </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="МРК" id="search-text3"
-                            onkeyup="tableSearch(3,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text4"
+                    <th scope="col"><input class="form-control" type="text" placeholder="МРК" id="search-text4"
                             onkeyup="tableSearch(4,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text5"
+                    <th scope="col"><input class="form-control" type="text" placeholder="Город" id="search-text5"
                             onkeyup="tableSearch(5,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text6"
+                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text6"
                             onkeyup="tableSearch(6,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text7"
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text7"
                             onkeyup="tableSearch(7,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
-                            id="search-text7" onkeyup="tableSearch(8,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text9"
+                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text8"
+                            onkeyup="tableSearch(8,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text9"
                             onkeyup="tableSearch(9,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
+                            id="search-text10" onkeyup="tableSearch(10,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text11"
+                            onkeyup="tableSearch(11,'applications')"></th>
 
 
-                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text10"
-                            onkeyup="tableSearch(10,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text11"
-                            onkeyup="tableSearch(11,'applications')"> </th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text12"
+                            onkeyup="tableSearch(12,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text13"
+                            onkeyup="tableSearch(13,'applications')"> </th>
                     <th scope="col"></th>
 
 
                     <th scope="col"><input class="form-control" type="text" placeholder="Тип убытка"
-                            id="search-text12" onkeyup="tableSearch(12,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text13"
-                            onkeyup="tableSearch(13,'applications')"></th>
+                            id="search-text14" onkeyup="tableSearch(14,'applications')"></th>
+                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text15"
+                            onkeyup="tableSearch(15,'applications')"></th>
                     @if (session('rout') == 'directions')
                         @can('company')
                             <th scope="col"></th>
@@ -183,6 +186,10 @@
                                 }
                             @endphp
                             {{ $mrk }}
+                        </td>
+                        <td scope="col"
+                            onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            {{ $application->city }}
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
