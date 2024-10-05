@@ -923,10 +923,10 @@ form .nav-link {
 }
 
 .td_round {
-    padding-left: 7px;
-    border-radius: 10px;
-    padding: 2px;
+    border-radius: 6px;
+    padding: 1px 3px;
     font-size: 10px;
+    text-align: center;
 }
 
 .auto {
@@ -984,8 +984,18 @@ form .nav-link {
     color: #ff1500;
 }
 
+.no {
+    background-color: #ff000087;
+    color: #4b0707;
+}
+
+.yes {
+    background-color: #1eff00;
+    color: #0c10d6;
+}
+
 .napravlenie {
-    background-color: #02f9403e;
+    background-color: #02f940;
     color: #0271f9;
 }
 

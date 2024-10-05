@@ -21,6 +21,7 @@
             <thead>
 
                 <tr>
+                    <th scope="col">Дог</th>
                     <th scope="col">Статус</th>
                     <th scope="col">Тайминг</th>
                     <th scope="col">#</th>
@@ -55,7 +56,7 @@
 
                 </tr>
                 <tr>
-
+                    <th></th>
                     <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text0"
                             onkeyup="tableSearch(0,'applications')"></th>
 
@@ -112,6 +113,15 @@
 
                 @foreach ($applications->all() as $application)
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
+                        <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                            @if ($application->doc)
+                                <div class="td_round  yes"> да
+                                </div>
+                            @else
+                                <div class="td_round  no"> нет
+                                </div>
+                            @endif
+                        </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <div class="td_round {{ $application->status_theme }}">

@@ -157,6 +157,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -169,9 +170,10 @@ class ApplicationController extends Controller
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
                     'our_companies.our_name',
-                    'users.name as MRK_name'
+                    'users.name as MRK_name',
                 )
                 ->get()
+
                 ->sortDesc();
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
@@ -243,7 +245,13 @@ class ApplicationController extends Controller
             $application->max_hour = 48;
             $application->created = $application->created_at->toFormattedDateString();
             $application->count_five = 5 - $current->diffInHours($application->check_date);
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
+        // dd($applications);
         $applications = $this->configure($applications);
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
@@ -282,6 +290,11 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
         $applications = $this->configure($applications);
         session(['rout' => 'failures']);
@@ -331,6 +344,11 @@ class ApplicationController extends Controller
             $application->max_hour = 48;
 
             $application->count_five = 5 - $current->diffInHours($application->check_date);
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
         $applications = $this->configure($applications);
         session(['rout' => '']);
@@ -373,6 +391,11 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             $application->count_hour = 48 - $current->diffInHours($application->created_at);
             $application->max_hour = 48;
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
         $applications = $this->configure($applications);
         return view('applications', ['applications' => $applications],);
@@ -411,6 +434,11 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             $application->count_hour = 1;
             $application->max_hour = 1000;
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
         $applications = $this->configure($applications);
         return view('applications', ['applications' => $applications],);
@@ -538,6 +566,11 @@ class ApplicationController extends Controller
                 $start = carbon::create($application->napr_date);
                 $application->max_hour = $start->diffInDays($application->end_date);
             }
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
         }
         return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
     }

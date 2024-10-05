@@ -20,8 +20,7 @@
                 <tr>
                     <td><input type="file" name="userfile[]" multiple onchange="this.form.submit()"></td>
 
-                    <td><a href="/create_all/{{ $id }}/0" class="nav-link">Создать все
-                            печатные формы</a></td>
+
 
 
                 </tr>
