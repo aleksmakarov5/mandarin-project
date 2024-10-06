@@ -664,7 +664,8 @@ class MainController extends Controller
         $location = str_replace('%20', ' ', $location);
         $name = str_replace('%20', ' ', $name);
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
-        exec("chmod 777 ", $dir);
+        chmod($dir . "." . pathinfo($location), 0777);
+        echo $dir . "." . pathinfo($location);
         dd($dir);
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
@@ -673,8 +674,8 @@ class MainController extends Controller
                 $zip->close();
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
                 mkdir($dir, 0777, true);
-                // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
-                exec("unrar x '" . $dir);
+                exec("unrar x '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+                // exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
                 mkdir($dir, 0777, true);
                 exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
