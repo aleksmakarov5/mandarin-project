@@ -35,7 +35,7 @@ use Tochka\Calendar\WorkCalendar;
 
 class ImapController extends Controller
 {
-    public function vsk_parse($subject, $email, $from, $to, $attachments, $our_company)
+    public function vsk_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
 
 
@@ -94,6 +94,7 @@ class ImapController extends Controller
                 // dd($applications);
                 $message = new Message();
                 $message->subject = $email->getSubject();
+                $message->uid = $uid;
                 $message->body_html = $email->getHTMLBody();
                 $message->body_text = $email->getTextBody();
                 $message->header = $email->getHeaders();
@@ -429,7 +430,7 @@ class ImapController extends Controller
             broadcast(new MessageSent($notification));
         }
     }
-    public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company)
+    public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
         echo $subject . '<br>';
 
@@ -491,6 +492,7 @@ class ImapController extends Controller
         // dd($applications);
         $message = new Message();
         $message->subject = $email->getSubject();
+        $message->uid = $uid;
         $message->body_html = $email->getHTMLBody();
         $message->body_text = $email->getTextBody();
         $message->header = $email->getHeaders();
@@ -767,14 +769,15 @@ class ImapController extends Controller
                     $our_company = 2;
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
                         $mess = new Message();
                         $mess->subject = $message->getSubject();
+                        $mess->uid = $uid;
                         $mess->body_html = $message->getHTMLBody();
                         $mess->body_text = $message->getTextBody();
                         $mess->header = $message->getHeaders();

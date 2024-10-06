@@ -50,9 +50,44 @@
 
         </div>
         <div class="message-show">
-            @php
-                echo $body;
-            @endphp
+            @if (isset($mail->subject))
+                <div class="message-header">
+                    <h2>{{ $mail->subject }}</h2>
+                    <p class="sender-email">От кого:
+                        @if (isset($mail->from->email))
+                            {{ $mail->from->email }}
+                        @endif
+                    </p>
+                    <p class=""><i class="far fa-clock">
+                            @if (isset($mail->message_date))
+                                {{ Date::parse($mail->message_date)->format('j F Yг. H:i') }}
+                            @endif
+                        </i>
+                    </p>
+                    <div class="message-button">
+                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
+                                src="/storage/img/reply.png" width="20" alt="Ответить"></a>
+                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
+                                src="/storage/img/forward.png" width="20" alt="Переслать"></a>
+                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
+                                src="/storage/img/delete.png" width="20" alt="Удалить"></a>
+                        @if (isset($mail->application_id))
+                            <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
+                                    src="/storage/img/open.png" width="20" alt="Открыть"></a>
+                        @else
+                            <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
+                                    src="/storage/img/add.png" width="20" alt="Добавить"></a>
+                        @endif
+
+                    </div>
+
+                </div>
+            @endif
+            <div>
+                @php
+                    echo $body;
+                @endphp
+            </div>
         </div>
     </div>
     <script>

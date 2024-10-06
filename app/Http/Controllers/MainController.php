@@ -127,10 +127,15 @@ class MainController extends Controller
     }
     public function mailbox($type, $id, $message_id)
     {
+        $mail = '';
         $body = "";
         if ($message_id != 0) {
-            $message = DB::table('messages')->where('id', '=', $message_id)->first();
-            $body = $message->body_html;
+            $mail = DB::table('messages')->where('id', '=', $message_id)->first();
+            $mail->from = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first();
+            $body = $mail->body_html;
             $body_start = mb_strpos($body, '<body');
             $body_end = mb_strpos($body, '</body>');
             if ($body_start) {
@@ -139,17 +144,17 @@ class MainController extends Controller
             $body = str_replace('color', '', $body);
 
             $body = str_replace('font-size:', '', $body);
-            if (isset($message->application_id)) {
-                $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
+            if (isset($mail->application_id)) {
+                $body = str_replace('cid:', '/storage/files/' . $mail->application_id . '/', $body);
                 $body = str_replace('gif', 'gif"', $body);
                 $body = str_replace('png', 'png"', $body);
-                $loc = Attachment::where('message_id', '=', $message->id)
+                $loc = Attachment::where('message_id', '=', $mail->id)
                     ->where('file_name', 'like', '%image001.png%')
                     ->first();
                 $location = isset($loc->location) ? $loc->location : '';
                 $body = str_replace('image001.png', $location, $body);
                 for ($i = 2; $i < 10; $i++) {
-                    $loc = Attachment::where('message_id', '=', $message->id)
+                    $loc = Attachment::where('message_id', '=', $mail->id)
                         ->where('file_name', 'like', '%image00' . $i . '.gif%')
                         ->first();
                     $location = isset($loc->location) ? $loc->location : '';
@@ -173,7 +178,7 @@ class MainController extends Controller
                 ->where('type', '=', 'to')
                 ->get();
         }
-
+        // dd($mail);
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
         return view('mail.show', [
@@ -181,7 +186,8 @@ class MainController extends Controller
             'type' => $type,
             'message_id' => $message_id,
             'body' => $body,
-            'company_id' => $id
+            'company_id' => $id,
+            'mail' => $mail
         ]);
     }
 

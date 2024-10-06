@@ -1,6 +1,15 @@
 @extends('layout')
 @section('main_content')
     <a href="/applications" class="nav-link">Отмена</a>
+    @if ($errors->any())
+        <div>
+            <ul>
+                @foreach ($errors->all() as $error)
+                    <div class="alert alert-danger">{{ $error }}</div>
+                @endforeach
+            </ul>
+        </div>
+    @endif
     <form action="/applications/store" method="POST">
         @csrf
 

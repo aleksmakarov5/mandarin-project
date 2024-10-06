@@ -1180,12 +1180,60 @@ form .nav-link {
     overflow: auto;
     left: 30%;
     width: 65%;
-    padding: 10px;
+    padding: 15px;
     border: 2px;
     border-color: #000;
     border-radius: 7px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     height: 70%;
+}
+
+.message-header {
+    text-align: justify;
+    position: sticky;
+    top: 0;
+    background-color: #9cc6f9;
+    padding: 10px;
+    margin: 10px;
+    border: 2px;
+    border-color: #000;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+
+.message-button {
+    position: absolute;
+    right: 10px;
+    bottom: 0px;
+    margin: 10px;
+    padding: 10px;
+    display: flex;
+}
+
+.msg_but {
+    color: #ffffff;
+
+    width: 100%;
+    text-decoration: none;
+    font-family: '2Mass-', Arial, sans-serif;
+    text-align: center;
+    padding: 5px;
+    margin: 1px;
+    line-height: 1.55;
+    font-weight: 600;
+    border-radius: 10px;
+    background-color: #6b6969;
+    border-color: transparent;
+    border-style: solid;
+    position: center;
+    transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+
+}
+
+.msg_but:hover {
+    background-color: #eb6700;
+    color: white;
 }
 
 .mail_index {

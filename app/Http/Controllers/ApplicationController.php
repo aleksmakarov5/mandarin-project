@@ -843,7 +843,7 @@ class ApplicationController extends Controller
             $data = $this->validate($request, [
                 'id_insuranceCompany' => 'required',
                 'numberInsuranceCompanyApplication' => 'required',
-                'CarModel' => 'nullable|string',
+                'CarModel' => 'required|string',
                 'gnz' => 'nullable|string',
                 'vin' => 'nullable|string',
                 'ClientName' => 'nullable|string',
@@ -892,7 +892,7 @@ class ApplicationController extends Controller
         $data = $this->validate($request, [
             'id_insuranceCompany' => 'required',
             'numberInsuranceCompanyApplication' => 'required',
-            'CarModel' => 'nullable|string',
+            'CarModel' => 'required|string',
             'gnz' => 'nullable|string',
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
@@ -1600,7 +1600,7 @@ class ApplicationController extends Controller
             $history->save();
         }
         $data = $this->validate($request, [
-            'CarModel' => 'nullable|string',
+            'CarModel' => 'required|string',
             'gnz' => 'nullable|string',
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
