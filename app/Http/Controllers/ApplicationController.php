@@ -2663,8 +2663,19 @@ class ApplicationController extends Controller
             'id' => $id,
         ]);
     }
-    public function new_mail($type, $id, $message_id, $id_application)
+    public function new_mail(Request $request, $type, $id, $message_id, $id_application)
     {
+        $our_company = $request->get('our_company');
+        if ($our_company) {
+            $application = new application;
+            $application->our_company = $our_company;
+            $application->numberInsuranceCompanyApplication = " ";
+            $application->CarModel = " ";
+            $application->id_status = 1;
+            $application->id_insuranceCompany = 1;
+            $application->save();
+            $id_application = $application->id;
+        }
         $message = message::findOrFail($message_id);
         $message->application_id = $id_application;
         $message->save();

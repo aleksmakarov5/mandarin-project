@@ -5,6 +5,8 @@
 @section('main_content')
     {{-- <a href="/back" class="nav-link">Назад</a> --}}
     <center>
+        <a href="/applications/new_mail/{{ $type }}/{{ $id }}/{{ $message_id }}/0?our_company={{ $type }}"
+            class="nav-link">Создать новую</a>
         <table id="applications">
             <thead>
 

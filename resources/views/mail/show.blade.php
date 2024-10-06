@@ -78,7 +78,7 @@
                             <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
                                     src="/storage/img/open.png" width="20" alt="Открыть"></a>
                         @else
-                            <a href="/applications/add_mail/{{ $type }}/{{ $id }}/{{ $mail->id }}"
+                            <a href="/applications/add_mail/{{ $mail->mailbox_id }}/{{ $id }}/{{ $mail->id }}"
                                 class="msg_but"><img src="/storage/img/add.png" width="20" alt="Добавить"></a>
                         @endif
 
