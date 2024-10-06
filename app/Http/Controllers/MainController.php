@@ -664,8 +664,9 @@ class MainController extends Controller
         $location = str_replace('%20', ' ', $location);
         $name = str_replace('%20', ' ', $name);
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
-        // chmod($dir . "." . pathinfo($location), 0777);
-        echo $dir . "." . pathinfo($location);
+        chmod($dir . "." . pathinfo($location, PATHINFO_EXTENSION), 0777);
+        echo
+        $dir . "." . pathinfo($location, PATHINFO_EXTENSION);
         dd($dir);
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
