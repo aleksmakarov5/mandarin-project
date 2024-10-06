@@ -66,16 +66,8 @@
 
                                 <div class="message-content">
                                     @php
-                                        $body = $message->body_html;
-                                        $body_start = mb_strpos($body, '<body');
-                                        $body_end = mb_strpos($body, '</body>');
-                                        if ($body_start) {
-                                            $body = mb_substr($body, $body_start, $body_end - $body_start);
-                                        }
-                                        $body = str_replace('color', '', $body);
 
-                                        $body = str_replace('font-size:', '', $body);
-                                        echo $body;
+                                        echo $message->body;
                                     @endphp
                                 </div>
                                 <div class="attachments-sections">

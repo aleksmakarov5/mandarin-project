@@ -141,7 +141,20 @@ class MainController extends Controller
             $body = str_replace('font-size:', '', $body);
             if (isset($message->application_id)) {
                 $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
-                $body = preg_replace("/gif?{,9}/", 'gif', $body);
+                $body = str_replace('gif', 'gif"', $body);
+                $body = str_replace('png', 'png"', $body);
+                $loc = Attachment::where('message_id', '=', $message->id)
+                    ->where('file_name', 'like', '%image001.png%')
+                    ->first();
+                $location = isset($loc->location) ? $loc->location : '';
+                $body = str_replace('image001.png', $location, $body);
+                for ($i = 2; $i < 7; $i++) {
+                    $loc = Attachment::where('message_id', '=', $message->id)
+                        ->where('file_name', 'like', '%image00' . $i . '.gif%')
+                        ->first();
+                    $location = isset($loc->location) ? $loc->location : '';
+                    $body = str_replace('image00' . $i . '.gif', $location, $body);
+                }
             }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)

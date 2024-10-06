@@ -732,6 +732,7 @@ class ApplicationController extends Controller
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -739,7 +740,8 @@ class ApplicationController extends Controller
                 'services.service_name',
                 'spms.name as spm',
                 'mrks.name as mrk',
-                'cities.name as city'
+                'cities.name as city',
+                'lawyers.lawyer_name'
             )
             ->where('applications.id', '=', $id)
             ->first();
@@ -1001,6 +1003,35 @@ class ApplicationController extends Controller
             $subject = '';
             $to_email = '';
             $attachments = [];
+        }
+        foreach ($messages as $message) {
+            if (isset($message->application_id)) {
+                $body = $message->body_html;
+                $body_start = mb_strpos($body, '<body');
+                $body_end = mb_strpos($body, '</body>');
+                if ($body_start) {
+                    $body = mb_substr($body, $body_start, $body_end - $body_start);
+                }
+                $body = str_replace('color', '', $body);
+
+                $body = str_replace('font-size:', '', $body);
+                $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
+                $body = str_replace('gif', 'gif"', $body);
+                $body = str_replace('png', 'png"', $body);
+                $loc = Attachment::where('message_id', '=', $message->id)
+                    ->where('file_name', 'like', '%image001.png%')
+                    ->first();
+                $location = isset($loc->location) ? $loc->location : '';
+                $body = str_replace('image001.png', $location, $body);
+                for ($i = 2; $i < 7; $i++) {
+                    $loc = Attachment::where('message_id', '=', $message->id)
+                        ->where('file_name', 'like', '%image00' . $i . '.gif%')
+                        ->first();
+                    $location = isset($loc->location) ? $loc->location : '';
+                    $body = str_replace('image00' . $i . '.gif', $location, $body);
+                }
+                $message->body = $body;
+            }
         }
 
 

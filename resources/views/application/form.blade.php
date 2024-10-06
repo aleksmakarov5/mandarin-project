@@ -7,13 +7,18 @@
         </ul>
     </div>
 @endif
-
+<div class='lbl'><label for="id_MRK">Автоюрист</label><a href="/"><img src="/storage/img/add.png" width="20"
+            alt="Добавить"></a></div>
 <div class="form-float">
 
-    <select class="form-cont" id="ur" name="ur">
 
-        <option value=0>Клиент не работает с автоюристом</option>
-        <option value=1 @if ($application->id_status == 25) selected @endif>Клиент работает с автоюристом</option>
+    <select class="form-cont" id="id_lawyer" name="id_lawyer">
+
+        @foreach ($lawyers as $item)
+            <option value="{{ $item->id }}" @if ($item->id === $application->id_lawyer) selected @endif>
+                {{ $item->lawyer_name }}
+            </option>
+        @endforeach
 
 
     </select>
@@ -25,7 +30,8 @@
 
     <select class="form-cont" id="id_insuranceCompany" name="id_insuranceCompany">
         @foreach ($InsuranceCompany as $item)
-            <option value="{{ $item->id }}" @if ($item->id === $application->id_insuranceCompany) selected @endif>{{ $item->name }}
+            <option value="{{ $item->id }}" @if ($item->id === $application->id_insuranceCompany) selected @endif>
+                {{ $item->lawyer_name }}
             </option>
         @endforeach
 
@@ -103,6 +109,8 @@
                     {{ $item->name }}
                 </option>
             @endforeach
+
+
 
         </select>
 

@@ -14,6 +14,12 @@
 
     <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
         <tr>
+            <th>Автоюрист</th>
+            <th>
+                {{ $application->lawyer_name }}
+            </th>
+        </tr>
+        <tr>
             <th>№ заявки</th>
             <th>
                 {{ $application->id }}

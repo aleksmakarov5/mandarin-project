@@ -1188,6 +1188,19 @@ form .nav-link {
     height: 70%;
 }
 
+.mail_index {
+    text-align: center;
+    font-size: large;
+    margin-bottom: 5px;
+    padding: 10px;
+    border: 2px;
+    border-color: #000;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+
+
+}
+
 .message-name {
     margin: 5px;
     padding: 10px;
