@@ -5,6 +5,7 @@
 @section('main_content')
     <div class="mailbox">
         <div class="message-list">
+            <a href="#" class="msg_but"><img src="/storage/img/new_mail.png" width="20" alt="Ответить"></a>
             <table id ="messages">
                 <thead>
 
@@ -13,6 +14,7 @@
 
                         <th scope="col"><input class="form-control" type="text" placeholder="поиск" id="search-text0"
                                 onkeyup="tableSearch(0,'messages')"></th>
+
 
                 </thead>
                 <tbody>
@@ -65,18 +67,19 @@
                         </i>
                     </p>
                     <div class="message-button">
-                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
-                                src="/storage/img/reply.png" width="20" alt="Ответить"></a>
-                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
-                                src="/storage/img/forward.png" width="20" alt="Переслать"></a>
-                        <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
-                                src="/storage/img/delete.png" width="20" alt="Удалить"></a>
+                        <a href="#" class="msg_but"><img src="/storage/img/reply.png" width="20"
+                                alt="Ответить"></a>
+                        <a href="#" class="msg_but"><img src="/storage/img/forward.png" width="20"
+                                alt="Переслать"></a>
+                        <a onclick="if (!confirm('Точно удалить письмо {{ $mail->subject }}?')) return false"
+                            href="/mail_delete/{{ $message->id }}" class="msg_but"><img src="/storage/img/delete.png"
+                                width="20" alt="Удалить"></a>
                         @if (isset($mail->application_id))
                             <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
                                     src="/storage/img/open.png" width="20" alt="Открыть"></a>
                         @else
-                            <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
-                                    src="/storage/img/add.png" width="20" alt="Добавить"></a>
+                            <a href="/applications/add_mail/{{ $type }}/{{ $id }}/{{ $mail->id }}"
+                                class="msg_but"><img src="/storage/img/add.png" width="20" alt="Добавить"></a>
                         @endif
 
                     </div>

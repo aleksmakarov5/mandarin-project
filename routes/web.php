@@ -123,6 +123,7 @@ Route::middleware("guest:web")->group(
 Route::middleware("auth:web")->group(
     function () {
 
+        Route::get('/back',  [MainController::class, 'back'])->name('back');
 
         Route::get('/message',  [MainController::class, 'message'])->name('message');
         Route::get('/mailbox/{type}/{id}/{message_id}',  [MainController::class, 'mailbox'])->name('mailbox');
@@ -171,6 +172,10 @@ Route::middleware("auth:web")->group(
 
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
+        Route::get('applications/add_mail/{type}/{id}/{message_id}', [ApplicationController::class, 'add_mail'])
+            ->name('applications.add_mail');
+        Route::get('applications/new_mail/{type}/{id}/{message_id}/{id_application}', [ApplicationController::class, 'new_mail'])
+            ->name('applications.new_mail');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
         Route::post('application/{id}/data_load', [ApplicationController::class, 'data_load'])->name('application.data_load');
         Route::post('application/{id}/data_save', [ApplicationController::class, 'data_save'])->name('application.data_save');

@@ -56,8 +56,9 @@
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>
-                                                </i><a class="mdi mdi-delete text-primary mr-1"
-                                                    href="/mail_delete/{{ $message->id }}">Удалить</a></button>
+                                                </i><a class="msg-but" href="/mail_delete/{{ $message->id }}"><img
+                                                        src="/storage/img/delete.png" width="20"
+                                                        alt="Удалить"></a></button>
                                         </div>
                                     </div>
                                 </div>

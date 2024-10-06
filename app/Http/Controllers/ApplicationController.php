@@ -2646,4 +2646,21 @@ class ApplicationController extends Controller
         $message->delete();
         return redirect()->back();
     }
+    public function add_mail($type, $id, $message_id)
+    {
+        $applications = application::where('our_company', '=', $id)->get()->sortDesc()->all();
+        return view('application.add_mail', [
+            'applications' => $applications,
+            'message_id' => $message_id,
+            'type' => $type,
+            'id' => $id,
+        ]);
+    }
+    public function new_mail($type, $id, $message_id, $id_application)
+    {
+        $message = message::findOrFail($message_id);
+        $message->application_id = $id_application;
+        $message->save();
+        return redirect()->route('mail_app', ['id' => $id_application]);
+    }
 }
