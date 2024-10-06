@@ -679,7 +679,6 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-        dd($images);
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
                 if ($image != '..' && $image != '.') {
@@ -693,6 +692,8 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
+        // dd($images);
+
         try {
             rmdir($dir);
         } catch (\Exception $e) {
