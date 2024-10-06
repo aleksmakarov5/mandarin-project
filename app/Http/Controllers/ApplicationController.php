@@ -2669,6 +2669,10 @@ class ApplicationController extends Controller
         $message->application_id = $id_application;
         $message->save();
         $attachments = attachment::where('message_id', '=', $message_id);
+        $dir = 'storage/files/' . $id_application;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
         foreach ($attachments as $attachment) {
             $attachment->id_application = $id_application;
             $attachment->save();
