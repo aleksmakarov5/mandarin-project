@@ -80,10 +80,10 @@
                             <input type="submit" value="ок">
                         </form>
                     @else
-                        <h5 class="card-title">{{ $doc->file_name }}</h5>
+                        <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}</h5>
                     @endif
                 @else
-                    <h5 class="card-title">{{ $doc->file_name }}</h5>
+                    <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}</h5>
                 @endif
                 <p class="file-size">
                     {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
