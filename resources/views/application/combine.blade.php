@@ -13,11 +13,11 @@
 
                     <th scope="col"><input class="form-control" type="text" placeholder="№" id="search-text0"
                             onkeyup="tableSearch(0,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text0"
+                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text1"
                             onkeyup="tableSearch(1,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Марка авто" id="search-text0"
+                    <th scope="col"><input class="form-control" type="text" placeholder="Марка авто" id="search-text2"
                             onkeyup="tableSearch(2,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка" id="search-text0"
+                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка" id="search-text3"
                             onkeyup="tableSearch(3,'applications')"></th>
 
             </thead>
