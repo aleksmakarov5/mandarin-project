@@ -2673,7 +2673,7 @@ class ApplicationController extends Controller
             $ttachment->id_application = $id_application;
             $ttachment->save();
             $file = 'storage/files/temp/' . $ttachment->location;
-            rename($file, 'public/storage/files/' . $id_application . '/' . $ttachment->location);
+            rename($file, 'storage/files/' . $id_application . '/' . $ttachment->location);
         }
 
         return redirect()->route('mail_app', ['id' => $id_application]);
