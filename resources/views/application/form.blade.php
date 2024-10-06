@@ -98,6 +98,20 @@
     </div>
 
 </div>
+<div class="form-float">
+    <input type="text" name="pred" id="pred" class="form-cont" value="{{ $application->pred }}">
+    <div class='lbl'><label for="pred">Представитель</label></div>
+</div>
+
+
+<div class="form-float">
+    <input type="text" name="pred_phone" id="pred_phone" class="form-cont"
+        value="{{ $application->pred_phone }}" placeholder="+7(000)000-00-00" data-phone-pattern>
+    <div class='lbl'>
+        <label for="pred_phone">Телефон представителя</label>
+    </div>
+</div>
+
 @can('admin')
 
     <div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
@@ -122,7 +136,8 @@
 
         <select class="form-cont" id="id_spm" name="id_spm">
             @foreach ($spms as $item)
-                <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>{{ $item->name }}
+                <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>
+                    {{ $item->name }}
                 </option>
             @endforeach
 

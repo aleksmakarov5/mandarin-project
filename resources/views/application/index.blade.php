@@ -103,8 +103,20 @@
                 {{ $application->ClientPhone }}
             </th>
         </tr>
-
-
+        @if (isset($application->pred))
+            <tr>
+                <th>ФИО представителя</th>
+                <th>
+                    {{ $application->pred }}
+                </th>
+            </tr>
+            <tr>
+                <th>Номер телефона представителя</th>
+                <th>
+                    {{ $application->pred_phone }}
+                </th>
+            </tr>
+        @endif
         <tr>
             <th>Менеджер по работе с клиентами</th>
             <th>

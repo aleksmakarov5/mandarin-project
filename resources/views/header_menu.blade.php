@@ -122,8 +122,16 @@
                     <h1>Заявка № {{ $id }} </h1>
                     <h5>{{ $app->CarModel }}</h5>
                     <h5>{{ $app->gnz }}</h5>
-                    <h5>{{ $app->ClientName }}</h5>
-                    <h5>{{ $app->ClientPhone }}</h5>
+                    @if (isset($app->pred_phone))
+                        <h5><b>Представитель:</b></h5>
+                        <h5>{{ $app->pred }}</h5>
+                        <h5>{{ $app->pred_phone }}</h5>
+                    @else
+                        <h5><b>Клиент:</b></h5>
+                        <h5>{{ $app->ClientName }}</h5>
+                        <h5>{{ $app->ClientPhone }}</h5>
+                    @endif
+
                     <h5>{{ $app->vin }}</h5>
                 </td>
                 @can('company')

@@ -868,7 +868,9 @@ class ApplicationController extends Controller
                 'ClientPasport_number' => 'nullable|string',
                 'ClientPasport_struct' => 'nullable|string',
                 'ClientPasport_date' => 'nullable|date',
-                'id_city' => 'nullable|integer'
+                'id_city' => 'nullable|integer',
+                'pred' => 'nullable|string',
+                'pred_phone' => 'nullable|string'
 
             ]);
             // dd($data);

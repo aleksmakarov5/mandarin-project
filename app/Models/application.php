@@ -39,7 +39,8 @@ class application extends Model
         'our_company',
         'sertificat',
         'ub_type',
-        'id_city'
-
+        'id_city',
+        'pred',
+        'pred_phone'
     ];
 }
