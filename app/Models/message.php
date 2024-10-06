@@ -8,5 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class message extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'is_ready',
+
+    ];
     public $timestamps = false;
 }

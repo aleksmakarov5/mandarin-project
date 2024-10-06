@@ -1312,3 +1312,8 @@ form .nav-link {
     color: #9e9c9c;
 
 }
+
+.big-text {
+    font-style: italic;
+    font-weight: bolder;
+}

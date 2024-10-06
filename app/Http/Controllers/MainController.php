@@ -130,8 +130,16 @@ class MainController extends Controller
         $mail = '';
         $body = "";
         if ($message_id != 0) {
-            $mail = DB::table('messages')->where('id', '=', $message_id)->first();
+            $mail = message::findOrFail($message_id)->first();
+            $ms = message::where('id', '=', $message_id)->get();
+            // dd($mail);
+            foreach ($ms as $m) {
+                $m->is_ready = true;
+                $m->save();
+            }
+            // dd($mail);
             if (isset($mail->id)) {
+
                 $mail->from = DB::table('addresses')
                     ->where('message_id', '=', $message_id)
                     ->where('type', '=', 'from')
@@ -140,6 +148,7 @@ class MainController extends Controller
                     ->where('message_id', '=', $mail->id)
                     ->get();
                 $body = $mail->body_html;
+
                 $body_start = mb_strpos($body, '<body');
                 $body_end = mb_strpos($body, '</body>');
                 if ($body_start) {

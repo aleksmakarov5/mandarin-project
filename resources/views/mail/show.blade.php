@@ -26,7 +26,9 @@
                                     class="@if ($message->id == $message_id) current @else
                                     
                                     message-name @endif
+                                    @if (!$message->is_ready) big-text @endif
                                     @if (isset($message->application_id)) green @endif">
+
                                     <div class="details">
                                         <p class="msg-subject">
                                             {{ $message->subject }}
