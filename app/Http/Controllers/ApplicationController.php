@@ -2668,7 +2668,8 @@ class ApplicationController extends Controller
         $message = message::findOrFail($message_id);
         $message->application_id = $id_application;
         $message->save();
-        $attachments = attachment::where('message_id', '=', $message_id);
+        $attachments = attachment::where('message_id', '=', $message_id)->get();
+        // dd($attachments);
         $dir = 'storage/files/' . $id_application;
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
@@ -2677,6 +2678,7 @@ class ApplicationController extends Controller
             $attachment->id_application = $id_application;
             $attachment->save();
             $file = 'storage/files/temp/' . $attachment->location;
+            // dd($file);
             rename($file, 'storage/files/' . $id_application . '/' . $attachment->location);
         }
 
