@@ -26,8 +26,8 @@
         <div class="form-float">
 
             <select class="form-cont" id="color" name="color">
-                <option value="1" selected>Да</option>
-                <option value="0">Нет</option>
+                <option value="0" selected>Да</option>
+                <option value="1">Нет</option>
             </select>
 
         </div>
