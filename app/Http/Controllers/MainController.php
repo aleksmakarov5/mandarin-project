@@ -673,7 +673,7 @@ class MainController extends Controller
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
                 mkdir($dir, 0777, true);
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
-                exec("unrar e -o+ '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'");
+                exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
                 mkdir($dir, 0777, true);
                 exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
