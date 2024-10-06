@@ -2668,12 +2668,12 @@ class ApplicationController extends Controller
         $message = message::findOrFail($message_id);
         $message->application_id = $id_application;
         $message->save();
-        $ttachments = attachment::where('message_id', '=', $message_id);
-        foreach ($ttachments as $ttachment) {
-            $ttachment->id_application = $id_application;
-            $ttachment->save();
-            $file = 'storage/files/temp/' . $ttachment->location;
-            rename($file, 'storage/files/' . $id_application . '/' . $ttachment->location);
+        $attachments = attachment::where('message_id', '=', $message_id);
+        foreach ($attachments as $attachment) {
+            $attachment->id_application = $id_application;
+            $attachment->save();
+            $file = 'storage/files/temp/' . $attachment->location;
+            rename($file, 'storage/files/' . $id_application . '/' . $attachment->location);
         }
 
         return redirect()->route('mail_app', ['id' => $id_application]);
