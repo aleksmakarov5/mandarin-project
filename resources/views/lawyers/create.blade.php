@@ -9,7 +9,7 @@
             </ul>
         </div>
     @endif
-    <a href="/application/{{ $id }}/edit" class="nav-link">Отмена</a>
+    <a href="/applications/{{ $id }}/edit" class="nav-link">Отмена</a>
     <form action="/lawyers/store/{{ $id }}" method="POST">
         @csrf
 
