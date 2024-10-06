@@ -690,11 +690,11 @@ class ImapController extends Controller
                     $our_company = 1;
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
                         $mess = new Message();
                         $mess->subject = $message->getSubject();
