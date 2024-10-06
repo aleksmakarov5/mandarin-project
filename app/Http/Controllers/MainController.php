@@ -664,7 +664,7 @@ class MainController extends Controller
         $location = str_replace('%20', ' ', $location);
         $name = str_replace('%20', ' ', $name);
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
-        // dd($dir);
+        dd($dir);
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
                 $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
