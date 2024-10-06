@@ -7,8 +7,8 @@
         </ul>
     </div>
 @endif
-<div class='lbl'><label for="id_MRK">Автоюрист</label><a href="/"><img src="/storage/img/add.png" width="20"
-            alt="Добавить"></a></div>
+<div class='lbl'><label for="id_MRK">Автоюрист</label><a href="/lawyers/create/{{ $application->id }}"><img
+            src="/storage/img/add.png" width="20" alt="Добавить"></a></div>
 <div class="form-float">
 
 

@@ -203,8 +203,18 @@
                         </td>
                         <td
                             scope="col"onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                            <div class="td_round  {{ $application->lawyers_theme }}"> {{ $application->lawyer_name }}
-                            </div>
+                            <div
+                                class="td_round  @if ($application->lawyers_color) no 
+                            @else
+                                yes @endif">
+                                @php
+                                    $lawyer_name = $application->lawyer_name;
+                                    $finish = mb_strpos($lawyer_name, ' ');
+                                    if ($finish) {
+                                        $lawyer_name = mb_substr($lawyer_name, 0, $finish);
+                                    }
+                                @endphp
+                                {{ $lawyer_name }} </div>
                         </td>
 
                         <td scope="col"

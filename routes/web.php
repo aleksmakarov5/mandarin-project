@@ -7,6 +7,7 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TroubleshootingController;
 use App\Http\Controllers\WordController;
+use App\Http\Controllers\LawyersController;
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\SparePartController;
@@ -179,6 +180,10 @@ Route::middleware("auth:web")->group(
         Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
         Route::get('applications/{id}/delete', [ApplicationController::class, 'destroy'])
             ->name('applications.destroy');
+        Route::get('lawyers/create/{id}', [LawyersController::class, 'create'])
+            ->name('lawyers.create');
+        Route::post('lawyers/store/{id}', [LawyersController::class, 'store'])
+            ->name('lawyers.store');
 
 
 
