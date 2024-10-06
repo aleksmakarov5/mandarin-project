@@ -91,6 +91,35 @@
                     echo $body;
                 @endphp
             </div>
+            @if (isset($mail->attachment))
+                <div class="attachments-sections">
+
+                    @foreach ($mail->attachment as $attachment)
+                        @if (pathinfo($attachment->location, PATHINFO_EXTENSION) != 'gif')
+                            <div class="attachments-item">
+
+
+                                <p class="file-name"><a
+                                        @if (isset($attachment->id_application)) href="/storage/files/{{ $attachment->id_application }}/{{ $attachment->location }}" @else href="/storage/files/temp/{{ $attachment->location }}" @endif"
+                                        target="_blank" class="view">
+                                        <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
+                                            alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
+                                            width=25px>
+
+                                        {{ $attachment->file_name }} </a></p>
+
+                                <i class="file-size">
+                                    {{ round($attachment->file_size / 1024 / 1024, 2) }} мб</i>
+
+
+
+
+                            </div>
+                        @endif
+                    @endforeach
+
+                </div>
+            @endif
         </div>
     </div>
     <script>

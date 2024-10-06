@@ -436,11 +436,12 @@ div.sticky {
     line-height: 1.55;
     font-weight: 600;
     border-radius: 10px;
-    background-color: #393939;
     border-color: transparent;
     border-style: solid;
     text-decoration: none;
     cursor: pointer;
+    background-color: #003171;
+    padding: 5px;
 }
 
 .container.gallery-container {
@@ -1292,4 +1293,22 @@ form .nav-link {
     top: 0;
     background-color: white;
     z-index: 1;
+}
+
+
+
+.attachments-item {
+    margin-right: 5px;
+    background-color: #4f93ec9e;
+    padding: 10px;
+    display: inline-block;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px;
+
+}
+
+.file-size {
+    font-size: 10px;
+    color: #9e9c9c;
+
 }

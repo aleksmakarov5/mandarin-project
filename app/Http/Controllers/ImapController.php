@@ -720,6 +720,23 @@ class ImapController extends Controller
                             $address->type = 'from';
                             $address->save();
                         }
+                        $dir = 'storage/files/temp';
+                        if (!is_dir($dir)) {
+                            mkdir($dir, 0777, true);
+                        }
+
+                        foreach ($attachments as $attachment) {
+                            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                            $attachment->save($path = $dir . '/', $filename);
+                            $attach = new attachment();
+                            $attach->message_id = $mess->id;
+                            $attach->location = $filename;
+                            $attach->mime_type = $attachment->getMimeType();
+                            $attach->file_size = $attachment->getSize();
+                            $attach->file_name = $attachment->getFilename();
+                            $attach->save();
+                        }
                     }
                 }
             }

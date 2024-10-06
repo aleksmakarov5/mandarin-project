@@ -136,6 +136,9 @@ class MainController extends Controller
                     ->where('message_id', '=', $message_id)
                     ->where('type', '=', 'from')
                     ->first();
+                $mail->attachment = DB::table('attachments')
+                    ->where('message_id', '=', $mail->id)
+                    ->get();
                 $body = $mail->body_html;
                 $body_start = mb_strpos($body, '<body');
                 $body_end = mb_strpos($body, '</body>');

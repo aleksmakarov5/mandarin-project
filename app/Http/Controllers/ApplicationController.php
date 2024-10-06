@@ -133,7 +133,7 @@ class ApplicationController extends Controller
                 $count['message']++;
             $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
             $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
-            $application->summ_ic_full = Number::Currency(isset($estimates->price_repair_full) ? (float)$estimates->price_repair_full : $summ_ic_full, 'RUR', 'ru');
+            $application->summ_ic_full = Number::Currency(isset($estimates->price_repair_full) ? (float) $estimates->price_repair_full : $summ_ic_full, 'RUR', 'ru');
             $application->summ_service = Number::Currency($summ_service, 'RUR', 'ru');
             $application->summ_full =
                 Number::Currency($summ_service + $summ_order, 'RUR', 'ru');
@@ -1042,7 +1042,7 @@ class ApplicationController extends Controller
         }
 
 
-        return view('application.mail', ['messages' => $messages->all(), 'id' => $id,  'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
+        return view('application.mail', ['messages' => $messages->all(), 'id' => $id, 'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
     }
     public function chat(Request $request, $id)
     {
@@ -1258,7 +1258,7 @@ class ApplicationController extends Controller
             rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
 
             $html = 'works.html';
-            $file = file_get_contents('storage/files/' . $id . '/'  . $html);
+            $file = file_get_contents('storage/files/' . $id . '/' . $html);
             $file = html_entity_decode(strip_tags($file, ['br']));
             // dd($file);
 
@@ -1390,7 +1390,7 @@ class ApplicationController extends Controller
                     $applications['vin'] = $application_array[9];
                     $applications['Color'] = $application_array[45];
                     $applications['mnf_year'] = $application_array[27];
-                    $applications['mileage'] = (int)$application_array[33];
+                    $applications['mileage'] = (int) $application_array[33];
                     $applications['vehicle_passport'] = $application_array[68];
                     $applications['ClientName'] = $application_array[74];
                     //dd($application_array);
@@ -2475,7 +2475,7 @@ class ApplicationController extends Controller
         $users = DB::table('users')->get();
         $attachments = attachment::where('id_application', '=', $id)->get()->all();
 
-        return view('application.answer_ic_mrk', ['users' => $users->all(),  'application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
+        return view('application.answer_ic_mrk', ['users' => $users->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
     }
 
     public function answer_ic_mrk_sent(Request $request, $id)
@@ -2668,6 +2668,13 @@ class ApplicationController extends Controller
         $message = message::findOrFail($message_id);
         $message->application_id = $id_application;
         $message->save();
+        $ttachments = attachment::where('message_id', '=', $message_id);
+        foreach ($ttachments as $ttachment) {
+            $ttachment->id_application = $id_application;
+            $ttachment->save();
+            $file = 'public/storage/files/' . $id_application . '/' . $ttachment->location;
+            rename($file, 'public/storage/files/' . $id_application . '/' . $ttachment->location);
+        }
 
         return redirect()->route('mail_app', ['id' => $id_application]);
     }
@@ -2679,84 +2686,87 @@ class ApplicationController extends Controller
             'id' => $id,
         ]);
     }
+
     public function combine_fin($id_prev, $id_next)
     {
+        // Move related data from $id_prev to $id_next//+
         $attachments = attachment::where('id_application', '=', $id_prev)->get();
         foreach ($attachments as $attachment) {
             $attachment->id_application = $id_next;
             $attachment->save();
         }
-        $chats = chat::where('id_application', '=', $id_prev)->get();
-        foreach ($chats as $chat) {
-            $chat->id_application = $id_next;
-            $chat->save();
-        }
-        $estimates = estimate::where('id_application', '=', $id_prev)->get();
-        foreach ($estimates as $estimate) {
-            $estimate->id_application = $id_next;
-            $estimate->save();
-        }
-        $failures = failure::where('id_application', '=', $id_prev)->get();
-        foreach ($failures as $failure) {
-            $failure->id_application = $id_next;
-            $failure->save();
-        }
-        $histories = history::where('id_application', '=', $id_prev)->get();
-        foreach ($histories as $history) {
-            $history->id_application = $id_next;
-            $history->save();
-        }
-        $messages = message::where('application_id', '=', $id_prev)->get();
-        foreach ($messages as $message) {
-            $message->application_id = $id_next;
-            $message->save();
-        }
-        $notifies = notify::where('id_application', '=', $id_prev)->get();
-        foreach ($notifies as $notify) {
-            $notify->id_application = $id_next;
-            $notify->save();
-        }
-        $spare_parts = SparePart::where('id_application', '=', $id_prev)->get();
-        foreach ($spare_parts as $spare_part) {
-            $spare_part->id_application = $id_next;
-            $spare_part->save();
-        }
-        $status_applications =
-            status_application::where('id_application', '=', $id_prev)->get();
-        foreach ($status_applications as $status_application) {
-            $status_application->id_application = $id_next;
-            $status_application->save();
-        }
-        $status_chats =
-            status_chat::where('id_application', '=', $id_prev)->get();
-        foreach ($status_chats as $status_chat) {
-            $status_chat->id_application = $id_next;
-            $status_chat->save();
-        }
-        $status_messages =
-            status_message::where('id_application', '=', $id_prev)->get();
-        foreach ($status_messages as $status_message) {
-            $status_message->id_application = $id_next;
-            $status_message->save();
-        }
-        $troubleshootings =
-            troubleshooting::where('id_application', '=', $id_prev)->get();
-        foreach ($troubleshootings as $troubleshooting) {
-            $troubleshooting->id_application = $id_next;
-            $troubleshooting->save();
-        }
-        $trus =
-            tru::where('id_application', '=', $id_prev)->get();
-        foreach ($trus as $tru) {
-            $tru->id_application = $id_next;
-            $tru->save();
-        }
-        $works =
-            work::where('id_application', '=', $id_prev)->get();
-        foreach ($works as $work) {
-            $work->id_application = $id_next;
-            $work->save();
-        }
+        $chats = chat::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($chats as $chat) { //-
+            $chat->id_application = $id_next; //-
+            $chat->save(); //-
+        } //-
+        $estimates = estimate::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($estimates as $estimate) { //-
+            $estimate->id_application = $id_next; //-
+            $estimate->save(); //-
+        } //-
+        $failures = failure::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($failures as $failure) { //-
+            $failure->id_application = $id_next; //-
+            $failure->save(); //-
+        } //-
+        $histories = history::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($histories as $history) { //-
+            $history->id_application = $id_next; //-
+            $history->save(); //-
+        } //-
+        $messages = message::where('application_id', '=', $id_prev)->get(); //-
+        foreach ($messages as $message) { //-
+            $message->application_id = $id_next; //-
+            $message->save(); //-
+        } //-
+        $notifies = notify::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($notifies as $notify) { //-
+            $notify->id_application = $id_next; //-
+            $notify->save(); //-
+        } //-
+        $spare_parts = SparePart::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($spare_parts as $spare_part) { //-
+            $spare_part->id_application = $id_next; //-
+            $spare_part->save(); //-
+        } //-
+        $status_applications = //-
+            status_application::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($status_applications as $status_application) { //-
+            $status_application->id_application = $id_next; //-
+            $status_application->save(); //-
+        } //-
+        $status_chats = //-
+            status_chat::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($status_chats as $status_chat) { //-
+            $status_chat->id_application = $id_next; //-
+            $status_chat->save(); //-
+        } //-
+        $status_messages = //-
+            status_message::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($status_messages as $status_message) { //-
+            $status_message->id_application = $id_next; //-
+            $status_message->save(); //-
+        } //-
+        $troubleshootings = //-
+            troubleshooting::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($troubleshootings as $troubleshooting) { //-
+            $troubleshooting->id_application = $id_next; //-
+            $troubleshooting->save(); //-
+        } //-
+        $trus = //-
+            tru::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($trus as $tru) { //-
+            $tru->id_application = $id_next; //-
+            $tru->save(); //-
+        } //-
+        $works = //-
+            work::where('id_application', '=', $id_prev)->get(); //-
+        foreach ($works as $work) { //-
+            $work->id_application = $id_next; //-
+            $work->save(); //-
+        } //-
+
         $dir_prev = 'storage/files/' . $id_prev;
         $dir_next = 'storage/files/' . $id_next;
         if (is_dir($dir_prev)) {
@@ -2779,7 +2789,8 @@ class ApplicationController extends Controller
                         try {
                             rmdir($dir_prev . '/' . $file);
                         } catch (\Exception $e) {
-                            // dd($e);
+                            // dd($e);//-
+                            // Handle exception//+
                         }
                     }
                 }
@@ -2787,12 +2798,16 @@ class ApplicationController extends Controller
             try {
                 rmdir($dir_prev);
             } catch (\Exception $e) {
-                // dd($e);
+                // dd($e);//-
+                // Handle exception//+
             }
         }
+
         $application = application::findOrFail($id_prev);
         $application->delete();
 
+
         return redirect()->route('application', ['id' => $id_next]);
     }
+
 }
