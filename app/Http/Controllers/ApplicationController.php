@@ -807,6 +807,7 @@ class ApplicationController extends Controller
             ->join('mrk_companies', 'users.id', '=', 'mrk_companies.id_mrk')
             ->where('users.GroupId', '=', 5)
             ->where('mrk_companies.id_company', '=', $application->our_company)
+            ->select('users.*', 'users.id as user_id')
             ->get();
         // dd($cities);
         return view(

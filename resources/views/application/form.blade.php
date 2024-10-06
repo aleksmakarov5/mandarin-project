@@ -105,7 +105,7 @@
 
         <select class="form-cont" id="id_MRK" name="id_MRK">
             @foreach ($mrks as $item)
-                <option value="{{ $item->id }}" @if ($item->id === $application->id_MRK) selected @endif>
+                <option value="{{ $item->user_id }}" @if ($item->user_id === $application->id_MRK) selected @endif>
                     {{ $item->name }}
                 </option>
             @endforeach
