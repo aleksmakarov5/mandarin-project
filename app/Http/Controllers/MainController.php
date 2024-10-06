@@ -130,7 +130,6 @@ class MainController extends Controller
         $mail = '';
         $body = "";
         if ($message_id != 0) {
-            $mail = message::findOrFail($message_id)->first();
             $ms = message::where('id', '=', $message_id)->get();
             // dd($mail);
             foreach ($ms as $m) {
@@ -138,6 +137,8 @@ class MainController extends Controller
                 $m->save();
             }
             // dd($mail);
+            $mail = message::where('id', '=', $message_id)->first();
+
             if (isset($mail->id)) {
 
                 $mail->from = DB::table('addresses')
@@ -174,6 +175,7 @@ class MainController extends Controller
                         $body = str_replace('image00' . $i . '.gif', $location, $body);
                     }
                 }
+                // dd($mail, $body);
             }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)
