@@ -2826,4 +2826,47 @@ class ApplicationController extends Controller
 
         return redirect()->route('application', ['id' => $id_next]);
     }
+    public function move_mail_index($id_prev, $id, $message_id)
+    {
+        $applications = application::where('our_company', '=', $id)->get()->sortDesc()->all();
+        return view('application.move_mail', [
+            'applications' => $applications,
+            'message_id' => $message_id,
+            'id' => $id,
+            'id_prev' => $id_prev
+        ]);
+    }
+    public function move_mail(Request $request, $id_prev, $message_id, $id_next)
+    {
+        $our_company = $request->get('our_company');
+        if ($our_company) {
+            $application = new application;
+            $application->our_company = $our_company;
+            $application->numberInsuranceCompanyApplication = " ";
+            $application->CarModel = " ";
+            $application->id_status = 1;
+            $application->id_insuranceCompany = 1;
+            $application->save();
+            $id_next = $application->id;
+        }
+
+        $message = message::findOrFail($message_id);
+        $message->application_id = $id_next;
+        $message->save();
+        $attachments = attachment::where('message_id', '=', $message_id)->get();
+        // dd($attachments);
+        $dir = 'storage/files/' . $id_next;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        foreach ($attachments as $attachment) {
+            $attachment->id_application = $id_next;
+            $attachment->save();
+            $file = 'storage/files/' . $id_prev . '/' . $attachment->location;
+            // dd($file);
+            rename($file, 'storage/files/' . $id_next . '/' . $attachment->location);
+        }
+
+        return redirect()->route('mail_app', ['id' => $id_next]);
+    }
 }

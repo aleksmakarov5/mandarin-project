@@ -54,11 +54,11 @@
                                                     class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
                                         </div> --}}
                                         <div class="btn-group">
-                                            <button type="button" class="btn btn-sm btn-outline-secondary"><i
-                                                    class="mdi mdi-share text-primary mr-1"></i>
-                                                </i><a class="msg-but" href="/mail_delete/{{ $message->id }}"><img
-                                                        src="/storage/img/delete.png" width="20"
-                                                        alt="Удалить"></a></button>
+                                            <a class="msg_but" href="/mail_delete/{{ $message->id }}"><img
+                                                    src="/storage/img/delete.png" width="20" alt="Удалить"></a>
+                                            <a href="/applications/move_mail_index/{{ $message->application_id }}/{{ $message->mailbox_id }}/{{ $message->id }}"
+                                                class="msg_but"><img src="/storage/img/move.png" width="20"
+                                                    alt="Переместить"></a>
                                         </div>
                                     </div>
                                 </div>
