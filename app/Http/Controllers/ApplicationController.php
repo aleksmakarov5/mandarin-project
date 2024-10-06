@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\application;
+use App\Models\work;
+
 use App\Jobs\QueueSenderChat;
 use DefStudio\Telegraph\Models\TelegraphChat;
 use DefStudio\Telegraph\Keyboard\Button;
@@ -24,7 +26,9 @@ use App\Models\message;
 use App\Models\address;
 use App\Models\service;
 use App\Models\notify;
+use App\Models\SparePart;
 use App\Models\text_notify;
+use App\Models\troubleshooting;
 use App\Models\OurCompany;
 use App\Models\status_application;
 use App\Mail\user\mrknotify;
@@ -2664,6 +2668,131 @@ class ApplicationController extends Controller
         $message = message::findOrFail($message_id);
         $message->application_id = $id_application;
         $message->save();
+
         return redirect()->route('mail_app', ['id' => $id_application]);
+    }
+    public function combine($id_comp, $id)
+    {
+        $applications = application::where('our_company', '=', $id_comp)->get()->sortDesc()->all();
+        return view('application.combine', [
+            'applications' => $applications,
+            'id' => $id,
+        ]);
+    }
+    public function combine_fin($id_prev, $id_next)
+    {
+        $attachments = attachment::where('id_application', '=', $id_prev)->get();
+        foreach ($attachments as $attachment) {
+            $attachment->id_application = $id_next;
+            $attachment->save();
+        }
+        $chats = chat::where('id_application', '=', $id_prev)->get();
+        foreach ($chats as $chat) {
+            $chat->id_application = $id_next;
+            $chat->save();
+        }
+        $estimates = estimate::where('id_application', '=', $id_prev)->get();
+        foreach ($estimates as $estimate) {
+            $estimate->id_application = $id_next;
+            $estimate->save();
+        }
+        $failures = failure::where('id_application', '=', $id_prev)->get();
+        foreach ($failures as $failure) {
+            $failure->id_application = $id_next;
+            $failure->save();
+        }
+        $histories = history::where('id_application', '=', $id_prev)->get();
+        foreach ($histories as $history) {
+            $history->id_application = $id_next;
+            $history->save();
+        }
+        $messages = message::where('application_id', '=', $id_prev)->get();
+        foreach ($messages as $message) {
+            $message->application_id = $id_next;
+            $message->save();
+        }
+        $notifies = notify::where('id_application', '=', $id_prev)->get();
+        foreach ($notifies as $notify) {
+            $notify->id_application = $id_next;
+            $notify->save();
+        }
+        $spare_parts = SparePart::where('id_application', '=', $id_prev)->get();
+        foreach ($spare_parts as $spare_part) {
+            $spare_part->id_application = $id_next;
+            $spare_part->save();
+        }
+        $status_applications =
+            status_application::where('id_application', '=', $id_prev)->get();
+        foreach ($status_applications as $status_application) {
+            $status_application->id_application = $id_next;
+            $status_application->save();
+        }
+        $status_chats =
+            status_chat::where('id_application', '=', $id_prev)->get();
+        foreach ($status_chats as $status_chat) {
+            $status_chat->id_application = $id_next;
+            $status_chat->save();
+        }
+        $status_messages =
+            status_message::where('id_application', '=', $id_prev)->get();
+        foreach ($status_messages as $status_message) {
+            $status_message->id_application = $id_next;
+            $status_message->save();
+        }
+        $troubleshootings =
+            troubleshooting::where('id_application', '=', $id_prev)->get();
+        foreach ($troubleshootings as $troubleshooting) {
+            $troubleshooting->id_application = $id_next;
+            $troubleshooting->save();
+        }
+        $trus =
+            tru::where('id_application', '=', $id_prev)->get();
+        foreach ($trus as $tru) {
+            $tru->id_application = $id_next;
+            $tru->save();
+        }
+        $works =
+            work::where('id_application', '=', $id_prev)->get();
+        foreach ($works as $work) {
+            $work->id_application = $id_next;
+            $work->save();
+        }
+        $dir_prev = 'storage/files/' . $id_prev;
+        $dir_next = 'storage/files/' . $id_next;
+        if (is_dir($dir_prev)) {
+            $files = scandir($dir_prev);
+            if (!is_dir($dir_next)) {
+                mkdir($dir_next, 0777, true);
+            }
+
+            foreach ($files as $file) {
+                if ($file != '.' && $file != '..') {
+                    if (!is_dir($file)) {
+                        rename($dir_prev . '/' . $file, $dir_next . '/' . $file);
+                    } else {
+                        $files1 = scandir($dir_prev . '/' . $file);
+                        foreach ($files1 as $file1) {
+                            if ($file1 != '.' && $file1 != '..') {
+                                rename($dir_prev . '/' . $file . '/' . $file1, $dir_next . '/' . $file . '/' . $file1);
+                            }
+                        }
+                        try {
+                            rmdir($dir_prev . '/' . $file);
+                        } catch (\Exception $e) {
+                            // dd($e);
+                        }
+                    }
+                }
+            }
+            try {
+                rmdir($dir_prev);
+            } catch (\Exception $e) {
+                // dd($e);
+            }
+        }
+        $application = application::findOrFail($id_prev);
+        $application->delete();
+
+        return redirect()->route('application', ['id' => $id_next]);
     }
 }

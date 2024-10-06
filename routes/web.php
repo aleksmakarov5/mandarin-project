@@ -176,6 +176,10 @@ Route::middleware("auth:web")->group(
             ->name('applications.add_mail');
         Route::get('applications/new_mail/{type}/{id}/{message_id}/{id_application}', [ApplicationController::class, 'new_mail'])
             ->name('applications.new_mail');
+        Route::get('combine/{id_comp}/{id}', [ApplicationController::class, 'combine'])
+            ->name('combine');
+        Route::get('combine_fin/{id_prev}/{id_next}', [ApplicationController::class, 'combine_fin'])
+            ->name('combine_fin');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
         Route::post('application/{id}/data_load', [ApplicationController::class, 'data_load'])->name('application.data_load');
         Route::post('application/{id}/data_save', [ApplicationController::class, 'data_save'])->name('application.data_save');

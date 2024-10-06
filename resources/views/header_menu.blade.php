@@ -227,9 +227,11 @@
                                 </table>
                             @endif
                         </td>
-
+                        <td rowspan=2><a href="/combine/{{ $app->our_company }}/{{ $app->id }}" class="msg_but"><img
+                                    src="/storage/img/edin.png" width="30" alt="Добавить"></a></td>
                     </tr>
                 </table>
+
         </div>
         <div class="menu-content">
             <div id="na">
