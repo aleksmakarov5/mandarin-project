@@ -673,7 +673,7 @@ class MainController extends Controller
                 $zip->close();
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
                 mkdir($dir, 0777, true);
-                dd(pathinfo($location, PATHINFO_EXTENSION));
+                // dd(pathinfo($location, PATHINFO_EXTENSION));
                 exec("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
                 // exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
