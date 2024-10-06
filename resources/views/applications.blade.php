@@ -265,16 +265,13 @@
        ">
                                         {{ $application->eco_delta_full }} ({{ $application->proc }}%)</div>
                                 </td>
-
-
-                                <th scope="col">
-                                    <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
-                                        href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
-                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
-                                </th>
                             @endcan
                         @endif
-
+                        <th scope="col">
+                            <a onclick="if (!confirm('Точно удалить заявку №{{ $application->id }}?')) return false"
+                                href="{{ route('applications.destroy', $application->id) }}" class="nav-link"><img
+                                    src="/storage/img/delete.png" width="20" alt="delete"></a>
+                        </th>
                     </tr>
                 @endforeach
             </tbody>

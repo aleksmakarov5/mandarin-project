@@ -679,7 +679,7 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-        // dd($images);
+        dd($images);
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
                 if ($image != '..' && $image != '.') {
