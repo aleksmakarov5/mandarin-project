@@ -665,7 +665,7 @@ class MainController extends Controller
         $name = str_replace('%20', ' ', $name);
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
         chmod($dir . "." . pathinfo($location, PATHINFO_EXTENSION), 0777);
-        dd(pathinfo($location, PATHINFO_EXTENSION));
+
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
                 $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
@@ -673,7 +673,8 @@ class MainController extends Controller
                 $zip->close();
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
                 mkdir($dir, 0777, true);
-                exec("unrar x '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'");
+                dd(pathinfo($location, PATHINFO_EXTENSION));
+                exec("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
                 // exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
                 mkdir($dir, 0777, true);
