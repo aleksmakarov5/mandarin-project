@@ -44,7 +44,7 @@
                                         pathinfo($doc->location, PATHINFO_EXTENSION) == '7z') href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}'
                         @else 
                         
-                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')
+                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc')
                 
                         @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
                         href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
@@ -80,10 +80,12 @@
                             <input type="submit" value="ок">
                         </form>
                     @else
-                        <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}</h5>
+                        <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
+                        </h5>
                     @endif
                 @else
-                    <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}</h5>
+                    <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
+                    </h5>
                 @endif
                 <p class="file-size">
                     {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
