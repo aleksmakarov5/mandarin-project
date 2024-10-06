@@ -1270,3 +1270,15 @@ form .nav-link {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     z-index: 1;
 }
+
+.app-lbl {
+    text-align: justify;
+    position: sticky;
+    top: 0;
+    background-color: #f4f8c19b;
+    padding: 10px;
+    border: 2px;
+    border-color: #000;
+    border-radius: 7px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
