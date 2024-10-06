@@ -31,7 +31,7 @@
     <select class="form-cont" id="id_insuranceCompany" name="id_insuranceCompany">
         @foreach ($InsuranceCompany as $item)
             <option value="{{ $item->id }}" @if ($item->id === $application->id_insuranceCompany) selected @endif>
-                {{ $item->lawyer_name }}
+                {{ $item->name }}
             </option>
         @endforeach
 
