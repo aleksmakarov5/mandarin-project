@@ -72,7 +72,7 @@
                         <a href="#" class="msg_but"><img src="/storage/img/forward.png" width="20"
                                 alt="Переслать"></a>
                         <a onclick="if (!confirm('Точно удалить письмо {{ $mail->subject }}?')) return false"
-                            href="/mail_delete/{{ $message->id }}" class="msg_but"><img src="/storage/img/delete.png"
+                            href="/mail_delete/{{ $mail->id }}" class="msg_but"><img src="/storage/img/delete.png"
                                 width="20" alt="Удалить"></a>
                         @if (isset($mail->application_id))
                             <a href="/application/{{ $mail->application_id }}" class="msg_but"><img
