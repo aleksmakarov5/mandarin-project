@@ -2672,7 +2672,7 @@ class ApplicationController extends Controller
         foreach ($ttachments as $ttachment) {
             $ttachment->id_application = $id_application;
             $ttachment->save();
-            $file = 'public/storage/files/' . $id_application . '/' . $ttachment->location;
+            $file = 'public/storage/files/temp/' . $ttachment->location;
             rename($file, 'public/storage/files/' . $id_application . '/' . $ttachment->location);
         }
 
@@ -2809,5 +2809,4 @@ class ApplicationController extends Controller
 
         return redirect()->route('application', ['id' => $id_next]);
     }
-
 }
