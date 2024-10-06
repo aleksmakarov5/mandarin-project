@@ -703,7 +703,7 @@ class MainController extends Controller
         try {
             rmdir($dir);
         } catch (\Exception $e) {
-            dd($e);
+            // dd($e);
         }
         return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location, 'hide_menu' => $hide_menu]);
     }
