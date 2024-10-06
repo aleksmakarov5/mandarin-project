@@ -692,7 +692,7 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-        // dd($images);
+        dd($images);
 
         try {
             rmdir($dir);
