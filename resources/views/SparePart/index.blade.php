@@ -627,20 +627,24 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Наименование</th>
-
-                        <th scope="col">Цена страховой</th>
-                        <th scope="col">Цена сервиса</th>
+                        <th scope="col">Цена</th>
+                        <th scope="col">Нормочасы</th>
+                        <th scope="col">Сумма страховой</th>
                         {{-- <th scope="col">Цена сервиса</th> --}}
-                        <th scope="col"></th>
+                        {{-- <th scope="col"></th> --}}
 
                     </tr>
                     <tr>
                         <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+
+
                         <th scope="col">Итого</th>
+
                         <th scope="col">{{ $summ_ic }}</th>
                         {{-- <th scope="col">{{$summ_service}}</th> --}}
-                        <th scope="col"></th>
-                        <th scope="col"></th>
+
 
                     </tr>
                 </thead>
@@ -666,9 +670,13 @@
                                 <td scope="col" id="td_name-{{ $key }}">{{ $Work->name }}</td>
                                 <input type="hidden" name="name" id='name-{{ $key }}'
                                     value='{{ $Work->name }}'>
-
+                                <td scope="col" id="td_price-{{ $key }}">{{ $Work->price }}</td>
+                                <input type="hidden" name="price" id='price-{{ $key }}'
+                                    value='{{ $Work->price }}'>
+                                <td scope="col" id="td_count_hours-{{ $key }}">{{ $Work->count_hours }}</td>
+                                <input type="hidden" name="count_hours" id='count_hours-{{ $key }}'
+                                    value='{{ $Work->count_hours }}'>
                                 <td scope="col" id="td_summ-{{ $key }}">{{ $Work->summ }}</td>
-
                                 <input type="hidden" name="summ" id='summ-{{ $key }}'
                                     value='{{ $Work->summ }}'>
                                 <td scope="col" id="td_price_service-{{ $key }}">{{ $Work->price_service }}
@@ -676,11 +684,11 @@
                                 <input type="hidden" name="price_service" id='price_service-{{ $key }}'
                                     value='{{ $Work->price_service }}'>
                                 <td scope="col">
-                                    @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)
-                                        <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
-                                            href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
-                                                src="/storage/img/delete.png" width="20" alt="delete"></a>
-                                    @endif
+                                    {{-- @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author) --}}
+                                    <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
+                                        href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
+                                            src="/storage/img/delete.png" width="20" alt="delete"></a>
+                                    {{-- @endif --}}
                                 </td>
                         </tr>
                         </form>
