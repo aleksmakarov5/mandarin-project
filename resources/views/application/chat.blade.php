@@ -55,7 +55,10 @@
                                 <div width=90px></div>
                                 <div class="card w-50">
                                     <div class="card-header d-flex justify-content-between p-3">
-                                        <p class="fw-bold mb-0">Кому: {{ $chat->to_name }}</p>
+                                        <p class="fw-bold mb-0">Кому: @foreach ($chat->user_to as $user_to)
+                                                {{ $user_to->to_name }}<br>
+                                            @endforeach
+                                        </p>
                                         <p class="text-muted small mb-0"><i class="far fa-clock"></i>
                                             {{ Date::parse($chat->created_at)->format('j F Yг. H:i') }}</p>
                                     </div>
@@ -71,7 +74,11 @@
                                 <div class="card w-50">
                                     <div class="card-header d-flex justify-content-between p-8">
                                         <p class="fw-bold mb-0"> От: {{ $chat->from_name }} </p>
-                                        <p class=" mb-0 text-muted"> Кому: {{ $chat->to_name }} </p>
+                                        <p class=" mb-0 text-muted"> Кому:
+                                            @foreach ($chat->user_to as $user_to)
+                                                {{ $user_to->to_name }}<br>
+                                            @endforeach
+                                        </p>
                                         <p class="text-muted small mb-0"><i class="far fa-clock"></i>
                                             {{ Date::parse($chat->created_at)->format('j F Yг. H:i') }}</p>
                                     </div>
@@ -90,7 +97,7 @@
                     <form action="/chat_sent/{{ $id }}" method="post" id='myForm'>
                         @csrf
                         <div class="form-float">
-                            <Select name="to" class="form-cont">
+                            <Select name="to[]" class="form-cont" multiple>
                                 <option value="">Выберите получателя</option>
                                 <option value="0">Все</option>
                                 @foreach ($users as $user)

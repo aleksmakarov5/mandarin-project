@@ -12,6 +12,7 @@ use DefStudio\Telegraph\Models\TelegraphChat;
 use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
 use App\Models\User;
+use App\Models\chat_rec;
 use App\Models\InsuranceCompany;
 use App\Models\estimate;
 use App\Models\history;
@@ -1064,59 +1065,74 @@ class ApplicationController extends Controller
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->where(function ($query) {
-                    $query->where('to', '=', Auth::user()->id)
-                        ->orWhere('from', '=', Auth::user()->id);
+                    $query->Where('from', '=', Auth::user()->id);
                 })
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
-                ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+                ->select('chats.*', 'userfrom.name as from_name')
                 ->get()->sortDesc();
         } else {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
-                ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+                ->select('chats.*', 'userfrom.name as from_name')
                 ->get()->sortDesc();
-        }        // dd($rewiew->all()) ;
+        }
+        foreach ($chats as $chat) {
+            $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
+                ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')
+                ->select('userto.name as to_name')->get();
+        }
+        // dd($chats);
+        // dd($rewiew->all()) ;
         return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me')]);
     }
     public function chat_sent(Request $request, $id)
     {
         $chat = new chat;
         $author = User::findOrFail($request->from);
-        $recipient = User::findOrFail($request->to);
+        $recipient = [];
+
         $chat->id_application = $id;
         $chat->from = $request->from;
-        $chat->to = $request->to;
+        $chat->to = $request->to[0];
+
         $chat->message = $request->message;
         $chat->save();
 
+        foreach ($request->to as $key => $to) {
+            $recipient = User::findOrFail($to);
+            $chat_recs = new chat_rec;
+            $chat_recs->id_chat = $chat->id;
+            $chat_recs->id_to = $to;
+            $chat_recs->save();
+            $notify = new notify;
+            $notify->id_user = $to;
+            $notify->id_application = $id;
+            $notify->id_text = 2;
+            $notify->link = "/chat/";
 
-        $notify = new notify;
-        $notify->id_user = $request->to;
-        $notify->id_application = $id;
-        $notify->id_text = 2;
-        $notify->link = "/chat/";
-
-        $notify->save();
-        $status_chat = new status_chat;
-        $status_chat->id_user = $request->to;
-        $status_chat->id_application = $id;
-        $status_chat->is_readed = false;
-        $status_chat->save();
-        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-            ->select('notifies.*', 'text_notifies.text')->first();
-        broadcast(new MessageSent($notification));
-        if ($recipient->telegram_notify) {
-            $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
-            $ch = $new_chat->html("В чате заявки {$id} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$request->message}</i>")
-                ->keyboard(
-                    Keyboard::make()
-                        ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
-                )
-                ->send();
+            $notify->save();
+            $status_chat = new status_chat;
+            $status_chat->id_user = $to;
+            $status_chat->id_application = $id;
+            $status_chat->is_readed = false;
+            $status_chat->save();
+            $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                ->select('notifies.*', 'text_notifies.text')->first();
+            broadcast(new MessageSent($notification));
+            if ($recipient->telegram_notify) {
+                $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
+                $ch = $new_chat->html("В чате заявки {$id} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$request->message}</i>")
+                    ->keyboard(
+                        Keyboard::make()
+                            ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
+                    )
+                    ->send();
+            }
         }
+
+
+
 
         // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
         // $this->dispatch($qs);
