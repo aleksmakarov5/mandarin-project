@@ -1048,8 +1048,10 @@ class ApplicationController extends Controller
     public function chat(Request $request, $id)
     {
         $selected = '';
+        $mess_id = '';
         if ($request->input('selected')) {
             $selected = $request->input('selected');
+            $mess_id = $request->input('mess_id');
         }
         $status_chat = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
             ->where('is_readed', '=', '0')->get();
@@ -1091,7 +1093,14 @@ class ApplicationController extends Controller
         }
         // dd($chats);
         // dd($rewiew->all()) ;
-        return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me'), 'selected' => $selected]);
+        return view('application.chat', [
+            'chats' => $chats->all(),
+            'users' => $users->all(),
+            'id' => $id,
+            'only_me' => $request->input('only_me'),
+            'selected' => $selected,
+            'mess_id' => $mess_id
+        ]);
     }
     public function chat_sent(Request $request, $id)
     {

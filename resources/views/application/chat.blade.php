@@ -49,7 +49,7 @@
 
                 <ul class="list-unstyled">
 
-                    @foreach ($chats as $chat)
+                    @foreach ($chats as $key => $chat)
                         @if ($chat->from == Auth::user()->id)
                             <li class="d-flex justify-content-between mb-4">
                                 <div width=90px></div>
@@ -96,7 +96,7 @@
                                         <p class="mb-0">
                                             {{ $chat->message }}
                                         </p>
-                                        <a href="/chat/{{ $id }}?selected={{ $chat->from }}#answer"
+                                        <a href="/chat/{{ $id }}?selected={{ $chat->from }}&mess_id={{ $key }}#answer"
                                             class="msg-but"><img src="/storage/img/reply.png" width="20"
                                                 alt="Ответить"></a>
                                         {{-- <form action="/chat/{{ $id }}" method="get">
@@ -132,7 +132,11 @@
                         <li class="bg-white mb-3">
 
                             <div class="form-outline">
-                                <textarea class="form-cont" id="textAreaExample2" rows="4" name=message></textarea>
+                                <textarea class="form-cont" id="textAreaExample2" rows="4" name=message>
+                                    @if ($selected)
+<<<<<<<{{ $chats[$mess_id]->message }}>>>>>>
+@endif
+                                </textarea>
                                 <label class="form-label" for="textAreaExample2">Message</label>
                             </div>
                         </li>
