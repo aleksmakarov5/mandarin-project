@@ -158,6 +158,7 @@ class MainController extends Controller
                 $body = str_replace('color', '', $body);
 
                 $body = str_replace('font-size:', '', $body);
+                $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
                 if (isset($mail->application_id)) {
                     $body = str_replace('cid:', '/storage/files/' . $mail->application_id . '/', $body);
                     $body = str_replace('gif', 'gif"', $body);
