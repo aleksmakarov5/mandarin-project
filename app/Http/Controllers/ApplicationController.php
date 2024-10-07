@@ -1037,6 +1037,7 @@ class ApplicationController extends Controller
                         ->first();
                     $location = isset($loc->location) ? $loc->location : '';
                     $body = str_replace('image00' . $i . '.gif', $location, $body);
+                    $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
                 }
                 $message->body = $body;
             }
