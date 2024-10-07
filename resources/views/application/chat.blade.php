@@ -97,7 +97,8 @@
                                             {{ $chat->message }}
                                         </p>
                                         <a href="/chat/{{ $id }}?selected={{ $chat->from }}#answer"
-                                            class="nav-link">Ответить</a>
+                                            class="msg-but"><img src="/storage/img/reply.png" width="20"
+                                                alt="Ответить"></a>
                                         {{-- <form action="/chat/{{ $id }}" method="get">
                                             <input type="hidden" name="selected" value=>
                                             <input class="nav-link" type="submit" value="Ответить">
