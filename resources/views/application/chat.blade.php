@@ -107,8 +107,9 @@
                     <form action="/chat_sent/{{ $id }}" method="post" id='myForm'>
                         @csrf
                         <div class="form-float">
+
+                            Выберите получателя (для выбора нескольких получателей удерживайте ctrl или cmd)
                             <Select name="to[]" class="form-cont" multiple>
-                                <option value="">Выберите получателя</option>
                                 <option value="0">Все</option>
                                 @foreach ($users as $user)
                                     @if ($user->id != Auth::user()->id)
@@ -117,6 +118,7 @@
                                 @endforeach
                             </Select>
                         </div>
+                        <br><br><br><br>
                         <input type="hidden" name="from" value="{{ Auth::user()->id }}">
                         <li class="bg-white mb-3">
 

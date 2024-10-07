@@ -1091,46 +1091,48 @@ class ApplicationController extends Controller
     }
     public function chat_sent(Request $request, $id)
     {
+        // dd($request);
         $chat = new chat;
         $author = User::findOrFail($request->from);
-        $recipient = [];
 
         $chat->id_application = $id;
         $chat->from = $request->from;
         $chat->to = 0;
-
         $chat->message = $request->message;
         $chat->save();
 
         foreach ($request->to as $key => $to) {
-            $recipient = User::findOrFail($to);
-            $chat_recs = new chat_rec;
-            $chat_recs->id_chat = $chat->id;
-            $chat_recs->id_to = $to;
-            $chat_recs->save();
-            $notify = new notify;
-            $notify->id_user = $to;
-            $notify->id_application = $id;
-            $notify->id_text = 2;
-            $notify->link = "/chat/";
+            // dd($to);
+            if ($to != 0) {
+                $recipient = User::findOrFail($to);
+                $chat_recs = new chat_rec;
+                $chat_recs->id_chat = $chat->id;
+                $chat_recs->id_to = $to;
+                $chat_recs->save();
+                $notify = new notify;
+                $notify->id_user = $to;
+                $notify->id_application = $id;
+                $notify->id_text = 2;
+                $notify->link = "/chat/";
 
-            $notify->save();
-            $status_chat = new status_chat;
-            $status_chat->id_user = $to;
-            $status_chat->id_application = $id;
-            $status_chat->is_readed = false;
-            $status_chat->save();
-            $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                ->select('notifies.*', 'text_notifies.text')->first();
-            broadcast(new MessageSent($notification));
-            if ($recipient->telegram_notify) {
-                $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
-                $ch = $new_chat->html("В чате заявки {$id} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$request->message}</i>")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
-                    )
-                    ->send();
+                $notify->save();
+                $status_chat = new status_chat;
+                $status_chat->id_user = $to;
+                $status_chat->id_application = $id;
+                $status_chat->is_readed = false;
+                $status_chat->save();
+                $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                    ->select('notifies.*', 'text_notifies.text')->first();
+                broadcast(new MessageSent($notification));
+                if ($recipient->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
+                    $ch = $new_chat->html("В чате заявки {$id} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$request->message}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
+                        )
+                        ->send();
+                }
             }
         }
 
