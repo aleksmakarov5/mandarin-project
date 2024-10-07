@@ -1097,7 +1097,7 @@ class ApplicationController extends Controller
 
         $chat->id_application = $id;
         $chat->from = $request->from;
-        // $chat->to = $request->to[0];
+        $chat->to = 0;
 
         $chat->message = $request->message;
         $chat->save();
