@@ -50,7 +50,8 @@ class ImapController extends Controller
         $finish_pos_app_number = mb_strripos($subject, '_');
 
         $app_number = mb_substr($subject, $start_pos_app_number, $finish_pos_app_number - $start_pos_app_number);
-        $$app_number = trim($app_number);
+        $app_number = trim($app_number);
+        $app_number = preg_replace('/[^0-9]/', '', $app_number);
         //dd($finish_pos_app_number);
         if (!$finish_pos_app_number) {
             $start_pos_app_number = strripos($subject, 'Направление');
