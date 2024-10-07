@@ -96,7 +96,14 @@
                                         <p class="mb-0">
                                             {{ $chat->message }}
                                         </p>
+                                        <a href="/chat/{{ $id }}?selected={{ $chat->from }}#answer"
+                                            class="nav-link">Ответить</a>
+                                        {{-- <form action="/chat/{{ $id }}" method="get">
+                                            <input type="hidden" name="selected" value=>
+                                            <input class="nav-link" type="submit" value="Ответить">
+                                        </form> --}}
                                     </div>
+
                                 </div>
                         @endif
 
@@ -109,11 +116,12 @@
                         <div class="form-float">
 
                             Выберите получателя (для выбора нескольких получателей удерживайте ctrl или cmd)
-                            <Select name="to[]" class="form-cont" multiple>
+                            <Select name="to[]" class="form-cont" multiple id="answer">
                                 <option value="0">Все</option>
                                 @foreach ($users as $user)
                                     @if ($user->id != Auth::user()->id)
-                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                        <option value="{{ $user->id }}"
+                                            @if ($user->id == $selected) selected @endif>{{ $user->name }}</option>
                                     @endif
                                 @endforeach
                             </Select>

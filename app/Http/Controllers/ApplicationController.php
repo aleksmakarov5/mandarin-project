@@ -1047,6 +1047,10 @@ class ApplicationController extends Controller
     }
     public function chat(Request $request, $id)
     {
+        $selected = '';
+        if ($request->input('selected')) {
+            $selected = $request->input('selected');
+        }
         $status_chat = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
             ->where('is_readed', '=', '0')->get();
         foreach ($status_chat as $status) {
@@ -1087,7 +1091,7 @@ class ApplicationController extends Controller
         }
         // dd($chats);
         // dd($rewiew->all()) ;
-        return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me')]);
+        return view('application.chat', ['chats' => $chats->all(), 'users' => $users->all(), 'id' => $id, 'only_me' => $request->input('only_me'), 'selected' => $selected]);
     }
     public function chat_sent(Request $request, $id)
     {
