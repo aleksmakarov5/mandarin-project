@@ -8,7 +8,7 @@
 
         <input type="submit" value="Обновить" class="nav-link">
     </form>
-    <script>
+    {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             var eventCalllback = function(e) {
                 var el = e.target,
@@ -38,5 +38,5 @@
                 }
             }
         });
-    </script>
+    </script> --}}
 @endsection

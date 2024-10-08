@@ -878,6 +878,20 @@ class ApplicationController extends Controller
                 'pred_phone' => 'nullable|string'
 
             ]);
+            $phone = $data['ClientPhone'];
+            $phone = preg_replace('/[^0-9]/', '', $phone);
+            $start = mb_strpos($phone, '9');
+            $phone = mb_substr($phone, $start);
+            $phone = '+7(' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
+            $data['ClientPhone'] = $phone;
+            if (isset($data['pred_phone'])) {
+                $pred_phone = $data['pred_phone'];
+                $pred_phone = preg_replace('/[^0-9]/', '', $pred_phone);
+                $start = mb_strpos($pred_phone, '9');
+                $pred_phone = mb_substr($pred_phone, $start);
+                $pred_phone = '+7(' . $pred_phone[0] . $pred_phone[1] . $pred_phone[2] . ') ' . $pred_phone[3] . $pred_phone[4] . $pred_phone[5] . '-' . $pred_phone[6] . $pred_phone[7] . '-' . $pred_phone[8] . $pred_phone[9];
+                $data['pred_phone'] = $pred_phone;
+            }
             // dd($data);
             foreach ($data as $key => $value) {
                 $application->$key = $value;
