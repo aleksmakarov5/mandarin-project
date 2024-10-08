@@ -346,6 +346,12 @@ class SparePartController extends Controller
         ]);
         if ($emr10)
             $data['price_ic_full'] = $data['price_ic_full']  / 1.1;
+        $data['price_sto'] = str2number($data['price_sto']);
+        $data['price_analogue'] = str2number($data['price_analogue']);
+        $data['price_used'] = str2number($data['price_used']);
+        $data['price_original'] = str2number($data['price_original']);
+        $data['price_ic_full'] = str2number($data['price_ic_full']);
+
 
         //  dd($data);
         foreach ($data as $key => $value) {

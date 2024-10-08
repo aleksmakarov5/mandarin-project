@@ -171,7 +171,7 @@
                                 @if (old('price_ic_full.' . $key) !== null)
                                     {{ old('price_ic_full.' . $key) }}
                                 @else
-                                    {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full) }}
+                                    {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full), 'RUR', 'ru') }}
                                 @endif
                             </td>
                             <td id="td_price_sto-{{ $key }}" scope="col" class="ic_price">
@@ -179,9 +179,9 @@
                                     {{ old('price_sto.' . $key) }}
                                 @else
                                     @if ($sparepart->price_sto == 0)
-                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full) }}
+                                        {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full), 'RUR', 'ru') }}
                                     @else
-                                        {{ round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto) }}
+                                        {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto), 'RUR', 'ru') }}
                                     @endif
                                 @endif
                             </td>
@@ -201,7 +201,7 @@
                                 @if (old('price_original.' . $key) !== null)
                                     {{ old('price_original.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_original }}
+                                    {{ $sparepart->price_original ? Number::Currency($sparepart->price_original, 'RUR', 'ru') : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -248,7 +248,7 @@
                                 @if (old('price_analogue.' . $key) !== null)
                                     {{ old('price_analogue.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_analogue }}
+                                    {{ $sparepart->price_analogue ? Number::Currency($sparepart->price_analogue, 'RUR', 'ru') : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -295,7 +295,7 @@
                                 @if (old('price_used.' . $key) !== null)
                                     {{ old('price_used.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_used }}
+                                    {{ $sparepart->price_used ? Number::Currency($sparepart->price_used, 'RUR', 'ru') : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -376,7 +376,7 @@
                             @if (old('price_service.' . $key) !== null)
                                 {{ old('price_service.' . $key) }}
                             @else
-                                {{ $sparepart->price_service }}
+                                {{ $sparepart->price_service ? Number::Currency($sparepart->price_service, 'RUR') : '' }}
                             @endif
                         </td>
                         @if (session('GroupId') == 9)
