@@ -432,7 +432,7 @@
                         </td>
                         <input type="hidden" name="comment" id='comment-{{ $key }}'
                             value='{{ $sparepart->comment }}'>
-                        @if (session('rout') == 'applications')
+                        @if (session('rout') == 'directions')
                             <td id="td_status_id-{{ $key }}" scope="col"
                                 @switch($sparepart->status_id)
                                 @case(1)
