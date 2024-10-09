@@ -168,7 +168,8 @@ class MainController extends Controller
                         ->first();
                     $location = isset($loc->location) ? $loc->location : '';
                     $body = str_replace('image001.png', $location, $body);
-                    for ($i = 2; $i < 10; $i++) {
+                    $start = mb_strpos('png', $body) ? 2 : 1;
+                    for ($i = $start; $i < 10; $i++) {
                         $loc = Attachment::where('message_id', '=', $mail->id)
                             ->where('file_name', 'like', '%image00' . $i . '.gif%')
                             ->first();
