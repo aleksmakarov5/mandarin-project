@@ -715,8 +715,9 @@ class MainController extends Controller
         chmod($dir, 0777);
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
+
+                chmod($dir . '/' . $image, 0777);
                 if ($image != '..' && $image != '.') {
-                    chmod($dir . '/' . $image, 0777);
                     $img = scandir($dir . '/' . $image);
                     foreach ($img as $i) {
                         if ($i != '..' && $i != '.') {
