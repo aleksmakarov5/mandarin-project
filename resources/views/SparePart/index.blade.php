@@ -68,7 +68,7 @@
                     </th>
 
                     <th scope="col" colspan=2></th>
-                    @if (session('rout') == 'applications')
+                    @if (session('rout') == 'directions')
                         <th scope="col"></th>
 
 
@@ -576,7 +576,7 @@
 
                     </th>
 
-                    @if (session('rout') == 'applications')
+                    @if (session('rout') == 'directions')
                         <th>
 
                             <input type="text" name="status" id="status" class="form-control"
