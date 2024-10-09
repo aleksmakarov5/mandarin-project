@@ -78,6 +78,10 @@ class ImapController extends Controller
                 echo $model . '<br>';
                 $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
                 echo $gnz . '<br>';
+                $app_number = $app_number ? $app_number : ' ';
+                $model = $model ? $model : ' ';
+                $vin = $vin ? $vin : ' ';
+                $gnz = $gnz ? $gnz : ' ';
 
                 //dd($start_pos_app_number, $subject, $start_pos_gnz, $app_number, $model, $vin, $gnz);
                 $applications = application::firstorcreate(
@@ -261,7 +265,9 @@ class ImapController extends Controller
             $gnz = mb_substr($subject, $start_pos_gnz, iconv_strlen($subject) - $start_pos_gnz);
             echo $gnz . '<br>';
 
-
+            $app_number = $app_number ? $app_number : ' ';
+            $model = $model ? $model : ' ';
+            $gnz = $gnz ? $gnz : ' ';
             $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1, 'our_company' => $our_company],
                 [
