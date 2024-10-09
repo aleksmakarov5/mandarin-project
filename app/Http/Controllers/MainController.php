@@ -717,10 +717,9 @@ class MainController extends Controller
             if (is_dir($dir . '/' . $image)) {
                 if ($image != '..' && $image != '.') {
                     $img = scandir($dir . '/' . $image);
-                    chmod($dir . '/' . $image . '/' . $img, 777);
                     foreach ($img as $i) {
                         if ($i != '..' && $i != '.') {
-                            chmod($dir . '/' . $image . '/' . $img . '/' . $i, 777);
+                            chmod($dir . '/' . $image . '/' . $i, 777);
                             rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                         }
                     }
