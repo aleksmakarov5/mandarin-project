@@ -37,10 +37,13 @@
                 @if (session('GroupId') == 9)
                     <th scope="col" colspan="1">Вариант СТО</th>
                 @endif
+
                 <th scope="col">Комментарий</th>
-                <th scope="col">Статус</th>
-                <th scope="col">Дата заказа</th>
-                <th scope="col">Ожидаемая дата</th>
+                @if (session('rout') == 'directions')
+                    <th scope="col">Статус</th>
+                    <th scope="col">Дата заказа</th>
+                    <th scope="col">Ожидаемая дата</th>
+                @endif
 
 
 
