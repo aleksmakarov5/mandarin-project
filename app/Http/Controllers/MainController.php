@@ -699,10 +699,10 @@ class MainController extends Controller
                 mkdir($dir, 0777, true);
 
                 // dd(pathinfo($location, PATHINFO_EXTENSION));
-                echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
+                // echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
 
-                // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
-                exec('unrar x ' . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . '" ' . $dir);
+                exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+                // exec('unrar x ' . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . '" ' . $dir);
                 // dd("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
 
                 // exec("unrar x '" . $dir);
