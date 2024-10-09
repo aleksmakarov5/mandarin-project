@@ -2358,11 +2358,11 @@ class ApplicationController extends Controller
         $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
         $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
-            $message->to($data["email"], $data["email"])
-                ->from($data['from'], $data['name'])
-                ->subject($data["title"]);
-        });
+        // Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
+        //     $message->to($data["email"], $data["email"])
+        //         ->from($data['from'], $data['name'])
+        //         ->subject($data["title"]);
+        // });
 
         $history->id_status = $status_id;
 
