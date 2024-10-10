@@ -726,12 +726,12 @@ class MainController extends Controller
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
 
-                chmod($dir . '/' . $image, 0777);
+                // chmod($dir . '/' . $image, 0777);
                 if ($image != '..' && $image != '.') {
                     $img = scandir($dir . '/' . $image);
                     foreach ($img as $i) {
                         if ($i != '..' && $i != '.') {
-                            chmod($dir . '/' . $image . '/' . $i, 0777);
+                            // chmod($dir . '/' . $image . '/' . $i, 0777);
                             rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                         }
                     }
