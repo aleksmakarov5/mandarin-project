@@ -708,7 +708,7 @@ class MainController extends Controller
                 exec("cp '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $new_name . "'");
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
                 // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
-                $command = "sudo unrar x '" . $new_name . "' '" . $dir . "'";
+                $command = "unrar x '" . $new_name . "' '" . $dir . "'";
                 chmod($new_name, 777);
                 exec($command, $output);
 
