@@ -703,13 +703,14 @@ class MainController extends Controller
                 // dd(pathinfo($location, PATHINFO_EXTENSION));
                 // echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
                 $new_name = 'storage/files/' . $id . '/photo.rar';
-                rename($dir . "." . pathinfo($location, PATHINFO_EXTENSION), $new_name);
+                // rename($dir . "." . pathinfo($location, PATHINFO_EXTENSION), $new_name);
 
 
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
-                exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
+                // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
+                exec("unrar x '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'", $output);
+
                 dd($output);
-                // exec('unrar x ' . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . '" ' . $dir);
                 dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
 
                 // exec("unrar x '" . $dir);
