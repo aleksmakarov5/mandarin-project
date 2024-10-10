@@ -713,7 +713,7 @@ class MainController extends Controller
                 chmod($new_name, 777);
                 exec($command, $output);
 
-                dd($command, $output);
+                // dd($command, $output);
                 // dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
 
                 // exec("unrar x '" . $dir);
