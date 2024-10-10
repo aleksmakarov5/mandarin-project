@@ -705,10 +705,10 @@ class MainController extends Controller
                 $new_name = 'storage/files/' . $id . '/photo.rar';
                 // rename($dir . "." . pathinfo($location, PATHINFO_EXTENSION), $new_name);
 
-
+                exec("cp '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $new_name . "'");
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
                 // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
-                $command = "unrar x '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'";
+                $command = "unrar x '" . $new_name . "' '" . $dir . "'";
                 exec($command, $output);
 
                 dd($command, $output);
