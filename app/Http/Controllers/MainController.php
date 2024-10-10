@@ -711,7 +711,7 @@ class MainController extends Controller
                 exec("unrar x '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'", $output);
 
                 dd($output);
-                dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+                // dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
 
                 // exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
