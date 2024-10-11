@@ -707,7 +707,7 @@ class MainController extends Controller
 
                 // dd(pathinfo($location, PATHINFO_EXTENSION));
                 // echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
-                $new_name = 'storage/files/' . $id . '/temp/photo.zip';
+                $new_name = 'storage/files/' . $id . '/temp/photo.rar';
                 // rename($dir . "." . pathinfo($location, PATHINFO_EXTENSION), $new_name);
 
                 exec("cp '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $new_name . "'");
