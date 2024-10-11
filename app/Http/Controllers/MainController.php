@@ -716,7 +716,7 @@ class MainController extends Controller
                 $command = "unrar x '" . $new_name . "' '" . $dir . "'";
                 // $command = "whoami";
                 chmod($new_name, 0777);
-                exec("chown u2461767 " . $new_name, $out);
+                exec("whoami ", $out);
                 exec($command, $output);
 
                 dd($command, $out, $output);
