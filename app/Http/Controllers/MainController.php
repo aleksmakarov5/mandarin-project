@@ -713,7 +713,7 @@ class MainController extends Controller
                 exec("cp '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $new_name . "'");
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
                 // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
-                $command = "bsdtar -xf '" . $new_name . "' -C '" . $dir . "'";
+                $command = "unrar x '" . $new_name . "' '" . $dir . "'";
                 // $command = "whoami";
                 chmod($new_name, 0777);
                 exec("chown u2461767 " . $new_name, $out);
@@ -725,7 +725,7 @@ class MainController extends Controller
                 // exec("unrar x '" . $dir);
             } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
                 mkdir($dir, 0777, true);
-                exec("unrar e '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $dir . "'");
+                exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
             }
         }
         $images = scandir($dir);
