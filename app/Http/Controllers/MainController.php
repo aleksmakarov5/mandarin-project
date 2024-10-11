@@ -718,8 +718,8 @@ class MainController extends Controller
                 chmod($new_name, 0777);
                 exec("whoami ", $out);
                 exec($command, $output);
-
-                dd($command, $out, $output);
+                if (Auth::user()->id == 2)
+                    dd($command, $out, $output);
                 // dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
 
                 // exec("unrar x '" . $dir);
