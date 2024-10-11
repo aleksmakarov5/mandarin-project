@@ -54,10 +54,6 @@ class ImapController extends Controller
         }
         $finish_pos_app_number = mb_strripos($subject, '_');
 
-        $app_number = mb_substr($subject, $start_pos_app_number, $finish_pos_app_number - $start_pos_app_number);
-        $app_number = trim($app_number);
-        $app_number = preg_replace('/[^0-9]/', '', $app_number);
-        $app_number = mb_substr(0, 8, $app_number);
         // dd($finish_pos_app_number);
         if (!$finish_pos_app_number) {
             $start_pos_app_number = strripos($subject, 'Направление');
@@ -69,8 +65,6 @@ class ImapController extends Controller
                 $start_pos_app_number;
             } else {
                 $start_pos_app_number += 14;
-                $app_number = mb_substr($subject, $start_pos_app_number, 7);
-                $app_number = trim($app_number);
             }
             if (!$start_pos_app_number) {
             } else {
@@ -85,7 +79,6 @@ class ImapController extends Controller
                 $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
                 echo $gnz . '<br>';
             }
-            $app_number = $app_number ? $app_number : ' ';
             $model = $model ? $model : ' ';
             $vin = $vin ? $vin : ' ';
             $gnz = $gnz ? $gnz : ' ';
