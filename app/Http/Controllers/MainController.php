@@ -699,6 +699,11 @@ class MainController extends Controller
             } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
                 mkdir($dir, 0777, true);
                 chmod($dir, 0777);
+                if (!is_dir('storage/files/' . $id . '/temp')) {
+
+                    mkdir('storage/files/' . $id . '/temp', 0777, true);
+                    chmod('storage/files/' . $id . '/temp', 0777);
+                }
 
                 // dd(pathinfo($location, PATHINFO_EXTENSION));
                 // echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
