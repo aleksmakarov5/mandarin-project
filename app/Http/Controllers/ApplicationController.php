@@ -1530,6 +1530,8 @@ class ApplicationController extends Controller
             foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
 
                 $data[$entity['name']] = $entity['text'];
+                $data[$entity['name']] = mb_convert_case($data[$entity['name']], MB_CASE_UPPER, "UTF-8");
+
                 // $data[$entity['name']] = ucfirst($data[$entity['name']]);
             }
             // dd($data);
