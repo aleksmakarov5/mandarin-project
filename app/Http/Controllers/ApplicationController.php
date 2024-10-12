@@ -1310,6 +1310,231 @@ class ApplicationController extends Controller
             $applications['ClientName']
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
+        } elseif (mb_strpos($loc, 'ТС') != false || mb_strpos($loc, 'тс') != false) {
+            // dd($loc);
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+            exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+            $output = file_get_contents('storage/files/' . $id . '/output.txt');
+            $data = array(
+                "mimeType" => "application/pdf",
+                "languageCodes" => ["*"],
+                "model" => "vehicle-registration-front",
+                "content" => $output
+            );
+
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POST,
+                1
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                json_encode($data, JSON_UNESCAPED_UNICODE)
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+            // echo $res['id'];
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $html = curl_exec($ch);
+            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+            if (isset($html['error']['httpCode']))
+                while (isset($html['error'])) {
+                    // echo ($html['error']['httpCode'] . '<br>');
+                    $html = curl_exec($ch);
+                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                }
+            $html = curl_exec($ch);
+            $html = explode("\n", $html);
+            $passport = [];
+            $i = 0;
+            foreach ($html as $key => $value) {
+                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+            }
+            curl_close($ch);
+            // dd($passport);
+            // $data = $passport[0]['textAnnotation']['entities'];
+            $data = [];
+            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
+
+                $data[$entity['name']] = $entity['text'];
+                $data[$entity['name']] = mb_convert_case($data[$entity['name']], MB_CASE_UPPER, "UTF-8");
+            }
+            // dd($data);
+            $applications['CarModel'] = $data['stsfront_car_brand'] . ' ' . $data['stsfront_car_model'];
+            $applications['gnz'] = $data['stsfront_car_number'];
+            $applications['vin'] = $data['stsfront_vin_number'];
+            $applications['vehicle_passport'] = mb_substr($data['stsfront_sts_number'], 0, 4) . ' ' . mb_substr($data['stsfront_sts_number'],  4);
+            $applications['Color'] = $data['stsfront_car_color'];
+
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+            exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+            $output = file_get_contents('storage/files/' . $id . '/output.txt');
+            $data = array(
+                "mimeType" => "application/pdf",
+                "languageCodes" => ["*"],
+                "model" => "vehicle-registration-back",
+                "content" => $output
+            );
+
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POST,
+                1
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                json_encode($data, JSON_UNESCAPED_UNICODE)
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            $res = json_decode(
+                $res,
+                JSON_UNESCAPED_UNICODE
+            );
+
+            // echo $res['id'];
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $html = curl_exec($ch);
+            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+            if (isset($html['error']['httpCode']))
+                while (isset($html['error'])) {
+                    // echo ($html['error']['httpCode'] . '<br>');
+                    $html = curl_exec($ch);
+                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                }
+            $html = curl_exec($ch);
+            $html = explode("\n", $html);
+            $passport = [];
+            $i = 0;
+            foreach ($html as $key => $value) {
+                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+            }
+            curl_close($ch);
+            // dd($passport);
+            // $data = $passport[0]['textAnnotation']['entities'];
+            $data = [];
+            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
+
+                $data[$entity['name']] = $entity['text'];
+                // $data[$entity['name']] = ucfirst($data[$entity['name']]);
+            }
+            // dd($data);
+            $applications['ClientName'] = $data['stsback_car_owner'];
+            // dd($applications);
         } else {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
