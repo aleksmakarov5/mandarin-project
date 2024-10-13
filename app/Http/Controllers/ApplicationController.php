@@ -1716,7 +1716,7 @@ class ApplicationController extends Controller
 
                 $parse = explode('<br/>', $parse);
                 $applications['vehicle_passport'] = $parse[1];
-                dd($parse, $applications);
+                // dd($parse, $applications);
             } else if ($app->id_insuranceCompany == 3) {
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
