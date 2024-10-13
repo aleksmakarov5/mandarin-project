@@ -1677,6 +1677,9 @@ class ApplicationController extends Controller
                 // dd($loc);
                 if (mb_strpos($loc, 'правле') != false) {
                     $parse_start = mb_strpos($file, 'СТРАХОВАТЕЛЬ');
+                    if (!$parse_start)
+                        $parse_start = mb_strpos($file, 'ПОТЕРПЕВШИЙ');
+
                     $parse = mb_substr($file, $parse_start);
                     $parse = explode('<br/>', $parse);
                     $applications['ClientName'] = $parse[1];
@@ -1693,12 +1696,20 @@ class ApplicationController extends Controller
                     $parse = mb_substr($file, $parse_start);
                     $parse = explode('<br/>', $parse);
                     $applications['ub_number'] = mb_substr($parse[0], mb_strpos($parse[0], '/') + 1);
-                    $applications['CarModel'] = $parse[8];
-                    $applications['gnz'] = $parse[9];
-                    $applications['mileage'] = (int)$parse[16];
-                    $applications['vin'] = $parse[10];
-                    $applications['mnf_year'] = $parse[15];
-                    // dd($parse, $applications);
+                    if (mb_strpos($parse[0], 'ДО')) {
+                        $applications['CarModel'] = $parse[8];
+                        $applications['gnz'] = $parse[9];
+                        $applications['mileage'] = (int)$parse[16];
+                        $applications['vin'] = $parse[10];
+                        $applications['mnf_year'] = $parse[15];
+                    } else {
+                        $applications['CarModel'] = $parse[6];
+                        $applications['gnz'] = $parse[7];
+                        $applications['mileage'] = (int)$parse[14];
+                        $applications['vin'] = $parse[8];
+                        $applications['mnf_year'] = $parse[13];
+                    }
+                    // dd($applications, $file, $parse);
                 } else {
                     $parse_start = mb_strpos($file, 'Марка, модель');
                     if (!$parse_start)
