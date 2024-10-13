@@ -1677,7 +1677,11 @@ class ApplicationController extends Controller
                 $parse = mb_substr($file, $parse_start);
                 $parse = explode('<br/>', $parse);
                 $applications['CarModel'] = $parse[1];
-                $parse_start = mb_strpos($file, 'VIN / кузов');
+                $parse_start = mb_strpos($file, 'VIN/кузов');
+                if (!$parse_start)
+
+                    $parse_start = mb_strpos($file, 'VIN/кузов');
+
                 $parse = mb_substr($file, $parse_start);
                 $parse = explode('<br/>', $parse);
                 $applications['vin'] = $parse[1];
