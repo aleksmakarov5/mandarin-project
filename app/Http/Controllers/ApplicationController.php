@@ -1672,37 +1672,51 @@ class ApplicationController extends Controller
                 }
 
                 // echo $application_start;
-                //dd($file);
-                $application_end = mb_strpos($file, 'Точное');
-                // echo $application_end . 'Раб_фин<br /><br />';
-                $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
-                $application_array = explode('<br/>', $application);
-                // dd($application_array);
-                if ($smeta) {
-                    $applications['CarModel'] = $application_array[1];
-                    $applications['gnz'] = $application_array[11];
-                    $applications['vin'] = $application_array[3];
-                    $applications['vehicle_passport'] = $application_array[7];
-                    $applications['Color'] = $application_array[15];
-                    $applications['mileage'] = $application_array[5];
-                    $applications['DTPdate'] = $application_array[9];
-                    if (isset($application_array[20]))
-                        $applications['ClientName'] = $application_array[20];
-                    else
-                        $applications['ClientName'] = $application_array[19];
-                } else {
-                    $applications['ClientName'] = $application_array[2];
-                    $applications['gnz'] = $application_array[18];
-                    $applications['vin'] = $application_array[23];
-                    $applications['CarModel'] = $application_array[17];
-                    $applications['dogovor'] = $application_array[19];
-                    $applications['mnf_year'] = $application_array[24];
-                    $applications['mileage'] = $application_array[25];
-                    $applications['ub_number'] = $application_array[1];
-                    $applications['CarModel'] = mb_substr($application_array[11], mb_strpos($application_array[11], '/') + 1, mb_strlen($application_array[11]) - mb_strpos($application_array[11], '/'));
-                }
+                // dd($file);
+                $parse_start = mb_strpos($file, 'Марка, модель');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['CarModel'] = $parse[1];
+                $parse_start = mb_strpos($file, 'VIN / кузов');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['vin'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Регистр. знак');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['gnz'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Пробег, км');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['mileage'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Цвет, тип окраски');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['Color'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Год выпуска');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['mnf_year'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['DTPdate'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Собственник');
+                $parse = mb_substr($file, $parse_start);
+                $parse = explode('<br/>', $parse);
+                $applications['ClientName'] = $parse[1];
+                $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
+                $parse = mb_substr($file, $parse_start);
 
-                // dd($applications);
+                $parse = explode('<br/>', $parse);
+                $applications['vehicle_passport'] = $parse[1];
+
+
+
+
+
+
+                // dd($parse, $applications);
             } else if ($app->id_insuranceCompany == 3) {
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
