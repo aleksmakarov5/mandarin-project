@@ -217,6 +217,7 @@ class WorkController extends Controller
 
 
                 $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+
                 // echo $work_end . 'Раб_фин<br /><br />';
                 $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
                 $work_array = explode('<br/>', $work);
@@ -252,17 +253,19 @@ class WorkController extends Controller
 
                 $work_end = mb_strpos($file, 'www.autoins.ru');
                 // echo $work_end . 'Раб_фин<br /><br />';
-                $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 158);
+                $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 158);
                 $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
                 // dd($file);
                 $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
+                if ($work_start) {
+                    $work_end = mb_strpos($file, 'www.autoins.ru');
 
-                $work_end = mb_strpos($file, 'www.autoins.ru');
-                $work .= mb_substr($file, $work_start + 101, $work_end - $work_start - 163);
-
+                    $work .= mb_substr($file, $work_start + 101, $work_end - $work_start - 163);
+                }
                 $work_array = explode('<br/>', $work);
+                // dd($work_array, $work_end);
 
                 $j = 0;
                 for ($i = 0; $i < count($work_array) - 1; $i++) {
@@ -273,7 +276,12 @@ class WorkController extends Controller
                         trim($work_array[$i]) == "Сумма, руб."
                         ||
                         trim($work_array[$i]) == "Цена ед., руб." ||
-                        trim($work_array[$i]) == "н-час"
+                        trim($work_array[$i]) == "н-час" ||
+                        trim($work_array[$i]) == "Цена" ||
+                        trim($work_array[$i]) == "Нормо-час" ||
+                        trim($work_array[$i]) == "Кол-во" ||
+                        trim($work_array[$i]) == "Сумма"
+
 
 
                     ) {
@@ -285,6 +293,7 @@ class WorkController extends Controller
 
                     // echo $work_array[$i] . '<br />';
                 }
+
                 // dd($works, $work_array);
                 session(['works' => $works]);
             } else {

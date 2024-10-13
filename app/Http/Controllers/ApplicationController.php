@@ -965,6 +965,7 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
         $application->delete();
+
         return redirect()
             ->route('applications');
     }
