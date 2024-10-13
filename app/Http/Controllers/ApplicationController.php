@@ -1681,6 +1681,7 @@ class ApplicationController extends Controller
                 $parse = mb_substr($file, $parse_start);
                 $parse = explode('<br/>', $parse);
                 $applications['vin'] = $parse[1];
+                dd($parse, $applications);
                 $parse_start = mb_strpos($file, 'Регистр. знак');
                 $parse = mb_substr($file, $parse_start);
                 $parse = explode('<br/>', $parse);
@@ -1710,13 +1711,6 @@ class ApplicationController extends Controller
 
                 $parse = explode('<br/>', $parse);
                 $applications['vehicle_passport'] = $parse[1];
-
-
-
-
-
-
-                // dd($parse, $applications);
             } else if ($app->id_insuranceCompany == 3) {
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
