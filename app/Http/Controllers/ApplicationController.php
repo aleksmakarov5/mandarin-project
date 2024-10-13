@@ -1415,7 +1415,7 @@ class ApplicationController extends Controller
             foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
 
                 $data[$entity['name']] = $entity['text'];
-                // $data[$entity['name']] = mb_convert_case($data[$entity['name']], MB_CASE_UPPER, "UTF-8");
+                $data[$entity['name']] = mb_convert_case($data[$entity['name']], MB_CASE_UPPER, "UTF-8");
             }
             // dd($data);
             $applications['CarModel'] = $data['stsfront_car_brand'] . ' ' . $data['stsfront_car_model'];
