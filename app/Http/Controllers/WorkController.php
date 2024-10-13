@@ -253,7 +253,7 @@ class WorkController extends Controller
 
                 $work_end = mb_strpos($file, 'www.autoins.ru');
                 // echo $work_end . 'Раб_фин<br /><br />';
-                $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 158);
+                $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
                 $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
                 // dd($file);
                 $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
@@ -262,7 +262,7 @@ class WorkController extends Controller
                 if ($work_start) {
                     $work_end = mb_strpos($file, 'www.autoins.ru');
 
-                    $work .= mb_substr($file, $work_start + 101, $work_end - $work_start - 163);
+                    $work .= mb_substr($file, $work_start + 100, $work_end - $work_start - 162);
                 }
                 $work_array = explode('<br/>', $work);
                 // dd($work_array, $work_end);
