@@ -262,7 +262,7 @@ class WorkController extends Controller
                 if ($work_start) {
                     $work_end = mb_strpos($file, 'www.autoins.ru');
 
-                    $work .= mb_substr($file, $work_start + 100, $work_end - $work_start - 162);
+                    $work .= mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
                 }
                 $work_array = explode('<br/>', $work);
                 // dd($work_array, $work_end);
