@@ -42,7 +42,7 @@ class ImapController extends Controller
         $vin =  ' ';
         $gnz = ' ';
         $app_number = preg_replace('/[^0-9]/', '', $subject);
-        $app_number = mb_substr(0, 8, $app_number);
+        $app_number = mb_substr($app_number, 0, 8);
 
         $start_pos_app_number = strripos($subject, ':');
         if (
