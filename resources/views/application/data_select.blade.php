@@ -28,30 +28,40 @@
                         <input type="text" name="price_repair" value="{{ $price[2] }}">
                     </th>
                 </tr>
+            @endif
+            @if (isset($price[3]))
                 <tr>
                     <th>Cтоимость окраски контроля: </th>
                     <th>
                         <input type="text" name="price_paint" value="{{ $price[3] }}">
                     </th>
                 </tr>
+            @endif
+            @if (isset($price[4]))
                 <tr>
                     <th>Cтоимость расходных материалов: </th>
                     <th>
                         <input type="text" name="price_zip" value="{{ $price[4] }}">
                     </th>
                 </tr>
+            @endif
+            @if (isset($price[5]))
                 <tr>
                     <th>Cтоимость работ и материалов: </th>
                     <th>
                         <input type="text" name="price_work" value="{{ $price[5] }}">
                     </th>
                 </tr>
+            @endif
+            @if (isset($price[6]))
                 <tr>
                     <th>Cтоимость восстановительного ремонта (Всего) </th>
                     <th>
                         <input type="text" name="price_repair_full" value="{{ $price[6] }}">
                     </th>
                 </tr>
+            @endif
+            @if (isset($price[7]))
                 <tr>
                     <th>Затраты на восстановительный ремонт (с учетом износа): </th>
                     <th>

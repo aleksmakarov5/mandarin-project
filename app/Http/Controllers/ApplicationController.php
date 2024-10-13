@@ -1537,6 +1537,50 @@ class ApplicationController extends Controller
             // dd($data);
             $applications['ClientName'] = $data['stsback_car_owner'];
             // dd($applications);
+        } elseif (mb_strpos($loc, 'О_') != false) {
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+            exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+
+            $html = 'works.html';
+            $file = file_get_contents('storage/files/' . $id . '/' . $html);
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = preg_replace("(\u{A0})", '', $file);
+            $file = str_replace('&#160', '', $file);
+            $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
+
+            $file = preg_replace("/&#160/", ' ', $file);
+            $parse_start = mb_strpos($file, 'Страховой полис');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['dogovor'] = $parse[1];
+            $parse_start = mb_strpos($file, 'Марка, модель');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['CarModel'] = $parse[1];
+            $parse_start = mb_strpos($file, 'Год выпуска');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['mnf_year'] = $parse[1];
+            $parse_start = mb_strpos($file, 'Пробег');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['mileage'] = $parse[1];
+            $parse_start = mb_strpos($file, 'Дата:');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['DTPdate'] = trim(str_replace('Дата:', '', $parse[0]));
+            $parse_start = mb_strpos($file, 'Гос.номер');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['gnz'] = trim(str_replace('Гос.номер:', '', $parse[0]));
+            $parse_start = mb_strpos($file, 'VIN');
+            $parse = mb_substr($file, $parse_start);
+            $parse = explode('<br/>', $parse);
+            $applications['vin'] = trim(str_replace('VIN:', '', $parse[0]));
+
+
+            // dd($parse, $applications);
         } else {
             rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
             exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
@@ -1545,7 +1589,7 @@ class ApplicationController extends Controller
             $html = 'works.html';
             $file = file_get_contents('storage/files/' . $id . '/' . $html);
             $file = html_entity_decode(strip_tags($file, ['br']));
-            // dd($file);
+
 
 
 
@@ -1577,6 +1621,7 @@ class ApplicationController extends Controller
                 if ($estimate_start !== false && $estimate_end !== false) {
                     $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
                     $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
+
                     $estimate = explode('<br/>', $estimate);
                     for ($i = 0; $i < count($estimate) - 1; $i++) {
                         if ($estimate[$i] == '1' || $estimate[$i] == '2')
@@ -1627,6 +1672,7 @@ class ApplicationController extends Controller
                 }
 
                 // echo $application_start;
+                //dd($file);
                 $application_end = mb_strpos($file, 'Точное');
                 // echo $application_end . 'Раб_фин<br /><br />';
                 $application = mb_substr($file, $application_start + 5, $application_end - $application_start - 18);
@@ -1882,6 +1928,7 @@ class ApplicationController extends Controller
                 ]
             );
         }
+        // dd($estimates);
         $application = application::findOrFail($id);
         if ($application->id_status < 2) {
             $application->id_status = 2;
@@ -1891,38 +1938,38 @@ class ApplicationController extends Controller
             $history->id_application = $id;
             $history->save();
         }
-        $data = $this->validate($request, [
-            'CarModel' => 'required|string',
-            'gnz' => 'nullable|string',
-            'vin' => 'nullable|string',
-            'ClientName' => 'nullable|string',
-            'ClientPhone' => 'nullable|string',
-            'mileage' => 'nullable|integer',
-            'vehicle_passport' => 'nullable|string',
-            'Color' => 'nullable|string',
-            'ClientPassport' => 'nullable|string',
-            'DTPdate' => 'nullable|date',
-            'id_MRK' => 'nullable|integer',
-            'id_spm' => 'nullable|integer',
-            'dogovor' => 'nullable|string',
-            'mnf_year' => 'nullable|string',
-            'ub_number' => 'nullable|string'
+        // dd($request);
+        if (isset($request->CarModel)) {
+            $data = $this->validate($request, [
+                'CarModel' => 'required|string',
+                'gnz' => 'nullable',
+                'vin' => 'nullable',
+                'ClientName' => 'nullable',
+                'ClientPhone' => 'nullable',
+                'mileage' => 'nullable',
+                'vehicle_passport' => 'nullable',
+                'Color' => 'nullable',
+                'ClientPassport' => 'nullable',
+                'DTPdate' => 'nullable',
+                'id_MRK' => 'nullabler',
+                'id_spm' => 'nullable',
+                'dogovor' => 'nullable',
+                'mnf_year' => 'nullable',
+                'ub_number' => 'nullable'
+            ]);
+            // dd($data);
 
-
-
-
-        ]);
-        // dd($data);
-        foreach ($data as $key => $value) {
-            if ($value !== '') {
-                if ($key == 'DTPdate') {
-                    $value = date('Y-m-d', strtotime($value));
+            foreach ($data as $key => $value) {
+                if ($value != '') {
+                    if ($key == 'DTPdate') {
+                        $value = date('Y-m-d', strtotime($value));
+                    }
+                    $application->$key = $value;
                 }
-                $application->$key = $value;
             }
-        }
-        $application->save();
 
+            $application->save();
+        }
         return redirect()->route('application', $id);
     }
     public function send_mrk($id, $id_MRK)
