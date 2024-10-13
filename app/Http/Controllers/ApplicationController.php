@@ -1700,6 +1700,8 @@ class ApplicationController extends Controller
                 $parse = explode('<br/>', $parse);
                 $applications['mnf_year'] = $parse[1];
                 $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
+                if (!$parse_start)
+                    $parse_start = mb_strpos($file, 'Дата ДТП');
                 $parse = mb_substr($file, $parse_start);
                 $parse = explode('<br/>', $parse);
                 $applications['DTPdate'] = $parse[1];
@@ -1708,6 +1710,8 @@ class ApplicationController extends Controller
                 $parse = explode('<br/>', $parse);
                 $applications['ClientName'] = $parse[1];
                 $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
+                if (!$parse_start)
+                    $parse_start = mb_strpos($file, 'ПТС/свид.о рег.');
                 $parse = mb_substr($file, $parse_start);
 
                 $parse = explode('<br/>', $parse);
