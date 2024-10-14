@@ -824,7 +824,8 @@ class ApplicationController extends Controller
                 'services' => $services,
                 'spms' => $spms,
                 'lawyers' => $lawyers,
-                'cities' => $cities
+                'cities' => $cities,
+                'id' => $id
             ]
         );
     }
