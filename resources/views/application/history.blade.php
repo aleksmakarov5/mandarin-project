@@ -4,8 +4,8 @@
 @endsection
 @section('main')
     @foreach ($histories as $history)
-        <div class="alert" role="alert" style="width: 100%; background: rgb(116, 116, 255);">
-            <div class="card-body">
+        <div class="history">
+            <div class="history">
                 <h5 class="card-title">
                     {{ $history->name }}
                 </h5>
