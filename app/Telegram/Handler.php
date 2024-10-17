@@ -28,15 +28,7 @@ class Handler extends WebhookHandler
     {
         $this->reply('*Привет!* Пока я имею только говорить привет.');
         $message = $this->chat;
-        if ($message !== null && $message->has('photo')) {
-            $chat_id = $message->chat->id;
-            $photo = $message->photo;
 
-            $response = $this->chat
-                ->html("ghbdtn")
-                ->photo($photo[0]['file_id'])
-                ->send();
-        }
 
         Log::info($text);
     }
