@@ -27,6 +27,18 @@ class Handler extends WebhookHandler
     public function handleChatMessage(Stringable $text): void
     {
         $this->reply('*Привет!* Пока я имею только говорить привет.');
+        $message = $this->chat->getMessage();
+        if ($message !== null && $message->has('photo')) {
+            $chat_id = $message->chat->id;
+            $photo = $message->photo;
+
+            $response = $this->chat->sendPhoto()
+                ->chatId($chat_id)
+                ->photo($photo[0]['file_id'])
+                ->caption($message->caption)
+                ->getResult();
+        }
+
         Log::info($text);
     }
     public function hello(string $name): void
