@@ -49,19 +49,18 @@ class Handler extends WebhookHandler
         if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '6');
+                    ->where('id_status', '<', '12');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
-                ->get()
-                ->sortDesc();
+                ->get();
         } else {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '6');
+                    ->where('id_status', '<', '12');
             })
                 ->where('applications.id_MRK', '=', $user->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -69,7 +68,7 @@ class Handler extends WebhookHandler
 
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
-                ->get()->sortDesc();
+                ->get();
         }
         $i = 0;
         $keyboard = [];
@@ -89,7 +88,7 @@ class Handler extends WebhookHandler
         if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '7')
+                    ->where('id_status', '>', '11')
                     ->where('id_status', '<', '25');
             })
 
@@ -97,12 +96,11 @@ class Handler extends WebhookHandler
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
-                ->get()
-                ->sortDesc();
+                ->get();
         } else {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '7')
+                    ->where('id_status', '>', '11')
                     ->where('id_status', '<', '25');
             })
                 ->where('applications.id_MRK', '=', $user->id)
@@ -111,7 +109,7 @@ class Handler extends WebhookHandler
 
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'application_statuses.current_group', 'our_companies.our_name')
-                ->get()->sortDesc();
+                ->get();
         }
         $i = 0;
         $keyboard = [];
