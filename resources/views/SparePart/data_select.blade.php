@@ -12,7 +12,8 @@
                 <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
                 <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
                 <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
-                <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
+                <input type="hidden" name="part_number[{{ $j }}]"
+                    value="{{ $SpareParts[$i + 1] == 'БН' || $SpareParts[$i + 1] == 'бн' || $SpareParts[$i + 1] == 'БН' ? $SpareParts[$i + 1] . $j : $SpareParts[$i + 1] }}">
                 <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
             @endfor
         @endif
