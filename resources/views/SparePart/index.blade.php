@@ -56,8 +56,8 @@
                     <th scope="col">Итого</th>
                     <th scope="col"></th>
                     <th scope="col"></th>
-                    <th scope="col">{{ $summ_ic_full }}</th>
-                    <th scope="col">{{ $summ_sto }}</th>
+                    <th scope="col">{{ in_money($summ_ic_full) }}</th>
+                    <th scope="col">{{ in_money($summ_sto) }}</th>
                     <th scope="col" colspan="7"></th>
                     <th scope="col">
                         <div
