@@ -794,11 +794,8 @@ class ImapController extends Controller
                     $to = $message->getTo()->toArray();
                     $subject = $message->getSubject();
                     $subject = trim($subject);
-                    echo $subject . "<br>";
                     $body_html = $message->getHTMLBody();
                     $our_company = 2;
-                    echo mb_strpos($body_html, 'vsk.ru') . ' ВСК<br>';
-                    echo mb_strpos($body_html, 'ingos') . ' ИНГОС<br>';
                     // dd($message);
 
 
@@ -809,6 +806,7 @@ class ImapController extends Controller
 
                         $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
+                        echo "Not info";
                         $mess = new Message();
                         $mess->subject = $message->getSubject();
                         $mess->uid = $uid;
@@ -834,6 +832,23 @@ class ImapController extends Controller
                             $address->email = $mail->mail;
                             $address->type = 'from';
                             $address->save();
+                        }
+                        $dir = 'storage/files/temp';
+                        if (!is_dir($dir)) {
+                            mkdir($dir, 0777, true);
+                        }
+
+                        foreach ($attachments as $attachment) {
+                            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                            $attachment->save($path = $dir . '/', $filename);
+                            $attach = new attachment();
+                            $attach->message_id = $mess->id;
+                            $attach->location = $filename;
+                            $attach->mime_type = $attachment->getMimeType();
+                            $attach->file_size = $attachment->getSize();
+                            $attach->file_name = $attachment->getFilename();
+                            $attach->save();
                         }
                     }
                 }
