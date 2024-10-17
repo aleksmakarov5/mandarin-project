@@ -814,7 +814,7 @@ class ImapController extends Controller
                         $mess->header = $message->getHeaders();
                         $mess->message_date = $message->getdate();
                         $mess->mailbox_id = 2;
-                        dd($mess);
+                        // dd($mess);
                         $mess->save();
                         foreach ($to as $mail) {
                             // dd($mail);
