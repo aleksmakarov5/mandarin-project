@@ -65,3 +65,9 @@ if (!function_exists('dec2')) {
         return number_format((float) $value, $decimals, $dec_point, $thousands_sep);
     }
 }
+if (!function_exists('bold_text')) {
+    function bold_text($text)
+    {
+        return '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">' . $text . '</w:t></w:r><w:r><w:t xml:space="preserve">';
+    }
+}

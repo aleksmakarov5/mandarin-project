@@ -623,14 +623,14 @@
                                     {{ dec2($Work->count_hours) }}</th>
 
                                 <td scope="col" id="td_count_hours_pzn-{{ $key + 1000 }}">
-                                    {{ dec2(isset($Work->count_hours_pzn) ? $Work->count_hours_pzn : $Work->count_hours) }}
+                                    {{ dec2($Work->count_hours_pzn != 0 ? $Work->count_hours_pzn : $Work->count_hours) }}
                                 </td>
                                 <input type="hidden" name="count_hours_pzn" id='count_hours_pzn-{{ $key + 1000 }}'
                                     value='{{ $Work->count_hours_pzn }}'>
                                 <th scope="col" id="td_summ-{{ $key }}">{{ in_money($Work->summ) }}</th>
 
                                 <th scope="col">
-                                    {{ in_money(isset($Work->count_hours_pzn) ? $Work->count_hours_pzn * str2number($Work->price) : $Work->summ) }}
+                                    {{ in_money($Work->count_hours_pzn != 0 ? $Work->count_hours_pzn * str2number($Work->price) : $Work->summ) }}
                                 </th>
 
                                 <td scope="col">

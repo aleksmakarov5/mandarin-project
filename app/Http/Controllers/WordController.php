@@ -912,19 +912,19 @@ class WordController extends Controller
     $price_sp_full = 0;
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
-        'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : "!" . $sparepart->name,
-        'price' => in_money($sparepart->price),
+        'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : bold_text($sparepart->name),
         'count' => $sparepart->count,
-        'summ' => in_money($sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto),
+        'summ' => $sparepart->price_sto == 0 ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
         'iznos' => $sparepart->iznos,
         'sum_half' => ($sparepart->price_ic_half),
-        'part_number' => $sparepart->part_number
+        'part_number' => $sparepart->price_sto == 0 ? $sparepart->part_number : bold_text($sparepart->part_number)
       );
       $price_sp_full
         += $sparepart->price_sto == 0
         ? str2number($sparepart->price_ic_full)
         : str2number($sparepart->price_sto);
     }
+    // dd($array);
     $templateProcessor->cloneRowAndSetValues('SparePart', $array);
     $array1 = [];
     $Works = DB::table('works')
@@ -935,10 +935,14 @@ class WordController extends Controller
     $price_repair = 0;
     foreach ($Works as $work) {
       $array1[] = array(
-        'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
-        'price_w' => in_money(str2number($work->price)),
-        'count_hours' => dec2(isset($work->count_hours_pzn) ? $work->count_hours_pzn  : str2number($work->count_hours)),
-        'sum_w' => in_money(isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number(($work->summ)))
+        'name' => $work->count_hours_pzn != 0 ? bold_text(
+          str_replace('<', 'МЕНЕЕ ', $work->name)
+        ) : str_replace('<', 'МЕНЕЕ ', $work->name),
+        'price_w' => $work->count_hours_pzn != 0 ? bold_text(
+          in_money(str2number($work->price))
+        ) : in_money(str2number($work->price)),
+        'count_hours' => $work->count_hours_pzn != 0 ? bold_text(dec2($work->count_hours_pzn))  : dec2(str2number($work->count_hours)),
+        'sum_w' => $work->count_hours_pzn != 0 ? bold_text(in_money($work->count_hours_pzn * str2number($work->price))) : in_money(str2number(($work->summ)))
       );
       $price_repair += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
     }

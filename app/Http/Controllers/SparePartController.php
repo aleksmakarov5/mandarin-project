@@ -167,7 +167,7 @@ class SparePartController extends Controller
         $summ_pzn = 0;
         foreach ($Works_ic as $work) {
             $summ_ic = $summ_ic + str2number($work->summ);
-            $summ_pzn += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
+            $summ_pzn += $work->count_hours_pzn != 0 ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
         }
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
