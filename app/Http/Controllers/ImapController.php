@@ -622,7 +622,7 @@ class ImapController extends Controller
             $address->save();
         }
         $user = User::find(2);
-        Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
+        // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
         $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
         foreach ($users as $user) {
