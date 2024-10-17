@@ -3027,18 +3027,24 @@ class ApplicationController extends Controller
     }
     public function delete_message($id)
     {
-        $message = message::findOrFail($id);
-        $attachments = attachment::where('message_id', '=', $message->id)->get()->all();
-        // dd($attachments);
-        foreach ($attachments as $attachment) {
-            try {
-                unlink('storage/files/' . $attachment->id_application . '/' . $attachment->location);
-            } catch (\Exception $e) {
-                // dd($e);
+        // $message = message::findOrFail($id);
+        $messages = message::where('id', '>', '828')
+            ->where('id', '<', '1193')
+            ->get()->all();
+        foreach ($messages as $message) {
+            $attachments = attachment::where('message_id', '=', $message->id)->get()->all();
+            // dd($attachments);
+            foreach ($attachments as $attachment) {
+                try {
+                    unlink('storage/files/' . $attachment->id_application . '/' . $attachment->location);
+                } catch (\Exception $e) {
+                    // dd($e);
+                }
+                $attachment->delete();
             }
-            $attachment->delete();
+            $message->delete();
         }
-        $message->delete();
+
         return redirect()->back();
     }
     public function add_mail($type, $id, $message_id)
