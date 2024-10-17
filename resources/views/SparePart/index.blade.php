@@ -555,7 +555,7 @@
         <button class="accordion-est">
             Работы по калькуляции
         </button>
-        <div class="panel" style="max-height: 10008px;">
+        <div style="max-height: 10008px;">
             <table class="editable" id='demo'>
                 <thead class="accordion-est">
                     <tr>
@@ -677,7 +677,7 @@
     <button class="accordion-est">
         Фактические работы
     </button>
-    <div class="panel" style="max-height: 10008px;">
+    <div style="max-height: 10008px;">
         <table class="editable" id='demo'>
             <thead>
                 <tr>
@@ -725,29 +725,26 @@
 
                 @foreach ($Works_serv as $key => $Work)
                     <tr @if ($Work->author == 9) class="sto" @endif>
-                        <form name="form-{{ $key + 2000 }}" id='form-{{ $key + 2000 }}'
+                        <form name="form{{ $key + 3000 }}" id='form{{ $key + 3000 }}'
                             action="/Work/{{ $Work->id }}/update" method="POST">
 
                             @csrf
                             <input type="hidden" name="id_application" value='{{ $id }}'>
 
-                            <td scope="col" id="td_id--{{ $key + 2000 }}">
+                            <td scope="col" id="td_id-{{ $key + 3000 }}">
                                 {{ $key + 1 }}
-                                <a name="{{ $Work->id }}"></a>
                             </td>
 
-                            <input type="hidden" name="id" id='id--{{ $key + 2000 }}'
+                            <input type="hidden" name="id" id='id-{{ $key + 3000 }}'
                                 value=' {{ $Work->id }}'>
-                            <td scope="col" id="td_name--{{ $key + 2000 }}">{{ $Work->name }}</td>
-                            <input type="hidden" name="name" id='name--{{ $key + 2000 }}'
+                            <td scope="col" id="td_name-{{ $key + 3000 }}">{{ $Work->name }}</td>
+                            <input type="hidden" name="name" id='name-{{ $key + 3000 }}'
                                 value='{{ $Work->name }}'>
 
-                            <td id="td_price_service--{{ $key + 2000 }}" scope="col">{{ $Work->price_service }}
+                            <td id="td_price_service-{{ $key + 3000 }}" scope="col">{{ $Work->price_service }}
                             </td>
-                            <input type="hidden" name="price_service" id='price_service--{{ $key + 2000 }}'
+                            <input type="hidden" name="price_service" id='price_service-{{ $key + 3000 }}'
                                 value='{{ $Work->price_service }}'>
-                            <input type="hidden" name="summ" id='summ--{{ $key + 2000 }}'
-                                value='{{ $Work->summ }}'>
 
                             <td scope="col">
                                 @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author)

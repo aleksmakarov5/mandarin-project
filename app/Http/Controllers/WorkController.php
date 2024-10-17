@@ -148,6 +148,7 @@ class WorkController extends Controller
         ]);
         $data['count_hours_pzn'] = round(str2number($data['count_hours_pzn']), 2);
 
+
         // dd($data);
         foreach ($data as $key => $val) {
             $Work->$key = $val;
