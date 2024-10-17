@@ -53,3 +53,9 @@ if (!function_exists('mb_ucfirst') && extension_loaded('mbstring')) {
         return $str;
     }
 }
+if (!function_exists('in_money')) {
+    function in_money($value, $decimals = 2, $dec_point = ',', $thousands_sep = ' ')
+    {
+        return number_format((float) $value, $decimals, $dec_point, $thousands_sep);
+    }
+}

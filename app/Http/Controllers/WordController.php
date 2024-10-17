@@ -124,8 +124,8 @@ class WordController extends Controller
     $number = date('Hi');
     $date = date('d-m-y');
 
-    $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
-    $templateProcessor->setValue('number', $number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+    $templateProcessor->setValue('num', $number);
     $templateProcessor->setValue('date', $date);
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
@@ -322,7 +322,8 @@ class WordController extends Controller
     $date = date('d') . ' ' . $month_name . ' ' . date('Y');
 
 
-    $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
+
+    $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Client', $application->ClientName);
     $templateProcessor->setValue('number', $number);
     $templateProcessor->setValue('Date', $date);
@@ -417,9 +418,8 @@ class WordController extends Controller
     $date = date('d') . ' ' . $month_name . ' ' . date('Y');
 
 
-    $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Client', $application->ClientName);
-    $templateProcessor->setValue('number', $number);
+    $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
@@ -514,7 +514,7 @@ class WordController extends Controller
 
 
     $templateProcessor->setValue('Client', $application->ClientName);
-    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
@@ -615,7 +615,7 @@ class WordController extends Controller
 
 
     $templateProcessor->setValue('Client', $application->ClientName);
-    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('CarModel', $application->CarModel);
     $templateProcessor->setValue('gnz', $application->gnz);
@@ -743,7 +743,7 @@ class WordController extends Controller
     // dd($estimate);
     $templateProcessor->setValue('Client', $application->ClientName);
     $templateProcessor->setValue('num', $num);
-    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('mnf_date', $application->mnf_year);
     $templateProcessor->setValue('CarModel', $application->CarModel);
@@ -760,11 +760,17 @@ class WordController extends Controller
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
         'SparePart' => $sparepart->name,
-        'price' => $sparepart->price,
+        'price' => in_money(
+          $sparepart->price
+        ),
         'count' => $sparepart->count,
-        'summ' => $sparepart->price_ic_full,
+        'summ' => in_money(
+          $sparepart->price_ic_full
+        ),
         'iznos' => $sparepart->iznos,
-        'sum_half' => $sparepart->price_ic_half,
+        'sum_half' => in_money(
+          $sparepart->price_ic_half
+        ),
         'part_number' => $sparepart->part_number
       );
     }
@@ -777,17 +783,23 @@ class WordController extends Controller
       ->get();
 
     foreach ($Works as $work) {
-      $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
+      $array1[] = array(
+        'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
+        'price_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->price)),
+        'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours),
+        'sum_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->summ))
+      );
     }
     // dd($array1);
 
     $templateProcessor->cloneRowAndSetValues('name', $array1);
     if (isset($estimate->price_repair)) {
-      $templateProcessor->setValue('price_repair', $estimate->price_repair);
-      $templateProcessor->setValue('price_paint', $estimate->price_paint);
-      $templateProcessor->setValue('price_zip', $estimate->price_zip);
-      $templateProcessor->setValue('price_sp_full', $estimate->price_sp_full);
-      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
+      $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
+      $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
+      $templateProcessor->setValue('price_work', in_money($estimate->price_work));
+      $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
+      $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
       $estimate->zn_number = $num . ' от ' . $date . 'г.';
       $estimate->save();
     }
@@ -884,7 +896,7 @@ class WordController extends Controller
     // dd($estimate);
     $templateProcessor->setValue('Client', $application->ClientName);
     $templateProcessor->setValue('num', $num);
-    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('mnf_date', $application->mnf_year);
     $templateProcessor->setValue('CarModel', $application->CarModel);
@@ -901,11 +913,11 @@ class WordController extends Controller
     foreach ($SpareParts as $sparepart) {
       $array[] = array(
         'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : "!" . $sparepart->name,
-        'price' => $sparepart->price,
+        'price' => in_money($sparepart->price),
         'count' => $sparepart->count,
-        'summ' => $sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto,
+        'summ' => in_money($sparepart->price_sto == 0 ? $sparepart->price_ic_full : $sparepart->price_sto),
         'iznos' => $sparepart->iznos,
-        'sum_half' => $sparepart->price_ic_half,
+        'sum_half' => ($sparepart->price_ic_half),
         'part_number' => $sparepart->part_number
       );
       $price_sp_full
@@ -922,22 +934,34 @@ class WordController extends Controller
       ->get();
 
     foreach ($Works as $work) {
-      $array1[] = array('name' => str_replace('<', 'МЕНЕЕ ', $work->name), 'price_w' => str_replace('<', 'МЕНЕЕ ', $work->price), 'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours), 'sum_w' => str_replace('<', 'МЕНЕЕ ', $work->summ));
+      $array1[] = array(
+        'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
+        'price_w' => str_replace(
+          '<',
+          'МЕНЕЕ ',
+          in_money($work->price)
+        ),
+        'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours),
+        'sum_w' => str_replace('<', 'МЕНЕЕ ', ($work->summ))
+      );
     }
     // dd($array1);
     if (isset($estimate->price_repair)) {
-      $price_repair_full = $price_sp_full +
-        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
-        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
-        (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip));
+      in_money(
+        $price_repair_full = $price_sp_full +
+          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
+          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
+          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip))
+      );
     }
     $templateProcessor->cloneRowAndSetValues('name', $array1);
     if (isset($estimate->price_repair)) {
-      $templateProcessor->setValue('price_repair', $estimate->price_repair);
-      $templateProcessor->setValue('price_paint', $estimate->price_paint);
-      $templateProcessor->setValue('price_zip', $estimate->price_zip);
-      $templateProcessor->setValue('price_sp_full', $price_sp_full);
-      $templateProcessor->setValue('price_repair_full', $price_repair_full);
+      $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
+      $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
+      $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
+      $templateProcessor->setValue('price_work', in_money($estimate->price_work));
+      $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
+      $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
       $estimate->zn_number = $num . ' от ' . $date . 'г.';
       $estimate->save();
     }
@@ -1030,7 +1054,7 @@ class WordController extends Controller
     // dd($estimate);
     $templateProcessor->setValue('Client', $application->ClientName);
     $templateProcessor->setValue('num', $num);
-    $templateProcessor->setValue('number', $application->numberInsuranceCompanyApplication . '/' . $application->ub_number);
+    $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
     $templateProcessor->setValue('Date', $date);
     $templateProcessor->setValue('mnf_date', $application->mnf_year);
     $templateProcessor->setValue('CarModel', $application->CarModel);
@@ -1038,7 +1062,7 @@ class WordController extends Controller
     $templateProcessor->setValue('vin', $application->vin);
     if (isset($estimate->price_repair)) {
       $templateProcessor->setValue('zn_num', $estimate->zn_number);
-      $templateProcessor->setValue('price_repair_full', $estimate->price_repair_full);
+      $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
       $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
     }
 
