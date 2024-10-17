@@ -8,6 +8,7 @@ use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
 use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
 use DefStudio\Telegraph\Keyboard\ReplyButton;
+use DefStudio\Telegraph\DTO\Message;
 use DefStudio\Telegraph\DTO\User;
 use App\Models\User as UserSys;
 use App\Models\application;
@@ -20,8 +21,13 @@ use App\Models\present;
 use App\Models\promotion;
 use Jenssegers\Date\Date;
 
+
 class Handler extends WebhookHandler
 {
+    public function handleChatMessage(Stringable $text): void
+    {
+        Log::info($text);
+    }
     public function hello(string $name): void
     {
         $this->reply("Привет, $name!");
