@@ -10,6 +10,8 @@ use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
 use DefStudio\Telegraph\Keyboard\ReplyButton;
 use DefStudio\Telegraph\DTO\Message;
 use DefStudio\Telegraph\DTO\User;
+use DefStudio\Telegraph\DTO\Photo;
+use DefStudio\Telegraph\DTO\TelegramUpdate;
 use App\Models\User as UserSys;
 use App\Models\application;
 use Illuminate\Support\Facades\Log;
@@ -27,8 +29,8 @@ class Handler extends WebhookHandler
     public function handleChatMessage(Stringable $text): void
     {
         $this->reply('*Привет!* Пока я имею только говорить привет.');
-        $message = $this->chat;
-
+        $update = new TelegramUpdate;
+        $message = $this->chat->getFile();
 
         Log::info($text);
     }
