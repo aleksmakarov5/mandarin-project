@@ -24,7 +24,8 @@
                 <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
                 <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
                 <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
-                <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
+                <input type="hidden" name="part_number[{{ $j }}]"
+                    value="@php mb_strpos($SpareParts[$i + 6],'БН') || mb_strpos($SpareParts[$i + 1],'бн') || $SpareParts[$i + 6] == 'БН' ? $SpareParts[$i + 6] ." ". $j : $SpareParts[$i + 6] @endphp">
                 <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
             @endfor
         @endif
@@ -76,7 +77,7 @@
                     @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                         <tr>
                             <td> {{ $j }} </td>
-                            <td> {{ $SpareParts[$i + 6] }} <input type="checkbox" name='iskl[{{ $i + 6 }}]'
+                            <td> @php mb_strpos($SpareParts[$i + 6],'БН') || mb_strpos($SpareParts[$i + 1],'бн') || $SpareParts[$i + 6] == 'БН' ? $SpareParts[$i + 6] ." ". $j : $SpareParts[$i + 6] @endphp <input type="checkbox" name='iskl[{{ $i + 6 }}]'
                                     value={{ $i + 6 }}> </td>
                             <td> {{ $SpareParts[$i] }}<input type="checkbox"
                                     name='iskl[{{ $i }}]'value={{ $i }}> </td>
