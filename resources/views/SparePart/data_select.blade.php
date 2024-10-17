@@ -77,7 +77,7 @@
                     @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                         <tr>
                             <td> {{ $j }} </td>
-                            <td> @php mb_strpos($SpareParts[$i + 6],'БН') || mb_strpos($SpareParts[$i + 1],'бн') || $SpareParts[$i + 6] == 'БН' ? $SpareParts[$i + 6] ." ". $j : $SpareParts[$i + 6] @endphp <input type="checkbox" name='iskl[{{ $i + 6 }}]'
+                            <td> @php mb_strpos($SpareParts[$i + 6],'БН') || mb_strpos($SpareParts[$i + 6],'бн') || $SpareParts[$i + 6] == 'БН' ? $SpareParts[$i + 6] ." ". $j : $SpareParts[$i + 6] @endphp <input type="checkbox" name='iskl[{{ $i + 6 }}]'
                                     value={{ $i + 6 }}> </td>
                             <td> {{ $SpareParts[$i] }}<input type="checkbox"
                                     name='iskl[{{ $i }}]'value={{ $i }}> </td>
