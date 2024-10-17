@@ -164,8 +164,10 @@ class SparePartController extends Controller
         // dd($rewiew->all()) ;
         $summ_ic = 0;
         $summ_service = 0;
+        $summ_pzn = 0;
         foreach ($Works_ic as $work) {
-            $summ_ic = $summ_ic + (int)str_replace(' ', '', $work->summ);
+            $summ_ic = $summ_ic + str2number($work->summ);
+            $summ_pzn += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
         }
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
@@ -191,6 +193,8 @@ class SparePartController extends Controller
             "Works_serv" => $Works_serv->all(),
             'delta' => $delta,
             'summ_ic' => $summ_ic,
+
+            'summ_pzn' => $summ_pzn,
         ]);
     }
 

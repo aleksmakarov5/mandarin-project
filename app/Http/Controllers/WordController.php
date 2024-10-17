@@ -786,7 +786,7 @@ class WordController extends Controller
       $array1[] = array(
         'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
         'price_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->price)),
-        'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours),
+        'count_hours' => str_replace('<', 'МЕНЕЕ ', dec2($work->count_hours)),
         'sum_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->summ))
       );
     }
@@ -922,8 +922,8 @@ class WordController extends Controller
       );
       $price_sp_full
         += $sparepart->price_sto == 0
-        ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
-        : (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
+        ? str2number($sparepart->price_ic_full)
+        : str2number($sparepart->price_sto);
     }
     $templateProcessor->cloneRowAndSetValues('SparePart', $array);
     $array1 = [];
@@ -932,31 +932,27 @@ class WordController extends Controller
       ->where('price', '<>', '0')
       ->orderBy('npp')
       ->get();
-
+    $price_repair = 0;
     foreach ($Works as $work) {
       $array1[] = array(
         'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
-        'price_w' => str_replace(
-          '<',
-          'МЕНЕЕ ',
-          in_money($work->price)
-        ),
-        'count_hours' => str_replace('<', 'МЕНЕЕ ', $work->count_hours),
-        'sum_w' => str_replace('<', 'МЕНЕЕ ', ($work->summ))
+        'price_w' => in_money(str2number($work->price)),
+        'count_hours' => dec2(isset($work->count_hours_pzn) ? $work->count_hours_pzn  : str2number($work->count_hours)),
+        'sum_w' => in_money(isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number(($work->summ)))
       );
+      $price_repair += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
     }
     // dd($array1);
-    if (isset($estimate->price_repair)) {
-      in_money(
-        $price_repair_full = $price_sp_full +
-          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_repair)) +
-          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_paint)) +
-          (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimate->price_zip))
-      );
-    }
+
+    in_money(
+      $price_repair_full = $price_sp_full +
+        (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+        + $price_repair
+    );
+
     $templateProcessor->cloneRowAndSetValues('name', $array1);
     if (isset($estimate->price_repair)) {
-      $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
+      $templateProcessor->setValue('price_repair', in_money($price_repair));
       $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
       $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
       $templateProcessor->setValue('price_work', in_money($estimate->price_work));

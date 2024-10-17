@@ -163,16 +163,18 @@
      alert alert-success
        
        ">
-                                                    {{ $sum_teor +
-                                                        (isset($estimates->price_repair)
-                                                            ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair))
-                                                            : $summ_service_ic) +
-                                                        (isset($estimates->price_paint)
-                                                            ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint))
-                                                            : 0) +
-                                                        (isset($estimates->price_zip)
-                                                            ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
-                                                            : 0) }}
+                                                    {{ in_money(
+                                                        $sum_teor +
+                                                            (isset($estimates->price_repair)
+                                                                ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair))
+                                                                : $summ_service_ic) +
+                                                            (isset($estimates->price_paint)
+                                                                ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint))
+                                                                : 0) +
+                                                            (isset($estimates->price_zip)
+                                                                ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
+                                                                : 0),
+                                                    ) }}
                                                     руб;
                                                 </div>
                                             </td>
@@ -183,7 +185,7 @@
        @else
        alert alert-danger @endif
        ">
-                                                    {{ $teor }} руб; ({{ $proc_t }}%)
+                                                    {{ in_money($teor) }} руб; ({{ $proc_t }}%)
                                                 </div>
                                             </td>
                                             <td>
@@ -193,12 +195,12 @@
        @else
        alert alert-danger @endif
        ">
-                                                    {{ $eco_delta_full }} руб; ({{ $proc }}%)
+                                                    {{ in_money($eco_delta_full) }} руб; ({{ $proc }}%)
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ $summ_order }} руб;
+                                                    {{ in_money($summ_order) }} руб;
                                                 </div>
                                             </td>
                                             <td>
@@ -208,7 +210,7 @@
        @else
        alert alert-danger @endif
        ">
-                                                    {{ $summ_service }} руб;
+                                                    {{ in_money($summ_service) }} руб;
                                                 </div>
 
                                             </td>
@@ -219,7 +221,7 @@
        @else
        alert alert-danger @endif
        ">
-                                                    {{ $eco_delta_full / 10 }} руб;
+                                                    {{ in_money(($eco_delta_full * 2) / 10) }} руб;
                                                 </div>
                                             </td>
                                         @endcan

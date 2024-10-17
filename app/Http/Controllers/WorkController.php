@@ -80,8 +80,10 @@ class WorkController extends Controller
         // dd($rewiew->all()) ;
         $summ_ic = 0;
         $summ_service = 0;
+        $summ_pzn = 0;
         foreach ($Works_ic as $work) {
-            $summ_ic = $summ_ic + (int)str_replace(' ', '', $work->summ);
+            $summ_ic = $summ_ic + str2number($work->summ);
+            $summ_pzn += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
         }
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
@@ -94,7 +96,8 @@ class WorkController extends Controller
             'delta' => $delta,
             'summ_ic' => $summ_ic,
             'summ_service' => $summ_service,
-            'eco' => $eco
+            'eco' => $eco,
+            'summ_pzn' => $summ_pzn,
         ]);
     }
 
@@ -139,9 +142,12 @@ class WorkController extends Controller
             'id_application' => 'required',
             'name' => 'required',
             'summ' => 'nullable',
-            'price_service' => 'nullable'
+            'price_service' => 'nullable',
+            'count_hours_pzn' => 'nullable'
 
         ]);
+        $data['count_hours_pzn'] = round(str2number($data['count_hours_pzn']), 2);
+
         // dd($data);
         foreach ($data as $key => $val) {
             $Work->$key = $val;

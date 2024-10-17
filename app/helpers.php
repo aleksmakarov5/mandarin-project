@@ -59,3 +59,9 @@ if (!function_exists('in_money')) {
         return number_format((float) $value, $decimals, $dec_point, $thousands_sep);
     }
 }
+if (!function_exists('dec2')) {
+    function dec2($value, $decimals = 2, $dec_point = '.', $thousands_sep = '')
+    {
+        return number_format((float) $value, $decimals, $dec_point, $thousands_sep);
+    }
+}

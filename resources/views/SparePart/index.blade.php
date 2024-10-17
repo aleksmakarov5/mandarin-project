@@ -23,7 +23,7 @@
                 <th scope="col">Зак. номер</th>
                 @can('company')
                     <th scope="col">Цена СК</th>
-                    <th scope="col">Цена СТО</th>
+                    <th scope="col">Цена ПЗН</th>
 
                     <th scope="col" colspan="2">Оригинал</th>
                     <th scope="col" colspan="2">Аналог</th>
@@ -174,7 +174,7 @@
                                 @if (old('price_ic_full.' . $key) !== null)
                                     {{ old('price_ic_full.' . $key) }}
                                 @else
-                                    {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full), 'RUR', 'ru') }}
+                                    {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full)) }}
                                 @endif
                             </td>
                             <td id="td_price_sto-{{ $key }}" scope="col" class="ic_price">
@@ -182,9 +182,9 @@
                                     {{ old('price_sto.' . $key) }}
                                 @else
                                     @if ($sparepart->price_sto == 0)
-                                        {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full), 'RUR', 'ru') }}
+                                        {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_ic_full * 1.1 : (float) $sparepart->price_ic_full)) }}
                                     @else
-                                        {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto), 'RUR', 'ru') }}
+                                        {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $sparepart->price_sto * 1.1 : (float) $sparepart->price_sto)) }}
                                     @endif
                                 @endif
                             </td>
@@ -204,7 +204,7 @@
                                 @if (old('price_original.' . $key) !== null)
                                     {{ old('price_original.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_original ? Number::Currency($sparepart->price_original, 'RUR', 'ru') : '' }}
+                                    {{ $sparepart->price_original ? In_money($sparepart->price_original) : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -251,7 +251,7 @@
                                 @if (old('price_analogue.' . $key) !== null)
                                     {{ old('price_analogue.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_analogue ? Number::Currency($sparepart->price_analogue, 'RUR', 'ru') : '' }}
+                                    {{ $sparepart->price_analogue ? In_money($sparepart->price_analogue) : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -298,7 +298,7 @@
                                 @if (old('price_used.' . $key) !== null)
                                     {{ old('price_used.' . $key) }}
                                 @else
-                                    {{ $sparepart->price_used ? Number::Currency($sparepart->price_used, 'RUR', 'ru') : '' }}
+                                    {{ $sparepart->price_used ? In_money($sparepart->price_used) : '' }}
                                 @endif
                             </td>
                             @if (session('GroupId') == 6)
@@ -379,7 +379,7 @@
                             @if (old('price_service.' . $key) !== null)
                                 {{ old('price_service.' . $key) }}
                             @else
-                                {{ $sparepart->price_service ? Number::Currency($sparepart->price_service, 'RUR') : '' }}
+                                {{ $sparepart->price_service ? In_money($sparepart->price_service) : '' }}
                             @endif
                         </td>
                         @if (session('GroupId') == 9)
@@ -535,67 +535,7 @@
                                 value="{{ old('name') }}">
                         </div>
                     </th>
-                    <th>
 
-                        <input type="text" name="part_number" id="part_number" class="form-control"
-                            value="{{ old('part_number') }}">
-
-                    </th>
-                    <th>
-
-                        <input type="text" name="order_number" id="order_number" class="form-control"
-                            value="{{ old('order_number') }}">
-                    </th>
-                    @can('company')
-                        <th>
-
-                            <input type="text" name="price_ic_full" id="price_ic_full" class="form-control"
-                                value="{{ old('price_ic_full') }}">
-                        </th>
-                    @endcan
-
-                    <th colspan=2>
-
-                        <input type="text" name="price_original" id="price_original" class="form-control"
-                            value="{{ old('price_original') }}">
-
-                    </th>
-                    <th colspan=2>
-                        <input type="text" name="price_analogue" id="price_analogue" class="form-control"
-                            value="{{ old('price_analogue') }}">
-
-                    </th>
-                    <th colspan=2>
-                        <input type="text" name="price_used" id="price_used" class="form-control"
-                            value="{{ old('price_used') }}">
-                    </th>
-                    @can('company')
-                        <th colspan=4></th>
-                    @endcan
-                    <th>
-                        <input type="text" name="comment" id="comment" class="form-control"
-                            value="{{ old('comment') }}">
-
-
-                    </th>
-
-                    @if (session('rout') == 'directions')
-                        <th>
-
-                            <input type="text" name="status" id="status" class="form-control"
-                                value="{{ old('status') }}">
-
-                        </th>
-                        <th>
-                            <input type="date" name="date_price" id="date_price" class="form-control"
-                                value="{{ old('date_price') }}">
-                        </th>
-                        <th>
-                            <input type="date" name="date_wait" id="date_wait" class="form-control"
-                                value="{{ old('date_wait') }}">
-
-                        </th>
-                    @endif
 
                 </form>
             </tr>
@@ -632,20 +572,24 @@
                         <th scope="col">Наименование</th>
                         <th scope="col">Цена</th>
                         <th scope="col">Нормочасы</th>
+                        <th scope="col">Часы ПЗН</th>
                         <th scope="col">Сумма страховой</th>
+                        <th scope="col">Сумма ПЗН</th>
                         {{-- <th scope="col">Цена сервиса</th> --}}
                         {{-- <th scope="col"></th> --}}
 
                     </tr>
                     <tr>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
 
-
+                        <th scope="col"></th>
                         <th scope="col">Итого</th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col">{{ in_money($summ_ic) }}</th>
 
-                        <th scope="col">{{ $summ_ic }}</th>
+
+                        <th scope="col">{{ in_money($summ_pzn) }}</th>
                         {{-- <th scope="col">{{$summ_service}}</th> --}}
 
 
@@ -657,35 +601,38 @@
 
                     @foreach ($Works as $key => $Work)
                         <tr>
-                            <form name="form{{ $key }}" id='form{{ $key }}'
+                            <form name="form{{ $key + 1000 }}" id='form{{ $key + 1000 }}'
                                 action="/Work/{{ $Work->id }}/update" method="POST">
 
                                 @csrf
                                 <input type="hidden" name="id_application" value='{{ $id }}'>
 
-                                <td scope="col" id="td_id-{{ $key }}">
+                                <td scope="col" id="td_id-{{ $key + 1000 }}">
                                     {{ $key + 1 }}
                                     <a name="{{ $Work->id }}"></a>
                                 </td>
 
-                                <input type="hidden" name="id" id='id-{{ $key }}'
+                                <input type="hidden" name="id" id='id-{{ $key + 1000 }}'
                                     value=' {{ $Work->id }}'>
-                                <td scope="col" id="td_name-{{ $key }}">{{ $Work->name }}</td>
-                                <input type="hidden" name="name" id='name-{{ $key }}'
+                                <td scope="col" id="td_name-{{ $key + 1000 }}">{{ $Work->name }}</td>
+                                <input type="hidden" name="name" id='name-{{ $key + 1000 }}'
                                     value='{{ $Work->name }}'>
-                                <td scope="col" id="td_price-{{ $key }}">{{ $Work->price }}</td>
-                                <input type="hidden" name="price" id='price-{{ $key }}'
-                                    value='{{ $Work->price }}'>
-                                <td scope="col" id="td_count_hours-{{ $key }}">{{ $Work->count_hours }}</td>
-                                <input type="hidden" name="count_hours" id='count_hours-{{ $key }}'
-                                    value='{{ $Work->count_hours }}'>
-                                <td scope="col" id="td_summ-{{ $key }}">{{ $Work->summ }}</td>
-                                <input type="hidden" name="summ" id='summ-{{ $key }}'
-                                    value='{{ $Work->summ }}'>
-                                <td scope="col" id="td_price_service-{{ $key }}">{{ $Work->price_service }}
+                                <th scope="col">{{ in_money($Work->price) }}</th>
+
+                                <th scope="col" id="td_count_hours-{{ $key }}">
+                                    {{ dec2($Work->count_hours) }}</th>
+
+                                <td scope="col" id="td_count_hours_pzn-{{ $key + 1000 }}">
+                                    {{ dec2(isset($Work->count_hours_pzn) ? $Work->count_hours_pzn : $Work->count_hours) }}
                                 </td>
-                                <input type="hidden" name="price_service" id='price_service-{{ $key }}'
-                                    value='{{ $Work->price_service }}'>
+                                <input type="hidden" name="count_hours_pzn" id='count_hours_pzn-{{ $key + 1000 }}'
+                                    value='{{ $Work->count_hours_pzn }}'>
+                                <th scope="col" id="td_summ-{{ $key }}">{{ in_money($Work->summ) }}</th>
+
+                                <th scope="col">
+                                    {{ in_money(isset($Work->count_hours_pzn) ? $Work->count_hours_pzn * str2number($Work->price) : $Work->summ) }}
+                                </th>
+
                                 <td scope="col">
                                     {{-- @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author) --}}
                                     <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
@@ -778,28 +725,28 @@
 
                 @foreach ($Works_serv as $key => $Work)
                     <tr @if ($Work->author == 9) class="sto" @endif>
-                        <form name="form-{{ $key }}" id='form-{{ $key }}'
+                        <form name="form-{{ $key + 2000 }}" id='form-{{ $key + 2000 }}'
                             action="/Work/{{ $Work->id }}/update" method="POST">
 
                             @csrf
                             <input type="hidden" name="id_application" value='{{ $id }}'>
 
-                            <td scope="col" id="td_id--{{ $key }}">
+                            <td scope="col" id="td_id--{{ $key + 2000 }}">
                                 {{ $key + 1 }}
                                 <a name="{{ $Work->id }}"></a>
                             </td>
 
-                            <input type="hidden" name="id" id='id--{{ $key }}'
+                            <input type="hidden" name="id" id='id--{{ $key + 2000 }}'
                                 value=' {{ $Work->id }}'>
-                            <td scope="col" id="td_name--{{ $key }}">{{ $Work->name }}</td>
-                            <input type="hidden" name="name" id='name--{{ $key }}'
+                            <td scope="col" id="td_name--{{ $key + 2000 }}">{{ $Work->name }}</td>
+                            <input type="hidden" name="name" id='name--{{ $key + 2000 }}'
                                 value='{{ $Work->name }}'>
 
-                            <td id="td_price_service--{{ $key }}" scope="col">{{ $Work->price_service }}
+                            <td id="td_price_service--{{ $key + 2000 }}" scope="col">{{ $Work->price_service }}
                             </td>
-                            <input type="hidden" name="price_service" id='price_service--{{ $key }}'
+                            <input type="hidden" name="price_service" id='price_service--{{ $key + 2000 }}'
                                 value='{{ $Work->price_service }}'>
-                            <input type="hidden" name="summ" id='summ--{{ $key }}'
+                            <input type="hidden" name="summ" id='summ--{{ $key + 2000 }}'
                                 value='{{ $Work->summ }}'>
 
                             <td scope="col">
@@ -862,7 +809,7 @@
                         <th>Сертификат:</th>
                         <td id="td_sertificat-400">
                             @if (isset($sertificat))
-                                {{ Number::Currency($sertificat, 'RUR', 'ru') }}
+                                {{ In_money($sertificat) }}
                             @endif
                         </td>
                     </form>
@@ -891,7 +838,7 @@
                         <th>Cтоимость узлов и деталей:</th>
                         <td id='td_price_sp_full-500'>
                             @if (isset($estimate->price_sp_full))
-                                {{ Number::Currency((float) $estimate->price_sp_full, 'RUR', 'ru') }}
+                                {{ In_money((float) $estimate->price_sp_full) }}
                             @endif
                         </td>
                     </tr>
@@ -902,7 +849,7 @@
                         <th>Cтоимость узлов и деталей c учетом износа:</th>
                         <td id='td_price_sp_half-500'>
                             @if (isset($estimate->price_sp_half))
-                                {{ Number::Currency((float) $estimate->price_sp_half, 'RUR', 'ru') }}
+                                {{ In_money((float) $estimate->price_sp_half) }}
                             @endif
                         </td>
                     </tr>
@@ -913,7 +860,7 @@
                         <th>Cтоимость ремонта/замены:</th>
                         <td id='td_price_repair-500'>
                             @if (isset($estimate->price_repair))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair * 1.1 : (float) $estimate->price_repair, 2), 'RUR', 'ru') }}
+                                {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair * 1.1 : (float) $estimate->price_repair, 2)) }}
                             @endif
                         </td>
                     </tr>
@@ -924,7 +871,7 @@
                         <th>Cтоимость окраски контроля: </th>
                         <td id='td_price_paint-500'>
                             @if (isset($estimate->price_paint))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint, 2), 'RUR', 'ru') }}
+                                {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_paint * 1.1 : (float) $estimate->price_paint, 2)) }}
                             @endif
                         </td>
                     </tr>
@@ -935,7 +882,7 @@
                         <th>Cтоимость расходных материалов: </th>
                         <td id='td_price_zip-500'>
                             @if (isset($estimate->price_zip))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip, 2), 'RUR', 'ru') }}
+                                {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_zip * 1.1 : (float) $estimate->price_zip, 2)) }}
                             @endif
                         </td>
                     </tr>
@@ -946,7 +893,7 @@
                         <th>Cтоимость работ и материалов: </th>
                         <td id='td_price_work-500'>
                             @if (isset($estimate->price_work))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work, 2), 'RUR', 'ru') }}
+                                {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_work * 1.1 : (float) $estimate->price_work, 2)) }}
                             @endif
                         </td>
                     </tr>
@@ -957,7 +904,7 @@
                         <th>Cтоимость восстановительного ремонта (Всего) </th>
                         <td id='td_price_repair_full-500'>
                             @if (isset($estimate->price_repair_full))
-                                {{ Number::Currency(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair_full * 1.1 : (float) $estimate->price_repair_full, 2), 'RUR', 'ru') }}
+                                {{ In_money(round(isset($estimate->emr10) && $estimate->emr10 ? (float) $estimate->price_repair_full * 1.1 : (float) $estimate->price_repair_full, 2)) }}
                             @endif
                         </td>
                     </tr>
@@ -966,7 +913,7 @@
                         <th>Фактическая стоимость восстановительного ремонта </th>
                         <th>
                             @if (isset($summ_order) && isset($summ_service))
-                                {{ Number::Currency($summ_order + $summ_service, 'RUR', 'ru') }}
+                                {{ In_money($summ_order + $summ_service) }}
                             @endif
                         </th>
 
@@ -982,9 +929,9 @@
                         alert alert-danger @endif
                     ">
                                     @if ($estimate->emr10)
-                                        {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) * 1.1, 'RUR', 'ru') }}
+                                        {{ In_money($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full) * 1.1) }}
                                     @else
-                                        {{ Number::Currency($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full), 'RUR', 'ru') }}
+                                        {{ In_money($summ_order + $summ_service + $sertificat - (int) str_replace(' ', '', $estimate->price_repair_full)) }}
                                     @endif
 
                                 </div>
