@@ -682,6 +682,9 @@ class ImapController extends Controller
 
                 echo $uid . "<br />";
                 $last_uid = $uid;
+                $mailbox = mailbox::where('id', '=', 1)->first();
+                $mailbox->last_message_uid = $last_uid;
+                $mailbox->save();
                 $messages = $folder->messages()->where(['uid' => $uid])->get();
                 // dd($messages, $uid);
                 foreach ($messages as $message) {
@@ -751,9 +754,6 @@ class ImapController extends Controller
                 }
             }
             if ($last_uid != (-1)) {
-                $mailbox = mailbox::where('id', '=', 1)->first();
-                $mailbox->last_message_uid = $last_uid;
-                $mailbox->save();
             }
         }
 
@@ -778,6 +778,9 @@ class ImapController extends Controller
 
                 echo $uid . "<br />";
                 $last_uid = $uid;
+                $mailbox = mailbox::where('id', '=', 2)->first();
+                $mailbox->last_message_uid = $last_uid;
+                $mailbox->save();
                 $messages = $folder->messages()->where(['uid' => $uid])->get();
                 // dd($messages, $uid);
                 foreach ($messages as $message) {
@@ -834,11 +837,6 @@ class ImapController extends Controller
                         }
                     }
                 }
-            }
-            if ($last_uid != (-1)) {
-                $mailbox = mailbox::where('id', '=', 2)->first();
-                $mailbox->last_message_uid = $last_uid;
-                $mailbox->save();
             }
         }
         // dd($emailes);
