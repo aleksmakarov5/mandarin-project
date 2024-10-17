@@ -776,7 +776,7 @@ class ImapController extends Controller
             $last_uid = -1;
             foreach ($emailes as $uid => $email) {
 
-                echo $uid . "<br />";
+                echo "<br />" . $uid . "<br />";
                 $last_uid = $uid;
                 $mailbox = mailbox::where('id', '=', 2)->first();
                 $mailbox->last_message_uid = $last_uid;
