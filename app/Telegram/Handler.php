@@ -32,11 +32,10 @@ class Handler extends WebhookHandler
             $chat_id = $message->chat->id;
             $photo = $message->photo;
 
-            $response = $this->chat->sendPhoto()
-                ->chatId($chat_id)
+            $response = $this->chat
+                ->html("ghbdtn")
                 ->photo($photo[0]['file_id'])
-                ->caption($message->caption)
-                ->getResult();
+                ->send();
         }
 
         Log::info($text);
