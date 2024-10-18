@@ -973,6 +973,27 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
         $application->delete();
+        $notifications = notify::where('id_application', '=', $id)->get();
+        foreach ($notifications as $notification) {
+            $notification->delete();
+        }
+        $status_applications = status_application::where('id_application', '=', $id)->get();
+        foreach ($status_applications as $status) {
+            $status->delete();
+        }
+        $status_chats = status_chat::where('id_application', '=', $id)->get();
+        foreach ($status_chats as $status) {
+            $status->delete();
+        }
+        $status_messages = status_message::where('id_application', '=', $id)->get();
+        foreach ($status_messages as $status) {
+            $status->delete();
+        }
+        // Delete all files in directory (including subdirectories)
+        $dir = 'storage/files/' . $id;
+        if (is_dir($dir))
+            exec('rm -fr ' . $dir);
+
 
         return redirect()
             ->route('applications');
