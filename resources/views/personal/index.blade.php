@@ -7,7 +7,7 @@
 
         <h1 class="h3 mb-3 fw-normal">Личный кабинет</h1>
         @csrf
-        Выберите тему
+        {{-- Выберите тему
         <div class="form_radio_btn dark">
             <input id="radio-5" type="radio" name="theme" value="dark" @if ($user->theme == 'dark') checked @endif
                 onchange="document.forms['form'].submit();">
@@ -17,7 +17,7 @@
             <input id="radio-6" type="radio" name="theme" value="light" onchange="document.forms['form'].submit();"
                 @if ($user->theme == 'light') checked @endif>
             <label for="radio-6">светлая</label>
-        </div>
+        </div> --}}
         <br>
         <br>
         <br>
