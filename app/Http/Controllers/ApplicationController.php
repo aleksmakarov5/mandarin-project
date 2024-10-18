@@ -589,7 +589,9 @@ class ApplicationController extends Controller
             }
             if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
                 $application->count_hour = $current->diffInDays($application->end_date);
-                $start = carbon::create($application->napr_date);
+
+                $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
                 $application->max_hour = $start->diffInDays($application->end_date);
             }
             $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
@@ -879,6 +881,11 @@ class ApplicationController extends Controller
                 'pred_phone' => 'nullable|string'
 
             ]);
+            if (isset($data['start_date'])) {
+                $end_date = WorkCalendar::create($data['start_date']);
+                $end_date->addWorkDays(30);
+                $data['end_date'] = $end_date;
+            }
 
             $phone = $data['ClientPhone'];
             $phone = preg_replace('/[^0-9]/', '', $phone);
@@ -2674,12 +2681,13 @@ class ApplicationController extends Controller
 
         $application->id_status = $status_id;
         if ($status_id == 12) {
+
             $today = WorkCalendar::now();
             $today->addWorkDays(30);
             $application->end_date = $today;
 
             $application->napr_date = carbon::now();
-
+            // dd($application);
             // dd($today, $application->end_date);
         }
         // dd ($application->id_status);

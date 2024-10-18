@@ -212,13 +212,7 @@
             value="{{ $application->start_date }}">
         <div class='lbl'><label for="start_date">Дата начала ремонта</label></div>
     </div>
-    <div class="form-float">
-        <input type="date" name="end_date" id="end_date" class="form-cont"
-            value="{{ $application->end_date }}">
-        <div class='lbl'>
-            <label for="end_date">Дата окончания ремонта</label>
-        </div>
-    </div>
+
     <div class="form-float">
         <input type="text" name="wait_sp" id="wait_sp" class="form-cont" value="{{ $application->wait_sp }}">
         <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
