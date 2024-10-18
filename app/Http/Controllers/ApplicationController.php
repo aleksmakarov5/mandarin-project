@@ -2619,9 +2619,10 @@ class ApplicationController extends Controller
         $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
         $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
         $files = [];
-        for ($i = 0; $i < count($request->location); $i++) {
-            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
-        }
+        if (isset($request->location[0]))
+            for ($i = 0; $i < count($request->location); $i++) {
+                $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+            }
 
 
         Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
