@@ -2876,9 +2876,10 @@ class ApplicationController extends Controller
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
         $files = [];
-        for ($i = 0; $i < count($request->location); $i++) {
-            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
-        }
+        if (isset($request->location[0]))
+            for ($i = 0; $i < count($request->location); $i++) {
+                $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+            }
 
 
         Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
@@ -2949,9 +2950,10 @@ class ApplicationController extends Controller
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
         $files = [];
-        for ($i = 0; $i < count($request->location); $i++) {
-            $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
-        }
+        if (isset($request->location[0]))
+            for ($i = 0; $i < count($request->location); $i++) {
+                $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+            }
 
 
         Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
@@ -2963,13 +2965,13 @@ class ApplicationController extends Controller
             }
         });
         $application = application::findOrFail($id);
-        $application->id_status = 22;
-        $history = new history;
-        $history->id_user = Auth::user()->id;
-        $history->id_status = 22;
-        $history->id_application = $id;
-        $history->comment = $request->comment;
-        $history->save();
+        // $application->id_status = 22;
+        // $history = new history;
+        // $history->id_user = Auth::user()->id;
+        // $history->id_status = 22;
+        // $history->id_application = $id;
+        // $history->comment = $request->comment;
+        // $history->save();
         $messages = new message();
         $messages->application_id = $id;
         $messages->subject = message::where('application_id', '=', $id)->first()->subject;
@@ -2988,10 +2990,10 @@ class ApplicationController extends Controller
         $address->type = 'to';
         $address->email = $request->to;
         $address->save();
-        $history->id_user = Auth::user()->id;
-        $history->id_application = $id;
-        $history->id_status = 22;
-        $history->save();
+        // $history->id_user = Auth::user()->id;
+        // $history->id_application = $id;
+        // $history->id_status = 22;
+        // $history->save();
         $application->save();
         return redirect()->route('applications');
     }
