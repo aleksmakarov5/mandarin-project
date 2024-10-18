@@ -2942,7 +2942,7 @@ class ApplicationController extends Controller
 
     public function answer_ic_sch_sent(Request $request, $id)
     {
-        dd($request);
+        // dd($request);
 
         // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
         $data["email"] = "aleksmakarov5@yandex.ru";
