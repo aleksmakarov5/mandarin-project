@@ -137,6 +137,9 @@
 
 
                                 <h5>{{ $app->vin }}</h5>
+
+                                <div class="td_round {{ $currentStatus->status_theme }}">{{ $currentStatus->StatusName }}
+                                </div>
                             </div>
                         </td>
                         @can('company')
