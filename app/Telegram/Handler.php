@@ -24,15 +24,14 @@ use App\Models\promotion;
 use Jenssegers\Date\Date;
 
 
+
 class Handler extends WebhookHandler
 {
     public function handleChatMessage(Stringable $text): void
     {
-        $this->reply('*Привет!* Пока я имею только говорить привет.');
-        $update = new TelegramUpdate;
-        $message = $this->chat->getFile();
-
-        Log::info($text);
+        // $this->reply('*Привет!* Пока я имею только говорить привет.');
+        // $update = new TelegramUpdate;
+        // Log::info($text);
     }
     public function hello(string $name): void
     {
