@@ -12,7 +12,7 @@
                    
                         <th>Сертификат:</th>
                         <td @click="editEstimateSert(estimate.sert)">
-                        {{ estimate.sert }}
+                        {{ makeMoney(estimate.sert) }}
                         </td>
                     
                 </tr>
@@ -271,8 +271,8 @@
             this.price_repair_full = RepairFull 
             this.editRepairFull=true
         },
-        editEstimateSert(Sert) {
-            this.sert = Sert
+        editEstimateSert(sert) {
+            this.sert = sert
             this.editSert = true
         },
 
@@ -304,6 +304,7 @@
                this.editZip = false
                this.editWork = false
                this.editRepairFull = false
+               this.editSert = false
             
            })
             

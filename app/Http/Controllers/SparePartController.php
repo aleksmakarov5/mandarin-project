@@ -152,6 +152,7 @@ class SparePartController extends Controller
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
         $sertificat = application::findOrFail($id)->sertificat;
+
         $eco = '';
 
         $Works_ic = DB::table('works')

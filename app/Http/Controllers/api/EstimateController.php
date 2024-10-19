@@ -13,6 +13,7 @@ class EstimateController extends Controller
     public function show($id)
     {
         $sert = application::findOrFail($id)->sertificat;
+
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         if ($estimates == null)
             $estimates = estimate::updateorcreate(
@@ -129,7 +130,8 @@ class EstimateController extends Controller
 
                 ]
             );
-        $app = application::findOrFail($request->id_application)->first();
+        $app = application::where('id', '=', $request->id_application)->first();
+        // dd($app);
         $app->sertificat = $request->sert;
         $app->save();
         $estimate->sert = $app->sertificat;
