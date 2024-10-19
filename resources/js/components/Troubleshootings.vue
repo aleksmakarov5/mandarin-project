@@ -37,11 +37,10 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td><input type="text" size="10" id="PartName" v-model="PartName" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" 
-                        @keydown.enter="updateTroubleshooting(troubleshooting.id)" 
-                         @oninput="this.size=Math.max(this.value.length, 10)"></td>
-                    <td><div contenteditable="true"><input type="text" id="Сonclusion" v-model="Сonclusion" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
-                    <td><div contenteditable="true"><input type="text" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></div></td>
+                    <td><textarea id="PartName" v-model="PartName"  cols=100 class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" 
+                        @keydown.enter="updateTroubleshooting(troubleshooting.id)" ></textarea></td>
+                    <td><div contenteditable="true"><textarea id="Сonclusion" v-model="Сonclusion" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
+                    <td><div contenteditable="true"><textarea id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
                     <td scope="col"> <a @click.prevent="deletetroubleshooting(troubleshooting.id)">
                         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
                     </td>
