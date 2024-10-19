@@ -300,6 +300,17 @@ td.mrksto {
     margin-right: 5px;
 }
 
+.troubleshooting {
+    border-collapse: collapse;
+    border-color: rgb(80, 80, 80);
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+.troubleshooting td {
+    max-width: 500px;
+}
+
 .editable td {
     padding-left: 5px;
     padding-right: 5px;
@@ -307,17 +318,20 @@ td.mrksto {
     white-space: nowrap;
 }
 
+
 .editable tbody {
     cursor: pointer;
 
 }
 
-.editable thead {
+.editable thead,
+.troubleshooting thead {
     color: white;
 }
 
 .editable th,
-.editable td {
+.editable td,
+.troubleshooting td {
     border: 1px solid #000;
     padding-left: 5px;
     padding-right: 5px;
@@ -325,11 +339,10 @@ td.mrksto {
     border-color: rgb(80, 80, 80);
     padding-top: 0px;
     padding-bottom: 0px;
-
-
 }
 
-.editable th {
+.editable th,
+.troubleshooting th {
     background: #30a9d8;
     border-color: white;
     padding-left: 3px;

@@ -1,6 +1,6 @@
 <template>
 <div align="center">
-    <table class="editable">
+    <table class="troubleshooting">
         <thead>
 
             <tr>
@@ -37,10 +37,10 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td><textarea id="PartName" v-model="PartName"  cols=100 class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" 
+                    <td><textarea id="PartName" v-model="PartName" class="w-100"  cols=400 @blur="updateTroubleshooting(troubleshooting.id)" 
                         @keydown.enter="updateTroubleshooting(troubleshooting.id)" ></textarea></td>
-                    <td><div contenteditable="true"><textarea id="Сonclusion" v-model="Сonclusion" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
-                    <td><div contenteditable="true"><textarea id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
+                    <td><div contenteditable="true"><textarea cols="400" id="Сonclusion" v-model="Сonclusion" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
+                    <td><div contenteditable="true"><textarea cols="400" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
                     <td scope="col"> <a @click.prevent="deletetroubleshooting(troubleshooting.id)">
                         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
                     </td>
@@ -49,9 +49,9 @@
               <tr>
                     <td scope="col">
                     </td>
-                    <td><input type="text" id="PartName" v-model="PartName_Cr" class="w-100"></td>
-                    <td><input type="text" id="Сonclusion" v-model="Сonclusion_Cr" class="w-100"></td>
-                    <td><input type="text" id="Work" v-model="Work_Cr" class="w-100"></td>
+                    <td><textarea cols="400" id="PartName" v-model="PartName_Cr" class="w-100"></textarea></td>
+                    <td><textarea cols="400" id="Сonclusion" v-model="Сonclusion_Cr" class="w-100"></textarea></td>
+                    <td><textarea cols="400" id="Work" v-model="Work_Cr" class="w-100"></textarea></td>
                     <td scope="col"><a  @click.prevent="createTroubleshooting()">
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
