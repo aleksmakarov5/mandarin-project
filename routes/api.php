@@ -6,6 +6,7 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\api\TroubleshootingController;
 use App\Http\Controllers\api\EstimateController;
 use App\Http\Controllers\NotifyCountController;
+use App\Http\Controllers\api\FactWorkController;
 
 
 
@@ -59,6 +60,21 @@ Route::group(['namespace' => 'Estimate', 'prefix' => 'estimate'], function () {
         'update'
     ])->name('troubleshooting.update');
     Route::delete('/{id}', [EstimateController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+Route::group(['namespace' => 'FactWork', 'prefix' => 'factwork'], function () {
+    // Route::delete('/{id}', [NotificationController::class, 'delete']);
+    // Route::get('/{id}', 'ShowController');
+    Route::get('/{id}', [FactWorkController::class, 'show'])
+        ->name('troubleshooting.index');
+    Route::post('/create', [FactWorkController::class, 'store'])
+        ->name('troubleshooting.create');
+    Route::post('/{id}/update', [
+        FactWorkController::class,
+        'update'
+    ])->name('troubleshooting.update');
+    Route::delete('/{id}', [FactWorkController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

@@ -3,7 +3,7 @@
     <button class="accordion-est" @click="show=!show">
             Итого
         </button>
-<div :class="show?'d_none':''">
+<div :class="show?'':'d_none'">
 
     <a :href="'/application/'+id_app+'/doc_load'" class="nav-link">Загрузить данные из калькуляции</a>
     
@@ -202,7 +202,7 @@
                 price_repair_full: '',
                 emr10:0,
                 
-                show: false,
+                show: true,
             }
         },
 	   
@@ -228,16 +228,7 @@
             })
 
         },
-        deletetroubleshooting(id) {
-            if (confirm('Точно удалить?')) 
-            {
-                axios.delete(`/api/estimate/${id}`)
-                .then(res => {
-                    this.getEstimate()
-                })
-            }
-            
-        },
+       
         editEstimateSpFull(SpFull){
             this.price_sp_full = SpFull 
         this.editSpFull=true
@@ -310,18 +301,7 @@
             
             
         },
-        createEstimate()
-        {
-             axios.post(`/api/estimate/create`, {
-                id_application: this.app_id, PartName: this.PartName_Cr, Work: this.Work_Cr,  Сonclusion: this.Сonclusion_Cr
-            })
-           .then(res => {
-            this.getEstimate()
-           })
-            this.PartName_Cr = ''
-            this.Work_Cr = ''
-            this.Сonclusion_Cr = ''
-        },
+       
         makeMoney(n) {
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
         }
