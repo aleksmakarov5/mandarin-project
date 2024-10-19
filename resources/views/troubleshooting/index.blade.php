@@ -7,7 +7,7 @@
     <a href="/answer_ic_mrk/{{ $id }}" class="nav-link">Отправить в страховую компанию</a>
 
 
-
+    {{-- 
     <table class="editable" id="demo">
         <thead>
 
@@ -109,12 +109,13 @@
                 @endforeach
             </ul>
         </div>
-    @endif
-    {{-- <div id="app">
+    @endif --}}
+
+    <div id="app">
         <troubleshootings :app_id={{ $id }}>
 
-    </div> --}}
-    <script>
+    </div>
+    {{-- <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
             var table = document.getElementById(table);
@@ -194,5 +195,5 @@
                 }
             }
         };
-    </script>
+    </script> --}}
 @endsection
