@@ -38,14 +38,14 @@
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditWorkId(work.id, work.name,  work.price_service)" @contextmenu.prevent="deletework(work.id)">
+    <td @click="changeEditWorkId(work.id, work.name,  work.price_service)" >
         {{ work.name }}</td>
   
     <td @click="changeEditWorkId(work.id, work.name,  work.price_service)">
         {{ makeMoney(work.price_service) }}</td>
     
-    <td scope="col" @click.prevent="deleteWork(work.id)">
-        <img src="/storage/img/delete.png" width="20" alt="delete">
+    <td scope="col"><a @click.prevent="deletework(work.id)">
+        <img src="/storage/img/delete.png" width="30" alt="delete"></a>
     </td>
 </tr>
                    <tr :class="isEdit(work.id)?'':'d_none'">
@@ -56,8 +56,8 @@
                         @keydown.enter="updateWork(work.id)" ></textarea></td>
                     <td><input type="text" id="price_service" v-model="price_service" class="w-100" @blur="updateWork(work.id)" 
                         @keydown.enter="updateWork(work.id)"></td>
-                    <td scope="col"> <a @click.prevent="deletework(work.id)">
-                        <img src="/storage/img/delete.png" width="15" alt="delete"></a>
+                    <td scope="col"> 
+                        <img src="/storage/img/delete.png" width="15" alt="delete">
                     </td>
                 </tr>
 </template>
