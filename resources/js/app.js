@@ -8,6 +8,7 @@ import NotifyApp from './components/NotifyApp.vue';
 import PostNotify from './components/PostNotify.vue';
 import NextStep from './components/NextStep.vue';
 import Troubleshootings from './components/Troubleshootings.vue';
+import Estimate from './components/Estimate.vue';
 
 
 
@@ -24,8 +25,7 @@ const app = createApp({
   components: {
     NotifyCounter,
     Troubleshootings,
-    
-    
+    Estimate  
   },
 })
 app.mount('#app')

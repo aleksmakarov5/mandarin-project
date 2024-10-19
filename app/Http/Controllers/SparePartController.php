@@ -22,7 +22,6 @@ class SparePartController extends Controller
         $Works_serv = DB::table('works')
             ->where('id_application', '=', $id)
             ->where('price_service', '<>', 0)
-
             ->get();
         $summ_service = 0;
         foreach ($Works_serv as $work) {
@@ -102,6 +101,8 @@ class SparePartController extends Controller
                 ->get();
 
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        // dd($estimates);
+
         $Works_serv = DB::table('works')
             ->where('id_application', '=', $id)
             ->get();
@@ -193,7 +194,6 @@ class SparePartController extends Controller
             "Works_serv" => $Works_serv->all(),
             'delta' => $delta,
             'summ_ic' => $summ_ic,
-
             'summ_pzn' => $summ_pzn,
         ]);
     }

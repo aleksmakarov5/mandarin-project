@@ -792,12 +792,14 @@
         </table>
     </div>
     @can('company')
-        <button class="accordion-est">
-            Итого
-        </button>
-        <div class="panel" style="max-height: 10008px;">
+        <div id="app">
+            <estimate :app_id={{ $id }}>
 
-            <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из калькуляции</a>
+        </div>
+
+        {{-- <div class="panel" style="max-height: 10008px;">
+
+
             <table id='demo' class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
                     <form action="/sertificat/{{ $id }}" method="POST" id="form400" name="form400">
@@ -938,7 +940,7 @@
                 </form>
 
             </table>
-        </div>
+        </div> --}}
     @endcan
     <script>
         function tableSearch(k, table) {
