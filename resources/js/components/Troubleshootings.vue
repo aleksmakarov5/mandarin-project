@@ -1,5 +1,5 @@
 <template>
-<div>
+<div align="center">
     <table class="editable">
         <thead>
 
