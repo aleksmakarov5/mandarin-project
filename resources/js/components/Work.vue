@@ -46,7 +46,7 @@
   <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
         {{ makeCount(work.count_hours) }}</th>
     <td @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
-        {{ makeCount(work.count_hours_pzn?work.count_hours_pzn:work.count_hours) }}</td>
+        {{ makeCount(work.count_hours_pzn&&work.count_hours_pzn!=0?work.count_hours_pzn:work.count_hours) }}</td>
         <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
         {{ makeMoney(work.summ) }}</th>
         <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
