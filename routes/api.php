@@ -7,6 +7,7 @@ use App\Http\Controllers\api\TroubleshootingController;
 use App\Http\Controllers\api\EstimateController;
 use App\Http\Controllers\NotifyCountController;
 use App\Http\Controllers\api\FactWorkController;
+use App\Http\Controllers\api\WorkController;
 
 
 
@@ -67,14 +68,30 @@ Route::group(['namespace' => 'FactWork', 'prefix' => 'factwork'], function () {
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');
     Route::get('/{id}', [FactWorkController::class, 'show'])
-        ->name('troubleshooting.index');
+        ->name('work.index');
     Route::post('/create', [FactWorkController::class, 'store'])
-        ->name('troubleshooting.create');
+        ->name('work.create');
     Route::post('/{id}/update', [
         FactWorkController::class,
         'update'
-    ])->name('troubleshooting.update');
+    ])->name('work.update');
     Route::delete('/{id}', [FactWorkController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+
+Route::group(['namespace' => 'Work', 'prefix' => 'work'], function () {
+    // Route::delete('/{id}', [NotificationController::class, 'delete']);
+    // Route::get('/{id}', 'ShowController');
+    Route::get('/{id}', [WorkController::class, 'show'])
+        ->name('work.index');
+    Route::post('/create', [WorkController::class, 'store'])
+        ->name('work.create');
+    Route::post('/{id}/update', [
+        WorkController::class,
+        'update'
+    ])->name('work.update');
+    Route::delete('/{id}', [WorkController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

@@ -554,7 +554,8 @@
             </div>
         @endif
         @can('company')
-            <button class="accordion-est">
+            <work :app_id={{ $id }}></work>
+            {{-- <button class="accordion-est">
                 Работы по калькуляции
             </button>
             <div style="max-height: 10008px;">
@@ -577,8 +578,6 @@
                             <th scope="col">Часы ПЗН</th>
                             <th scope="col">Сумма страховой</th>
                             <th scope="col">Сумма ПЗН</th>
-                            {{-- <th scope="col">Цена сервиса</th> --}}
-                            {{-- <th scope="col"></th> --}}
 
                         </tr>
                         <tr>
@@ -592,7 +591,6 @@
 
 
                             <th scope="col">{{ in_money($summ_pzn) }}</th>
-                            {{-- <th scope="col">{{$summ_service}}</th> --}}
 
 
                         </tr>
@@ -636,11 +634,10 @@
                                     </th>
 
                                     <td scope="col">
-                                        {{-- @if (Auth::user()->GroupId == 5 || Auth::user()->GroupId == $Work->author) --}}
                                         <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
                                             href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
                                                 src="/storage/img/delete.png" width="20" alt="delete"></a>
-                                        {{-- @endif --}}
+                                        
                                     </td>
                             </tr>
                             </form>
@@ -674,7 +671,7 @@
                         </tr>
                     </tbody>
                 </table>
-            </div>
+            </div> --}}
         @endcan
         <fact-work :app_id={{ $id }}></fact-work>
 

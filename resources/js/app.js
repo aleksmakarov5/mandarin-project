@@ -10,6 +10,8 @@ import NextStep from './components/NextStep.vue';
 import Troubleshootings from './components/Troubleshootings.vue';
 import Estimate from './components/Estimate.vue';
 import FactWork from './components/FactWork.vue';
+import Work from './components/Work.vue';
+
 
 
 
@@ -28,7 +30,8 @@ const app = createApp({
     NotifyCounter,
     Troubleshootings,
     Estimate,
-    FactWork
+    FactWork,
+    Work
   },
 })
 app.mount('#app')
