@@ -35,6 +35,8 @@ if (!function_exists('str2number')) {
     function str2number($str)
     {
         $str = str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $str));
+        if (!$str)
+            $str = 0;
         return round((float)($str), 2);
     }
 }
