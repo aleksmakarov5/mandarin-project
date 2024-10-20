@@ -51,7 +51,7 @@
         {{ makeMoney(work.summ) }}</th>
         <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
         {{
-            makeMoney((work.count_hours_pzn ? work.count_hours_pzn : work.count_hours) * work.price) }}
+            makeMoney((work.count_hours_pzn&&work.count_hours_pzn!=0 ? work.count_hours_pzn : work.count_hours) * work.price) }}
         </th>
     
     <td scope="col"><a @click.prevent="deletework(work.id)">
