@@ -5,7 +5,7 @@ namespace App\Http\Controllers\api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\sparepart;
+use App\Models\SparePart;
 
 class SparePartController extends Controller
 {
@@ -60,7 +60,7 @@ class SparePartController extends Controller
 
     public function store(Request $request)
     {
-        $sparepart = new sparepart;
+        $sparepart = new SparePart;
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
@@ -74,7 +74,7 @@ class SparePartController extends Controller
 
     public function update(Request $request, $id)
     {
-        $sparepart = sparepart::findOrFail($request->id);
+        $sparepart = SparePart::findOrFail($request->id);
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
@@ -123,7 +123,7 @@ class SparePartController extends Controller
 
     public function destroy($id)
     {
-        $sparepart = sparepart::findOrFail($id);
+        $sparepart = SparePart::findOrFail($id);
         $sparepart->delete();
         return '';
     }
