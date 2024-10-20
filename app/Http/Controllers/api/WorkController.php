@@ -38,6 +38,8 @@ class WorkController extends Controller
             'price' => 'required',
             'summ' => 'required',
         ]);
+        $data['count_hours'] = str2number($data['count_hours']);
+        $data['price'] = str2number($data['price']);
         $data['summ'] = round($data['summ'], 2);
         foreach ($data as $key => $value) {
             $work->$key = $value;
@@ -55,6 +57,8 @@ class WorkController extends Controller
             'name' => 'nullable',
             'count_hours_pzn' => 'nullable',
         ]);
+
+        $data['count_hours_pzn'] = str2number($data['count_hours_pzn']);
 
         foreach ($data as $key => $val) {
             $work->$key = $val;
