@@ -300,6 +300,10 @@ td.mrksto {
     margin-right: 5px;
 }
 
+.editable td input {
+    color: #000;
+}
+
 .troubleshooting {
     border-collapse: collapse;
     border-color: rgb(80, 80, 80);

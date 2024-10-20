@@ -2,10 +2,10 @@
 <template>
     <div>
      <button class="accordion-est" @click="show=!show">
-            Работы по калькуляции
+            Запчасти
         </button>
 <div  :class="show?'':'d_none'">
-    <a :href="'/Work/'+app_id +'/doc_load'" class="nav-link">Загрузить данные из калькуляции</a>
+    <a :href="'/SparePart/'+app_id +'/doc_load'" class="nav-link">Загрузить данные из калькуляции</a>
     <table class="editable" >
         <thead>
 
@@ -18,111 +18,144 @@
                         <th scope="col">Цена СК</th>
                         <th scope="col">Цена ПЗН</th>
 
-                        <th scope="col" colspan="2">Оригинал</th>
-                        <th scope="col" colspan="2">Аналог</th>
-                        <th scope="col" colspan="2">Б/у</th>
+                        <th scope="col">Оригинал</th>
+                        <th scope="col">Аналог</th>
+                        <th scope="col">Б/у</th>
 
-                        <th scope="col">-</th>
                         <th scope="col">Разница </th>
                     
 
                     
 
                     <th scope="col">Комментарий</th>
-                    <template v-if="rout==directions">
+                    <template v-if="rout_it=='directions'">
                         <th scope="col">Статус</th>
                         <th scope="col">Дата заказа</th>
                         <th scope="col">Ожидаемая дата</th>
                     </template>
 
+                            <th scope="col"></th>
                     </tr>
                    <tr>
                         <th scope="col"></th>
                         <th scope="col">Итого</th>
                         <th scope="col"></th>
                         <th scope="col"></th>
-                        <th scope="col">{{ in_money($summ_ic_full) }}</th>
-                        <th scope="col">{{ in_money($summ_sto) }}</th>
-                        <th scope="col" colspan="7"></th>
+                        <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
+                        <th scope="col">{{ makeMoney(summ_sto) }}</th>
+                        <th scope="col" colspan="3"></th>
                         <th scope="col">
-                            <div
-                                
-                                {{ $delta_res_full }}
-                            </div>
+                            
+                                <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
+                               
+                            
                         </th>
 
                         <th scope="col" colspan=2></th>
-                        @if (session('rout') == 'directions')
+                    <template v-if="rout_it=='directions'">
                             <th scope="col"></th>
 
 
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
-                        @endif
+                    </template>
+
                     </tr>
                 
 
         </thead>
         <tbody>
-<template v-for="(work,index) in works">
-<tr :class="isEdit(work.id)?'d_none':''">
+<template v-for="(sparepart,index) in spareparts">
+<tr :class="isEdit(sparepart.id)?'d_none':''">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.name }}</td>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ makeMoney(work.price) }}</th>
-  <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ makeCount(work.count_hours) }}</th>
-    <td @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
-        {{ makeCount(work.count_hours_pzn?work.count_hours_pzn:work.count_hours) }}</td>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ makeMoney(work.summ) }}</th>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
+    <td @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)" >
+        {{ sparepart.name }}</td>
+    <td >
+        {{ sparepart.part_number }}</td>  
+    <td >
+        {{ sparepart.order_number }}</td> 
+        <td  class="ic_price">
+        {{ makeCount(sparepart.price_ic_full) }}</td>
+        <td  class="ic_price" @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
+        {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
+        {{ makeCount(sparepart.price_original) }}</td>
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
+        {{ makeCount(sparepart.price_analogue) }}</td>
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
+        {{ makeCount(sparepart.price_used) }}</td>
+        <th >
+            <div :class="classDanger(sparepart.delta)">
         {{
-            makeMoney((work.count_hours_pzn ? work.count_hours_pzn : work.count_hours) * work.price) }}
-        </th>
-    
-    <td scope="col"><a @click.prevent="deletework(work.id)">
-        <img src="/storage/img/delete.png" width="30" alt="delete"></a>
+            makeCount(sparepart.delta) }}</div></th>
+
+        <td  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
+        {{ sparepart.comment }}</td>
+
+                    <template v-if="rout_it=='directions'">
+        <td >
+        {{ sparepart.statusname }}</td>
+        <td >
+        {{ sparepart.date_price }}</td>
+        <td >
+        {{ sparepart.date_wait }}</td>
+        </template>
+    <td scope="col"><a @click.prevent="deletesparepart(sparepart.id)">
+        <img src="/storage/img/delete.png" width="20" alt="delete"></a>
     </td>
 </tr>
-                   <tr :class="isEdit(work.id)?'':'d_none'">
+                   <tr :class="isEdit(sparepart.id)?'':'d_none'">
                     <td scope="col">
-                        {{ index+1 }}
-                    </td>
-                    <td><textarea id="name" v-model="name" class="w-100"   @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)" ></textarea></td>
-                         <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.price }}</th>
-  <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.count_hours }}</th>
-                    <td><input type="text" id="count_hours_pzn" v-model="count_hours_pzn" class="w-100" @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)"></td>
-                    
-                    <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.summ }}</th>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
-        {{ 
-            makeMoney((work.count_hours_pzn ? work.count_hours_pzn : work.count_hours) * work.price)  }}
-    </th>
+        {{ index+1 }}
+    </td>
+                    <td>
+        <input type="text" id="name" v-model="name" class="w-100" @blur="updateSparePart(sparepart.id)" 
+                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+    <td >
+        {{ sparepart.part_number }}</td>  
+    <td >
+        {{ sparepart.order_number }}</td> 
+        <td  class="ic_price">
+        {{ sparepart.price_ic_full }}</td> 
+        <td>
+        <input type="text" id="name" v-model="price_sto" class="w-100" @blur="updateSparePart(sparepart.id)" 
+                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+        <td  :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
+        {{ sparepart.price_original }}</td>
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
+        {{ sparepart.price_analogue }}</td>
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
+        {{ sparepart.price_used }}</td>
+        <th >
+        {{ sparepart.delta }}</th>
+
+        <td >
+        <textarea id="comment" v-model="comment" class="w-100"   @blur="updateSparePart(sparepart.id)" 
+                        @keydown.enter="updateSparePart(sparepart.id)" ></textarea></td>
+                         <template v-if="rout_it=='directions'">
+        <td >
+
+                   
+        {{ sparepart.statusname }}</td>
+        <td >
+        {{ sparepart.date_price }}</td>
+        <td >
+        {{ sparepart.date_wait }}</td>
+        </template>
         
                 </tr>
 </template>
 <tr>
-                    <td scope="col">
-                    </td>
-                    <td><textarea  id="name" v-model="name_Cr" class="w-100"></textarea></td>
-                    <td><input type="text" id="price" v-model="price_Cr" class="w-100"></td>
-                    <td><input type="text" id="count_hours" v-model="count_hours_Cr" class="w-100"></td>
-                    <td scope="col"><a  @click.prevent="createWork()">
+                    <td scope="col"><a  @click.prevent="createSparePart()">
 
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
-                    <th></th>
-                    <th></th>
+                    <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
+                    
+                    
                 </tr>
         </tbody>
     </table>
@@ -141,98 +174,131 @@
         data(){
             
             return{
-                works:[],
+                spareparts:[],
                 id_app: this.app_id,
-                rout:this.rout,
-                EditWorkId:null,
+                rout_it:this.rout,
+                EditSparePartId:null,
                 name: '',
-                price: '',
-                count_hours_pzn: '',
-                summ:'',
-                name_Cr: '',
-                price_Cr: '',
-                count_hours_Cr: '',
-                summ_pzn:0,
+                part_number: '',
+                order_number: '',
+                price_analogue:'',
+                price_used: '',
+                price_sto:'',
+                date_price: '',
+                statusname: '',
+                date_wait: '',
+                comment: '',
+                summ_sto:0,
+                delta_res_full: 0,
+                delta: 0,
+                selected_price: '',
+                selected_mrk:'',
+                
+                summ_ic_full:0,
+                name_Cr: '',    
                 show:true
             }
         },
 	   
         mounted(){
-            this.getWorks()
+            this.getSpareParts()
             
         },
     methods:{
-        getWorks(){
-            axios.get(`/api/work/${this.id_app}`)
+        getSpareParts(){
+            axios.get(`/api/sparepart/${this.id_app}`)
             .then(res => {
-                this.works = res.data[0]
-                this.summ=res.data[1]
+                this.spareparts = res.data[0]
+                this.summ_ic_full = res.data[1]
+                this.summ_sto = res.data[2]
+                this.delta_res_full = res.data[3]
                 console.log(res)
             })
 
         },
-        deletework(id) {
+        deletesparepart(id) {
             if (confirm('Точно удалить?')) 
             {
-axios.delete(`/api/work/${id}`)
+        axios.delete(`/api/sparepart/${id}`)
                 .then(res => {
-                    this.getWorks()
+                    this.getSpareParts()
                 })
             }
             
         },
-        changeEditWorkId(id,name,count_hours_pzn) {
-            this.EditWorkId=id
+        changeEditSparePartId(id,name,comment,price_sto) {
+            this.EditSparePartId=id
             this.name=name
-            this.count_hours_pzn=count_hours_pzn
+            this.comment=comment
+            this.price_sto = price_sto
+            console.log(this)
         },
         isEdit(id){
-            return this.EditWorkId===id
+            return this.EditSparePartId===id
         },
-        updateWork(id)
+        updateSparePart(id)
         {
-            axios.post(`/api/work/${id}/update`, {
+            axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
                 name: this.name,
-                count_hours_pzn: this.count_hours_pzn,
+                comment: this.comment,
+                price_sto: this.price_sto
                 
             })
            .then(res => {
-            this.getWorks() 
+            this.getSpareParts() 
            })
-           this.changeEditWorkId(null)
+           console.log(this)
+           this.changeEditSparePartId(null)
             
         },
-        createWork()
-        {
-             axios.post(`/api/work/create`, {
-                 id_application: this.app_id,
-                 name: this.name_Cr,
-                 price: this.price_Cr,
-                 count_hours: this.count_hours_Cr,
-                summ: this.makeCount(this.price_Cr)*this.makeCount(this.count_hours_Cr)
+        updateSparePartMrk(id, select,name)
+        { axios.post(`/api/sparepart/${id}/update`, {
+                id_application: this.app_id,
+                name: name,
+                selected_mrk: select 
             })
            .then(res => {
-            this.getWorks()
+            this.getSpareParts() 
+           })
+          
+            
+
+        },
+
+        createSparePart()
+        {
+             axios.post(`/api/sparepart/create`, {
+                 id_application: this.app_id,
+                 name: this.name_Cr,
+            })
+           .then(res => {
+            this.getSpareParts()
            })
             this.name_Cr = ''
-            this.price_Cr = ''
-            this.count_hours_Cr = ''
         },
          makeMoney(n) {
+            if (!n) n = 0;
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
          },
         makeCount(n) {
+            if (!n) n = 0;
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
         },
-        count_summ_pzn(count_pzn, count, pr) {
-            this.summ_pzn = this.summ_pzn +(count_pzn ? count_pzn : count) * pr;
-            return this.makeMoney((count_pzn ? count_pzn : count) * pr);
+        classDanger(n) {
+            if (n < 0) return 'alert alert-success';
+            else
+            return 'alert alert-danger';
         },
-
-
-        
-        
+        classSelect(n, mrk, zap) {
+            if (mrk == n && zap == n) return 'zapmrk';
+            else
+                if (zap == n) return 'zap';
+                else
+                    if (mrk == n) return 'mrk';
+                    else
+                        return '';
+        }
     }
        
 	}

@@ -8,6 +8,7 @@ use App\Http\Controllers\api\EstimateController;
 use App\Http\Controllers\NotifyCountController;
 use App\Http\Controllers\api\FactWorkController;
 use App\Http\Controllers\api\WorkController;
+use App\Http\Controllers\api\SparePartController;
 
 
 
@@ -92,6 +93,22 @@ Route::group(['namespace' => 'Work', 'prefix' => 'work'], function () {
         'update'
     ])->name('work.update');
     Route::delete('/{id}', [WorkController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+
+Route::group(['namespace' => 'SparePart', 'prefix' => 'sparepart'], function () {
+    // Route::delete('/{id}', [NotificationController::class, 'delete']);
+    // Route::get('/{id}', 'ShowController');
+    Route::get('/{id}', [SparePartController::class, 'show'])
+        ->name('sparepart.index');
+    Route::post('/create', [SparePartController::class, 'store'])
+        ->name('sparepart.create');
+    Route::post('/{id}/update', [
+        SparePartController::class,
+        'update'
+    ])->name('sparepart.update');
+    Route::delete('/{id}', [SparePartController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

@@ -148,8 +148,8 @@ class SparePartController extends Controller
                     break;
             }
         }
-        $statuses = new sparepart_status;
         $delta_res_full = $summ_order - $summ_ic_full;
+        $statuses = new sparepart_status;
         $delta_res_half = $summ_order - $summ_ic_half;
         $sertificat = application::findOrFail($id)->sertificat;
 

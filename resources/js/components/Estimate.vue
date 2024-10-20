@@ -303,6 +303,7 @@
         },
        
         makeMoney(n) {
+            if (!n) n = 0;
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
         }
 

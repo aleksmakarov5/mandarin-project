@@ -12,6 +12,11 @@ import Estimate from './components/Estimate.vue';
 import FactWork from './components/FactWork.vue';
 import Work from './components/Work.vue';
 
+import SparePartMrk from './components/SparePartMrk.vue';
+import SparePartZap from './components/SparePartZap.vue';
+
+
+
 
 
 
@@ -31,7 +36,9 @@ const app = createApp({
     Troubleshootings,
     Estimate,
     FactWork,
-    Work
+    Work,
+    SparePartMrk,
+    SparePartZap
   },
 })
 app.mount('#app')
