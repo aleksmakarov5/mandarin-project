@@ -20,7 +20,7 @@ class WorkController extends Controller
         $summ_pzn = 0;
         foreach ($work as $w) {
             $summ += str2number($w->summ);
-            $summ_pzn += str2number($w->price * ($w->count_hours_pzn ? $w->count_hours_pzn : $w->count_hours));
+            $summ_pzn += str2number($w->price) * str2number($w->count_hours_pzn ? $w->count_hours_pzn : $w->count_hours);
         }
 
         return [$work, $summ, $summ_pzn];
