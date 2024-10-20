@@ -67,32 +67,32 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr :class="isEdit(sparepart.id)?'d_none':''">
+<tr :class="isEdit(sparepart.id)?'d_none':''"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)" >
+    <td >
         {{ sparepart.name }}</td>
-    <td  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+    <td >
         {{ sparepart.part_number }}</td>  
-    <td  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+    <td >
         {{ sparepart.order_number }}</td> 
-        <td  class="ic_price" @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+        <td  class="ic_price">
         {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price" @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+        <td  class="ic_price">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name)" @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name)"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name)" >
         {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name)"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name)" >
         {{ makeCount(sparepart.price_used) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{
             makeCount(sparepart.delta) }}</div></th>
 
-        <td  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment)">
+        <td >
         {{ sparepart.comment }}</td>
 
                     <template v-if="rout_it=='directions'">
@@ -107,45 +107,37 @@
         <img src="/storage/img/delete.png" width="20" alt="delete"></a>
     </td>
 </tr>
-                   <tr :class="isEdit(sparepart.id)?'':'d_none'">
+                   <tr :class="isEdit(sparepart.id)?'':'d_none'"  @blur="updateSparePart(sparepart.id)" 
+                        @keydown.enter="updateSparePart(sparepart.id)">
                     <td scope="col">
         {{ index+1 }}
     </td>
                     <td>
-        <input type="text" id="name" v-model="name" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+        <input type="text" id="name" v-model="name" class="w-100"></td>
     <td >
-    <input type="text" id="part_number" v-model="part_number" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>  
+    <input type="text" id="part_number" v-model="part_number" class="w-100"></td>  
     <td >
         
-    <input type="text" id="order_number" v-model="order_number" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td> 
+    <input type="text" id="order_number" v-model="order_number" class="w-100"></td> 
         <td  class="ic_price">
     
-    <input type="text" id="price_ic_full" v-model="price_ic_full" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td> 
-        <td>
-        <input type="text" id="price_sto" v-model="price_sto" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+    <input type="text" id="price_ic_full" v-model="price_ic_full" class="w-100"></td> 
+        <td class="ic_price">
+        <input type="text" id="price_sto" v-model="price_sto" class="w-100"></td>
         <td  :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name)">
         
-    <input type="text" id="price_original" v-model="price_original" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+    <input type="text" id="price_original" v-model="price_original" class="w-100"></td>
 <td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name)">
         
-    <input type="text" id="price_analogue" v-model="price_analogue" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+    <input type="text" id="price_analogue" v-model="price_analogue" class="w-100"></td>
         <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name)">
        
-    <input type="text" id="price_used" v-model="price_used" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
+    <input type="text" id="price_used" v-model="price_used" class="w-100"></td>
         <th >
         {{ sparepart.delta }}</th>
 
         <td >
-        <textarea id="comment" v-model="comment" class="w-100"   @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)" ></textarea></td>
+        <textarea id="comment" v-model="comment" class="w-100"   ></textarea></td>
                          <template v-if="rout_it=='directions'">
         <td >
 
@@ -192,6 +184,8 @@
                 name: '',
                 part_number: '',
                 order_number: '',
+                price_ic_full:'',
+                price_original:'',
                 price_analogue:'',
                 price_used: '',
                 price_sto:'',
