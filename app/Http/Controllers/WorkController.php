@@ -541,8 +541,8 @@ class WorkController extends Controller
                 ],
                 [
                     'price' => $price[$i],
-                    'count_hours' => str_replace(' ', '', $count_hours[$i]),
-                    'summ' => str_replace(' ', '', $summ[$i]),
+                    'count_hours' => str2number($count_hours[$i]),
+                    'summ' => str2number($summ[$i]),
                     'npp' => $i
                 ]
             );
