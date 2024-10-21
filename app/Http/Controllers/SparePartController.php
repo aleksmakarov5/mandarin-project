@@ -679,7 +679,7 @@ class SparePartController extends Controller
                     'price' => str2number($price[$i]),
                     'price_ic_full' => str2number($price_ic_full[$i]),
                     'price_ic_half' => str2number($price_ic_half[$i]),
-                    'count' =>  str_replace(' ', '', $count[$i]),
+                    'count' =>  str2number($count[$i]),
                     'iznos' => str2number($iznos[$i]),
                     'npp' => $i
                 ]
