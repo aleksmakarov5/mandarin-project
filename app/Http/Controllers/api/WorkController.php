@@ -75,9 +75,6 @@ class WorkController extends Controller
             $data['price_service'] = str2number($data['price_service']);
         if (isset($data['summ']))
             $data['summ'] = round($data['summ'], 2);
-
-
-
         foreach ($data as $key => $val) {
             $work->$key = clearHTML($val);
         }
