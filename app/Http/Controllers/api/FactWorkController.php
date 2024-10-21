@@ -45,8 +45,6 @@ class FactWorkController extends Controller
             $data['summ'] = round($data['summ'], 2);
 
 
-        $data['count_hours_pzn'] = str2number($data['count_hours_pzn']);
-
         foreach ($data as $key => $value) {
             $work->$key = $value;
         }
