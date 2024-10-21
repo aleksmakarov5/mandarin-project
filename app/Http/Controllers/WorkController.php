@@ -537,10 +537,10 @@ class WorkController extends Controller
             Work::updateOrCreate(
                 [
                     'id_application' => $id_application,
-                    'name' => $name[$i],
+                    'name' => clearHTML($name[$i]),
                 ],
                 [
-                    'price' => $price[$i],
+                    'price' => str2number($price[$i]),
                     'count_hours' => str2number($count_hours[$i]),
                     'summ' => str2number($summ[$i]),
                     'npp' => $i

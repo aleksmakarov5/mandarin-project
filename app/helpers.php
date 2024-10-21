@@ -89,6 +89,8 @@ if (!function_exists('clearHTML')) {
         $val = str_replace('&#34;', '"', $val);
         $val = str_replace('br', "", $val);
         $val = str_replace('&', "", $val);
+        $val = str_replace('>', "", $val);
+        $val = str_replace('<', "менее ", $val);
         $val = trim($val);
 
         return $val;
