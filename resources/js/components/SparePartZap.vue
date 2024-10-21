@@ -101,7 +101,8 @@
 
         <td :class="sparePartStatus(sparepart.status_id)">
 <select class=sel id="status_id" name="status_id" v-model="status_id" @change="updateSparePart(sparepart.id)">
-                        <template v-for="status in statuses">
+    <option :0 >------</option>                   
+    <template v-for="status in statuses">
                                 <option :value="status.id" >{{status.StatusName}}</option>
                                 </template>
                             </select>
