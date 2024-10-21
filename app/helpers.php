@@ -73,3 +73,24 @@ if (!function_exists('bold_text')) {
         return '</w:t></w:r><w:r><w:rPr><w:b/></w:rPr><w:t xml:space="preserve">' . $text . '</w:t></w:r><w:r><w:t xml:space="preserve">';
     }
 }
+if (!function_exists('clearHTML')) {
+    function clearHTML($val)
+    {
+        $val = strip_tags($val);
+        $val = preg_replace('/<[^>]*>?/', '', $val);
+        $val = preg_replace('/&nbsp;/', '', $val);
+        $val = preg_replace('/[\x00-\x1F\x7F]/u', '', $val);
+        $val = str_replace('nbsp;', '', $val);
+        $val = str_replace('amp;', '', $val);
+        $val = str_replace('amp;', '', $val);
+        $val = str_replace('lt;', '', $val);
+        $val = str_replace('gt;', '', $val);
+        $val = str_replace('&#39;', "'", $val);
+        $val = str_replace('&#34;', '"', $val);
+        $val = str_replace('br', "", $val);
+        $val = str_replace('&', "", $val);
+        $val = trim($val);
+
+        return $val;
+    }
+}

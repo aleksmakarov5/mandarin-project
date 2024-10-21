@@ -36,7 +36,7 @@ class TroubleshootingController extends Controller
         ]);
 
         foreach ($data as $key => $value) {
-            $troubleshooting->$key = $value;
+            $troubleshooting->$key = strip_tags($value);
         }
         $troubleshooting->save();
         return redirect()
@@ -62,7 +62,7 @@ class TroubleshootingController extends Controller
         ]);
 
         foreach ($data as $key => $val) {
-            $troubleshooting->$key = $val;
+            $troubleshooting->$key = strip_tags($val);
         }
         $troubleshooting->save();
         return redirect()

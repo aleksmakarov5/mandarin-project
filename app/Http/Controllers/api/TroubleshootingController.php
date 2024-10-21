@@ -61,7 +61,9 @@ class TroubleshootingController extends Controller
         ]);
 
         foreach ($data as $key => $val) {
-            $troubleshooting->$key = $val;
+
+
+            $troubleshooting->$key = clearHTML($val);
         }
         $troubleshooting->save();
         return $troubleshooting;

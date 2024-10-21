@@ -17,15 +17,15 @@
 
 
 <template v-for="(troubleshooting,index) in troubleshootings">
-                <tr :class="isEdit(troubleshooting.id)?'d_none':''">
+                <tr  @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)" >
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)">
+                    <td :id="'Part_Name'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                        <td @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)">   
+                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)">   
                         {{ troubleshooting.Сonclusion }}</td>
-                    <td @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)">
+                    <td  :id="'Work_'+troubleshooting.id" contenteditable @blur="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
                    
                     
@@ -33,18 +33,7 @@
                         <img src="/storage/img/delete.png" width="30" alt="delete">
                     </td>
                 </tr>
-                   <tr :class="isEdit(troubleshooting.id)?'':'d_none'">
-                    <td scope="col">
-                        {{ index+1 }}
-                    </td>
-                    <td><textarea id="PartName" v-model="PartName" class="w-100"  cols=400 @blur="updateTroubleshooting(troubleshooting.id)" 
-                        @keydown.enter="updateTroubleshooting(troubleshooting.id)" ></textarea></td>
-                    <td><div contenteditable="true"><textarea cols="400" id="Сonclusion" v-model="Сonclusion" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
-                    <td><div contenteditable="true"><textarea cols="400" id="Work" v-model="Work" class="w-100" @blur="updateTroubleshooting(troubleshooting.id)" @keydown.enter="updateTroubleshooting(troubleshooting.id)"></textarea></div></td>
-                    <td scope="col"> <a @click.prevent="deletetroubleshooting(troubleshooting.id)">
-                        <img src="/storage/img/delete.png" width="30" alt="delete"></a>
-                    </td>
-                </tr>
+              
             </template>
               <tr>
                     <td scope="col">
@@ -107,7 +96,6 @@ axios.delete(`/api/troubleshootings/${id}`)
             
         },
         changeEditTroubleshootingId(id,PartName,Work,Сonclusion) {
-            this.EditTroubleshootingId=id
             this.PartName=PartName
             this.Work=Work
             this.Сonclusion=Сonclusion
@@ -137,7 +125,27 @@ axios.delete(`/api/troubleshootings/${id}`)
             this.PartName_Cr = ''
             this.Work_Cr = ''
             this.Сonclusion_Cr = ''
+        },
+
+        editPartName(id)
+        {
+           let part_name = document.getElementById('Part_Name'+id);
+            this.PartName = part_name.innerHTML;
+            this.updateTroubleshooting(id)
+        },
+        editСonclusion(id)
+        {
+           let сonclusion = document.getElementById('Сonclusion_'+id);
+            this.Сonclusion = сonclusion.innerHTML;
+            this.updateTroubleshooting(id)
+        },
+        editWork(id)
+        {
+            let work = document.getElementById('Work_'+id);
+            this.Work = work.innerHTML;
+            this.updateTroubleshooting(id)
         }
+
 
         
         
