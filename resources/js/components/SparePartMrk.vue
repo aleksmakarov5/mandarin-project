@@ -67,11 +67,11 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr :class="isEdit(sparepart.id)?'d_none':''">
+<tr @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)" >
+    <td :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
         {{ sparepart.name }}</td>
     <td >
         {{ sparepart.part_number }}</td>  
@@ -79,20 +79,20 @@
         {{ sparepart.order_number }}</td> 
         <td  class="ic_price">
         {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price" @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
+        <td  class="ic_price" :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
         {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
         {{ makeCount(sparepart.price_used) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{
             makeCount(sparepart.delta) }}</div></th>
 
-        <td  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
+        <td :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
         {{ sparepart.comment }}</td>
 
                     <template v-if="rout_it=='directions'">
@@ -107,46 +107,7 @@
         <img src="/storage/img/delete.png" width="20" alt="delete"></a>
     </td>
 </tr>
-                   <tr :class="isEdit(sparepart.id)?'':'d_none'">
-                    <td scope="col">
-        {{ index+1 }}
-    </td>
-                    <td>
-        <input type="text" id="name" v-model="name" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
-    <td >
-        {{ sparepart.part_number }}</td>  
-    <td >
-        {{ sparepart.order_number }}</td> 
-        <td  class="ic_price">
-        {{ sparepart.price_ic_full }}</td> 
-        <td>
-        <input type="text" id="name" v-model="price_sto" class="w-100" @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)"></td>
-        <td  :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
-        {{ sparepart.price_original }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
-        {{ sparepart.price_analogue }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
-        {{ sparepart.price_used }}</td>
-        <th >
-        {{ sparepart.delta }}</th>
-
-        <td >
-        <textarea id="comment" v-model="comment" class="w-100"   @blur="updateSparePart(sparepart.id)" 
-                        @keydown.enter="updateSparePart(sparepart.id)" ></textarea></td>
-                         <template v-if="rout_it=='directions'">
-        <td >
-
-                   
-        {{ sparepart.statusname }}</td>
-        <td >
-        {{ sparepart.date_price }}</td>
-        <td >
-        {{ sparepart.date_wait }}</td>
-        </template>
-        
-                </tr>
+                  
 </template>
 <tr>
                     <td scope="col"><a  @click.prevent="createSparePart()">
@@ -227,7 +188,6 @@
             
         },
         changeEditSparePartId(id,name,comment,price_sto) {
-            this.EditSparePartId=id
             this.name=name
             this.comment=comment
             this.price_sto = price_sto
@@ -298,6 +258,24 @@
                     if (mrk == n) return 'mrk';
                     else
                         return '';
+        },
+         editName(id)
+        {
+           let name = document.getElementById('name_'+id);
+            this.name = name.innerHTML;
+            this.updateSparePart(id)
+        },
+        editPriceSto(id)
+        {
+            let price_sto = document.getElementById('price_sto_'+id);
+            this.price_sto = price_sto.innerHTML;
+            this.updateSparePart(id)
+        },
+        editComment(id)
+        {
+            let comment = document.getElementById('comment_'+id);
+            this.comment = comment.innerHTML;
+            this.updateSparePart(id)
         }
     }
        

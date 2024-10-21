@@ -113,7 +113,7 @@ class SparePartController extends Controller
             $data['selected_price'] = 0;
 
         foreach ($data as $key => $value) {
-            $sparepart->$key = $value;
+            $sparepart->$key = clearHTML($value);
         }
         $sparepart->save();
 
