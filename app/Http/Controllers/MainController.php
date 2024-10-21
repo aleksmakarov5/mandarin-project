@@ -151,7 +151,11 @@ class MainController extends Controller
                 $body = $mail->body_html;
 
                 $body_start = mb_strpos($body, '<body');
+                if (!$body_start)
+                    $body_start = mb_strpos($body, '<BODY');
                 $body_end = mb_strpos($body, '</body>');
+                if (!$body_end)
+                    $body_end = mb_strpos($body, '</BODY>');
                 if ($body_start) {
                     $body = mb_substr($body, $body_start, $body_end - $body_start);
                 }
@@ -159,6 +163,7 @@ class MainController extends Controller
 
                 $body = str_replace('font-size:', '', $body);
                 $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
                 if (isset($mail->application_id)) {
                     $body = str_replace('cid:', '/storage/files/' . $mail->application_id . '/', $body);
                     $body = str_replace('gif', 'gif"', $body);
