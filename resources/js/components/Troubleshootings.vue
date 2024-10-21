@@ -36,13 +36,9 @@
               
             </template>
               <tr>
-                    <td scope="col">
-                    </td>
-                    <td><textarea cols="400" id="PartName" v-model="PartName_Cr" class="w-100"></textarea></td>
-                    <td><textarea cols="400" id="Сonclusion" v-model="Сonclusion_Cr" class="w-100"></textarea></td>
-                    <td><textarea cols="400" id="Work" v-model="Work_Cr" class="w-100"></textarea></td>
-                    <td scope="col"><a  @click.prevent="createTroubleshooting()">
-                        <img src="/storage/img/edit.png" width="30" alt="create"></a>
+                    
+                    <td scope="col" colspan="5" align="center"><a  @click.prevent="createTroubleshooting()">
+                        <img src="/storage/img/add.png" width="30" alt="create"></a>
                     </td>
                 </tr>
         </tbody>
