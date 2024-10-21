@@ -12,7 +12,8 @@
             @if (session('GroupId') == 6)
                 <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}`></spare-part-zap>
             @else
-                <button class="accordion-est">
+                <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`></spare-part-all>
+                {{-- <button class="accordion-est">
                     Запчасти
                 </button>
 
@@ -86,8 +87,8 @@
                                     <th scope="col"></th>
                                 @endif
                             </tr>
-                        @endcan
-                        {{-- <tr>
+                        @endcan --}}
+                {{-- <tr>
                 <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text0"
                         onkeyup="tableSearch(0,'demo')">
                 </th>
@@ -116,7 +117,7 @@
 
             </tr> --}}
 
-                    </thead>
+                {{-- </thead>
                     <tbody>
 
 
@@ -575,7 +576,7 @@
                             @endforeach
                         </ul>
                     </div>
-                @endif
+                @endif --}}
             @endif
         @endif
         @can('company')

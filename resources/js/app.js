@@ -14,6 +14,7 @@ import Work from './components/Work.vue';
 
 import SparePartMrk from './components/SparePartMrk.vue';
 import SparePartZap from './components/SparePartZap.vue';
+import SparePartAll from './components/SparePartAll.vue';
 
 
 
@@ -38,7 +39,8 @@ const app = createApp({
     FactWork,
     Work,
     SparePartMrk,
-    SparePartZap
+    SparePartZap,
+    SparePartAll
   },
 })
 app.mount('#app')
