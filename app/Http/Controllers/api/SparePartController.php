@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
+use App\Models\sparepart_status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\SparePart;
@@ -21,6 +22,7 @@ class SparePartController extends Controller
             )
             ->select('spare_parts.*', 'sparepart_statuses.StatusName')
             ->get();
+        $statuses = sparepart_status::all();
         $summ_ic_full = 0;
         $summ_sto = 0;
         $delta_res_full = 0;
@@ -53,7 +55,7 @@ class SparePartController extends Controller
         }
         $delta_res_full = $summ_order - $summ_ic_full;
 
-        return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full];
+        return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses];
     }
 
 
@@ -64,6 +66,7 @@ class SparePartController extends Controller
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
+            'author' => 'nullable'
         ]);
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;
@@ -97,6 +100,7 @@ class SparePartController extends Controller
             'approved' => 'nullable',
             'status_id' => 'nullable'
         ]);
+
         if (isset($data['price_ic_full']))
             $data['price_ic_full'] = str2number($data['price_ic_full']);
         if (isset($data['price_sto']))
@@ -113,7 +117,14 @@ class SparePartController extends Controller
             $data['selected_price'] = 0;
 
         foreach ($data as $key => $value) {
-            $sparepart->$key = clearHTML($value);
+            if ($key != 'date_wait' && $key != 'date_price' && $key != 'status_id')
+                $sparepart->$key = clearHTML($value);
+            else
+            if (($key == 'date_wait' || $key == 'date_price')) {
+                if (!empty($value))
+                    $sparepart->$key = $value;
+            } else
+                $sparepart->$key = $value;
         }
         $sparepart->save();
 

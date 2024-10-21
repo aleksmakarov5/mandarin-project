@@ -38,9 +38,17 @@ class WorkController extends Controller
             'price' => 'required',
             'summ' => 'required',
         ]);
-        $data['count_hours'] = str2number($data['count_hours']);
-        $data['price'] = str2number($data['price']);
-        $data['summ'] = round($data['summ'], 2);
+        if (isset($data['count_hours']))
+            $data['count_hours'] = str2number($data['count_hours']);
+        if (isset($data['count_hours_pzn']))
+            $data['count_hours_pzn'] = str2number($data['count_hours_pzn']);
+        if (isset($data['price']))
+            $data['price'] = str2number($data['price']);
+        if (isset($data['price_service']))
+            $data['price_service'] = str2number($data['price_service']);
+        if (isset($data['summ']))
+            $data['summ'] = round($data['summ'], 2);
+
         foreach ($data as $key => $value) {
             $work->$key = $value;
         }
@@ -57,11 +65,21 @@ class WorkController extends Controller
             'name' => 'nullable',
             'count_hours_pzn' => 'nullable',
         ]);
+        if (isset($data['count_hours']))
+            $data['count_hours'] = str2number($data['count_hours']);
+        if (isset($data['count_hours_pzn']))
+            $data['count_hours_pzn'] = str2number($data['count_hours_pzn']);
+        if (isset($data['price']))
+            $data['price'] = str2number($data['price']);
+        if (isset($data['price_service']))
+            $data['price_service'] = str2number($data['price_service']);
+        if (isset($data['summ']))
+            $data['summ'] = round($data['summ'], 2);
 
-        $data['count_hours_pzn'] = str2number($data['count_hours_pzn']);
+
 
         foreach ($data as $key => $val) {
-            $work->$key = $val;
+            $work->$key = clearHTML($val);
         }
         $work->save();
         return $work;

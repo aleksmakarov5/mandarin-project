@@ -35,21 +35,21 @@
         </thead>
         <tbody>
 <template v-for="(work,index) in works">
-<tr :class="isEdit(work.id)?'d_none':''">
+<tr  @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
+    <td :id="'name_'+work.id" contenteditable @blur="editName(work.id)" @keydown.enter="editName(work.id)">
         {{ work.name }}</td>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
+        <th>
         {{ makeMoney(work.price) }}</th>
-  <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
+  <th>
         {{ makeCount(work.count_hours) }}</th>
-    <td @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
+    <td  :id="'count_hours_pzn_'+work.id" contenteditable @blur="editCountHoursPzn(work.id)" @keydown.enter="editCountHoursPzn(work.id)">
         {{ makeCount(work.count_hours_pzn&&work.count_hours_pzn!=0?work.count_hours_pzn:work.count_hours) }}</td>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
+        <th>
         {{ makeMoney(work.summ) }}</th>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
+        <th>
         {{
             makeMoney((work.count_hours_pzn&&work.count_hours_pzn!=0 ? work.count_hours_pzn : work.count_hours) * work.price) }}
         </th>
@@ -58,27 +58,7 @@
         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
     </td>
 </tr>
-                   <tr :class="isEdit(work.id)?'':'d_none'">
-                    <td scope="col">
-                        {{ index+1 }}
-                    </td>
-                    <td><textarea id="name" v-model="name" class="w-100"   @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)" ></textarea></td>
-                         <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.price }}</th>
-  <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.count_hours }}</th>
-                    <td><input type="text" id="count_hours_pzn" v-model="count_hours_pzn" class="w-100" @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)"></td>
-                    
-                    <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)" >
-        {{ work.summ }}</th>
-        <th @click="changeEditWorkId(work.id, work.name,  work.count_hours_pzn)">
-        {{ 
-            makeMoney((work.count_hours_pzn ? work.count_hours_pzn : work.count_hours) * work.price)  }}
-    </th>
-        
-                </tr>
+                  
 </template>
 <tr>
                     <td scope="col">
@@ -150,7 +130,7 @@ axios.delete(`/api/work/${id}`)
             
         },
         changeEditWorkId(id,name,count_hours_pzn) {
-            this.EditWorkId=id
+            // this.EditWorkId=id
             this.name=name
             this.count_hours_pzn=count_hours_pzn
         },
@@ -192,6 +172,18 @@ axios.delete(`/api/work/${id}`)
          },
         makeCount(n) {
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
+        },
+        editName(id)
+        {
+           let name = document.getElementById('name_'+id);
+            this.name = name.innerHTML;
+            this.updateWork(id)
+        },
+        editCountHoursPzn(id)
+        {
+           let count_hours_pzn = document.getElementById('count_hours_pzn_'+id);
+            this.count_hours_pzn = count_hours_pzn.innerHTML;
+            this.updateWork(id)
         },
         
 

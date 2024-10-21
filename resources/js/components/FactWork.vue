@@ -34,32 +34,21 @@
         </thead>
         <tbody>
 <template v-for="(work,index) in works">
-<tr :class="isEdit(work.id)?'d_none':''">
+<tr @click="changeEditWorkId(work.id, work.name,  work.price_service)">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td @click="changeEditWorkId(work.id, work.name,  work.price_service)" >
+    <td  :id="'name_'+work.id" contenteditable @blur="editName(work.id)" @keydown.enter="editName(work.id)" >
         {{ work.name }}</td>
   
-    <td @click="changeEditWorkId(work.id, work.name,  work.price_service)">
+    <td  :id="'price_service_'+work.id" contenteditable @blur="editPriceService(work.id)" @keydown.enter="editPriceService(work.id)">
         {{ makeMoney(work.price_service) }}</td>
     
     <td scope="col"><a @click.prevent="deletework(work.id)">
         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
     </td>
 </tr>
-                   <tr :class="isEdit(work.id)?'':'d_none'">
-                    <td scope="col">
-                        {{ index+1 }}
-                    </td>
-                    <td><textarea id="name" v-model="name" class="w-100"  cols=400 @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)" ></textarea></td>
-                    <td><input type="text" id="price_service" v-model="price_service" class="w-100" @blur="updateWork(work.id)" 
-                        @keydown.enter="updateWork(work.id)"></td>
-                    <td scope="col"> 
-                        <img src="/storage/img/delete.png" width="15" alt="delete">
-                    </td>
-                </tr>
+                  
 </template>
  <tr>
                     <td scope="col">
@@ -160,6 +149,19 @@ axios.delete(`/api/factwork/${id}`)
         },
          makeMoney(n) {
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
+        },
+        editName(id)
+        {
+           let name = document.getElementById('name_'+id);
+            this.name = name.innerHTML;
+            this.updateWork(id)
+        },
+
+        editPriceService(id)
+        {
+            let price_service = document.getElementById('price_service_'+id);
+            this.price_service = price_service.innerHTML;
+            this.updateWork(id)
         }
 
         

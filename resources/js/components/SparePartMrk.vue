@@ -67,7 +67,8 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)">
+<tr :class=isAuthor(sparepart.author)
+@click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.comment,sparepart.price_sto)" >
     <td scope="col">
         {{ index+1 }}
     </td>
@@ -96,14 +97,14 @@
         {{ sparepart.comment }}</td>
 
                     <template v-if="rout_it=='directions'">
-        <td >
-        {{ sparepart.statusname }}</td>
+        <td  :class="sparePartStatus(sparepart.status_id)">
+        {{ sparepart.StatusName }}</td>
         <td >
         {{ sparepart.date_price }}</td>
         <td >
         {{ sparepart.date_wait }}</td>
         </template>
-    <td scope="col"><a @click.prevent="deletesparepart(sparepart.id)">
+    <td scope="col"><a @click.prevent="deletesparepart(sparepart.id)" >
         <img src="/storage/img/delete.png" width="20" alt="delete"></a>
     </td>
 </tr>
@@ -114,7 +115,7 @@
 
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
-                    <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
+                    <td><input type="text"  id="name" v-model="name_Cr" class="w-100" @keydown.enter="createSparePart()"></td>
                     
                     
                 </tr>
@@ -231,6 +232,7 @@
              axios.post(`/api/sparepart/create`, {
                  id_application: this.app_id,
                  name: this.name_Cr,
+                 author: 5
             })
            .then(res => {
             this.getSpareParts()
@@ -276,7 +278,27 @@
             let comment = document.getElementById('comment_'+id);
             this.comment = comment.innerHTML;
             this.updateSparePart(id)
-        }
+        },
+        isAuthor(author) {
+            if (author==5) return "pink";
+        },
+        sparePartStatus(status) {
+            
+                if (status == 1)
+                    return 'yellow';
+                else
+                    if (status == 2)
+                        return 'green';
+                    else
+                        if (status == 3)
+                        return 'teal';
+                        else  
+                            if (status == 4)
+                                return 'blue';
+                            else
+                return 'gray';
+            }
+
     }
        
 	}
