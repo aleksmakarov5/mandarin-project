@@ -28,10 +28,10 @@ export default{
 
   created()
   {
-   	Echo.channel('chat').listen('MessageSent', (e)=>{
-            this.getCounts()   
-    }
-    )
+   	// Echo.channel('chat').listen('MessageSent', (e)=>{
+    //         this.getCounts()   
+    // }
+    // )
     
   },
   mounted(){
