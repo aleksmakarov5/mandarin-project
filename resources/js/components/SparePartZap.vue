@@ -81,11 +81,11 @@
         {{ makeCount(sparepart.price_ic_full) }}</td>
         <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartZap(sparepart.id,1,sparepart.name)"  :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name,index)"  :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartZap(sparepart.id,2,sparepart.name)"  :id="'price_analogue_'+sparepart.id" contenteditable @blur="editPriceAnalogue(sparepart.id)" @keydown.enter="editPriceAnalogue(sparepart.id)">
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name,index)"  :id="'price_analogue_'+sparepart.id" contenteditable @blur="editPriceAnalogue(sparepart.id)" @keydown.enter="editPriceAnalogue(sparepart.id)">
         {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartZap(sparepart.id,3,sparepart.name)" :id="'price_used_'+sparepart.id" contenteditable @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name,index)" :id="'price_used_'+sparepart.id" contenteditable @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
         {{ makeCount(sparepart.price_used) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
@@ -156,7 +156,8 @@
 
         data(){
             
-            return{
+            return {
+                index:'',
                 spareparts:[],
                 id_app: this.app_id,
                 rout_it:this.rout,
@@ -215,7 +216,7 @@
         },
         //  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used)"
         changeEditSparePartId(id,name,part_number,order_number,price_ic_full,price_sto,price_original,price_analogue,price_used,comment,status_id,date_price,date_wait) {
-            this.EditSparePartId=id
+            this.EditSparePartId = id
             this.name=name
             this.comment=comment
             this.price_sto = price_sto
@@ -254,21 +255,22 @@
                 
             })
            .then(res => {
-            this.getSpareParts() 
+            this.getSpareParts()
            })
            console.log(this)
            this.changeEditSparePartId(null)
            
             
         },
-        updateSparePartZap(id, select,name)
+        updateSparePartZap(id, select,name,index)
         { axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
                 name: name,
                 selected_price: select 
             })
-           .then(res => {
-            this.getSpareParts() 
+            .then(res => {
+            this.spareparts[index].selected_price=res.data.selected_price
+            // this.getSpareParts() 
            })
           
             

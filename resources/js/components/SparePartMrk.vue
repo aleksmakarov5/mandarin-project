@@ -72,7 +72,7 @@
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
+    <td :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id,index)" @keydown.enter="editName(sparepart.id,index)">
         {{ sparepart.name }}</td>
     <td >
         {{ sparepart.part_number }}</td>  
@@ -80,20 +80,20 @@
         {{ sparepart.order_number }}</td> 
         <td  class="ic_price">
         {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price" :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
+        <td  class="ic_price" :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id,index)" @keydown.enter="editPriceSto(sparepart.id,index)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name)">
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,1,sparepart.name,index)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name)">
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,2,sparepart.name,index)">
         {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name)">
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name,index)">
         {{ makeCount(sparepart.price_used) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{
             makeCount(sparepart.delta) }}</div></th>
 
-        <td :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
+        <td :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id,index)" @keydown.enter="editComment(sparepart.id,index)">
         {{ sparepart.comment }}</td>
 
                     <template v-if="rout_it=='directions'">
@@ -197,7 +197,7 @@
         isEdit(id){
             return this.EditSparePartId===id
         },
-        updateSparePart(id)
+        updateSparePart(id,index)
         {
             axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
@@ -206,21 +206,27 @@
                 price_sto: this.price_sto
                 
             })
-           .then(res => {
-            this.getSpareParts() 
+                .then(res => {
+                    this.spareparts[index] = res.data
+            
+                console.log(res)
+               // this.getSpareParts() 
+            console.log(res)
            })
-           console.log(this)
-           this.changeEditSparePartId(null)
+            
+           
+        //    this.changeEditSparePartId(null)
             
         },
-        updateSparePartMrk(id, select,name)
+        updateSparePartMrk(id, select,name,index)
         { axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
                 name: name,
                 selected_mrk: select 
             })
-           .then(res => {
-            this.getSpareParts() 
+            .then(res => {
+            this.spareparts[index].selected_mrk=select
+            // this.getSpareParts() 
            })
           
             
@@ -261,23 +267,23 @@
                     else
                         return '';
         },
-         editName(id)
+         editName(id,index)
         {
            let name = document.getElementById('name_'+id);
-            this.name = name.innerHTML;
-            this.updateSparePart(id)
+            this.name = name.innerText;
+             this.updateSparePart(id,index)
         },
-        editPriceSto(id)
+        editPriceSto(id,index)
         {
             let price_sto = document.getElementById('price_sto_'+id);
-            this.price_sto = price_sto.innerHTML;
-            this.updateSparePart(id)
+            this.price_sto = price_sto.innerText;
+            this.updateSparePart(id,index)
         },
-        editComment(id)
+        editComment(id,index)
         {
             let comment = document.getElementById('comment_'+id);
-            this.comment = comment.innerHTML;
-            this.updateSparePart(id)
+            this.comment = comment.innerText;
+            this.updateSparePart(id,index)
         },
         isAuthor(author) {
             if (author==5) return "pink";

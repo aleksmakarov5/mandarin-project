@@ -254,7 +254,7 @@
                 
             })
            .then(res => {
-            this.getSpareParts() 
+            // this.getSpareParts() 
            })
            console.log(this)
            this.changeEditSparePartId(null)
