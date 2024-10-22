@@ -2550,10 +2550,10 @@ class ApplicationController extends Controller
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["name"])
-            ->from($data['from'], $data['name'])
-            ->subject($data["title"]);
+                ->from($data['from'], $data['name'])
+                ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
@@ -2561,6 +2561,8 @@ class ApplicationController extends Controller
         $application->id_status = 25;
         $history = new history;
         $messages = new message();
+        $messages->mailbox_id = $application->our_company;
+        $messages->type = 1;
         $messages->application_id = $id;
         $messages->body_html = $request->message;
         $messages->message_date = date('Y-m-d H:i:s');
@@ -2570,7 +2572,7 @@ class ApplicationController extends Controller
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'from';
-        $address->email = 'robot@mandarinportal.ru';
+        $address->email = $data["from"];
         $address->save();
         $address = new address;
         $address->message_id = $messages->id;
@@ -2658,8 +2660,8 @@ class ApplicationController extends Controller
             for ($i = 0; $i < count($request->location); $i++) {
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
-        
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data,$files) {
+
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["name"])
                 ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
@@ -2668,13 +2670,15 @@ class ApplicationController extends Controller
             }
         });
 
-       
+
 
         $application->id_status = 11;
         $application->check_date = carbon::now();
         $history = new history;
 
         $messages = new message();
+        $messages->mailbox_id = $application->our_company;
+        $messages->type = 1;
         $messages->application_id = $id;
         $messages->subject = message::where('application_id', '=', $id)->first()->subject;
         $messages->body_html = $request->message;
@@ -2685,7 +2689,7 @@ class ApplicationController extends Controller
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'from';
-        $address->email = 'robot@mandarinportal.ru';
+        $address->email = $data["from"];
         $address->save();
         $address = new address;
         $address->message_id = $messages->id;
@@ -2727,7 +2731,7 @@ class ApplicationController extends Controller
         // $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
         // $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
-        // Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
+        // Mail_send::mailer($data['mailer'])->send('email.'. $data['mailer'], $data, function ($message) use ($data) {
         //     $message->to($data["email"], $data["email"])
         //         ->from($data['from'], $data['name'])
         //         ->subject($data["title"]);
@@ -2922,10 +2926,10 @@ class ApplicationController extends Controller
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["name"])
-            ->from($data['from'], $data['name'])
-            ->subject($data["title"]);
+                ->from($data['from'], $data['name'])
+                ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
@@ -2935,17 +2939,20 @@ class ApplicationController extends Controller
         $history = new history;
 
         $messages = new message();
+        $messages->mailbox_id = $application->our_company;
+        $messages->type = 1;
         $messages->application_id = $id;
         $messages->subject = message::where('application_id', '=', $id)->first()->subject;
         $messages->body_html = $request->message;
         $messages->message_date = date('Y-m-d H:i:s');
 
 
+
         $messages->save();
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'from';
-        $address->email = 'robot@mandarinportal.ru';
+        $address->email = $data["from"];
         $address->save();
         $address = new address;
         $address->message_id = $messages->id;
@@ -2996,10 +3003,10 @@ class ApplicationController extends Controller
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["name"])
-            ->from($data['from'], $data['name'])
-            ->subject($data["title"]);
+                ->from($data['from'], $data['name'])
+                ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
@@ -3013,6 +3020,9 @@ class ApplicationController extends Controller
         $history->save();
         $messages = new message();
         $messages->application_id = $id;
+        $messages->mailbox_id = $application->our_company;
+        $messages->type = 1;
+
         $messages->subject = message::where('application_id', '=', $id)->first()->subject;
         $messages->body_html = $request->message;
         $messages->message_date = date('Y-m-d H:i:s');
@@ -3022,7 +3032,7 @@ class ApplicationController extends Controller
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'from';
-        $address->email = 'robot@mandarinportal.ru';
+        $address->email = $data["from"];
         $address->save();
         $address = new address;
         $address->message_id = $messages->id;
