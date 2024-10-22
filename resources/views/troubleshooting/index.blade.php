@@ -115,7 +115,6 @@
 
     <div id="app">
         <troubleshootings :app_id={{ $id }}>
-
     </div>
     {{-- <script>
         function tableSearch(k, table) {
