@@ -6,7 +6,7 @@
 
 <body>
     <p>
-        {{$body}}
+        {{ $body }}
 
 
     </p>
