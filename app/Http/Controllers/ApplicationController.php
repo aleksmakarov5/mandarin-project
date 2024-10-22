@@ -3005,6 +3005,7 @@ class ApplicationController extends Controller
 
         Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
             $message->to($data["email"], $data["name"])
+                ->bcc($data["from"])
                 ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
             foreach ($files as $file) {
