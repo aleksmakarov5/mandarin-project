@@ -339,8 +339,9 @@
             editName(id)
         {
            let name = document.getElementById('name_'+id);
-            this.name = name.innerHTML;
-            this.updateSparePart(id)
+                this.name = name.innerHTML;
+
+                this.updateSparePart(id)
         },
         editComment(id)
         {
@@ -351,43 +352,43 @@
         editPriceUsed(id)
         {
             let price_used = document.getElementById('price_used_'+id);
-            this.price_used = price_used;
+            this.price_used = price_used.innerHTML;
             this.updateSparePart(id)
         },
         editPriceAnalogue(id)
         {
             let price_analogue = document.getElementById('price_analogue_'+id);
-            this.price_analogue = price_analogue;
+            this.price_analogue = price_analogue.innerHTML;
             this.updateSparePart(id)
         },
         editPriceOriginal(id)
         {
             let price_original = document.getElementById('price_original_'+id);
-            this.price_original = price_original;
+            this.price_original = price_original.innerHTML;
             this.updateSparePart(id)
         },
         editPriceICFull(id)
         {
             let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.price_ic_full = price_ic_full;
+            this.price_ic_full = price_ic_full.innerHTML;
             this.updateSparePart(id)
         },
         editPriceSto(id)
         {
             let price_sto = document.getElementById('price_sto_'+id);
-            this.price_sto = price_sto;
+            this.price_sto = price_sto.innerHTML;
             this.updateSparePart(id)
         },
         editPartNumber(id)
         {
             let part_number = document.getElementById('part_number_'+id);
-            this.part_number = part_number;
+            this.part_number = part_number.innerHTML;
             this.updateSparePart(id)
         },
         editOrderNumber(id)
         {
             let order_number = document.getElementById('order_number_'+id);
-            this.order_number = order_number;
+            this.order_number = order_number.innerHTML;
             this.updateSparePart(id)
         }
         
