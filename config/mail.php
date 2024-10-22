@@ -48,14 +48,14 @@ return [
             'auth_mode'  => null,
             'verify_peer'       => false,
         ],
-        'makarov' => [
+        'kotlas' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
             'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
             'port' => env('MAIL_PORT', 587),
             'encryption' => env('MAIL_ENCRYPTION', 'tls'),
-            'username' => 'aleksey.dvina-trust',
-            'password' => 'ykfxabppahmssqeq',
+            'username' => 'ktmandarin',
+            'password' => 'gizybptrxjnxyqqq',
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
             'auth_mode'  => null,

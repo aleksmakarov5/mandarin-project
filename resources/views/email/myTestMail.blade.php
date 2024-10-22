@@ -1,16 +1,19 @@
 <html>
 
 <head>
-    <title>ItsolutionStuff.com</title>
+    <title></title>
 </head>
 
 <body>
-    <p>{{ $body }}</p>
+    <p>
+        @php
+            echo $body;
+        @endphp
 
-    <p>С Уважением,
 
-        Ананьин Михаил Юрьевич
     </p>
+
+
 </body>
 
 </html>

@@ -2538,18 +2538,25 @@ class ApplicationController extends Controller
     public function answer_ic_sent(Request $request, $id)
     {
         $application = application::findOrFail($id);
-
-        $data["email"] = "aleksmakarov5@yandex.ru";
-        $data["title"] = $request->subject ?? $application->numberInsuranceCompanyApplication;
+        $data["email"] = $request->to;
+        $data["title"] = $request->subject;
         $data["body"] = $request->message;
         $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
         $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
         $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+        $files = [];
+        if (isset($request->location[0]))
+            for ($i = 0; $i < count($request->location); $i++) {
+                $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
+            }
 
-        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
-            $message->to($data["email"], $data["email"])
-                ->from($data['from'], $data['name'])
-                ->subject($data["title"]);
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["name"])
+            ->from($data['from'], $data['name'])
+            ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
         });
         $application->id_status = 25;
         $history = new history;
@@ -2640,7 +2647,7 @@ class ApplicationController extends Controller
     public function answer_ic_true_sent(Request $request, $id)
     {
         $application = application::findOrFail($id);
-        $data["email"] = "aleksmakarov5@yandex.ru";
+        $data["email"] = $request->to;
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
         $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
@@ -2651,16 +2658,17 @@ class ApplicationController extends Controller
             for ($i = 0; $i < count($request->location); $i++) {
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
-
-
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
-            $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
+        
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data,$files) {
+            $message->to($data["email"], $data["name"])
+                ->from($data['from'], $data['name'])
                 ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
         });
+
+       
 
         $application->id_status = 11;
         $application->check_date = carbon::now();
@@ -2712,12 +2720,12 @@ class ApplicationController extends Controller
             // dd($today, $application->end_date);
         }
         // dd ($application->id_status);
-        $data["email"] = "aleksmakarov5@yandex.ru";
-        $data["title"] = 'По заявке №' . $id . ' изменен статус';
-        $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
-        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
-        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
-        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+        // $data["email"] = "aleksmakarov5@yandex.ru";
+        // $data["title"] = 'По заявке №' . $id . ' изменен статус';
+        // $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
+        // $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        // $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        // $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
 
         // Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data) {
         //     $message->to($data["email"], $data["email"])
@@ -2901,28 +2909,28 @@ class ApplicationController extends Controller
         // dd($request);
 
         // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
-        $data["email"] = "aleksmakarov5@yandex.ru";
-
+        $application = application::findOrFail($id);
+        $data["email"] = $request->to;
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
+        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
         $files = [];
         if (isset($request->location[0]))
             for ($i = 0; $i < count($request->location); $i++) {
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
 
-
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
-            $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
-                ->subject($data["title"]);
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["name"])
+            ->from($data['from'], $data['name'])
+            ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
         });
-
-        $application = application::findOrFail($id);
-        $application->id_status = 19;
+        // $application->id_status = 19;
         $application->check_date = carbon::now();
         $history = new history;
 
@@ -2975,33 +2983,34 @@ class ApplicationController extends Controller
         // dd($request);
 
         // Mail::to('aleksmakarov5@yandex.ru')->queue(new ic_answer($id, $request->subject, $request->message, $request->location));
-        $data["email"] = "aleksmakarov5@yandex.ru";
-
+        $application = application::findOrFail($id);
+        $data["email"] = $request->to;
         $data["title"] = $request->subject;
         $data["body"] = $request->message;
+        $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+        $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+        $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
         $files = [];
         if (isset($request->location[0]))
             for ($i = 0; $i < count($request->location); $i++) {
                 $files[] = public_path('/storage/files/' . $id . '/' . $request->location[$i]);
             }
 
-
-        Mail_send::send('email.myTestMail', $data, function ($message) use ($data, $files) {
-            $message->to($data["email"], $data["email"])
-                ->from('robot@mandarinportal.ru', 'Мандарин')
-                ->subject($data["title"]);
+        Mail_send::mailer($data['mailer'])->send('email.myTestMail', $data, function ($message) use ($data, $files) {
+            $message->to($data["email"], $data["name"])
+            ->from($data['from'], $data['name'])
+            ->subject($data["title"]);
             foreach ($files as $file) {
                 $message->attach($file);
             }
         });
-        $application = application::findOrFail($id);
         // $application->id_status = 22;
-        // $history = new history;
-        // $history->id_user = Auth::user()->id;
-        // $history->id_status = 22;
-        // $history->id_application = $id;
-        // $history->comment = $request->comment;
-        // $history->save();
+        $history = new history;
+        $history->id_user = Auth::user()->id;
+        $history->id_status = 22;
+        $history->id_application = $id;
+        $history->comment = $request->comment;
+        $history->save();
         $messages = new message();
         $messages->application_id = $id;
         $messages->subject = message::where('application_id', '=', $id)->first()->subject;
