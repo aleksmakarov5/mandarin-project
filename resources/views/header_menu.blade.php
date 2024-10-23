@@ -110,7 +110,7 @@
             $proc_t = round(($teor / ($summ_ic_full + $summ_service_ic)) * 100);
         }
     } catch (\Exception $e) {
-        return redirect('applications');
+        return redirect()->route('applications');
     }
 @endphp
 @extends('layout')
