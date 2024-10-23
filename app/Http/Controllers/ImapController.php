@@ -895,7 +895,7 @@ class ImapController extends Controller
                     $subject = $message->getSubject();
                     $subject = trim($subject);
                     $body_html = $message->getHTMLBody();
-                    $our_company = 2;
+                    $our_company = 3;
                     // dd($message);
 
 
@@ -994,7 +994,7 @@ class ImapController extends Controller
                     $subject = $message->getSubject();
                     $subject = trim($subject);
                     $body_html = $message->getHTMLBody();
-                    $our_company = 2;
+                    $our_company = 4;
                     // dd($message);
 
 
