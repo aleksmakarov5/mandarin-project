@@ -753,9 +753,9 @@ class ApplicationController extends Controller
             ->where('applications.id', '=', $id)
             ->first();
         //   dd($application);
-        $mrk = DB::table('users')
-            ->where('id', '=', $application->id_MRK)
-            ->first();
+        // $mrk = DB::table('users')
+        //     ->where('id', '=', $application->id_MRK)
+        //     ->first();
 
         $empty = 0;
         foreach ($application as $key => $value) {
