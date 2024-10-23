@@ -1268,7 +1268,7 @@ class ApplicationController extends Controller
 
         // $qs = new QueueSenderChat('aleksmakarov5@yandex.ru', $id, $author->name, $request->message);
         // $this->dispatch($qs);
-        Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, $author->name, $request->message));
+        // Mail::to('aleksmakarov5@yandex.ru')->queue(new newmessage($id, $author->name, $request->message));
 
         return redirect()
             ->route('chat', $id);
@@ -2119,8 +2119,9 @@ class ApplicationController extends Controller
     public function send_mrk($id, $id_MRK)
     {
         $user = User::find($id_MRK);
-        Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
+        // Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
         $application = application::findOrFail($id);
+        $spm = User::find($application->id_spm);
         $application->id_status = 3;
         $application->check_date = carbon::now();
         $application->save();
@@ -2156,6 +2157,32 @@ class ApplicationController extends Controller
                 )
                 ->send();
         }
+        $notify = new notify;
+        $notify->id_user = $spm->id;
+        $notify->id_application = $id;
+        $notify->id_text = 3;
+        $notify->link = "/application/";
+        $notify->save();
+        $status_application = new status_application;
+        $status_application->id_user = $spm->id;
+        $status_application->id_application = $id;
+        $status_application->is_readed = false;
+        $status_application->save();
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
+        if ($spm->telegram_notify) {
+            $new_chat = TelegraphChat::where('chat_id', '=', $spm->telegram_id)->first();
+            $status = ApplicationStatus::findOrFail(
+                $application->id_status
+            )->StatusName;
+            $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i> необходимо произвести проценку")
+                ->keyboard(
+                    Keyboard::make()
+                        ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                )
+                ->send();
+        }
         return redirect()->route('applications');
     }
     public function change_status($id, $variant)
@@ -2172,7 +2199,7 @@ class ApplicationController extends Controller
                 $history->id_status = 4;
 
 
-                Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
+                // Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                 break;
             case 2:
                 $application->id_status = 8;
@@ -2362,7 +2389,7 @@ class ApplicationController extends Controller
             case 1: {
                     $application->id_status = 2;
                     $history->id_status = 2;
-                    Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
+                    // Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
                     $application->save();
                     $history->save();
                     return redirect()->route('applications');
@@ -2372,7 +2399,7 @@ class ApplicationController extends Controller
 
                     $application->save();
 
-                    Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
+                    // Mail::to('aleksmakarov5@yandex.ru')->queue(new mrknotify($id));
 
                     return redirect()->route('answer_fail_sel', $id);
                 }
