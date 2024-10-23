@@ -756,7 +756,11 @@ class MainController extends Controller
                                 rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                         }
                     }
-                    rmdir($dir . '/' . $image);
+                    try {
+                        rmdir($dir . '/' . $image);
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
                 }
             }
         }
