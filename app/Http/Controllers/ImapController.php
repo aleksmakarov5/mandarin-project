@@ -863,7 +863,9 @@ class ImapController extends Controller
         //Get all Mailboxes
         /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
         $folders = $client2->getFolders(true, "INBOX");
+
         foreach ($folders as $folder) {
+
 
             //Get all Messages of the current Mailbox $folder
             /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
@@ -873,7 +875,7 @@ class ImapController extends Controller
             /** @var \Webklex\PHPIMAP\Message $message */
             $last_uid = -1;
             foreach ($emailes as $uid => $email) {
-
+                // dd($email);
                 echo "<br />" . $uid . "<br />";
                 $last_uid = $uid;
                 $mailbox = mailbox::where('id', '=', 3)->first();
@@ -969,8 +971,10 @@ class ImapController extends Controller
             $emailes = $folder->overview($sequence = "$start_uid:*");
             /** @var \Webklex\PHPIMAP\Message $message */
             $last_uid = -1;
-            foreach ($emailes as $uid => $email) {
+            // $emailes = $folder->messages()->UNSEEN()->get();
 
+            foreach ($emailes as $uid => $email) {
+                // dd($uid, $email);
                 echo "<br />" . $uid . "<br />";
                 $last_uid = $uid;
                 $mailbox = mailbox::where('id', '=', 4)->first();

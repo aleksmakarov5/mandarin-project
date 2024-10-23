@@ -1,7 +1,11 @@
 @php
     use App\Models\application;
     use App\Models\ApplicationStatus;
-    $app = application::where('id', '=', $id)->first();
+    try {
+        $app = application::where('id', '=', $id)->first();
+    } catch (\Exception $e) {
+        return redirect('applications');
+    }
     $status = ApplicationStatus::get()->all();
     $currentStatus = ApplicationStatus::where('id', '=', $app->id_status)->first();
     $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
