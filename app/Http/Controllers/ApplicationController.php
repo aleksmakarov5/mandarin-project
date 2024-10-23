@@ -753,9 +753,13 @@ class ApplicationController extends Controller
             ->where('applications.id', '=', $id)
             ->first();
         //   dd($application);
-        // $mrk = DB::table('users')
-        //     ->where('id', '=', $application->id_MRK)
-        //     ->first();
+        try {
+            $mrk = DB::table('users')
+                ->where('id', '=', $application->id_MRK)
+                ->first();
+        } catch (\Exception $errors) {
+            return redirect()->route('applications');
+        }
 
         $empty = 0;
         foreach ($application as $key => $value) {
@@ -974,7 +978,7 @@ class ApplicationController extends Controller
         try {
             $application = application::findOrFail($id);
             $application->delete();
-        } catch (\Exception $e) {
+        } catch (\Exception $error) {
             return redirect()->route('applications')->with('error', 'Ошибка при удалении заявки');
         }
         $notifications = notify::where('id_application', '=', $id)->get();
