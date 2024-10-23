@@ -21,7 +21,7 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td :id="'Part_Name'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)" @dblclick.prevent="deletetroubleshooting(troubleshooting.id)">
+                    <td :id="'Part_Name'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
                         <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">   
                         {{ troubleshooting.Сonclusion }}</td>
