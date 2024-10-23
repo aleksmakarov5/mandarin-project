@@ -66,7 +66,9 @@ class TroubleshootingController extends Controller
             $troubleshooting->$key = clearHTML($val);
         }
         $troubleshooting->save();
-        return $troubleshooting;
+        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $troubleshooting->id_application)->get()->all();
+
+        return $troubleshootings;
     }
 
 

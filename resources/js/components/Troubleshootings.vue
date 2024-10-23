@@ -107,7 +107,7 @@ axios.delete(`/api/troubleshootings/${id}`)
                 id_application: this.app_id, PartName: this.PartName, Work: this.Work,  Сonclusion: this.Сonclusion
             })
                 .then(res => {
-            this.troubleshootings[this.index]=res.data
+            this.troubleshootings=res.data
            })
            this.changeEditTroubleshootingId(null)
             
