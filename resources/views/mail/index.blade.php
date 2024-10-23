@@ -3,6 +3,8 @@
     Все Ящики
 @endsection
 @section('main_content')
+    </div>
+
     {{-- <div class="content-wrapper">
         <div class="email-wrapper wrapper">
 
@@ -98,8 +100,7 @@
                 @endforeach
             </div>
         </div>
-    </div> --}}
-    <center>
+    </div> --}} <center>
         <table id ="companies">
             <thead>
 

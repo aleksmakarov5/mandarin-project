@@ -3,6 +3,7 @@
     Все Ящики
 @endsection
 @section('main_content')
+    </div>
     <div class="mailbox">
         <div class="message-list">
             <a href="#" class="msg_but"><img src="/storage/img/new_mail.png" width="20" alt="Ответить"></a>
