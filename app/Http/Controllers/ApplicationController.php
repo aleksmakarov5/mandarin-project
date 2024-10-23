@@ -2102,6 +2102,13 @@ class ApplicationController extends Controller
                 'ub_number' => 'nullable'
             ]);
             // dd($data);
+            if (isset($data['mileage']))
+                $data['mileage'] = str2number($data['mileage']);
+            if (isset($data['vin']))
+                $data['vin'] = str_replace(' ', '', $data['vin']);
+            if (isset($data['gnz']))
+                $data['gnz'] = str_replace(' ', '', $data['gnz']);
+
 
             foreach ($data as $key => $value) {
                 if ($value != '') {
