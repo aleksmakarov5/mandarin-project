@@ -752,7 +752,8 @@ class MainController extends Controller
                     foreach ($img as $i) {
                         if ($i != '..' && $i != '.' && $i != '__MACOSX') {
                             // chmod($dir . '/' . $image . '/' . $i, 0777);
-                            rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
+                            if (!is_dir($dir . '/' . $image . '/' . $i))
+                                rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                         }
                     }
                     rmdir($dir . '/' . $image);
