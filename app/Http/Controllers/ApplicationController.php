@@ -971,8 +971,12 @@ class ApplicationController extends Controller
     }
     public function destroy($id)
     {
-        $application = application::findOrFail($id);
-        $application->delete();
+        try {
+            $application = application::findOrFail($id);
+            $application->delete();
+        } catch (\Exception $e) {
+            return redirect()->route('applications')->with('error', 'Ошибка при удалении заявки');
+        }
         $notifications = notify::where('id_application', '=', $id)->get();
         foreach ($notifications as $notification) {
             $notification->delete();
