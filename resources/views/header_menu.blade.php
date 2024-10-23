@@ -3,110 +3,114 @@
     use App\Models\ApplicationStatus;
     try {
         $app = application::where('id', '=', $id)->first();
-    } catch (\Exception $e) {
-        return redirect('applications');
-    }
-    $status = ApplicationStatus::get()->all();
-    $currentStatus = ApplicationStatus::where('id', '=', $app->id_status)->first();
-    $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
-    $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
-    $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
-    $summ_service = 0;
-    $summ_service_ic = 0;
-    foreach ($Works_serv as $work) {
-        $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
-        $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-    }
 
-    // dd($rewiew->all()) ;
-    $summ_ic_full = 0;
-    $summ_ic_half = 0;
-    $summ_order = 0;
-    $sum_teor = 0;
-    $proc = 0;
-    $eco_delta_full = 0;
-    $eco_delta_half = 0;
-    foreach ($spareparts as $i => $sparepart) {
-        $summ_ic_full =
-            $summ_ic_full + (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full));
-        $sum_teor +=
-            $sparepart->price_sto == 0
-                ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
-                : (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
-        $summ_ic_half =
-            $summ_ic_half +
-            (float) str_replace(
-                ' ',
-                '',
-                str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_half)),
-            );
-        switch ($sparepart->selected_price) {
-            case 1:
-                $summ_order =
-                    $summ_order +
-                    (float) str_replace(
-                        ' ',
-                        '',
-                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_original)),
-                    );
-                break;
-            case 2:
-                $summ_order =
-                    $summ_order +
-                    (float) str_replace(
-                        ' ',
-                        '',
-                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_analogue)),
-                    );
-                break;
-            case 3:
-                $summ_order =
-                    $summ_order +
-                    (float) str_replace(
-                        ' ',
-                        '',
-                        str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_used)),
-                    );
-                break;
+        $status = ApplicationStatus::get()->all();
+        $currentStatus = ApplicationStatus::where('id', '=', $app->id_status)->first();
+        $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
+        $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
+        $summ_service = 0;
+        $summ_service_ic = 0;
+        foreach ($Works_serv as $work) {
+            $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
+            $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
         }
-    }
-    if (isset($estimates->price_repair_full)) {
-        if ($estimates->emr10) {
-            $eco_delta_full =
-                (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
-                $summ_order -
-                $summ_service -
-                $app->sertificat;
-            if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0) {
-                $proc = round(
-                    ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
+
+        // dd($rewiew->all()) ;
+        $summ_ic_full = 0;
+        $summ_ic_half = 0;
+        $summ_order = 0;
+        $sum_teor = 0;
+        $proc = 0;
+        $eco_delta_full = 0;
+        $eco_delta_half = 0;
+        foreach ($spareparts as $i => $sparepart) {
+            $summ_ic_full =
+                $summ_ic_full +
+                (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full));
+            $sum_teor +=
+                $sparepart->price_sto == 0
+                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
+                    : (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
+            $summ_ic_half =
+                $summ_ic_half +
+                (float) str_replace(
+                    ' ',
+                    '',
+                    str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_half)),
                 );
+            switch ($sparepart->selected_price) {
+                case 1:
+                    $summ_order =
+                        $summ_order +
+                        (float) str_replace(
+                            ' ',
+                            '',
+                            str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_original)),
+                        );
+                    break;
+                case 2:
+                    $summ_order =
+                        $summ_order +
+                        (float) str_replace(
+                            ' ',
+                            '',
+                            str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_analogue)),
+                        );
+                    break;
+                case 3:
+                    $summ_order =
+                        $summ_order +
+                        (float) str_replace(
+                            ' ',
+                            '',
+                            str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_used)),
+                        );
+                    break;
+            }
+        }
+        if (isset($estimates->price_repair_full)) {
+            if ($estimates->emr10) {
+                $eco_delta_full =
+                    (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
+                    $summ_order -
+                    $summ_service -
+                    $app->sertificat;
+                if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0) {
+                    $proc = round(
+                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full) * 1.1)) * 100,
+                    );
+                }
+            } else {
+                $eco_delta_full =
+                    (float) str_replace(' ', '', $estimates->price_repair_full) -
+                    $summ_order -
+                    $summ_service -
+                    $app->sertificat;
+                if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0) {
+                    $proc = round(
+                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100,
+                    );
+                }
             }
         } else {
-            $eco_delta_full =
-                (float) str_replace(' ', '', $estimates->price_repair_full) -
-                $summ_order -
-                $summ_service -
-                $app->sertificat;
-            if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0) {
-                $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
+            $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
+            if ($summ_ic_full + $summ_service_ic != 0) {
+                $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
             }
         }
-    } else {
-        $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
-        if ($summ_ic_full + $summ_service_ic != 0) {
-            $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
+        if (isset($estimates->price_repair_half)) {
+            $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
+        } else {
+            $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
         }
-    }
-    if (isset($estimates->price_repair_half)) {
-        $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
-    } else {
-        $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
-    }
-    $teor = $sum_teor + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
-    $proc_t = 0;
-    if ($summ_ic_full + $summ_service_ic != 0) {
-        $proc_t = round(($teor / ($summ_ic_full + $summ_service_ic)) * 100);
+        $teor = $sum_teor + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
+        $proc_t = 0;
+        if ($summ_ic_full + $summ_service_ic != 0) {
+            $proc_t = round(($teor / ($summ_ic_full + $summ_service_ic)) * 100);
+        }
+    } catch (\Exception $e) {
+        return redirect('applications');
     }
 @endphp
 @extends('layout')
