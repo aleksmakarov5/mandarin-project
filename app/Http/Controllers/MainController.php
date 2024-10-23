@@ -750,7 +750,7 @@ class MainController extends Controller
                 if ($image != '..' && $image != '.') {
                     $img = scandir($dir . '/' . $image);
                     foreach ($img as $i) {
-                        if ($i != '..' && $i != '.') {
+                        if ($i != '..' && $i != '.' && $i != '__MACOSX') {
                             // chmod($dir . '/' . $image . '/' . $i, 0777);
                             rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
                         }
