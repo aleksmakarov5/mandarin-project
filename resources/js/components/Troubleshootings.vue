@@ -109,7 +109,6 @@ axios.delete(`/api/troubleshootings/${id}`)
                 .then(res => {
             this.troubleshootings=res.data
            })
-           this.changeEditTroubleshootingId(null)
             
         },
         createTroubleshooting()
