@@ -914,7 +914,7 @@ class ImapController extends Controller
                         $mess->body_text = $message->getTextBody();
                         $mess->header = $message->getHeaders();
                         $mess->message_date = $message->getdate();
-                        $mess->mailbox_id = 2;
+                        $mess->mailbox_id = 3;
                         // dd($mess);
                         $mess->save();
                         foreach ($to as $mail) {
@@ -1013,7 +1013,7 @@ class ImapController extends Controller
                         $mess->body_text = $message->getTextBody();
                         $mess->header = $message->getHeaders();
                         $mess->message_date = $message->getdate();
-                        $mess->mailbox_id = 2;
+                        $mess->mailbox_id = 4;
                         // dd($mess);
                         $mess->save();
                         foreach ($to as $mail) {
