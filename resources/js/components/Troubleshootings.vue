@@ -17,7 +17,7 @@
 
 
 <template v-for="(troubleshooting,index) in troubleshootings">
-                <tr  @click="changeEditTroubleshootingId(troubleshooting.id,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)" >
+                <tr  @click="changeEditTroubleshootingId(index,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)" >
                     <td scope="col">
                         {{ index+1 }}
                     </td>
@@ -56,7 +56,8 @@
         data(){
             
             return{
-                troubleshootings:[],
+                troubleshootings: [],
+                index: 0,
                 id_app:this.app_id,
                 EditTroubleshootingId:null,
                 PartName: '',
@@ -91,7 +92,8 @@ axios.delete(`/api/troubleshootings/${id}`)
             }
             
         },
-        changeEditTroubleshootingId(id,PartName,Work,Сonclusion) {
+        changeEditTroubleshootingId(id, PartName, Work, Сonclusion) {
+            this.index = id
             this.PartName=PartName
             this.Work=Work
             this.Сonclusion=Сonclusion
@@ -104,8 +106,8 @@ axios.delete(`/api/troubleshootings/${id}`)
             axios.post(`/api/troubleshootings/${id}/update`, {
                 id_application: this.app_id, PartName: this.PartName, Work: this.Work,  Сonclusion: this.Сonclusion
             })
-           .then(res => {
-            this.getTroubleshutings() 
+                .then(res => {
+            this.troubleshootings[this.index]=res.data
            })
            this.changeEditTroubleshootingId(null)
             
@@ -126,19 +128,19 @@ axios.delete(`/api/troubleshootings/${id}`)
         editPartName(id)
         {
            let part_name = document.getElementById('Part_Name'+id);
-            this.PartName = part_name.innerHTML;
+            this.PartName = part_name.innerText;
             this.updateTroubleshooting(id)
         },
         editСonclusion(id)
         {
            let сonclusion = document.getElementById('Сonclusion_'+id);
-            this.Сonclusion = сonclusion.innerHTML;
+            this.Сonclusion = сonclusion.innerText;
             this.updateTroubleshooting(id)
         },
         editWork(id)
         {
             let work = document.getElementById('Work_'+id);
-            this.Work = work.innerHTML;
+            this.Work = work.innerText;
             this.updateTroubleshooting(id)
         }
 

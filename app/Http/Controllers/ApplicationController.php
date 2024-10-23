@@ -989,6 +989,58 @@ class ApplicationController extends Controller
         foreach ($status_messages as $status) {
             $status->delete();
         }
+        $attachments = attachment::where('id_application', '=', $id)->get();
+        foreach ($attachments as $attachment) {
+            $attachment->delete();
+        }
+        $chats = chat::where('id_application', '=', $id)->get();
+        foreach ($chats as $chat) {
+            $chat->delete();
+        }
+        $estimates = estimate::where('id_application', '=', $id)->get();
+        foreach ($estimates as $estimate) {
+            $estimate->delete();
+        }
+        $failures = failure::where('id_application', '=', $id)->get();
+        foreach ($failures as $failure) {
+            $failure->delete();
+        }
+        $histories =
+            history::where('id_application', '=', $id)->get();
+        foreach ($histories as $history) {
+            $history->delete();
+        }
+        $messages = message::where('application_id', '=', $id)->get();
+        foreach ($messages as $message) {
+            $message->delete();
+        }
+        $spare_parts = SparePart::where('id_application', '=', $id);
+        foreach ($spare_parts as $spare_part) {
+            $spare_part->delete();
+        }
+        $troubleshootings =
+            troubleshooting::where('id_application', '=', $id)->get();
+        foreach ($troubleshootings as $troubleshooting) {
+            $troubleshooting->delete();
+        }
+        $trus =
+            tru::where('id_application', '=', $id)->get();
+        foreach ($trus as $tru) {
+            $tru->delete();
+        }
+        $works =
+            work::where('id_application', '=', $id)->get();
+        foreach ($works as $work) {
+            $work->delete();
+        }
+
+
+
+
+
+
+
+
         // Delete all files in directory (including subdirectories)
         $dir = 'storage/files/' . $id;
         if (is_dir($dir))
