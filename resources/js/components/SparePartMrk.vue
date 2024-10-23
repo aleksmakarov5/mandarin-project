@@ -207,11 +207,10 @@
                 
             })
                 .then(res => {
-                    this.spareparts[index] = res.data
-            
-                console.log(res)
-               // this.getSpareParts() 
-            console.log(res)
+                    this.spareparts = res.data[0]
+                this.summ_ic_full = res.data[1]
+                this.summ_sto = res.data[2]
+                this.delta_res_full = res.data[3]
            })
             
            
@@ -225,7 +224,10 @@
                 selected_mrk: select 
             })
             .then(res => {
-            this.spareparts[index].selected_mrk=res.data.selected_mrk
+                this.spareparts = res.data[0]
+                this.summ_ic_full = res.data[1]
+                this.summ_sto = res.data[2]
+                this.delta_res_full = res.data[3]
             // this.getSpareParts() 
            })
           
