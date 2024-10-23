@@ -225,7 +225,7 @@
                 selected_mrk: select 
             })
             .then(res => {
-            this.spareparts[index].selected_mrk=select
+            this.spareparts[index].selected_mrk=res.data.selected_mrk
             // this.getSpareParts() 
            })
           

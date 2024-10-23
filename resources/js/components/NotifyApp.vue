@@ -40,7 +40,7 @@ type:this.type_in,
     
   },
   mounted(){
-            this.getCounts()
+            // this.getCounts()
             
         },
   methods:{
