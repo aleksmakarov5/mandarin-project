@@ -149,7 +149,7 @@ class ApplicationController extends Controller
         $only_me = $request->get('only_me');
 
         if (Gate::allows('admin') || $only_me) {
-            if (Gate::allows('mrk')) {
+            if (Auth::user()->GroupId == 5) {
                 $applications = application::where(function ($query) {
                     $query
                         ->where('id_status', '<', '12')
@@ -157,7 +157,7 @@ class ApplicationController extends Controller
                         ->where('id_status', '<>', '7');
                 })
                     ->join('mrk_companies', function ($join) {
-                        $join->on('mrk_companies.id_mrk', '=', Auth::user()->id)->where('mrk_companies.id_mrk', '=', 'applications.our_company');
+                        $join->on('mrk_companies.id_mrk', '=', Auth::user()->id)->where('mrk_companies.id_company', '=', 'applications.our_company');
                     })
 
                     ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
