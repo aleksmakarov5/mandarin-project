@@ -328,7 +328,8 @@ td.mrksto {
     max-width: 500px;
 }
 
-.editable td th {
+.editable td,
+.editable th {
     padding-left: 5px;
     padding-right: 5px;
     /* max-width: 500px; */
