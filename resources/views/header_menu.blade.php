@@ -120,15 +120,18 @@
 @section('main_content')
     <div class="all-content">
         <div class="table-content">
-            <div id="ns">
-                <next-step :txt="`{{ $currentStatus->next_step }}`"></next-step>
-                {{--  --}}
-            </div>
+
 
             @if (!isset($hide_menu))
                 <table class="table">
                     <tr>
-                        <td colspan=2 align='right'>
+                        <td>
+                            <div id="ns">
+                                <next-step :txt="`{{ $currentStatus->next_step }}`"></next-step>
+                                {{--  --}}
+                            </div>
+                        </td>
+                        <td align='right'>
                             <a href="/combine/{{ $app->our_company }}/{{ $app->id }}" class="msg_but"
                                 title="Объединить заявки"
                                 onclick="if (!confirm('Объеденить заявку №{{ $app->id }} с другим делом?')) return false"><img
