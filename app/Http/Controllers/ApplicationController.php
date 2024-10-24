@@ -560,9 +560,9 @@ class ApplicationController extends Controller
             if (Auth::user()->GroupId == 5) {
                 $applications = application::where(function ($query) {
                     $query
-                        ->where('id_status', '<', '12')
-                        ->where('id_status', '<>', '6')
-                        ->where('id_status', '<>', '7');
+                        ->where('id_status', '>', '11')
+
+                        ->where('id_status', '<', '25');
                 })
                     ->join('mrk_companies', function ($join) {
                         $join->on('mrk_companies.id_company', '=', 'applications.our_company')->where('mrk_companies.id_mrk', '=', Auth::user()->id);
@@ -598,9 +598,9 @@ class ApplicationController extends Controller
             } else {
                 $applications = application::where(function ($query) {
                     $query
-                        ->where('id_status', '<', '12')
-                        ->where('id_status', '<>', '6')
-                        ->where('id_status', '<>', '7');
+                        ->where('id_status', '>', '11')
+
+                        ->where('id_status', '<', '25');
                 })
 
                     ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
