@@ -106,6 +106,10 @@
                                         class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
                                     <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive` />
                                 </li>
+                                <li class="nav-item"><a href="\temp"
+                                        class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Временные</a>
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`temp` />
+                                </li>
                                 <li class="nav-item"><a href="\message"
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
                             @endcan

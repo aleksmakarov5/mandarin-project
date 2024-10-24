@@ -151,6 +151,7 @@ Route::middleware("auth:web")->group(
         Route::get('/logout',  [AuthController::class, 'logout'])->name('logout');
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
         Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
+        Route::get('/temp',  [ApplicationController::class, 'temp'])->name('temp');
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::post('/find',  [ApplicationController::class, 'find'])->name('find');
 
@@ -193,6 +194,8 @@ Route::middleware("auth:web")->group(
         Route::post('applications/{id}/update', [ApplicationController::class, 'update'])->name('applications.update');
         Route::get('applications/{id}/delete', [ApplicationController::class, 'destroy'])
             ->name('applications.destroy');
+        Route::get('applications/{id}/move_temp', [ApplicationController::class, 'move_temp'])
+            ->name('applications.move_temp');
         Route::get('lawyers/create/{id}', [LawyersController::class, 'create'])
             ->name('lawyers.create');
         Route::post('lawyers/store/{id}', [LawyersController::class, 'store'])

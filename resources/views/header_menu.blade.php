@@ -128,6 +128,22 @@
             @if (!isset($hide_menu))
                 <table class="table">
                     <tr>
+                        <td colspan=2 align='right'>
+                            <a href="/combine/{{ $app->our_company }}/{{ $app->id }}" class="msg_but"
+                                title="Объединить заявки"
+                                onclick="if (!confirm('Объеденить заявку №{{ $app->id }} с другим делом?')) return false"><img
+                                    src="/storage/img/edin.png" width="30" alt="Добавить"></a>
+                            <a href="/applications/{{ $app->id }}/delete" class="msg_but" title="Удалить заявку"
+                                onclick="if (!confirm('Точно удалить заявку №{{ $app->id }}?')) return false"><img
+                                    src="/storage/img/delete.png" width="30" alt="Удалить"></a>
+                            <a href="/applications/{{ $app->id }}/move_temp" class="msg_but"
+                                title="Перенести во временные"
+                                onclick="if (!confirm('Переместить во временные заявку №{{ $app->id }}?')) return false"><img
+                                    src="/storage/img/temp.png" width="30" alt="Удалить">
+                            </a>
+                        </td>
+                    </tr>
+                    <tr>
                         <td>
                             <div class="app-lbl">
                                 <h1>Заявка № {{ $id }} </h1>
@@ -170,10 +186,7 @@
                                         </tr>
                                         <tr>
                                             <td>
-                                                <div class="
-     alert alert-success
-       
-       ">
+                                                <div class="alert alert-success">
                                                     {{ in_money(
                                                         $sum_teor +
                                                             (isset($estimates->price_repair)
@@ -192,20 +205,20 @@
                                             <td>
                                                 <div
                                                     class="
-       @if ($proc_t > 59) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
+                                                            @if ($proc_t > 59) alert alert-success
+                                                            @else
+                                                            alert alert-danger @endif
+                                                            ">
                                                     {{ in_money($teor) }} руб; ({{ $proc_t }}%)
                                                 </div>
                                             </td>
                                             <td>
                                                 <div
                                                     class="
-       @if ($proc > 59) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
+                                                            @if ($proc > 59) alert alert-success
+                                                            @else
+                                                            alert alert-danger @endif
+                                                            ">
                                                     {{ in_money($eco_delta_full) }} руб; ({{ $proc }}%)
                                                 </div>
                                             </td>
@@ -217,10 +230,10 @@
                                             <td>
                                                 <div
                                                     class="
-       @if ($summ_service > 0) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
+                                                                @if ($summ_service > 0) alert alert-success
+                                                                @else
+                                                                alert alert-danger @endif
+                                                                ">
                                                     {{ in_money($summ_service) }} руб;
                                                 </div>
 
@@ -228,10 +241,10 @@
                                             <td>
                                                 <div
                                                     class="
-       @if ($eco_delta_full > 0) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
+                                                            @if ($eco_delta_full > 0) alert alert-success
+                                                            @else
+                                                            alert alert-danger @endif
+                                                            ">
                                                     {{ in_money(($eco_delta_full * 2) / 10) }} руб;
                                                 </div>
                                             </td>
@@ -240,8 +253,7 @@
                                 </table>
                             @endif
                         </td>
-                        <td rowspan=2><a href="/combine/{{ $app->our_company }}/{{ $app->id }}" class="msg_but"><img
-                                    src="/storage/img/edin.png" width="30" alt="Добавить"></a></td>
+
                     </tr>
                 </table>
 
@@ -331,7 +343,7 @@
                                                     </li>
                                                     <br>
                                                 @endif
-                                                @if ($app->id_status == 25 || $app->id_status == 26)
+                                                @if ($app->id_status == 25 || $app->id_status == 26 || $app->id_status == 27)
                                                     <li><a href="/applications/{{ $id }}/change_st/2">Вернуть в
                                                             работу</a>
                                                     </li>

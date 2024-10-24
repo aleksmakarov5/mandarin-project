@@ -464,6 +464,51 @@ class ApplicationController extends Controller
         return view('applications', ['applications' => $applications],);
     }
 
+    public function temp()
+    {
+        $applications = DB::table('applications')
+            ->where('id_status', '=', '27')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->get()->sortDesc();
+        // dd($applications);
+
+        session(['rout' => 'temp']);
+
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 1;
+            $application->max_hour = 1000;
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
+        }
+        $applications = $this->configure($applications);
+        return view('applications', ['applications' => $applications],);
+    }
+
     public function directions(Request $request)
     {
         $only_me = 0;
@@ -1069,6 +1114,7 @@ class ApplicationController extends Controller
         // dd($rewiew->all()) ;
         return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
     }
+
 
     public function message($id)
     {
@@ -3408,5 +3454,17 @@ class ApplicationController extends Controller
         }
 
         return redirect()->route('mail_app', ['id' => $id_next]);
+    }
+    public function move_temp($id)
+    {
+        try {
+            $application = application::findOrFail($id);
+            $application->id_status = 27;
+            $application->save();
+            session(['rout' => 'temp']);
+            return redirect()->route('application', $id);
+        } catch (\Exception $error) {
+            return redirect()->route('application', $id)->with('error', 'Ошибка при удалении заявки');
+        }
     }
 }
