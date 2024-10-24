@@ -149,40 +149,80 @@ class ApplicationController extends Controller
         $only_me = $request->get('only_me');
 
         if (Gate::allows('admin') || $only_me) {
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
-            })
+            if (Gate::allows('mrk')) {
+                $applications = application::where(function ($query) {
+                    $query
+                        ->where('id_status', '<', '12')
+                        ->where('id_status', '<>', '6')
+                        ->where('id_status', '<>', '7');
+                })
+                    ->join('mrk_companies', function ($join) {
+                        $join->on('mrk_companies.id_mrk', '=', Auth::user()->id)->where('mrk_companies.id_mrk', '=', 'applications.our_company');
+                    })
 
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                    ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                    ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                    ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                    ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                    ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                    ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                    ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
 
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )
-                ->get()
+                    ->select(
+                        'applications.*',
+                        'insurance_companies.name',
+                        'insurance_companies.insurance_companies_theme',
+                        'services.service_name',
+                        'services.services_theme',
+                        'lawyers.lawyer_name',
+                        'lawyers.color as lawyers_color',
+                        'application_statuses.StatusName',
+                        'application_statuses.status_theme',
+                        'application_statuses.current_group',
+                        'our_companies.our_name',
+                        'users.name as MRK_name',
+                        'cities.name as city'
+                    )
+                    ->get()
 
-                ->sortDesc();
+                    ->sortDesc();
+            } else {
+                $applications = application::where(function ($query) {
+                    $query
+                        ->where('id_status', '<', '12')
+                        ->where('id_status', '<>', '6')
+                        ->where('id_status', '<>', '7');
+                })
+
+                    ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                    ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                    ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                    ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                    ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                    ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                    ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
+
+                    ->select(
+                        'applications.*',
+                        'insurance_companies.name',
+                        'insurance_companies.insurance_companies_theme',
+                        'services.service_name',
+                        'services.services_theme',
+                        'lawyers.lawyer_name',
+                        'lawyers.color as lawyers_color',
+                        'application_statuses.StatusName',
+                        'application_statuses.status_theme',
+                        'application_statuses.current_group',
+                        'our_companies.our_name',
+                        'users.name as MRK_name',
+                        'cities.name as city'
+                    )
+                    ->get()
+
+                    ->sortDesc();
+            }
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -214,6 +254,7 @@ class ApplicationController extends Controller
                     'cities.name as city'
                 )->get()->sortDesc();
         } else {
+
             $applications = application::where(function ($query) {
                 $query
 
