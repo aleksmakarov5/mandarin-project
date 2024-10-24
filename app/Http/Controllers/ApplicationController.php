@@ -157,7 +157,7 @@ class ApplicationController extends Controller
                         ->where('id_status', '<>', '7');
                 })
                     ->join('mrk_companies', function ($join) {
-                        $join->on('mrk_companies.id_mrk', '=', Auth::user()->id)->where('mrk_companies.id_company', '=', 'applications.our_company');
+                        $join->on('mrk_companies.id_company', '=', 'applications.our_company')->where('mrk_companies.id_mrk', '=', Auth::user()->id);
                     })
 
                     ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
