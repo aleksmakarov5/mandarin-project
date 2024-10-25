@@ -12,9 +12,9 @@
                         <th scope="col">#</th>
                         <th scope="col">Наименование</th>
 
-                        
+
                         <th scope="col">Цена сервиса</th>
-                        
+
 
                     </tr>
                     <tr>
@@ -22,14 +22,14 @@
                         <th scope="col">Итого</th>
                         <th scope="col">{{ makeMoney(summ_service) }}</th>
                         <th scope="col">
-                           
 
-                                    
-                            
+
+
+
                         </th>
 
                     </tr>
-                
+
 
         </thead>
         <tbody>
@@ -40,15 +40,15 @@
     </td>
     <td  :id="'name_'+work.id" contenteditable @blur="editName(work.id)" @keydown.enter="editName(work.id)" >
         {{ work.name }}</td>
-  
+
     <td  :id="'price_service_'+work.id" contenteditable @blur="editPriceService(work.id)" @keydown.enter="editPriceService(work.id)">
         {{ makeMoney(work.price_service) }}</td>
-    
+
     <td scope="col"><a @click.prevent="deletework(work.id)">
         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
     </td>
 </tr>
-                  
+
 </template>
  <tr>
                     <td scope="col">
@@ -69,47 +69,48 @@
 
 	export default{
         props:[
-            'app_id'
+            'app_id',
+            'in_summ_service',
+            'in_works'
         ],
 
         data(){
-            
+
             return{
-                works:[],
+                works:this.in_works,
                 id_app:this.app_id,
                 EditWorkId:null,
                 name: '',
                 price_service: '',
                 name_Cr: '',
                 price_service_Cr: '',
-                summ_service:'',
+                summ_service:this.in_summ_service,
                 show:true
             }
         },
-	   
+
         mounted(){
-            this.getWorks()
-            
+            // this.getWorks()
+
         },
     methods:{
-        getWorks(){
-            axios.get(`/api/factwork/${this.id_app}`)
-            .then(res => {
+        getWorks(res){
+
                 this.works = res.data[0]
                 this.summ_service=res.data[1]
                 console.log(res)
-            })
+
 
         },
         deletework(id) {
-            if (confirm('Точно удалить?')) 
+            if (confirm('Точно удалить?'))
             {
 axios.delete(`/api/factwork/${id}`)
                 .then(res => {
-                    this.getWorks()
+                    this.getWorks(res)
                 })
             }
-            
+
         },
         changeEditWorkId(id,name,price_service) {
             this.EditWorkId=id
@@ -128,10 +129,10 @@ axios.delete(`/api/factwork/${id}`)
                 summ: 0
             })
            .then(res => {
-            this.getWorks() 
+            this.getWorks(res)
            })
            this.changeEditWorkId(null)
-            
+
         },
         createWork()
         {
@@ -142,7 +143,7 @@ axios.delete(`/api/factwork/${id}`)
                 summ: 0
             })
            .then(res => {
-            this.getWorks()
+            this.getWorks(res)
            })
             this.name_Cr = ''
             this.price_service_Cr = ''
@@ -164,10 +165,10 @@ axios.delete(`/api/factwork/${id}`)
             this.updateWork(id)
         }
 
-        
-        
+
+
     }
-       
+
 	}
-    
+
 </script>

@@ -86,7 +86,8 @@ class EstimateController extends Controller
             $estimate->$key = $value;
         }
         $estimate->save();
-        return $estimate;
+        $res = $this->show($estimate->id_application);
+        return $res;
     }
 
 
@@ -135,6 +136,7 @@ class EstimateController extends Controller
         $app->sertificat = $request->sert;
         $app->save();
         $estimate->sert = $app->sertificat;
-        return '';
+        $res = $this->show($estimate->id_application);
+        return $res;
     }
 }

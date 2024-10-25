@@ -196,16 +196,15 @@
 
         },
     methods:{
-        getSpareParts(){
-            axios.get(`/api/sparepart/${this.id_app}`)
-            .then(res => {
+        getSpareParts(res){
+
                 this.spareparts = res.data[0]
                 this.summ_ic_full = res.data[1]
                 this.summ_sto = res.data[2]
                 this.delta_res_full = res.data[3]
                 this.statuses=res.data[4]
                 console.log(res)
-            })
+
 
         },
         deletesparepart(id) {
@@ -213,7 +212,7 @@
             {
         axios.delete(`/api/sparepart/${id}`)
                 .then(res => {
-                    this.getSpareParts()
+                    this.getSpareParts(res)
                 })
             }
 
@@ -259,11 +258,7 @@
 
             })
            .then(res => {
-            this.spareparts = res.data[0]
-                this.summ_ic_full = res.data[1]
-                this.summ_sto = res.data[2]
-                this.delta_res_full = res.data[3]
-                this.statuses=res.data[4]
+                    this.getSpareParts(res)
            })
            console.log(this)
            this.changeEditSparePartId(null)
@@ -279,7 +274,7 @@
                  name: this.name_Cr,
             })
            .then(res => {
-            this.getSpareParts()
+            this.getSpareParts(res)
            })
             this.name_Cr = ''
         },

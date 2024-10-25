@@ -152,6 +152,7 @@ class SparePartController extends Controller
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
         $sertificat = application::findOrFail($id)->sertificat;
+        // dd($sertificat)
 
         $eco = '';
 
@@ -175,6 +176,7 @@ class SparePartController extends Controller
             $summ_service = $summ_service + str2number($work->price_service);
         }
         $delta = $summ_service - $summ_ic;
+        $estimates->fact = $summ_service + $summ_order;
         $statuses = sparepart_status::all();
         return view('SparePart.index', [
             'spareparts' => $spareparts,

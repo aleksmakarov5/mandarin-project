@@ -709,7 +709,8 @@
                 </table>
             </div> --}}
         @endcan
-        <fact-work :app_id={{ $id }}></fact-work>
+        <fact-work :app_id={{ $id }} :in_summ_service=`{{ $summ_service }}`
+            :in_works="{{ json_encode($Works_serv) }}"></fact-work>
 
         {{-- <div style="max-height: 10008px;">
             <table class="editable" id='demo'>
@@ -827,7 +828,8 @@
             </table>
         </div> --}}
         @can('company')
-            <estimate :app_id={{ $id }}></estimate>
+            <estimate :app_id={{ $id }} :in_sert=`{{ $sertificat }}` :in_estimate="{{ json_encode($estimate) }}">
+            </estimate>
 
 
 

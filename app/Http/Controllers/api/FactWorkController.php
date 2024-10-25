@@ -49,7 +49,8 @@ class FactWorkController extends Controller
             $work->$key = $value;
         }
         $work->save();
-        return $work;
+        $res = $this->show($work->id_application);
+        return $res;
     }
 
     public function update(Request $request, $id)
@@ -78,7 +79,8 @@ class FactWorkController extends Controller
             $work->$key = $val;
         }
         $work->save();
-        return $work;
+        $res = $this->show($work->id_application);
+        return $res;
     }
 
 
@@ -86,6 +88,7 @@ class FactWorkController extends Controller
     {
         $work = work::findOrFail($id);
         $work->delete();
-        return '';
+        $res = $this->show($work->id_application);
+        return $res;
     }
 }

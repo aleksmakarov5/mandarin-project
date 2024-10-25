@@ -72,7 +72,8 @@ class SparePartController extends Controller
             $sparepart->$key = $value;
         }
         $sparepart->save();
-        return $sparepart;
+        $res = $this->show($sparepart->id_application);
+        return $res;
     }
 
     public function update(Request $request, $id)
@@ -127,51 +128,8 @@ class SparePartController extends Controller
                 $sparepart->$key = $value;
         }
         $sparepart->save();
-        $spareparts = DB::table('spare_parts')
-            ->where('id_application', '=', $sparepart->id_application)
-            ->leftJoin(
-                'sparepart_statuses',
-                'sparepart_statuses.id',
-                '=',
-                'spare_parts.status_id'
-            )
-            ->select('spare_parts.*', 'sparepart_statuses.StatusName')
-            ->get();
-        $statuses = sparepart_status::all();
-        $summ_ic_full = 0;
-        $summ_sto = 0;
-        $delta_res_full = 0;
-        $summ_order = 0;
-
-        foreach ($spareparts as $i => $sparepart) {
-            $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
-            if (str2number($sparepart->price_sto) == 0)
-                $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
-            else
-                $summ_sto = $summ_sto + str2number($sparepart->price_sto);
-
-            switch ($sparepart->selected_price) {
-                case 1:
-                    $summ_order = $summ_order + str2number($sparepart->price_original);
-                    $sparepart->delta = str2number($sparepart->price_original) - str2number($sparepart->price_ic_full);
-                    break;
-                case 2:
-                    $summ_order = $summ_order + str2number($sparepart->price_analogue);
-                    $sparepart->delta = str2number($sparepart->price_analogue) - str2number($sparepart->price_ic_full);
-                    break;
-                case 3:
-                    $summ_order = $summ_order + str2number($sparepart->price_used);
-                    $sparepart->delta = str2number($sparepart->price_used) -  str2number($sparepart->price_ic_full);
-                    break;
-                default:
-                    $sparepart->delta = 0 - str2number($sparepart->price_ic_full);
-                    break;
-            }
-        }
-        $delta_res_full = $summ_order - $summ_ic_full;
-
-
-        return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses];
+        $res = $this->show($sparepart->id_application);
+        return $res;
     }
 
 
@@ -179,6 +137,7 @@ class SparePartController extends Controller
     {
         $sparepart = SparePart::findOrFail($id);
         $sparepart->delete();
-        return '';
+        $res = $this->show($sparepart->id_application);
+        return $res;
     }
 }
