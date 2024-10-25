@@ -17,15 +17,15 @@
 
 
 <template v-for="(troubleshooting,index) in troubleshootings">
-                <tr  @click="changeEditTroubleshootingId(index,troubleshooting.PartName,troubleshooting.Work,troubleshooting.Сonclusion)" >
+                <tr  @click="changeEditTroubleshootingId(index)" >
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
+                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
+                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
-                    <td  :id="'Work_'+troubleshooting.id" contenteditable @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
+                    <td  :id="'Work_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
 
 
@@ -92,10 +92,10 @@ axios.delete(`/api/troubleshootings/${id}`)
             }
 
         },
-        changeEditTroubleshootingId(id, PartName, Work, Сonclusion) {
-            this.PartName=PartName
-            this.Work=Work
-            this.Сonclusion=Сonclusion
+        changeEditTroubleshootingId(index) {
+            this.PartName=this.troubleshootings[index].PartName
+            this.Work=this.troubleshootings[index].Work
+            this.Сonclusion=this.troubleshootings[index].Сonclusion
         },
         isEdit(id){
             return this.EditTroubleshootingId===id
