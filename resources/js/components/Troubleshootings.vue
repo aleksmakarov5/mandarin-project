@@ -21,11 +21,11 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
+                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                    <td :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
+                    <td :id="'Сonclusion_'+troubleshooting.id" contenteditable  @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
-                    <td  :id="'Work_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
+                    <td  :id="'Work_'+troubleshooting.id" contenteditable  @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
 
 
@@ -127,18 +127,21 @@ axios.delete(`/api/troubleshootings/${id}`)
         {
            let part_name = document.getElementById('Part_Name_'+id);
             this.PartName = part_name.innerText;
+            console.log(part_name)
             this.updateTroubleshooting(id)
         },
         editСonclusion(id)
         {
            let сon = document.getElementById('Сonclusion_'+id);
             this.Сonclusion = сon.innerText;
+            console.log(con)
             this.updateTroubleshooting(id)
         },
         editWork(id)
         {
             let wor = document.getElementById('Work_'+id);
             this.Work = wor.innerText;
+            console.log(wor)
             this.updateTroubleshooting(id)
         }
 
