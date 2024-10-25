@@ -132,7 +132,7 @@ axios.delete(`/api/troubleshootings/${id}`)
             console.log(this.Work);
 
 
-            // this.updateTroubleshooting(id)
+            this.updateTroubleshooting(id)
         },
         editСonclusion(id)
         {
@@ -141,7 +141,7 @@ axios.delete(`/api/troubleshootings/${id}`)
             console.log(this.PartName);
             console.log(this.Сonclusion);
             console.log(this.Work);
-            // this.updateTroubleshooting(id)
+            this.updateTroubleshooting(id)
         },
         editWork(id)
         {
@@ -150,7 +150,7 @@ axios.delete(`/api/troubleshootings/${id}`)
             console.log(this.PartName);
             console.log(this.Сonclusion);
             console.log(this.Work);
-            // this.updateTroubleshooting(id)
+            this.updateTroubleshooting(id)
         }
 
 
