@@ -147,9 +147,9 @@ class SparePartController extends Controller
                     $delta_half[$i] = 0 -  str2number($sparepart->price_ic_half);
                     break;
             }
+            $sparepart->delta = $delta_full[$i];
         }
         $delta_res_full = $summ_order - $summ_ic_full;
-        $statuses = new sparepart_status;
         $delta_res_half = $summ_order - $summ_ic_half;
         $sertificat = application::findOrFail($id)->sertificat;
 
@@ -172,11 +172,12 @@ class SparePartController extends Controller
             $summ_pzn += str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
         }
         foreach ($Works_serv as $work) {
-            $summ_service = $summ_service + (int)str_replace(' ', '', $work->price_service);
+            $summ_service = $summ_service + str2number($work->price_service);
         }
         $delta = $summ_service - $summ_ic;
+        $statuses = sparepart_status::all();
         return view('SparePart.index', [
-            'spareparts' => $spareparts->all(),
+            'spareparts' => $spareparts,
             'delta_res_full' => $delta_res_full,
             'delta_res_half' => $delta_res_half,
             'delta_full' => $delta_full,
@@ -189,7 +190,7 @@ class SparePartController extends Controller
             'estimate' => $estimates,
             'summ_service' => $summ_service,
             'eco' => $eco,
-            'statuses' => $statuses->all(),
+            'statuses' => $statuses,
             'sertificat' => $sertificat,
             'Works' => $Works_ic->all(),
             "Works_serv" => $Works_serv->all(),

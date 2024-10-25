@@ -23,20 +23,20 @@
                     </td>
                     <td :id="'Part_Name'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">   
+                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
                     <td  :id="'Work_'+troubleshooting.id" contenteditable @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
-                   
-                    
+
+
                     <td scope="col" @click.prevent="deletetroubleshooting(troubleshooting.id)">
                         <img src="/storage/img/delete.png" width="30" alt="delete">
                     </td>
                 </tr>
-              
+
             </template>
               <tr>
-                    
+
                     <td scope="col" colspan="5" align="center"><a  @click.prevent="createTroubleshooting()">
                         <img src="/storage/img/add.png" width="30" alt="create"></a>
                     </td>
@@ -54,7 +54,7 @@
         ],
 
         data(){
-            
+
             return{
                 troubleshootings: [],
                 index: 0,
@@ -68,10 +68,10 @@
                 Сonclusion_Cr: '',
             }
         },
-	   
+
         mounted(){
             this.getTroubleshutings()
-            
+
         },
     methods:{
         getTroubleshutings(){
@@ -83,14 +83,14 @@
 
         },
         deletetroubleshooting(id) {
-            if (confirm('Точно удалить?')) 
+            if (confirm('Точно удалить?'))
             {
 axios.delete(`/api/troubleshootings/${id}`)
                 .then(res => {
                     this.getTroubleshutings()
                 })
             }
-            
+
         },
         changeEditTroubleshootingId(id, PartName, Work, Сonclusion) {
             this.index = id
@@ -109,7 +109,7 @@ axios.delete(`/api/troubleshootings/${id}`)
                 .then(res => {
             this.troubleshootings=res.data
            })
-            
+
         },
         createTroubleshooting()
         {
@@ -144,10 +144,10 @@ axios.delete(`/api/troubleshootings/${id}`)
         }
 
 
-        
-        
+
+
     }
-       
+
 	}
-    
+
 </script>

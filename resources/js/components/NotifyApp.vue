@@ -14,13 +14,13 @@
 
 <script>
 export default{
-    
+
     props: [
       'user',
         'id_app',
         'type_in'
   ],
-    
+
     data()
     {
       return{
@@ -34,14 +34,14 @@ type:this.type_in,
   created()
   {
     // 	Echo.channel('chat').listen('MessageSent', (e)=>{
-    //         this.getCounts()   
+    //         this.getCounts()
     // }
     // )
-    
+
   },
   mounted(){
             // this.getCounts()
-            
+
         },
   methods:{
         getCounts(){
@@ -50,7 +50,10 @@ type:this.type_in,
                 this.count=res.data
              })
 
-        },}
+      },
+
+
+  }
 
 }
 </script>

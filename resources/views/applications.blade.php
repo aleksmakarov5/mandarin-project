@@ -183,6 +183,7 @@
                         <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
                                 :count_in="{{ json_encode($application->count) }}">
+
                         </td>
                         <td scope="col"
                             onclick="window.location.href='/application/{{ $application->id }}'; return false">

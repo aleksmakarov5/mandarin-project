@@ -11,19 +11,19 @@ class WorkController extends Controller
 {
     public function show($id)
     {
-        $work =
+        $works =
             DB::table('works')
             ->where('id_application', '=', $id)
             ->where('summ', '<>', 0)
             ->get();
         $summ = 0;
         $summ_pzn = 0;
-        foreach ($work as $w) {
+        foreach ($works as $w) {
             $summ += str2number($w->summ);
             $summ_pzn += str2number($w->price) * str2number($w->count_hours_pzn ? $w->count_hours_pzn : $w->count_hours);
         }
 
-        return [$work, $summ, $summ_pzn];
+        return [$works, $summ, $summ_pzn];
     }
 
 
@@ -53,7 +53,8 @@ class WorkController extends Controller
             $work->$key = $value;
         }
         $work->save();
-        return $work;
+        $res = $this->show($work->id_application);
+        return $res;
     }
 
     public function update(Request $request, $id)
@@ -79,7 +80,8 @@ class WorkController extends Controller
             $work->$key = clearHTML($val);
         }
         $work->save();
-        return $work;
+        $res = $this->show($work->id_application);
+        return $res;
     }
 
 
@@ -87,6 +89,7 @@ class WorkController extends Controller
     {
         $work = work::findOrFail($id);
         $work->delete();
-        return '';
+        $res = $this->show($work->id_application);
+        return $res;
     }
 }

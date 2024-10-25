@@ -9,18 +9,17 @@
     <table class="editable" >
         <thead>
 
-           <tr>
-                        <th scope="col">#</th>
+           <tr><th scope="col">#</th>
                         <th scope="col">Наименование</th>
 
-                        
+
                         <th scope="col">Цена</th>
                         <th scope="col">Нормочасы</th>
                         <th scope="col">Часы ПЗН</th>
                         <th scope="col">Сумма страховой</th>
 
                         <th scope="col">Сумма ПЗН</th>
-                        
+
 
                     </tr>
                     <tr>
@@ -30,7 +29,7 @@
                         <th scope="col">{{ makeMoney(summ) }}</th>
                         <th scope="col">{{ makeMoney(summ_pzn) }}</th>
                     </tr>
-                
+
 
         </thead>
         <tbody>
@@ -53,12 +52,12 @@
         {{
             makeMoney((work.count_hours_pzn&&work.count_hours_pzn!=0 ? work.count_hours_pzn : work.count_hours) * work.price) }}
         </th>
-    
+
     <td scope="col"><a @click.prevent="deletework(work.id)">
         <img src="/storage/img/delete.png" width="30" alt="delete"></a>
     </td>
 </tr>
-                  
+
 </template>
 <tr>
                     <td scope="col">
@@ -83,51 +82,52 @@
 
 	export default{
         props:[
-            'app_id'
+            'app_id',
+            'in_summ',
+            'in_summ_pzn',
+            'in_works'
         ],
 
         data(){
-            
+
             return{
-                works:[],
+                works:this.in_works,
                 id_app:this.app_id,
                 EditWorkId:null,
                 name: '',
                 price: '',
                 count_hours_pzn: '',
-                summ:'',
+                summ:this.in_summ,
                 name_Cr: '',
                 price_Cr: '',
                 count_hours_Cr: '',
-                summ_pzn:0,
+                summ_pzn:this.in_summ_pzn,
                 show:true
             }
         },
-	   
+
         mounted(){
-            this.getWorks()
-            
+            // this.getWorks()
+
         },
     methods:{
-        getWorks(){
-            axios.get(`/api/work/${this.id_app}`)
-            .then(res => {
-                this.works = res.data[0]
+        getWorks(res){
+            this.works = res.data[0]
                 this.summ = res.data[1]
                 this.summ_pzn = res.data[2]
-                console.log(res)
-            })
+
 
         },
         deletework(id) {
-            if (confirm('Точно удалить?')) 
+            if (confirm('Точно удалить?'))
             {
 axios.delete(`/api/work/${id}`)
                 .then(res => {
-                    this.getWorks()
+                    this.getWorks(res)
+                console.log(res)
                 })
             }
-            
+
         },
         changeEditWorkId(id,name,count_hours_pzn) {
             // this.EditWorkId=id
@@ -143,13 +143,14 @@ axios.delete(`/api/work/${id}`)
                 id_application: this.app_id,
                 name: this.name,
                 count_hours_pzn: this.count_hours_pzn,
-                
+
             })
-           .then(res => {
-            this.getWorks() 
+                .then(res => {
+            this.getWorks(res)
+
            })
            this.changeEditWorkId(null)
-            
+
         },
         createWork()
         {
@@ -161,7 +162,7 @@ axios.delete(`/api/work/${id}`)
                 summ: this.makeCount(this.price_Cr)*this.makeCount(this.count_hours_Cr)
             })
            .then(res => {
-            this.getWorks()
+            this.getWorks(res)
            })
             this.name_Cr = ''
             this.price_Cr = ''
@@ -185,13 +186,13 @@ axios.delete(`/api/work/${id}`)
             this.count_hours_pzn = count_hours_pzn.innerHTML;
             this.updateWork(id)
         },
-        
 
 
-        
-        
+
+
+
     }
-       
+
 	}
-    
+
 </script>

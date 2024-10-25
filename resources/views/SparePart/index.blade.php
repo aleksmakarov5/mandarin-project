@@ -7,12 +7,21 @@
     </div>
     <div id="app">
         @if (session('GroupId') == 5)
-            <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}`></spare-part-mrk>
+            <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
+                :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
+                :in_statuses="{{ json_encode($statuses) }}"
+                :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-mrk>
         @else
             @if (session('GroupId') == 6)
-                <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}`></spare-part-zap>
+                <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}`
+                    :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
+                    :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
+                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-zap>
             @else
-                <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`></spare-part-all>
+                <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
+                    :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
+                    :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
+                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-all>
                 {{-- <button class="accordion-est">
                     Запчасти
                 </button>
@@ -249,7 +258,7 @@
                                             </th>
                                         @endif
                                         <td id="td_price_analogue-{{ $key }}" scope="col"
-                                            class="min 
+                                            class="min
      @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service == 2) zapmrksto @endif
       @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price == 2 && $sparepart->selected_service != 2) zapmrk @endif
       @if ($sparepart->selected_mrk == 2 && $sparepart->selected_price != 2 && $sparepart->selected_service == 2) mrksto @endif
@@ -299,7 +308,7 @@
                                             </th>
                                         @endif
                                         <td id="td_price_used-{{ $key }}" scope="col"
-                                            class="min 
+                                            class="min
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service == 3) zapmrksto @endif
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price == 3 && $sparepart->selected_service != 3) zapmrk @endif
       @if ($sparepart->selected_mrk == 3 && $sparepart->selected_price != 3 && $sparepart->selected_service == 3) mrksto @endif
@@ -389,8 +398,8 @@
                                         </th>
                                     @endcan
                                     <td id="td_price_service-{{ $key }}" scope="col"
-                                        class="min 
-      @if ($sparepart->selected_mrk > 0 && $sparepart->selected_mrk < 4) @if ($sparepart->approved) zap 
+                                        class="min
+      @if ($sparepart->selected_mrk > 0 && $sparepart->selected_mrk < 4) @if ($sparepart->approved) zap
       @else
       na @endif @endif
       "
@@ -403,8 +412,8 @@
                                     </td>
                                     @if (session('GroupId') == 9)
                                         <td id="td_price_service-{{ $key }}" scope="col"
-                                            class="min 
-      @if ($sparepart->approved) zap 
+                                            class="min
+      @if ($sparepart->approved) zap
       @else
       na @endif
       ">
@@ -469,13 +478,13 @@
                                     @break
                                   @case(3)
                                     class='teal'
-                                    @break  
+                                    @break
                                     @case(4)
                                     class='blue'
                                     @break
                                 @default
                                 class='gray'
-                                    
+
                             @endswitch>
                                             @if (session('GroupId') == 6 || session('GroupId') == 5)
 
@@ -580,7 +589,8 @@
             @endif
         @endif
         @can('company')
-            <work :app_id={{ $id }}></work>
+            <work :app_id={{ $id }} :in_summ=`{{ $summ_ic }}` :in_summ_pzn=`{{ $summ_pzn }}`
+                :in_works="{{ json_encode($Works) }}"></work>
             {{-- <button class="accordion-est">
                 Работы по калькуляции
             </button>
@@ -663,7 +673,7 @@
                                         <a onclick="if (!confirm('Точно удалить работу <{{ $Work->name }}?>')) return false"
                                             href="{{ route('Work.destroy', $Work->id) }}" class="nav-link"><img
                                                 src="/storage/img/delete.png" width="20" alt="delete"></a>
-                                        
+
                                     </td>
                             </tr>
                             </form>
