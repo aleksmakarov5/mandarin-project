@@ -51,9 +51,8 @@ class TroubleshootingController extends Controller
         ]);
 
         foreach ($data as $key => $val) {
-
-
-            $troubleshooting->$key = clearHTML($val);
+            if ($val)
+                $troubleshooting->$key = clearHTML($val);
         }
         $troubleshooting->save();
         $res = $this->show($troubleshooting->id_application);
