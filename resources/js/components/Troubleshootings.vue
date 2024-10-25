@@ -127,22 +127,22 @@ axios.delete(`/api/troubleshootings/${id}`)
         {
            let part_name = document.getElementById('Part_Name_'+id);
             this.PartName = part_name.innerText;
-            console.log(part_name)
-            this.updateTroubleshooting(id)
+            console.log(part_name.innerText)
+            // this.updateTroubleshooting(id)
         },
         editСonclusion(id)
         {
            let сon = document.getElementById('Сonclusion_'+id);
             this.Сonclusion = сon.innerText;
-            console.log(con)
-            this.updateTroubleshooting(id)
+            console.log(сon.innerText)
+            // this.updateTroubleshooting(id)
         },
         editWork(id)
         {
             let wor = document.getElementById('Work_'+id);
             this.Work = wor.innerText;
-            console.log(wor)
-            this.updateTroubleshooting(id)
+            console.log(wor.innerText)
+            // this.updateTroubleshooting(id)
         }
 
 
