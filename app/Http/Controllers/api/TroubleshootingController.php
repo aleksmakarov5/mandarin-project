@@ -11,18 +11,12 @@ class TroubleshootingController extends Controller
 {
     public function show($id)
     {
-        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get()->all();
-
-
+        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
 
         return $troubleshootings;
     }
 
-    public function create($id)
-    {
-        $troubleshooting = new troubleshooting;
-        return view('troubleshooting.create', ['troubleshooting' => $troubleshooting->all()], ['id' => $id]);
-    }
+
 
     public function store(Request $request)
     {
@@ -39,15 +33,11 @@ class TroubleshootingController extends Controller
             $troubleshooting->$key = $value;
         }
         $troubleshooting->save();
-        return $troubleshooting;
+        $res = $this->show($troubleshooting->id_application);
+        return $res;
     }
 
-    public function edit($id)
-    {
-        $troubleshooting = troubleshooting::findOrFail($id);
 
-        return view('troubleshooting.edit', ['troubleshooting' => $troubleshooting]);
-    }
     public function update(Request $request, $id)
     {
         $troubleshooting = troubleshooting::findOrFail($id);
@@ -66,9 +56,8 @@ class TroubleshootingController extends Controller
             $troubleshooting->$key = clearHTML($val);
         }
         $troubleshooting->save();
-        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $troubleshooting->id_application)->get()->all();
-
-        return $troubleshootings;
+        $res = $this->show($troubleshooting->id_application);
+        return $res;
     }
 
 
@@ -76,6 +65,7 @@ class TroubleshootingController extends Controller
     {
         $troubleshooting = troubleshooting::findOrFail($id);
         $troubleshooting->delete();
-        return '';
+        $res = $this->show($troubleshooting->id_application);
+        return $res;
     }
 }

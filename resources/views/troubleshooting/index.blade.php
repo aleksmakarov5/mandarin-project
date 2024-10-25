@@ -9,7 +9,7 @@
     @endif
 
 
-    {{-- 
+    {{--
     <table class="editable" id="demo">
         <thead>
 
@@ -114,7 +114,7 @@
     @endif --}}
 
     <div id="app">
-        <troubleshootings :app_id={{ $id }}>
+        <troubleshootings :app_id={{ $id }} :in_troubleshootings="{{ json_encode($troubleshootings) }}">
     </div>
     {{-- <script>
         function tableSearch(k, table) {

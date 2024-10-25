@@ -21,7 +21,7 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td :id="'Part_Name'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
+                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
                         <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
@@ -50,13 +50,14 @@
 
 	export default{
         props:[
-            'app_id'
+            'app_id',
+            'in_troubleshootings'
         ],
 
         data(){
 
             return{
-                troubleshootings: [],
+                troubleshootings: this.in_troubleshootings,
                 index: 0,
                 id_app:this.app_id,
                 EditTroubleshootingId:null,
@@ -70,16 +71,15 @@
         },
 
         mounted(){
-            this.getTroubleshutings()
+            // this.getTroubleshutings()
 
         },
     methods:{
-        getTroubleshutings(){
-            axios.get(`/api/troubleshootings/${this.id_app}`)
-            .then(res => {
+        getTroubleshutings(res){
+
                 this.troubleshootings=res.data
                 console.log(res)
-            })
+
 
         },
         deletetroubleshooting(id) {
@@ -87,13 +87,12 @@
             {
 axios.delete(`/api/troubleshootings/${id}`)
                 .then(res => {
-                    this.getTroubleshutings()
+                    this.getTroubleshutings(res)
                 })
             }
 
         },
         changeEditTroubleshootingId(id, PartName, Work, Сonclusion) {
-            this.index = id
             this.PartName=PartName
             this.Work=Work
             this.Сonclusion=Сonclusion
@@ -104,10 +103,13 @@ axios.delete(`/api/troubleshootings/${id}`)
         updateTroubleshooting(id)
         {
             axios.post(`/api/troubleshootings/${id}/update`, {
-                id_application: this.app_id, PartName: this.PartName, Work: this.Work,  Сonclusion: this.Сonclusion
+                id_application: this.app_id,
+                PartName: this.PartName,
+                Work: this.Work,
+                Сonclusion: this.Сonclusion
             })
                 .then(res => {
-            this.troubleshootings=res.data
+                    this.getTroubleshutings(res)
            })
 
         },
@@ -117,7 +119,7 @@ axios.delete(`/api/troubleshootings/${id}`)
                 id_application: this.app_id, PartName: this.PartName_Cr, Work: this.Work_Cr,  Сonclusion: this.Сonclusion_Cr
             })
            .then(res => {
-            this.getTroubleshutings()
+            this.getTroubleshutings(res)
            })
             this.PartName_Cr = ''
             this.Work_Cr = ''
@@ -126,7 +128,7 @@ axios.delete(`/api/troubleshootings/${id}`)
 
         editPartName(id)
         {
-           let part_name = document.getElementById('Part_Name'+id);
+           let part_name = document.getElementById('Part_Name_'+id);
             this.PartName = part_name.innerText;
             this.updateTroubleshooting(id)
         },
