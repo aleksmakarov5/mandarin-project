@@ -8,7 +8,7 @@
         <a href="/answer_ic_mrk/{{ $id }}" class="nav-link">Отправить в страховую компанию</a>
     @endif
 
-
+    </div>
     {{--
     <table class="editable" id="demo">
         <thead>

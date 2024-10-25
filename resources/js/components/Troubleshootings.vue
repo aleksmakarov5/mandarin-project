@@ -21,11 +21,11 @@
                     <td scope="col">
                         {{ index+1 }}
                     </td>
-                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
+                    <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                        <td :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
+                    <td :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
-                    <td  :id="'Work_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
+                    <td  :id="'Work_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur.prevent="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
 
 
@@ -64,9 +64,9 @@
                 PartName: '',
                 Work: '',
                 Сonclusion: '',
-                PartName_Cr: '',
-                Work_Cr: '',
-                Сonclusion_Cr: '',
+                PartName_Cr: ' ',
+                Work_Cr: ' ',
+                Сonclusion_Cr: ' ',
             }
         },
 
@@ -121,9 +121,6 @@ axios.delete(`/api/troubleshootings/${id}`)
            .then(res => {
             this.getTroubleshutings(res)
            })
-            this.PartName_Cr = ''
-            this.Work_Cr = ''
-            this.Сonclusion_Cr = ''
         },
 
         editPartName(id)
