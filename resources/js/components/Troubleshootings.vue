@@ -23,7 +23,7 @@
                     </td>
                     <td :id="'Part_Name_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editPartName(troubleshooting.id)" @keydown.enter="editPartName(troubleshooting.id)">
                         {{ troubleshooting.PartName }}</td>
-                        <td  :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
+                        <td :id="'Сonclusion_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editСonclusion(troubleshooting.id)" @keydown.enter="editСonclusion(troubleshooting.id)">
                         {{ troubleshooting.Сonclusion }}</td>
                     <td  :id="'Work_'+troubleshooting.id" contenteditable  @click="changeEditTroubleshootingId(index)" @blur="editWork(troubleshooting.id)" @keydown.enter="editWork(troubleshooting.id)">
                         {{ troubleshooting.Work }}</td>
@@ -134,14 +134,14 @@ axios.delete(`/api/troubleshootings/${id}`)
         },
         editСonclusion(id)
         {
-           let сonclusion = document.getElementById('Сonclusion_'+id);
-            this.Сonclusion = сonclusion.innerText;
+           let сon = document.getElementById('Сonclusion_'+id);
+            this.Сonclusion = сon.innerText;
             this.updateTroubleshooting(id)
         },
         editWork(id)
         {
-            let work = document.getElementById('Work_'+id);
-            this.Work = work.innerText;
+            let wor = document.getElementById('Work_'+id);
+            this.Work = wor.innerText;
             this.updateTroubleshooting(id)
         }
 
