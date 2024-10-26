@@ -18,13 +18,14 @@ export default{
     props: [
       'user',
         'id_app',
-        'type_in'
+        'type_in',
+        'count_in'
   ],
 
     data()
     {
       return{
-        count: [],
+        count: this.count_in,
         user_id:this.user,
         id: this.id_app,
 type:this.type_in,
@@ -33,14 +34,13 @@ type:this.type_in,
 
   created()
   {
-    // 	Echo.channel('chat').listen('MessageSent', (e)=>{
-    //         this.getCounts()
-    // }
-    // )
+    	Echo.channel('chat').listen('MessageSent', (e)=>{
+            this.getCounts()
+    }
+    )
 
   },
   mounted(){
-            // this.getCounts()
 
         },
   methods:{

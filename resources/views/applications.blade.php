@@ -213,7 +213,7 @@
                         <td
                             scope="col"onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <div
-                                class="td_round  @if ($application->lawyers_color) no 
+                                class="td_round  @if ($application->lawyers_color) no
                             @else
                                 yes @endif">
                                 @php

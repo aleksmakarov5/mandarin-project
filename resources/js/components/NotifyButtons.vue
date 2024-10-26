@@ -1,7 +1,7 @@
 <template>
  <div class="badge-buttons">
-  
-   
+
+
     <p class="badge badge-blue" v-if="count.application!=0">{{count.application}}</p>
     <p class="badge badge-red" v-if="count.message!=0">{{count.message}}</p>
     <p class="badge badge-green" v-if="count.chat!=0">{{count.chat}}</p>
@@ -10,16 +10,17 @@
 
 <script>
 export default{
-    
+
     props: [
-      
+
       'user',
-      'pi',
+        'pi',
+      'count_in'
     ],
     data()
     {
       return{
-        count: [],
+        count:this.count_in,
         user_id:this.user,
         p:this.pi,
 
@@ -29,13 +30,14 @@ export default{
   created()
   {
    	Echo.channel('chat').listen('MessageSent', (e)=>{
-            this.getCounts()   
+            this.getCounts()
     }
     )
-    
+
   },
-  mounted(){
-            this.getCounts()    
+    mounted() {
+    console.log(this.count)
+            // this.getCounts()
         },
   methods:{
         getCounts(){

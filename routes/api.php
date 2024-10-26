@@ -127,10 +127,12 @@ Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function
         ->name('notifycount.lawyers');
     Route::get('/archive/{user_id}', [NotifyCountController::class, 'archive'])
         ->name('notifycount.archive');
+    Route::get('/temp/{user_id}', [NotifyCountController::class, 'temp'])
+        ->name('notifycount.temp');
     Route::get('/application/{id}/{user_id}', [NotifyCountController::class, 'application'])
         ->name('notifycount.application');
 });
-  
+
 
 
 // Route::middleware('auth:web')->group(

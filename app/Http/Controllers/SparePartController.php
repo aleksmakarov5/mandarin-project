@@ -176,7 +176,7 @@ class SparePartController extends Controller
             $summ_service = $summ_service + str2number($work->price_service);
         }
         $delta = $summ_service - $summ_ic;
-        $estimates->fact = $summ_service + $summ_order;
+        // $estimates->fact = $summ_service + $summ_order;
         $statuses = sparepart_status::all();
         return view('SparePart.index', [
             'spareparts' => $spareparts,

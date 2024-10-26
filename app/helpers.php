@@ -1,4 +1,7 @@
 <?php
+
+
+
 if (!function_exists('show_hours')) {
     function show_hours($count_hours)
     {
@@ -94,5 +97,56 @@ if (!function_exists('clearHTML')) {
         $val = trim($val);
 
         return $val;
+    }
+}
+
+if (!function_exists('notCounter')) {
+    function notCounter($applications, $user_id)
+    {
+        $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+        foreach ($applications as $application) {
+            $readed = App\Models\status_application::where('id_user', '=', $user_id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['application']++;
+            $readed = App\Models\status_chat::where('id_user', '=', $user_id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['chat']++;
+            $readed = App\Models\status_message::where('id_user', '=', $user_id)->where('id_application', '=', $application->id)
+                ->where('is_readed', '=', '0')->get();
+            foreach ($readed as $read)
+                $count['message']++;
+        }
+        return $count;
+    }
+}
+
+if (!function_exists('appNotification')) {
+    function appNotification($applicationId, $userId)
+    {
+        $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+        $readed = App\Models\status_application::where('id_user', '=', $userId)
+            ->where('id_application', '=', $applicationId)
+            ->where('is_readed', '=', '0')
+            ->get();
+        foreach ($readed as $read) {
+            $count['application']++;
+        }
+        $readed = App\Models\status_chat::where('id_user', '=', $userId)
+            ->where('id_application', '=', $applicationId)
+            ->where('is_readed', '=', '0')
+            ->get();
+        foreach ($readed as $read) {
+            $count['chat']++;
+        }
+        $readed = App\Models\status_message::where('id_user', '=', $userId)
+            ->where('id_application', '=', $applicationId)
+            ->where('is_readed', '=', '0')
+            ->get();
+        foreach ($readed as $read) {
+            $count['message']++;
+        }
+        return $count;
     }
 }
