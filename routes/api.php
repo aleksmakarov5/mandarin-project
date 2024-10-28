@@ -9,6 +9,8 @@ use App\Http\Controllers\NotifyCountController;
 use App\Http\Controllers\api\FactWorkController;
 use App\Http\Controllers\api\WorkController;
 use App\Http\Controllers\api\SparePartController;
+use App\Http\Controllers\api\ChatController;
+
 
 
 
@@ -50,6 +52,15 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });
+Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
+
+    Route::post('/send', [ChatController::class, 'chat_send'])->name('chat.send');
+    Route::post('/readed', [ChatController::class, 'readed'])->name('chat.readed');
+    Route::delete('/{id}', [ChatController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+
 Route::group(['namespace' => 'Estimate', 'prefix' => 'estimate'], function () {
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');

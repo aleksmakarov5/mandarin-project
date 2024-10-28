@@ -48,6 +48,7 @@ use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Psy\Command\HistoryCommand;
 use Illuminate\Support\Facades\Mail as Mail_send;
+use Jenssegers\Date\Date;
 
 class ApplicationController extends Controller
 {
@@ -1096,7 +1097,24 @@ class ApplicationController extends Controller
             $application->$key = $value;
         }
         $application->save();
-
+        try {
+            $estimate = estimate::findorfail('id_application', '=', $application->id);
+        } catch (\Exception $e) {
+            $estimate = estimate::firstorcreate(
+                ['id_application' => $application->id],
+                [
+                    'id_application' => $application->id,
+                    'price_sp_full' => 0,
+                    'price_sp_half' => 0,
+                    'price_repair' => 0,
+                    'price_paint' => 0,
+                    'price_zip' => 0,
+                    'price_work' => 0,
+                    'price_repair_full' => 0,
+                    'price_repair_half' => 0
+                ]
+            );
+        }
         $history->id_application = $application->id;
         $dir = 'storage/files/' . $application->id;
         if (!is_dir($dir)) {
@@ -1301,18 +1319,18 @@ class ApplicationController extends Controller
             $selected = $request->input('selected');
             $mess_id = $request->input('mess_id');
         }
-        $status_chat = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
-            ->where('is_readed', '=', '0')->get();
-        foreach ($status_chat as $status) {
-            $status->is_readed = 1;
-            $status->save();
-        }
-        $notify = notify::where('id_application', '=', $id)
-            ->where('id_user', '=', Auth::user()->id)
-            ->where('id_text', '=', '2')->get()->all();
-        foreach ($notify as $notif) {
-            $notif->delete();
-        }
+        // $status_chat = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
+        //     ->where('is_readed', '=', '0')->get();
+        // foreach ($status_chat as $status) {
+        //     $status->is_readed = 1;
+        //     $status->save();
+        // }
+        // $notify = notify::where('id_application', '=', $id)
+        //     ->where('id_user', '=', Auth::user()->id)
+        //     ->where('id_text', '=', '2')->get()->all();
+        // foreach ($notify as $notif) {
+        //     $notif->delete();
+        // }
 
         $users = DB::table('users')->get();
         if ($request->input('only_me') || Gate::allows('service')) {
@@ -1332,12 +1350,14 @@ class ApplicationController extends Controller
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
                 ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get()->sortDesc();
+                ->get();
         }
         foreach ($chats as $chat) {
             $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
                 ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')
                 ->select('userto.name as to_name')->get();
+            $chat->time
+                = Date::parse($chat->created_at)->format('j F Yг. H:i');
         }
         // dd($chats);
         // dd($rewiew->all()) ;

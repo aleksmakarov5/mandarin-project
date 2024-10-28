@@ -27,6 +27,7 @@ use DefStudio\Telegraph\Keyboard\Button;
 use DefStudio\Telegraph\Keyboard\Keyboard;
 use App\Models\status_application;
 use App\Models\ApplicationStatus;
+use App\Models\estimate;
 use Carbon\Carbon;
 use Tochka\Calendar\WorkCalendar;
 
@@ -100,6 +101,24 @@ class ImapController extends Controller
                     'ub_type' => true,
                 ]
             );
+            try {
+                $estimate = estimate::findorfail('id_application', '=', $applications->id);
+            } catch (\Exception $e) {
+                $estimate = estimate::firstorcreate(
+                    ['id_application' => $applications->id],
+                    [
+                        'id_application' => $applications->id,
+                        'price_sp_full' => 0,
+                        'price_sp_half' => 0,
+                        'price_repair' => 0,
+                        'price_paint' => 0,
+                        'price_zip' => 0,
+                        'price_work' => 0,
+                        'price_repair_full' => 0,
+                        'price_repair_half' => 0
+                    ]
+                );
+            }
             // dd($applications);
             $message = new Message();
             $message->subject = $email->getSubject();
@@ -281,6 +300,24 @@ class ImapController extends Controller
                     'id_status' => 1
                 ]
             );
+            try {
+                $estimate = estimate::findorfail('id_application', '=', $applications->id);
+            } catch (\Exception $e) {
+                $estimate = estimate::firstorcreate(
+                    ['id_application' => $applications->id],
+                    [
+                        'id_application' => $applications->id,
+                        'price_sp_full' => 0,
+                        'price_sp_half' => 0,
+                        'price_repair' => 0,
+                        'price_paint' => 0,
+                        'price_zip' => 0,
+                        'price_work' => 0,
+                        'price_repair_full' => 0,
+                        'price_repair_half' => 0
+                    ]
+                );
+            }
             // dd($applications);
             $message = new Message();
             $message->subject = $email->getSubject();
@@ -499,6 +536,24 @@ class ImapController extends Controller
                 'our_company' => $our_company
             ]
         );
+        try {
+            $estimate = estimate::findorfail('id_application', '=', $applications->id);
+        } catch (\Exception $e) {
+            $estimate = estimate::firstorcreate(
+                ['id_application' => $applications->id],
+                [
+                    'id_application' => $applications->id,
+                    'price_sp_full' => 0,
+                    'price_sp_half' => 0,
+                    'price_repair' => 0,
+                    'price_paint' => 0,
+                    'price_zip' => 0,
+                    'price_work' => 0,
+                    'price_repair_full' => 0,
+                    'price_repair_half' => 0
+                ]
+            );
+        }
         // dd($applications);
         $message = new Message();
         $message->subject = $email->getSubject();

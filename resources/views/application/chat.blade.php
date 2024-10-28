@@ -3,14 +3,14 @@
     Чат
 @endsection
 @section('main')
-    {{-- 
+    {{--
 <div class="alert" role="alert" style="width: 100%; background: rgb(116, 116, 255);">
    <div class="card-body">
-    <h5 class="card-title"> 
-   От: {{ $chat->from}}    
+    <h5 class="card-title">
+   От: {{ $chat->from}}
     </h5>
-    <h5 class="card-title"> 
-   Кому: {{ $chat->to}}    
+    <h5 class="card-title">
+   Кому: {{ $chat->to}}
     </h5>
     <h6 class="card-subtitle mb-2 text-muted">
         {{ $chat->created_at }}
@@ -20,7 +20,7 @@
     </p>
      </div>
 </div>
-   
+
 
 
 <form action="/chat_send/{{$id}}" method="post">
@@ -29,7 +29,7 @@
 </form> --}}
 
 
-    <div class="container">
+    {{-- <div class="container">
         @can('company')
             @if (isset($only_me) && $only_me == true)
                 <form action="/chat/{{ $id }}" method="get">
@@ -99,10 +99,7 @@
                                         <a href="/chat/{{ $id }}?selected={{ $chat->from }}&mess_id={{ $key }}#answer"
                                             class="msg-but"><img src="/storage/img/reply.png" width="20"
                                                 alt="Ответить"></a>
-                                        {{-- <form action="/chat/{{ $id }}" method="get">
-                                            <input type="hidden" name="selected" value=>
-                                            <input class="nav-link" type="submit" value="Ответить">
-                                        </form> --}}
+
                                     </div>
 
                                 </div>
@@ -134,8 +131,8 @@
                             <div class="form-outline">
                                 <textarea class="form-cont" id="textAreaExample2" rows="4" name=message>
                                     @if ($selected)
-<<<<<<<{{ $chats[$mess_id]->message }}>>>>>>
-@endif
+                                    <<<<<<<{{ $chats[$mess_id]->message }}>>>>>>
+                                    @endif
                                 </textarea>
                                 <label class="form-label" for="textAreaExample2">Message</label>
                             </div>
@@ -147,5 +144,5 @@
 
         </div>
 
-    </div>
+    </div> --}}
 @endsection

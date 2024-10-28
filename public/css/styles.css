@@ -808,7 +808,7 @@ form .nav-link {
     position: fixed;
     bottom: 16px;
     right: 16px;
-    z-index: 1;
+    z-index: 3;
 
 }
 
@@ -819,13 +819,14 @@ form .nav-link {
     padding: 10px;
     bottom: 46px;
     right: 6px;
+    background-color: white;
 
 }
 
 .mytoast-item {
     display: block;
     padding: 10px;
-    background-color: #1a17f398;
+
     margin-bottom: 10px;
     border: 1px solid transparent;
     border-radius: 14px;
@@ -1324,7 +1325,7 @@ form .nav-link {
     position: sticky;
     top: 0;
     background-color: white;
-    z-index: 1;
+    z-index: 2;
 }
 
 
@@ -1357,4 +1358,163 @@ form .nav-link {
 
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 7px;
+}
+
+
+
+.chat {
+    position: fixed;
+    left: 30px;
+    bottom: 20px;
+    z-index: 5;
+    margin-right: 5px;
+    background-color: #c7dbf9;
+    padding: 10px;
+    width: 400px;
+    height: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px;
+}
+
+.chat .right {
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px 7px 0 7px;
+    background-color: #76b4fc61;
+    position: relative;
+    padding: 5px;
+    margin-bottom: 5px;
+    max-width: 80%;
+    margin-left: auto;
+    margin-right: 0;
+
+
+
+}
+
+.chat .left {
+    padding: 10px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px 7px 7px 0;
+    background-color: #2cf7367d;
+    display: inline-block;
+    position: relative;
+    padding: 5px;
+    margin-bottom: 5px;
+    max-width: 80%;
+}
+
+.from {
+    color: #4800fe;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.to {
+    color: #434141ca;
+    font-size: 10px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.left .text,
+.right .text {
+    padding-left: 10px;
+    font-size: 15px;
+    margin-bottom: 10px;
+}
+
+.time {
+    color: #9e9c9c;
+    font-size: 8px;
+    font-style: italic;
+    position: absolute;
+    padding-top: 7px;
+    right: 5px;
+    bottom: 3px;
+}
+
+.message-new {
+    padding-top: 40px;
+    position: absolute;
+    bottom: 5px;
+    height: 190px;
+    width: 100%;
+}
+
+.send-message {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    background-color: white;
+    width: 80%;
+    height: 140px;
+    padding: 5px;
+    overflow-y: scroll;
+}
+
+.chat-content {
+    overflow-y: scroll;
+    height: 75%;
+
+}
+
+.chat-button {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    padding: 10px;
+    background-color: #6b6969;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.chat-button:hover {
+    background-color: #eb6700;
+    color: white;
+}
+
+.message-button {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    padding: 10px;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+
+.message-button:hover {
+    background-color: #6e72f1;
+    color: white;
+}
+
+.contact-list {
+    position: absolute;
+    bottom: 180px;
+    height: 170px;
+    width: 90%;
+    background-color: white;
+    overflow-y: scroll;
+}
+
+.contact-item:hover {
+    background-color: #eb6700;
+}
+
+.contact-item {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    padding-left: 15px;
+    padding-top: 3px;
+    margin-bottom: 3px;
+    cursor: pointer;
+}
+
+.contact-header {
+    position: sticky;
+    top: 0;
+    background-color: white;
 }

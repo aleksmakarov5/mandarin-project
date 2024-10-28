@@ -2,7 +2,7 @@
 
 <div v-if="notifications[0]">
     <div v-if="show" class="mytoast-body">
-		<div class="mytoast-item"  v-for="(notify,index) in notifications" :key="notify">
+		<div class="mytoast-item" :style="toastStyle(notify.id_text)"  v-for="(notify,index) in notifications" :key="notify">
             <b>
                 <button @click="deleteNotify(notify.id)">Х</button>
                 {{ notify.text }}{{ notify.id_application }}</b>
@@ -61,6 +61,17 @@
                     this.notifications=res.data
 
                 })
+        },
+        toastStyle(id)
+        {
+
+            if (id == 1)
+                return 'background-color:red'
+            else if (id == 2)
+                return `background-color:green`
+            else if (id == 3)
+                return `background-color:blue`
+
         }
     }
 

@@ -15,6 +15,7 @@ import Work from './components/Work.vue';
 import SparePartMrk from './components/SparePartMrk.vue';
 import SparePartZap from './components/SparePartZap.vue';
 import SparePartAll from './components/SparePartAll.vue';
+import Chat from './components/Chat.vue';
 
 
 
@@ -26,7 +27,7 @@ const app1 = createApp({
   components: {
     NotifyCounter,
     PostNotify
-    
+
   },
 })
 app1.mount('#app1')
@@ -40,29 +41,20 @@ const app = createApp({
     Work,
     SparePartMrk,
     SparePartZap,
-    SparePartAll
+        SparePartAll,
+        Chat,
+     NotifyApp,
+    NextStep
   },
 })
 app.mount('#app')
 
 const nb = createApp({
   components: {
-    NotifyButtons 
+    NotifyButtons
   },
 })
 nb.mount('#nb')
 
-const na = createApp({
-  components: {
-    NotifyApp,
-    NextStep
-  },
-})
-na.mount('#na')
-const ns = createApp({
-  components: {
-    NextStep
-  },
-})
-ns.mount('#ns')
- 
+
+
