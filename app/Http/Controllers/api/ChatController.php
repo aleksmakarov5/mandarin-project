@@ -64,7 +64,7 @@ class ChatController extends Controller
                 if ($recipient->telegram_notify) {
                     $message = strip_tags($data['message'], '<b>');
                     $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
-                    $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$data->message}</i>")
+                    $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
                         ->keyboard(
                             Keyboard::make()
                                 ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$data['id_application']}"),])
