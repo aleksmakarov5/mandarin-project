@@ -62,7 +62,7 @@ class ChatController extends Controller
                     ->select('notifies.*', 'text_notifies.text')->first();
                 broadcast(new MessageSent($notification));
                 if ($recipient->telegram_notify) {
-                    $message = strip_tags($data['message'], '<b>');
+                    $message = strip_tags($data['message'], '<b></b>');
                     $message = str_replace('&nbsp;', ' ', $message);
                     $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
                     $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
