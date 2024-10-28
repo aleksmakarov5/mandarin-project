@@ -15,9 +15,7 @@
             <div v-if="chat.to_name" class="to">
                 {{ chat.to_name }}
             </div>
-            <div v-for="to in chat.user_to" class="to">
-                {{ to.to_name }}
-            </div>
+
             <div class="text">
                 <span v-html="chat.message"></span>
             </div>
