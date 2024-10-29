@@ -1291,7 +1291,6 @@ class ApplicationController extends Controller
                 $body = str_replace('gif', 'gif"', $body);
                 $body = str_replace('png', 'png"', $body);
                 $body = str_replace('""', '"', $body);
-                $body = str_replace('" ', '"', $body);
                 $loc = Attachment::where('message_id', '=', $message->id)
                     ->where('file_name', 'like', '%image001.png%')
                     ->first();
