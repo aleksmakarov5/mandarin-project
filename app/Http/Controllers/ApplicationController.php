@@ -1284,9 +1284,9 @@ class ApplicationController extends Controller
                 if ($body_start) {
                     $body = mb_substr($body, $body_start, $body_end - $body_start);
                 }
-                $body = str_replace('color', '', $body);
+                // $body = str_replace('color', '', $body);
 
-                $body = str_replace('font-size:', '', $body);
+                // $body = str_replace('font-size:', '', $body);
                 $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
                 $body = str_replace('gif', 'gif"', $body);
                 $body = str_replace('png', 'png"', $body);
