@@ -1396,7 +1396,7 @@ form .nav-link {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 7px 7px 7px 0;
     background-color: #2cf7367d;
-    display: inline-block;
+    display: block;
     position: relative;
     padding: 5px;
     margin-bottom: 5px;
