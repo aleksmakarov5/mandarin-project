@@ -134,6 +134,10 @@
     Домашняя
 @endsection
 @section('main_content')
+    <div id="ch">
+        <chat :app_id={{ $id }} :in_chats="{{ json_encode($chats) }}" :user_id={{ Auth::user()->id }}
+            :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"></chat>
+    </div>
     <div id="app">
 
         <div class="table-content">
@@ -463,8 +467,5 @@
             @yield('main')
         </div>
     </div>
-    <div id="ch">
-        <chat :app_id={{ $id }} :in_chats="{{ json_encode($chats) }}" :user_id={{ Auth::user()->id }}
-            :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"></chat>
-    </div>
+
 @endsection
