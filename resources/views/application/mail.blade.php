@@ -3,6 +3,7 @@
     Заявкa
 @endsection
 @section('main')
+    </div>
     <div class="content-wrapper">
         <div class="email-wrapper wrapper">
 
