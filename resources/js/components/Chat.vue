@@ -142,7 +142,7 @@ export default {
                  let res = position - this.to[i].name.length
                  console.log(res)
                  console.log(indexText)
-                if (indexText == (position - this.to[i].name.length - 1)) {
+                if ((indexText == (position - this.to[i].name.length - 1))||indexText == (position - this.to[i].name.length )) {
                     mess.innerHTML = message.slice(0, index-1)+message.slice(index+1+string.length, message.length)
                     this.to.splice(i, 1);
                     this.setCursorPosition(mess,position)
