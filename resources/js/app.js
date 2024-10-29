@@ -61,7 +61,7 @@ const ch = createApp({
     Chat,
   },
 })
-nb.mount('#ch')
+ch.mount('#ch')
 
 
 
