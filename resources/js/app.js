@@ -42,7 +42,7 @@ const app = createApp({
     SparePartMrk,
     SparePartZap,
         SparePartAll,
-        Chat,
+
      NotifyApp,
     NextStep
   },
@@ -55,6 +55,13 @@ const nb = createApp({
   },
 })
 nb.mount('#nb')
+
+const ch = createApp({
+  components: {
+    Chat,
+  },
+})
+nb.mount('#ch')
 
 
 
