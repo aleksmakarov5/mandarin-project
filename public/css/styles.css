@@ -1517,3 +1517,21 @@ form .nav-link {
     top: 0;
     background-color: white;
 }
+
+.mail-view {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: white;
+    padding-left: 15px;
+    padding-top: 3px;
+    margin-bottom: 3px;
+    border-radius: 0 0 15px 15px;
+}
+
+.sender-details {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    background-color: rgba(158, 217, 241, 0.735);
+    padding-left: 15px;
+    padding-top: 3px;
+    margin-bottom: 3px;
+    border-radius: 15px 15px 0 0;
+}

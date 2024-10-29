@@ -8,12 +8,12 @@
 
             <div class="row align-items-stretch">
                 @foreach ($messages as $message)
-                    <button class="accordion">
-                        <div class="sender-details">
-                            <div class="details">
-                                <p class="msg-subject">
-                                    {{ $message->subject }}
-                                </p>
+                    <div class="sender-details">
+                        <div class="details">
+                            <p class="msg-subject">
+                            <h1>{{ $message->subject }}</h1>
+                            </p>
+                            <h3>
                                 <p class="sender-email">
                                     <i class="far fa-clock"> От кого: </i>
                                     @if (isset($message->from->email))
@@ -26,26 +26,28 @@
                                         @endif
                                     </i>
                                 </p>
-                            </div>
+                            </h3>
                         </div>
-                    </button>
-                    <div class="panel">
-                        Кому: @foreach ($message->to as $to)
-                            <p class="text-muted small mb-0">
-                                <i class="far fa-clock">
-                                    @if (isset($to->email))
-                                        {{ $to->email }};
-                                    @endif
-                                </i>
-                            </p>
-                        @endforeach
-                        <p>
 
-                        <div class="mail-view">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="btn-toolbar">
-                                        {{-- <div class="btn-group">
+
+                        <h3>
+                            Кому: @foreach ($message->to as $to)
+                                <p class="text-muted small mb-0">
+                                    <i class="far fa-clock">
+                                        @if (isset($to->email))
+                                            {{ $to->email }};
+                                        @endif
+                                    </i>
+                                </p>
+                            @endforeach
+                            <p>
+                        </h3>
+                    </div>
+                    <div class="mail-view">
+                        <div class="row">
+                            <div class="col">
+                                <div class="btn-toolbar">
+                                    {{-- <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-reply text-primary mr-1"></i> Ответить</button>
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
@@ -53,52 +55,51 @@
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>Переслать</button>
                                         </div> --}}
-                                        <div class="btn-group">
-                                            <a class="msg_but" href="/mail_delete/{{ $message->id }}"><img
-                                                    src="/storage/img/delete.png" width="20" alt="Удалить"></a>
-                                            <a href="/applications/move_mail_index/{{ $message->application_id }}/{{ $message->mailbox_id }}/{{ $message->id }}"
-                                                class="msg_but"><img src="/storage/img/move.png" width="20"
-                                                    alt="Переместить"></a>
-                                        </div>
+                                    <div class="btn-group">
+                                        <a class="msg_but" href="/mail_delete/{{ $message->id }}" title="Удалить"><img
+                                                src="/storage/img/delete.png" width="20" alt="Удалить"></a>
+                                        <a href="/applications/move_mail_index/{{ $message->application_id }}/{{ $message->mailbox_id }}/{{ $message->id }}"
+                                            class="msg_but" title="Переместить в другую заявку"><img
+                                                src="/storage/img/move.png" width="20" alt="Переместить"></a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="message-body">
+                        </div>
+                        <div class="message-body">
 
-                                <div class="message-content">
-                                    @php
+                            <div class="message-content">
+                                @php
 
-                                        echo $message->body;
-                                    @endphp
-                                </div>
-                                <div class="attachments-sections">
-                                    <ul>
-                                        @foreach ($message->attachment as $attachment)
-                                            <li>
-                                                <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
-                                                <div class="details">
-                                                    <p class="file-name"><a
-                                                            href="/storage/files/{{ $attachment->id_application }}/{{ $attachment->location }}"
-                                                            class="view" target="_blank">
-                                                            <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
-                                                                alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
-                                                                width=25px>
+                                    echo $message->body;
+                                @endphp
+                            </div>
+                            <div class="attachments-sections">
+                                <ul>
+                                    @foreach ($message->attachment as $attachment)
+                                        <li>
+                                            <div class="thumb"><i class="mdi mdi-file-pdf"></i></div>
+                                            <div class="details">
+                                                <p class="file-name"><a
+                                                        href="/storage/files/{{ $attachment->id_application }}/{{ $attachment->location }}"
+                                                        class="view" target="_blank">
+                                                        <img src="/storage/img/{{ mb_substr($attachment->location, mb_strripos($attachment->location, '.') + 1, mb_strlen($attachment->location) - mb_strripos($attachment->location, '.')) }}.png"
+                                                            alt="{{ mb_substr($attachment->mime_type, mb_strpos($attachment->mime_type, '/'), strlen($attachment->mime_type) - mb_strpos($attachment->mime_type, '/')) }}"
+                                                            width=25px>
 
-                                                            {{ $attachment->file_name }} </a></p>
-                                                    <div class="buttons">
-                                                        <p class="file-size">
-                                                            {{ round($attachment->file_size / 1024 / 1024, 2) }} мб</p>
+                                                        {{ $attachment->file_name }} </a></p>
+                                                <div class="buttons">
+                                                    <p class="file-size">
+                                                        {{ round($attachment->file_size / 1024 / 1024, 2) }} мб</p>
 
-                                                    </div>
                                                 </div>
-                                            </li>
-                                        @endforeach
-                                    </ul>
-                                </div>
+                                            </div>
+                                        </li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
-                        </p>
                     </div>
+                    </p>
                 @endforeach
             </div>
         </div>

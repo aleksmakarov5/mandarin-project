@@ -209,7 +209,31 @@
         },
 
         mounted(){
-            // this.getEstimate()
+            if (!this.estimate.price_sp_full) {
+                this.estimate.price_sp_full=0
+            }
+            if (!this.estimate.price_sp_half) {
+                this.estimate.price_sp_half=0
+            }
+            if (!this.estimate.price_repair) {
+                this.estimate.price_repair=0
+            }
+            if (!this.estimate.price_paint) {
+                this.estimate.price_paint=0
+            }
+            if (!this.estimate.price_zip) {
+                this.estimate.price_zip=0
+            }
+            if (!this.estimate.price_work) {
+                this.estimate.price_work=0
+            }
+            if (!this.estimate.price_repair_full) {
+                this.estimate.price_repair_full=0
+            }
+            if (!this.estimate.sert) {
+                this.estimate.sert=0
+            }
+
 
         },
     methods:{
