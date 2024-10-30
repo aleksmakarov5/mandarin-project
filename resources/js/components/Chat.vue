@@ -24,11 +24,9 @@
 
         </div>
         <div class="contact-list" v-if="contact_show">
-            <div class="contact-header">
-                поиск
-            </div>
+
             <div class="contact-body">
-    <div class="contact-item" v-for="user in users" @click="selectContact(user.id,user.name)">
+    <div :id="'find_'+index" class="contact-item" v-for="(user,index) in users" @click="selectContact(user.id,user.name)">
         <template v-if="user.id == user_id" >
     Себе
     </template>
@@ -36,9 +34,9 @@
     </div>
     </div>
 </div>
-        <div class="message-new" @keydown.@="contact_show=true">
+        <div class="message-new" @keyup.@="contactShow()">
 
-        <div id="message_" class="send-message" contenteditable  @keyup.enter="editMessage()" @blur="editMessage()"
+        <div id="message_" class="send-message" contenteditable @keydown="findContact()" @keyup.enter="editMessage()" @blur="editMessage()"
          @keydown.delete="deleteContact()" @focus="contact_show=false">
 
         </div>
@@ -81,6 +79,9 @@ export default {
             contact_show: false,
             users: this.in_users,
             count: this.count_in,
+            dotLength: 0,
+            dotLengthHTML:0,
+            is_find: false,
 
         }
     },
@@ -95,8 +96,20 @@ export default {
     methods: {getCounts(){
             axios.get(`/api/notifycount/application/${this.app_id}/${this.user_id}`)
             .then(res => {
-                this.count=res.data
+                this.count = res.data
+
              })
+
+    },
+        contactShow() {
+            this.contact_show = true
+            let mess = document.getElementById('message_');
+            let text = mess.innerText;
+            let message = mess.innerHTML
+
+            this.dotLength = text.length
+            this.dotLengthHTML = message.length
+                this.is_find=true
 
       },
         styleButton() {
@@ -112,12 +125,13 @@ export default {
         },
         editMessage() {
             let mess = document.getElementById('message_');
-            this.message = mess.innerHTML;
+            this.message = mess.innerText;
         },
         selectContact(id, name) {
             this.to.push({ id: id, name: name });
 
             let mess = document.getElementById('message_');
+            mess.innerHTML = mess.innerHTML.substring(0,this.dotLengthHTML);
             mess.innerHTML += '<b><span style="color:green;">' + name + '</span></b>&nbsp';
             mess.focus();
 
@@ -128,24 +142,31 @@ export default {
             sel.removeAllRanges();
             sel.addRange(range);
             this.contact_show = false;
+            this.is_find=false
         },
         deleteContact() {
-            this.contact_show = false
+            let mess = document.getElementById('message_');
+                 let message = mess.innerHTML
+            let text = mess.innerText
+                 if(text.length<(this.dotLength+1))
+                 {
+                     this.contact_show = false
+                        this.is_find=false
+                     }
+
             let position = this.getCursorPosition()
              for (let i = 0; i < this.to.length; i++) {
                 let string = '<b><span style="color:green;">' + this.to[i].name + '</span></b>&nbsp';
-                let mess = document.getElementById('message_');
-                 let message = mess.innerHTML
-                 let text = mess.innerText
+
                  let indexText = text.indexOf(this.to[i].name)
                 let index = message.indexOf(string)
                  let res = position - this.to[i].name.length
-                 console.log(res)
-                 console.log(indexText)
+
                 if ((indexText == (position - this.to[i].name.length - 1))||indexText == (position - this.to[i].name.length )) {
                     mess.innerHTML = message.slice(0, index-1)+message.slice(index+1+string.length, message.length)
                     this.to.splice(i, 1);
                     this.setCursorPosition(mess,position)
+
                 }
             }
         },
@@ -208,6 +229,29 @@ export default {
            })
 
 
+        },
+        findContact() {
+            if (this.is_find)
+            {
+            let mess = document.getElementById('message_');
+            let message = mess.innerText;
+                let value = mess.innerText.substring(this.dotLength, message.length);
+            let regPhrase = new RegExp(value, 'i');
+            let flag = false;
+                for (let i = 0; i < this.users.length; i++)
+                {
+                    flag = false;
+            let div= document.getElementById('find_'+i)
+                flag = regPhrase.test(div.innerText);
+                if (flag) {
+                    div.style.display = "";
+                } else {
+                    div.style.display = "none";
+                }
+
+                }
+
+            }
         }
 
 
