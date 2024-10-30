@@ -1312,7 +1312,17 @@ class ApplicationController extends Controller
                 $message->body = $body;
             }
         }
-
+        $application = application::where('id', '=', $id)->first();
+        if ($application->id_status < 12 && $application->id_status != 6 && $application->id_status != 7)
+            session(['rout' => 'applications']);
+        if ($application->id_status == 6 || $application->id_status == 7)
+            session(['rout' => 'failures']);
+        if ($application->id_status > 11 && $application->id_status < 25)
+            session(['rout' => 'directions']);
+        if ($application->id_status == 25)
+            session(['rout' => 'archive']);
+        if ($application->id_status == 27)
+            session(['rout' => 'temp']);
 
         return view('application.mail', ['messages' => $messages->all(), 'id' => $id, 'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
     }
