@@ -922,6 +922,8 @@ class ApplicationController extends Controller
             session(['rout' => 'directions']);
         if ($application->id_status == 25)
             session(['rout' => 'archive']);
+        if ($application->id_status == 27)
+            session(['rout' => 'temp']);
 
 
         return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty, 'hide_menu' => $hide_menu]);

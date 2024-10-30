@@ -1369,7 +1369,7 @@ form .nav-link {
     margin-right: 5px;
     background-color: #c7dbf9;
     padding: 10px;
-    width: 400px;
+    width: 800px;
     height: 90%;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 7px;
@@ -1508,7 +1508,7 @@ form .nav-link {
     background-color: white;
     padding-left: 15px;
     padding-top: 3px;
-    margin-bottom: 3px;
+    margin-bottom: 7px;
     cursor: pointer;
 }
 
