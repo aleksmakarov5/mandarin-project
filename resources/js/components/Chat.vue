@@ -86,6 +86,7 @@ export default {
             dotLength: 0,
             dotLengthHTML:0,
             is_find: false,
+            reply:''
 
         }
     },
@@ -156,7 +157,14 @@ export default {
                  {
                      this.contact_show = false
                         this.is_find=false
-                     }
+                 }
+            if ((message.slice(0, this.reply.length) == this.reply)&&this.reply.length>0)
+            {
+                mess.innerHTML = message.slice(this.reply.length+1, message.length)
+                this.to.splice(0, 1);
+                this.reply=''
+                message= mess.innerHTML}
+
 
             let position = this.getCursorPosition()
              for (let i = 0; i < this.to.length; i++) {
@@ -172,7 +180,8 @@ export default {
                     this.setCursorPosition(mess,position)
 
                 }
-            }
+             }
+            console.log(this.to)
         },
         getCursorPosition() {
 	        let selection = window.getSelection()
@@ -268,7 +277,8 @@ export default {
         answerReply(from, from_name, message, time) {
             this.to.push({ id: from, name: from_name });
             let mess = document.getElementById('message_');
-            mess.innerHTML = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<div class="time">' + time + '</div><br>__________________________</div><br>';
+            this.reply = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<div class="time">' + time + '</div><br>__________________________</div>&nbsp';
+            mess.innerHTML = this.reply;
             mess.focus();
             const range = document.createRange();
             range.selectNodeContents(mess);
