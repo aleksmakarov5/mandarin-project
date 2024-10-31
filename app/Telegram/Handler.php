@@ -35,7 +35,7 @@ class Handler extends WebhookHandler
         // $photo = new Photo;
         // $id = $photo->id();
         // $this->reply("Привет, {$id}!");
-        $file = '/storage/test.txt';
+        $file = 'storage/test.txt';
         file_put_contents($file, json_encode($this->chat));
     }
     public function hello(string $name): void
