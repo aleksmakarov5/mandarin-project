@@ -32,9 +32,9 @@ class Handler extends WebhookHandler
         // $this->reply('*Привет!* Пока я имею только говорить привет.');
         // $update = new TelegramUpdate;
         // Log::info($text);
-        $photo = $this->Photo;
+        $photo = new Photo;
         $id = $photo->id();
-        $this->reply("Привет, $id!");
+        $this->reply("Привет, {$id}!");
     }
     public function hello(string $name): void
     {
