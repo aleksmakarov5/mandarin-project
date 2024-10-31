@@ -29,7 +29,7 @@ class Handler extends WebhookHandler
 {
     public function handleChatMessage(Stringable $text): void
     {
-        // $this->reply('*Привет!* Пока я имею только говорить привет.');
+        $this->reply('*Привет!* Пока я имею только говорить привет.');
         // $update = new TelegramUpdate;
         // Log::info($text);
         // $photo = new Photo;
