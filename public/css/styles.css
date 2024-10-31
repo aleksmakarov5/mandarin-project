@@ -1448,7 +1448,9 @@ form .nav-link {
 }
 
 .message-reply {
-    padding: 15px;
+    margin-top: 20px;
+    margin-left: 5px;
+    padding: 5px;
     height: 100%;
     display: none;
     vertical-align: middle;
