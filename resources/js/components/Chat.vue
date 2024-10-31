@@ -19,7 +19,7 @@
             </div>
             <div class="time">{{ chat.time }}</div>
             </div>
-            <div :id="'answer_'+chat.id" class="message-reply" v-if="styleId(chat.from)!='right'">
+            <div :id="'answer_'+chat.id" class="message-reply" v-if="styleId(chat.from)!='right'" @click="answerReply(chat.from,chat.from_name,chat.message,chat.time)">
 
        <img src="/storage/img/reply.png" width="15px">
 
@@ -264,6 +264,19 @@ export default {
         answerHide(id) {
             let answer = document.getElementById('answer_' + id);
             answer.style.display = "none";
+        },
+        answerReply(from, from_name, message, time) {
+            this.to.push({ id: from, name: from_name });
+            let mess = document.getElementById('message_');
+            mess.innerHTML = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<div class="time">' + time + '</div><br>__________________________</div><br>';
+            mess.focus();
+            const range = document.createRange();
+            range.selectNodeContents(mess);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
         }
 
 
