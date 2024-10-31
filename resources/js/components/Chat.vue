@@ -10,16 +10,20 @@
         <div class="chat-content">
 
 
-        <div v-for="chat in chats" :key="chat.id" :class="styleId(chat.from)">
+        <div v-for="chat in chats" :key="chat.id" class="message-all" @mouseover="answerShow(chat.id)" @mouseout="answerHide(chat.id)">
+            <div :class="'chat-message '+styleId(chat.from)">
             <div class="from" v-if="this.user_id !=chat.from">{{ chat.from_name }}</div>
-            <div v-if="chat.to_name" class="to">
-                {{ chat.to_name }}
-            </div>
 
             <div class="text">
                 <span v-html="chat.message"></span>
             </div>
             <div class="time">{{ chat.time }}</div>
+            </div>
+            <div :id="'answer_'+chat.id" class="message-reply" v-if="styleId(chat.from)!='right'">
+
+       <img src="/storage/img/reply.png" width="15px">
+
+            </div>
         </div>
 
         </div>
@@ -252,6 +256,14 @@ export default {
                 }
 
             }
+        },
+        answerShow(id) {
+            let answer = document.getElementById('answer_' + id);
+            answer.style.display = "block";
+        },
+        answerHide(id) {
+            let answer = document.getElementById('answer_' + id);
+            answer.style.display = "none";
         }
 
 

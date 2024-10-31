@@ -1375,7 +1375,11 @@ form .nav-link {
     border-radius: 7px;
 }
 
-.chat .right {
+.message-all {
+    display: flex;
+}
+
+.message-all .right {
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 7px 7px 0 7px;
@@ -1384,6 +1388,7 @@ form .nav-link {
     padding: 5px;
     margin-bottom: 5px;
     max-width: 80%;
+    min-width: 15%;
     margin-left: auto;
     margin-right: 0;
 
@@ -1391,7 +1396,7 @@ form .nav-link {
 
 }
 
-.chat .left {
+.message-all .left {
     padding: 10px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 7px 7px 7px 0;
@@ -1401,6 +1406,7 @@ form .nav-link {
     padding: 5px;
     margin-bottom: 5px;
     max-width: 80%;
+    min-width: 15%;
 }
 
 .from {
@@ -1439,6 +1445,21 @@ form .nav-link {
     bottom: 5px;
     height: 190px;
     width: 100%;
+}
+
+.message-reply {
+    padding: 15px;
+    height: 100%;
+    display: none;
+    vertical-align: middle;
+    cursor: pointer;
+    border-radius: 25px;
+    background-color: #6b6969;
+}
+
+.message-reply:hover {
+    background-color: #eb6700;
+    color: white;
 }
 
 .send-message {
@@ -1484,6 +1505,8 @@ form .nav-link {
     border: none;
     cursor: pointer;
 }
+
+
 
 .message-button:hover {
     background-color: #6e72f1;
