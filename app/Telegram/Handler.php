@@ -87,7 +87,7 @@ class Handler extends WebhookHandler
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
                 // Optimize::path($file);
-                $zip->setpath($path)->add($filename);
+                $zip->setpath($path)->add($file);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
             $zip->close();
