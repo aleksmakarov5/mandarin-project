@@ -168,18 +168,20 @@ class Handler extends WebhookHandler
         $dir = 'storage/files/' . $this->data->get('id');
 
         foreach ($documents as $attach) {
-            if (
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
-            )
-                $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
-            else
-                // if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif')
-                $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
+            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif') {
+                if (
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+                )
+                    $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
+                else
 
-            $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
-            $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+                    $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
+
+                $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
+                $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+            }
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Загрузить документ")->action("document")->param('id', "{$this->data->get('id')}");
