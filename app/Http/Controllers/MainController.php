@@ -448,7 +448,7 @@ class MainController extends Controller
             // dd($request->file('userfile'));
             foreach ($request->file('userfile') as $file) {
                 $upload_folder = '' . $id;
-                $filenameWithExt  = $file->getClientOriginalName(); // 
+                $filenameWithExt  = $file->getClientOriginalName(); //
                 // Имя и расширение файла
                 // Только оригинальное имя файла
                 $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -512,6 +512,7 @@ class MainController extends Controller
 
         return redirect()->route('document', ['id' => $id]);
     }
+
     public function priemka_add(Request $request, $id)
     {
         if ($request->isMethod('post') && $request->file('userfile')) {
@@ -536,7 +537,7 @@ class MainController extends Controller
                     if ($file->getClientOriginalExtension() == 'pdf') {
                         // dd($file);
                         $upload_folder = '' . $id;
-                        $filenameWithExt = $file->getClientOriginalName(); // 
+                        $filenameWithExt = $file->getClientOriginalName(); //
                         // Имя и расширение файла
                         // Только оригинальное имя файла
                         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -563,7 +564,7 @@ class MainController extends Controller
                         $document->save();
                     } else {
                         $upload_folder = '' . $id . '/' . $request->load_location;
-                        $filenameWithExt = $file->getClientOriginalName(); // 
+                        $filenameWithExt = $file->getClientOriginalName(); //
                         // Имя и расширение файла
                         // Только оригинальное имя файла
                         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -606,7 +607,7 @@ class MainController extends Controller
 
                     // dd($file);
                     $upload_folder = '' . $id;
-                    $filenameWithExt = $file->getClientOriginalName(); // 
+                    $filenameWithExt = $file->getClientOriginalName(); //
                     // Имя и расширение файла
                     // Только оригинальное имя файла
                     $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);

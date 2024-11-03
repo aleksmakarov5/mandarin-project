@@ -176,6 +176,7 @@
                         'load_location' => 'dogovor_client',
                     ])
                 </th>
+
             </tr>
             <tr>
                 <th scope="col">Дополнительное соглашение</th>

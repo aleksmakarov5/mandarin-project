@@ -22,6 +22,7 @@ use App\Models\city;
 use App\Models\present;
 use App\Models\telegram_action;
 use Jenssegers\Date\Date;
+use \ZanySoft\Zip\Facades\Zip;
 
 
 
@@ -29,8 +30,57 @@ class Handler extends WebhookHandler
 {
     public function handleChatMessage(Stringable $text): void
     {
+        $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
+        if ($telegram_action->action == 1) {
+            $path = "storage/" . $telegram_action->id_application . '/';
+            switch ($telegram_action->number) {
+                case 21:
+                    $path .= "Фото_первичного_осмотра";
+                    break;
+                case 3:
+                    $path .= "Договор_с_клиентом";
+                    break;
+                case 5:
+                    $path .= "Доп_соглашение";
+                    break;
+                case 7:
+                    $path .= "Информационный_акт";
+                    break;
+                case 9:
+                    $path .= "Акт_приема_автомобиля_на_ремонт";
+                    break;
+                case 10:
+                    $path .= "Фото_приема_автомобиля";
+                    break;
+                case 12:
+                    $path .= "Акт_скрытых_повреждений";
+                    break;
+                case 30:
+                    $path .= "Фото_дефектовки";
+                    break;
+                case 14:
+                    $path .= "Акт_сдачи_автомобиля";
+                    break;
+                case 15:
+                    $path .= "Фото_сдачи_автомобиля";
+                    break;
+            }
+            $path .= "_" . date('d-m-y_hms');
+            if (!is_dir($path)) {
+                mkdir($path, 0777, true);
+            }
+            $zip_path = $path . '.zip';
+            $zip_bool = true;
+            if (file_exists($zip_path)) {
+                $zip = Zip::open($zip_path);
+                $zip_bool = false;
+            } else {
+                $zip = Zip::create($zip_path);
+            }
+            $this->bot->find(1)->store($this->message->photos()->last(), $path);
 
-        $this->bot->find(1)->store($this->message->photos()->last(), 'storage/images');
+            // $zip->setpath($dir)->add($fileNameToStore);
+        }
     }
     public function hello(string $name): void
     {
