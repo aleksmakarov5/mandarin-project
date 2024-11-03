@@ -24,6 +24,7 @@ use App\Models\telegram_action;
 use Jenssegers\Date\Date;
 use \ZanySoft\Zip\Facades\Zip;
 use \Golchha21\ReSmushIt\Facades\Optimize;
+use App\Models\attachment;
 
 
 
@@ -36,39 +37,53 @@ class Handler extends WebhookHandler
         $path = '';
         if ($telegram_action->action == 1) {
             $path = "storage/files/" . $telegram_action->id_application . '/';
+            $name = '';
             switch ($telegram_action->number) {
                 case 21:
                     $path = $path . "Фото_первичного_осмотра";
+                    $name = "Фото_первичного_осмотра";
                     break;
                 case 3:
                     $path = $path . "Договор_с_клиентом";
+                    $name = "Договор_с_клиентом";
                     break;
                 case 5:
                     $path = $path . "Доп_соглашение";
+                    $name = "Доп_соглашение";
                     break;
                 case 7:
                     $path = $path . "Информационный_акт";
+                    $name = "Информационный_акт";
                     break;
                 case 9:
                     $path = $path . "Акт_приема_автомобиля_на_ремонт";
+                    $name = "Акт_приема_автомобиля_на_ремонт";
+
                     break;
                 case 10:
                     $path = $path . "Фото_приема_автомобиля";
+                    $name = "Фото_приема_автомобиля";
+
                     break;
                 case 12:
                     $path = $path . "Акт_скрытых_повреждений";
+                    $name = "Акт_скрытых_повреждений";
                     break;
                 case 30:
                     $path = $path . "Фото_дефектовки";
+                    $name = "Фото_дефектовки";
                     break;
                 case 14:
                     $path = $path . "Акт_сдачи_автомобиля";
+                    $name = "Акт_сдачи_автомобиля";
                     break;
                 case 15:
                     $path = $path . "Фото_сдачи_автомобиля";
+                    $name = "Фото_сдачи_автомобиля";
                     break;
             }
             $path = $path . "_" . date('d-m-y');
+            $name = $name . "_" . date('d-m-y');
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
@@ -91,6 +106,16 @@ class Handler extends WebhookHandler
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
             $zip->close();
+            $document = new attachment();
+            $document->file_name = $name;
+            $document->message_id = 0;
+            $document->mime_type = 'application/zip-compressed';
+            $document->id_application = $telegram_action->id_application;
+            $document->file_size = filesize($zip_path);
+            $document->id_status = $telegram_action->number;
+            $document->location = $zip_path;
+            // dd($document);
+            $document->save();
         }
     }
     public function hello(string $name): void
