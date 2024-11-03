@@ -40,7 +40,11 @@ class Handler extends WebhookHandler
             $path = "storage/files/" . $telegram_action->id_application . '/';
             $name = '';
             $zip_name = '';
+            $load = true;
             switch ($telegram_action->number) {
+                case 0:
+                    $load = false;
+                    break;
                 case 21:
                     $path = $path . "Фото_первичного_осмотра";
                     $name = "Фото первичного осмотра";
@@ -95,57 +99,59 @@ class Handler extends WebhookHandler
                     $zip_name = "Фото_сдачи_автомобиля";
                     break;
             }
-            $path = $path . "_" . date('d-m-y');
-            $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
-            $name = $name . " " . date('d-m-y');
-            if (!is_dir($path)) {
-                mkdir($path, 0777, true);
-            }
-            $zip_path = $path . '.zip';
-            $zip_bool = true;
-            if (file_exists($zip_path)) {
-                $zip = Zip::open($zip_path);
-                $zip_bool = false;
-            } else {
-                $zip = Zip::create($zip_path);
-            }
-            $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
-            $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
-            $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-            if ($size) {
-                $telegram_action->count = $telegram_action->count + 1;
-                if ($telegram_action->message_id)
-                    $this->chat->deleteMessage($telegram_action->message_id)->send();
-                $keyboard = [];
-                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+            if ($load) {
+                $path = $path . "_" . date('d-m-y');
+                $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
+                $name = $name . " " . date('d-m-y');
+                if (!is_dir($path)) {
+                    mkdir($path, 0777, true);
+                }
+                $zip_path = $path . '.zip';
+                $zip_bool = true;
+                if (file_exists($zip_path)) {
+                    $zip = Zip::open($zip_path);
+                    $zip_bool = false;
+                } else {
+                    $zip = Zip::create($zip_path);
+                }
+                $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+                $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
+                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                if ($size) {
+                    $telegram_action->count = $telegram_action->count + 1;
+                    if ($telegram_action->message_id)
+                        $this->chat->deleteMessage($telegram_action->message_id)->send();
+                    $keyboard = [];
+                    $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons($keyboard)
-                    )
-                    ->send();
-                $telegram_action->message_id = json_decode($message)->result->message_id;
-                $telegram_action->save();
-                // $file = "storage/files/405/test.txt";
-                // file_put_contents($file, json_decode($message)->result->message_id);
-                // // Optimize::path($filename);
-                $zip->setpath($path)->add($filename);
-                // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons($keyboard)
+                        )
+                        ->send();
+                    $telegram_action->message_id = json_decode($message)->result->message_id;
+                    $telegram_action->save();
+                    // $file = "storage/files/405/test.txt";
+                    // file_put_contents($file, json_decode($message)->result->message_id);
+                    // // Optimize::path($filename);
+                    $zip->setpath($path)->add($filename);
+                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                }
+                $zip->close();
+                $document = attachment::updateOrCreate(
+                    ['id_application' => $telegram_action->id_application, 'file_name' => $name],
+                    [
+                        'id_application' => $telegram_action->id_application,
+                        'id_status' => $telegram_action->number,
+                        'file_name' => $name,
+                        'message_id' => 0,
+                        'mime_type' => 'application/zip-compressed',
+                        'file_size' => filesize($zip_path),
+                        'location' => $zip_name,
+                    ]
+                );
             }
-            $zip->close();
-            $document = attachment::updateOrCreate(
-                ['id_application' => $telegram_action->id_application, 'file_name' => $name],
-                [
-                    'id_application' => $telegram_action->id_application,
-                    'id_status' => $telegram_action->number,
-                    'file_name' => $name,
-                    'message_id' => 0,
-                    'mime_type' => 'application/zip-compressed',
-                    'file_size' => filesize($zip_path),
-                    'location' => $zip_name,
-                ]
-            );
         }
     }
     public function hello(string $name): void
@@ -276,7 +282,18 @@ class Handler extends WebhookHandler
     }
     public function documents(): void
     {
-
+        $telegram_action = telegram_action::updateOrCreate(
+            ['id_chat' => $this->chat->chat_id],
+            [
+                'id_chat' => $this->chat->chat_id,
+                'id_application' => $this->data->get('id'),
+                'action' => 1,
+                'number' => 0,
+                'id_message' => 0,
+                'count' => 0,
+                'message_id' => 0
+            ]
+        );
 
         $documents = DB::table('attachments')
             ->where('id_application', '=', $this->data->get('id'))
@@ -355,6 +372,7 @@ class Handler extends WebhookHandler
         $message = "";
 
         switch ($this->data->get('id_doc')) {
+
             case 21:
                 $message = "Отправить фото первичного осмотра";
                 break;
