@@ -152,8 +152,8 @@ class Handler extends WebhookHandler
                     ]
                 );
             }
-        }
-        $this->chat->deleteMessage($this->message->id());
+        } else
+            $this->chat->deleteMessage($this->message->id());
     }
     public function hello(string $name): void
     {
