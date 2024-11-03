@@ -14,6 +14,7 @@ class telegram_action extends Model
         'id_application',
         'action',
         'number',
-        'id_message'
+        'id_message',
+        'count'
     ];
 }

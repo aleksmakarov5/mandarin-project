@@ -36,6 +36,7 @@ class Handler extends WebhookHandler
         // $this->chat->message("{$telegram_action->action}")->send();
         $path = '';
         if ($telegram_action->action == 1) {
+
             $path = "storage/files/" . $telegram_action->id_application . '/';
             $name = '';
             $zip_name = '';
@@ -100,11 +101,13 @@ class Handler extends WebhookHandler
                 $zip = Zip::create($zip_path);
             }
             $file = $path . ".txt";
-            $filename = "img_" . date('d-m-y_hms') . ".jpg";
+            $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
             $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
-            $file = $this->chat->message("{$filename}")->send();
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
+                $telegram_action->count = $telegram_action->count + 1;
+                $telegram_action->save();
+                $file = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
                 // Optimize::path($filename);
                 $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
@@ -320,7 +323,7 @@ class Handler extends WebhookHandler
                 'id_application' => $this->data->get('id'),
                 'action' => 1,
                 'number' => $this->data->get('id_doc'),
-                'id_message' => 0
+                'count' => 0
             ]
         );
         $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
