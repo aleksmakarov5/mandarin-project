@@ -116,7 +116,15 @@ class Handler extends WebhookHandler
                 $telegram_action->count = $telegram_action->count + 1;
                 if ($telegram_action->message_id)
                     $this->chat->deleteMessage($telegram_action->message_id)->send();
-                $message = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
+                $keyboard = [];
+                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                    ->keyboard(
+                        Keyboard::make()
+                            ->buttons($keyboard)
+                    )
+                    ->send();
                 $telegram_action->message_id = json_decode($message)->result->message_id;
                 $telegram_action->save();
                 // $file = "storage/files/405/test.txt";
@@ -268,6 +276,12 @@ class Handler extends WebhookHandler
     }
     public function documents(): void
     {
+        try {
+            $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
+            $telegram_action->delete();
+        } catch (\Exception $e) {
+        }
+
         $documents = DB::table('attachments')
             ->where('id_application', '=', $this->data->get('id'))
             ->get()->all();
@@ -328,7 +342,6 @@ class Handler extends WebhookHandler
 
     public function doc_save(): void
     {
-        $keyboard = [];
         $telegram_action = telegram_action::updateOrCreate(
             ['id_chat' => $this->chat->chat_id],
             [
@@ -339,6 +352,7 @@ class Handler extends WebhookHandler
                 'count' => 0
             ]
         );
+        $keyboard = [];
         $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
         $message = "";
 
