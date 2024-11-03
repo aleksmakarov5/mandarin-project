@@ -86,7 +86,7 @@ class Handler extends WebhookHandler
             // $file = $this->chat->message("{$filename}")->send();
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
-                Optimize::path($file);
+                // Optimize::path($file);
                 $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
