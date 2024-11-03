@@ -31,41 +31,42 @@ class Handler extends WebhookHandler
     public function handleChatMessage(Stringable $text): void
     {
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
+        $this->chat->message("{$telegram_action->action}")->send();
         if ($telegram_action->action == 1) {
             $path = "storage/" . $telegram_action->id_application . '/';
             switch ($telegram_action->number) {
                 case 21:
-                    $path .= "Фото_первичного_осмотра";
+                    $path = $path . "Фото_первичного_осмотра";
                     break;
                 case 3:
-                    $path .= "Договор_с_клиентом";
+                    $path = $path . "Договор_с_клиентом";
                     break;
                 case 5:
-                    $path .= "Доп_соглашение";
+                    $path = $path . "Доп_соглашение";
                     break;
                 case 7:
-                    $path .= "Информационный_акт";
+                    $path = $path . "Информационный_акт";
                     break;
                 case 9:
-                    $path .= "Акт_приема_автомобиля_на_ремонт";
+                    $path = $path . "Акт_приема_автомобиля_на_ремонт";
                     break;
                 case 10:
-                    $path .= "Фото_приема_автомобиля";
+                    $path = $path . "Фото_приема_автомобиля";
                     break;
                 case 12:
-                    $path .= "Акт_скрытых_повреждений";
+                    $path = $path . "Акт_скрытых_повреждений";
                     break;
                 case 30:
-                    $path .= "Фото_дефектовки";
+                    $path = $path . "Фото_дефектовки";
                     break;
                 case 14:
-                    $path .= "Акт_сдачи_автомобиля";
+                    $path = $path . "Акт_сдачи_автомобиля";
                     break;
                 case 15:
-                    $path .= "Фото_сдачи_автомобиля";
+                    $path = $path . "Фото_сдачи_автомобиля";
                     break;
             }
-            $path .= "_" . date('d-m-y_hms');
+            $path = $path . "_" . date('d-m-y_hms');
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
