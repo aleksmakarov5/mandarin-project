@@ -20,7 +20,7 @@ use DefStudio\Telegraph\Models\TelegraphChat;
 use Illuminate\Support\Facades\DB;
 use App\Models\city;
 use App\Models\present;
-use App\Models\promotion;
+use App\Models\telegram_action;
 use Jenssegers\Date\Date;
 
 
@@ -184,7 +184,7 @@ class Handler extends WebhookHandler
             }
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
-        $keyboard[$i++] = Button::make("Загрузить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Отправить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
         $this->chat->message("Документы")
             ->keyboard(
                 Keyboard::make()
@@ -221,9 +221,53 @@ class Handler extends WebhookHandler
     public function doc_save(): void
     {
         $keyboard = [];
+        $telegram_action = telegram_action::firstOrCreate(
+            ['id_chat' => $this->chat->chat_id],
+            [
+                'id_chat' => $this->chat->chat_id,
+                'id_application' => $this->data->get('id'),
+                'action' => 1,
+                'number' => $this->data->get('id_doc'),
+                'id_message' => 0
+            ]
+        );
         $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
+        $message = "";
 
-        $this->chat->message("Вы выбрали {$this->data->get('id_doc')}")
+        switch ($this->data->get('id_doc')) {
+            case 21:
+                $message = "Отправить фото первичного осмотра";
+                break;
+            case 3:
+                $message = "Отправить договор с клиентом";
+                break;
+            case 5:
+                $message = "Отправить доп соглашение";
+                break;
+            case 7:
+                $message = "Отправить информационный акт";
+                break;
+            case 9:
+                $message = "Отправить акт приема автомобиля на ремонт";
+                break;
+            case 10:
+                $message = "Отправить фото приема автомобиля";
+                break;
+            case 12:
+                $message = "Отправить акт скрытых повреждений";
+                break;
+            case 30:
+                $message = "Отправить фото дефектовки";
+                break;
+            case 14:
+                $message = "Отправить акт сдачи автомобиля";
+                break;
+            case 15:
+                $message = "Отправить фото сдачи автомобиля";
+                break;
+        }
+
+        $this->chat->message($message . "<br>По окончанию загрузки нажмите кнопку ГОТОВО")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
