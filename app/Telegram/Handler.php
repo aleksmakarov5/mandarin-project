@@ -81,11 +81,11 @@ class Handler extends WebhookHandler
             }
             $file = $path . ".txt";
             $filename = "img_" . date('d-m-y_hms') . ".jpg";
-            $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $filename);
-            $file = $this->chat->message("{$filename}")->send();
+            $file = $this->bot->find(1)->store($this->message->photos()->last(), $path, $filename);
+            // $file = $this->chat->message("{$filename}")->send();
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
-                // Optimize::path($file);
+                Optimize::path($file);
                 $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
