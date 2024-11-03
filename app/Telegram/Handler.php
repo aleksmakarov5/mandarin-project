@@ -38,6 +38,7 @@ class Handler extends WebhookHandler
         if ($telegram_action->action == 1) {
             $path = "storage/files/" . $telegram_action->id_application . '/';
             $name = '';
+            $zip_name = '';
             switch ($telegram_action->number) {
                 case 21:
                     $path = $path . "Фото_первичного_осмотра";
@@ -72,10 +73,12 @@ class Handler extends WebhookHandler
                 case 30:
                     $path = $path . "Фото_дефектовки";
                     $name = "Фото дефектовки";
+                    $zip_name = "Фото_дефектовки";
                     break;
                 case 14:
                     $path = $path . "Акт_сдачи_автомобиля";
                     $name = "Акт сдачи автомобиля";
+
                     break;
                 case 15:
                     $path = $path . "Фото_сдачи_автомобиля";
@@ -83,6 +86,7 @@ class Handler extends WebhookHandler
                     break;
             }
             $path = $path . "_" . date('d-m-y');
+            $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
             $name = $name . " " . date('d-m-y');
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
@@ -115,7 +119,7 @@ class Handler extends WebhookHandler
                     'message_id' => 0,
                     'mime_type' => 'application/zip-compressed',
                     'file_size' => filesize($zip_path),
-                    'location' => $zip_path,
+                    'location' => $zip_name,
                 ]
             );
         }
