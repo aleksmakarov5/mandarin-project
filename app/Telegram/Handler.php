@@ -71,11 +71,11 @@ class Handler extends WebhookHandler
                     break;
                 case 30:
                     $path = $path . "Фото_дефектовки";
-                    $name = "Фото_дефектовки";
+                    $name = "Фото дефектовки";
                     break;
                 case 14:
                     $path = $path . "Акт_сдачи_автомобиля";
-                    $name = "Акт_сдачи_автомобиля";
+                    $name = "Акт сдачи автомобиля";
                     break;
                 case 15:
                     $path = $path . "Фото_сдачи_автомобиля";
@@ -83,7 +83,7 @@ class Handler extends WebhookHandler
                     break;
             }
             $path = $path . "_" . date('d-m-y');
-            $name = $name . "_" . date('d-m-y');
+            $name = $name . " " . date('d-m-y');
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
