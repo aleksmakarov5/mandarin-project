@@ -187,6 +187,7 @@ class Handler extends WebhookHandler
                 Keyboard::make()
                     ->buttons($keyboard)
             )
+
             ->send();
     }
 }
