@@ -114,11 +114,14 @@ class Handler extends WebhookHandler
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
                 $telegram_action->count = $telegram_action->count + 1;
-                $telegram_action->save();
+                if ($telegram_action->message_id)
+                    $this->chat->deleteMessage($telegram_action->message_id);
                 $message = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
-                $file = "storage/files/405/test.txt";
-                file_put_contents($file, json_decode($message)->result->message_id);
-                // Optimize::path($filename);
+                $telegram_action->message_id = json_decode($message)->result->message_id;
+                $telegram_action->save();
+                // $file = "storage/files/405/test.txt";
+                // file_put_contents($file, json_decode($message)->result->message_id);
+                // // Optimize::path($filename);
                 $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
