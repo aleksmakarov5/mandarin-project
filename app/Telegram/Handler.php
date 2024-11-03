@@ -115,7 +115,7 @@ class Handler extends WebhookHandler
             if ($size) {
                 $telegram_action->count = $telegram_action->count + 1;
                 if ($telegram_action->message_id)
-                    $this->chat->deleteMessage($telegram_action->message_id);
+                    $this->chat->deleteMessage($telegram_action->message_id)->send();
                 $message = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
                 $telegram_action->message_id = json_decode($message)->result->message_id;
                 $telegram_action->save();
