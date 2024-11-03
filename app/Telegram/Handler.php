@@ -31,10 +31,10 @@ class Handler extends WebhookHandler
     public function handleChatMessage(Stringable $text): void
     {
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
-        $this->chat->message("{$telegram_action->action}")->send();
+        // $this->chat->message("{$telegram_action->action}")->send();
         $path = '';
         if ($telegram_action->action == 1) {
-            $path = "storage/" . $telegram_action->id_application . '/';
+            $path = "storage/files/" . $telegram_action->id_application . '/';
             switch ($telegram_action->number) {
                 case 21:
                     $path = $path . "Фото_первичного_осмотра";
@@ -67,7 +67,7 @@ class Handler extends WebhookHandler
                     $path = $path . "Фото_сдачи_автомобиля";
                     break;
             }
-            $path = $path . "_" . date('d-m-y_hms');
+            $path = $path . "_" . date('d-m-y');
             if (!is_dir($path)) {
                 mkdir($path, 0777, true);
             }
@@ -80,7 +80,7 @@ class Handler extends WebhookHandler
                 $zip = Zip::create($zip_path);
             }
             $this->bot->find(1)->store($this->message->photos()->last(), $path);
-            $this->chat->message("{$path}")->send();
+            // $this->chat->message("{$path}")->send();
 
             // $zip->setpath($dir)->add($fileNameToStore);
         }
