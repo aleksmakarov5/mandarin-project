@@ -29,7 +29,7 @@ class Handler extends WebhookHandler
 {
     public function handleChatMessage(Stringable $text): void
     {
-        $this->reply("Привет, {$text}!");
+
         $this->bot->find(1)->store($this->message->photos()->last(), 'storage/images');
     }
     public function hello(string $name): void
@@ -175,13 +175,14 @@ class Handler extends WebhookHandler
             )
                 $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
             else
+            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'png')
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
 
             $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
             $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
-        $keyboard[$i++] = Button::make("Загрузить документ")->webApp("https://mandarin-portal.ru/document/{$this->data->get('id')}?hide_menu=1");
+        $keyboard[$i++] = Button::make("Загрузить документ")->action("document")->param('id', "{$this->data->get('id')}");
         $this->chat->message("Документы")
             ->keyboard(
                 Keyboard::make()
