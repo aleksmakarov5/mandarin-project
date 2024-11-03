@@ -221,7 +221,7 @@ class Handler extends WebhookHandler
     public function doc_save(): void
     {
         $keyboard = [];
-        $telegram_action = telegram_action::firstOrCreate(
+        $telegram_action = telegram_action::updateOrCreate(
             ['id_chat' => $this->chat->chat_id],
             [
                 'id_chat' => $this->chat->chat_id,
