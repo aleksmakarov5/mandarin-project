@@ -345,6 +345,7 @@ class Handler extends WebhookHandler
                 'id_application' => $this->data->get('id'),
                 'action' => 1,
                 'number' => $this->data->get('id_doc'),
+                'id_message' => 0,
                 'count' => 0,
                 'message_id' => 0
             ]
