@@ -32,6 +32,7 @@ class Handler extends WebhookHandler
     {
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
         $this->chat->message("{$telegram_action->action}")->send();
+        $path = '';
         if ($telegram_action->action == 1) {
             $path = "storage/" . $telegram_action->id_application . '/';
             switch ($telegram_action->number) {
@@ -79,6 +80,7 @@ class Handler extends WebhookHandler
                 $zip = Zip::create($zip_path);
             }
             $this->bot->find(1)->store($this->message->photos()->last(), $path);
+            $this->chat->message("{$path}")->send();
 
             // $zip->setpath($dir)->add($fileNameToStore);
         }
