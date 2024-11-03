@@ -267,7 +267,7 @@ class Handler extends WebhookHandler
                 break;
         }
 
-        $this->chat->message($message . "<br>По окончанию загрузки нажмите кнопку ГОТОВО")
+        $this->chat->message($message . "По окончанию загрузки нажмите кнопку ГОТОВО")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
