@@ -294,7 +294,6 @@ class Handler extends WebhookHandler
                 'message_id' => 0
             ]
         );
-
         $documents = DB::table('attachments')
             ->where('id_application', '=', $this->data->get('id'))
             ->get()->all();
