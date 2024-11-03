@@ -80,9 +80,8 @@ class Handler extends WebhookHandler
                 $zip = Zip::create($zip_path);
             }
             $file = $path . ".txt";
-            $photos = json_decode(json_encode($this->message->photos()));
-            $filename = "img_" . date('d-m-y_hms');
-            $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path);
+            $filename = "img_" . date('d-m-y_hms') . ".jpg";
+            $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $filename);
             $this->chat->message("{$filename}")->send();
 
             // $zip->setpath($dir)->add($fileNameToStore);
