@@ -109,16 +109,16 @@ class Handler extends WebhookHandler
             } else {
                 $zip = Zip::create($zip_path);
             }
-            $file = $path . ".txt";
             $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
             $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
             $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
             if ($size) {
                 $telegram_action->count = $telegram_action->count + 1;
                 $telegram_action->save();
-                $file = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
-                // Optimize::path($filename);
-                $zip->setpath($path)->add($filename);
+                $message = $this->chat->message("Получено изображений: {$telegram_action->count}")->silent()->send();
+                $message->
+                    // Optimize::path($filename);
+                    $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
             $zip->close();
