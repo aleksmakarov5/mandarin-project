@@ -168,7 +168,7 @@ class Handler extends WebhookHandler
         $dir = 'storage/files/' . $this->data->get('id');
 
         foreach ($documents as $attach) {
-            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif') {
+            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif' && pathinfo($attach->location, PATHINFO_EXTENSION) != 'png') {
                 if (
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
                     pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
