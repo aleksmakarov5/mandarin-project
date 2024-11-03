@@ -175,7 +175,7 @@ class Handler extends WebhookHandler
             )
                 $path = 'https://mandarin-portal.ru/gallery/' . $this->data->get('id') . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
             else
-            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'png')
+            if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif')
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
 
             $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
