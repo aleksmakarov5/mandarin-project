@@ -117,7 +117,7 @@ class Handler extends WebhookHandler
                 $telegram_action->save();
                 $message = $this->chat->message("Получено изображений: {$telegram_action->count}")->send();
                 $file = "storage/files/405/test.txt";
-                file_put_contents($file, json_encode($message));
+                file_put_contents($file, $message);
                 // Optimize::path($filename);
                 $zip->setpath($path)->add($filename);
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
