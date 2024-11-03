@@ -276,11 +276,7 @@ class Handler extends WebhookHandler
     }
     public function documents(): void
     {
-        try {
-            $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
-            $telegram_action->delete();
-        } catch (\Exception $e) {
-        }
+
 
         $documents = DB::table('attachments')
             ->where('id_application', '=', $this->data->get('id'))
