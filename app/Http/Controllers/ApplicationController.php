@@ -146,6 +146,9 @@ class ApplicationController extends Controller
     }
     public function applications(Request $request)
     {
+        // $mass = json_decode('[{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADcwADNgQ","width":90,"height":76,"filesize":1576},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADbQADNgQ","width":320,"height":272,"filesize":25227},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeAADNgQ","width":800,"height":679,"filesize":95924},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeQADNgQ","width":1244,"height":1056,"filesize":172992}]');
+        // $array = $mass[3]->id;
+        // dd($array);
         $only_me = 0;
         $only_me = $request->get('only_me');
 
