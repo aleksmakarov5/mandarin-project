@@ -115,7 +115,7 @@ class Handler extends WebhookHandler
                     'message_id' => 0,
                     'mime_type' => 'application/zip-compressed',
                     'file_size' => filesize($zip_path),
-                    'location' => $path,
+                    'location' => $zip_path,
                 ]
             );
         }
