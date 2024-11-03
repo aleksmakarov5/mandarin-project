@@ -42,10 +42,10 @@
                                 <a @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
                                         pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
                                         pathinfo($doc->location, PATHINFO_EXTENSION) == '7z') href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}'
-                        @else 
-                        
+                        @else
+
                         @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc')
-                
+
                         @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
                         href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
                         @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
@@ -254,7 +254,7 @@
 
                     <th scope="col" colspan=2>
                         @include('document.form_scan', [
-                            'status_id' => 10,
+                            'status_id' => 30,
                             'load_name' => 'Фото деффектовки',
                             'load_location' => 'deffect',
                         ])

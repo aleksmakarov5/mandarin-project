@@ -197,16 +197,18 @@ class Handler extends WebhookHandler
     public function doc_load(): void
     {
         $keyboard = [];
-        $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
-        $keyboard[1] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
-        $keyboard[2] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
-        $keyboard[3] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
-        $keyboard[4] = Button::make("Информационный акт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "7");
-        $keyboard[5] = Button::make("Акт приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "9");
-        $keyboard[6] = Button::make("Фото приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "10");
-        $keyboard[7] = Button::make("Акт скрытых повреждений")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "12");
-        $keyboard[8] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
-        $keyboard[9] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
+        $i = 0;
+        $keyboard[$i++] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
+        $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
+        $keyboard[$i++] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
+        $keyboard[$i++] = Button::make("Информационный акт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "7");
+        $keyboard[$i++] = Button::make("Акт приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "9");
+        $keyboard[$i++] = Button::make("Фото приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "10");
+        $keyboard[$i++] = Button::make("Акт скрытых повреждений")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "12");
+        $keyboard[$i++] = Button::make("Фото дефектовки")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "30");
+        $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
+        $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
 
         $this->chat->message("Выберите тип загружаемых данных")
             ->keyboard(
