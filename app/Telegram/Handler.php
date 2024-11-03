@@ -106,16 +106,18 @@ class Handler extends WebhookHandler
                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
             }
             $zip->close();
-            $document = new attachment();
-            $document->file_name = $name;
-            $document->message_id = 0;
-            $document->mime_type = 'application/zip-compressed';
-            $document->id_application = $telegram_action->id_application;
-            $document->file_size = filesize($zip_path);
-            $document->id_status = $telegram_action->number;
-            $document->location = $zip_path;
-            // dd($document);
-            $document->save();
+            $document = attachment::updateOrCreate(
+                ['id_application' => $telegram_action->id_application, 'file_name' => $name],
+                [
+                    'id_application' => $telegram_action->id_application,
+                    'id_status' => $telegram_action->number,
+                    'file_name' => $name,
+                    'message_id' => 0,
+                    'mime_type' => 'application/zip-compressed',
+                    'file_size' => filesize($zip_path),
+                    'location' => $filename,
+                ]
+            );
         }
     }
     public function hello(string $name): void
