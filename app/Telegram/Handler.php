@@ -30,13 +30,7 @@ class Handler extends WebhookHandler
     public function handleChatMessage(Stringable $text): void
     {
         $this->reply("Привет, {$text}!");
-        // $update = new TelegramUpdate;
-        // Log::info($text);
-        // $photo = new Photo;
-        // $id = $photo->id();
-        // $this->reply("Привет, {$id}!");
-        $file = 'storage/test.txt';
-        file_put_contents($file, json_encode($this->chat));
+        $this->bot->find(1)->store($this->message->photos()->last(), 'storage/images');
     }
     public function hello(string $name): void
     {
