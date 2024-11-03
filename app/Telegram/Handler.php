@@ -82,8 +82,8 @@ class Handler extends WebhookHandler
             $file = $path . ".txt";
             $photos = json_decode(json_encode($this->message->photos()));
             $filename = "img_" . date('d-m-y_hms');
-            $this->bot->find(1)->store($this->message->photos()->last(), $path, $filename);
-            // $this->chat->message("{$path}")->send();
+            $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path);
+            $this->chat->message("{$filename}")->send();
 
             // $zip->setpath($dir)->add($fileNameToStore);
         }
