@@ -186,6 +186,7 @@ class Handler extends WebhookHandler
                 $location = $location . ".jpg";
                 $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
                 $telegram_action->count = $telegram_action->count + 1;
+                $telegram_action->save();
                 if ($telegram_action->message_id)
                     $this->chat->deleteMessage($telegram_action->message_id)->send();
                 $keyboard = [];
