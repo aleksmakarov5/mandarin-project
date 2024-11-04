@@ -616,7 +616,7 @@ class Handler extends WebhookHandler
 
 
             $applications['ClientName']
-                = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
+                = mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
             $application = application::where('id', '=', $id)->first();
             $application->ClientName = $applications['ClientName'];
