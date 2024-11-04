@@ -505,6 +505,7 @@ class Handler extends WebhookHandler
     }
     public function doc_ocr(): void
     {
+        $message_error = '';
         try {
             $id = $this->data->get('id');
             $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 31)->first();
@@ -619,18 +620,27 @@ class Handler extends WebhookHandler
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
 
-            $keyboard = [];
-            $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
 
-            $message = $this->chat->message("Паспорт распознан! \n\n" . json_encode($applications))->keyboard(
-                Keyboard::make()
-                    ->buttons($keyboard)
-            )
-                ->send();
-            $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
         } catch (\Exception $e) {
-            $this->chat->Message("Паспорт не загружен")->send();
-            return;
+            $message_error .= 'Ошибка распознания паспорта. Попробуйте снова.\n';
         }
+        $keyboard = [];
+        $text = '';
+
+
+        if ($message_error == '') {
+            $text = "Данные распознаны успешно";
+            $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
+        } else {
+            $text = $message_error;
+            $keyboard[0] = Button::make("Отправить документы")->action("doc_load")->param('id', "{$this->data->get('id')}");
+        }
+
+        $message = $this->chat->message($text)->keyboard(
+            Keyboard::make()
+                ->buttons($keyboard)
+        )
+            ->send();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
 }
