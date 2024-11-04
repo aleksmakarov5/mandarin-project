@@ -191,7 +191,7 @@ class Handler extends WebhookHandler
                 $keyboard = [];
                 $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                $message = $this->chat->message("Получено изображений: {$telegram_action->count} Нажмите ГОТОВО или отправьте изображение заново")
+                $message = $this->chat->message("Получено изображений: {$telegram_action->count} \nНажмите ГОТОВО или отправьте изображение заново")
                     ->keyboard(
                         Keyboard::make()
                             ->buttons($keyboard)
@@ -498,7 +498,7 @@ class Handler extends WebhookHandler
                 break;
         }
 
-        $message = $this->chat->message($message . ". По окончанию загрузки нажмите кнопку ГОТОВО")
+        $message = $this->chat->message($message . ".\n По окончанию загрузки нажмите кнопку ГОТОВО")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
