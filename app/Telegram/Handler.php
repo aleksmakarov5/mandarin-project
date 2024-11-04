@@ -614,12 +614,17 @@ class Handler extends WebhookHandler
             }
             $applications['issued_by'] = mb_convert_case($applications['issued_by'], MB_CASE_UPPER, "UTF-8");
 
-            $applications['birth_place'] = mb_convert_case($applications['birth_place'], MB_CASE_UPPER, "UTF-8");
 
-            $applications['number'] = mb_substr($applications['number'], 0, 4) . ' №' . mb_substr($applications['number'], 4, 6);
             $applications['ClientName']
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
+            $application = application::where('id', '=', $id)->first();
+            $application->ClientName = $applications['ClientName'];
+            $application->ClientPasport = mb_substr($applications['number'], 0, 4);
+            $application->ClientPasport_number = mb_substr($applications['number'], 4, 6);
+            $application->ClientPasport_date = $applications['issue_date'];
+            $application->ClientPasport_struct = $applications['issued_by'];
+            $application->save();
             $file = "storage/files/test.txt";
             file_put_contents($file, json_encode($applications));
         } catch (\Exception $e) {
@@ -730,8 +735,17 @@ class Handler extends WebhookHandler
             foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
                 $applications[$entity['name']] = $entity['text'];
             }
-            $file = "storage/files/test1.txt";
-            file_put_contents($file, json_encode($applications));
+            $application = application::where('id', '=', $id)->first();
+            $application->vin = mb_convert_case($applications['stsfront_car_trailer_number'], MB_CASE_UPPER, "UTF-8");
+            $application->gnz = mb_convert_case($applications['stsfront_car_number'], MB_CASE_UPPER, "UTF-8");
+            $application->CarModel = mb_convert_case($applications['stsfront_car_brand'], MB_CASE_UPPER, "UTF-8") . ' ' . mb_convert_case($applications['stsfront_car_model'], MB_CASE_UPPER, "UTF-8");
+            $application->vehicle_passport = mb_substr($applications['stsfront_sts_number'], 0, 4) . ' №' . mb_substr($applications['stsfront_sts_number'], 4, 6);
+            $application->mnf_year = $applications['stsfront_car_year'];
+            $application->Color = mb_convert_case($applications['stsfront_car_color'], MB_CASE_UPPER, "UTF-8");
+            $application->save();
+
+            // $file = "storage/files/test1.txt";
+            // file_put_contents($file, json_encode($applications));
         } catch (\Exception $e) {
             $message_error .= 'Ошибка распознания СТС (лицевая сторона). Попробуйте снова.\n';
         }
