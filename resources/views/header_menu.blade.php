@@ -153,6 +153,8 @@
 
                         </td>
                         <td align='right'>
+                            <a href="/application/{{ $app->id }}/tg_load" class="msg_but" title="Открыть в Telegram"><img
+                                    src="/storage/img/telegram.png" width="30" alt="Добавить"></a>
                             <a href="/combine/{{ $app->our_company }}/{{ $app->id }}" class="msg_but"
                                 title="Объединить заявки"
                                 onclick="if (!confirm('Объеденить заявку №{{ $app->id }} с другим делом?')) return false"><img
