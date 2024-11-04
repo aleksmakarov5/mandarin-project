@@ -389,6 +389,8 @@ class Handler extends WebhookHandler
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Отправить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$this->data->get('id')}");
+
         $message = $this->chat->message("Документы|Заявка {$application->id}| {$application->gnz}")
             ->keyboard(
                 Keyboard::make()
@@ -405,7 +407,6 @@ class Handler extends WebhookHandler
         $keyboard = [];
         $i = 0;
         $keyboard[$i++] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
-        $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Паспорт (стр 2-3)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "31");
         $keyboard[$i++] = Button::make("СТС (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "32");
         $keyboard[$i++] = Button::make("СТС (обратная сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "33");
