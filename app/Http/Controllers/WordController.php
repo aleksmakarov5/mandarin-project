@@ -446,7 +446,7 @@ class WordController extends Controller
 
         //  dd ($array);
 
-        $filename = "Информационный акт №" . date('d-m-y_hms') . ".docx";
+        $filename = "Заявление о страховом возмещении №" . date('d-m-y_hms') . ".docx";
 
         $dir = 'storage/files/' . $id;
         if (!is_dir($dir)) {
@@ -460,7 +460,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
+        $document->file_name = "Заявление о страховом возмещении №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;

@@ -273,7 +273,7 @@ Route::middleware("auth:web")->group(
         Route::get('/download/{id}/{location}', [MainController::class, 'download'])->name('download');
 
         Route::get('export_hda/{id}/{status_id}', [WordController::class, 'export_hda'])->name('export_hda');
-        Route::get('export_zayav/{id}/{status_id}', [WordController::class, 'export_hda'])->name('export_hda');
+        Route::get('export_zayav/{id}/{status_id}', [WordController::class, 'export_zayav'])->name('export_zayav');
         Route::get('export_dk/{id}/{status_id}', [WordController::class, 'export_dk'])->name('export_dk');
         Route::get('export_ap/{id}/{status_id}', [WordController::class, 'export_ap'])->name('export_ap');
         Route::get('export_as/{id}/{status_id}', [WordController::class, 'export_as'])->name('export_as');
