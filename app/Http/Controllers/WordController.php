@@ -431,6 +431,7 @@ class WordController extends Controller
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
+        $templateProcessor->setValue('phone', $application->ClientPhone);
         $templateProcessor->setValue('mnf_year', $application->mnf_year);
         $templateProcessor->setValue('birthday',  $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
         $templateProcessor->setValue('DTPdate',  $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");

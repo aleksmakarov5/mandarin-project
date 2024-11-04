@@ -206,8 +206,7 @@
     <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
 </div>
 <div class="form-float">
-    <input type="date" name="birthday" id="birthday" class="form-cont"
-        value="{{ $application->ClientPasport_date }}">
+    <input type="date" name="birthday" id="birthday" class="form-cont" value="{{ $application->birthday }}">
     <div class='lbl'>
         <label for="birthday">Дата рождения клиента</label>
     </div>
