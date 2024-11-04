@@ -24,15 +24,27 @@
             </select>
             <label for="id_insuranceCompany">Страховая компания</label>
         </div>
+        <div class="form-float">
+
+            <select class="form-cont" id="our_company" name="our_company">
+                @foreach ($OurCompany as $item)
+                    <option value="{{ $item->id }}" @if ($item->id === 0) selected @endif>
+                        {{ $item->our_name }}
+                    </option>
+                @endforeach
+
+            </select>
+            <label for="our_company">Наша компания</label>
+        </div>
 
         <div class="form-float">
             <input type="text" name="numberInsuranceCompanyApplication" id="numberInsuranceCompanyApplication"
-                class="form-cont">
+                class="form-cont" value={{ date('dmY') }}>
             <label for="numberInsuranceCompanyApplication">Номер заявки страховой компании</label>
         </div>
 
         <div class="form-float">
-            <input type="text" name="CarModel" id="CarModel" class="form-cont">
+            <input type="text" name="CarModel" id="CarModel" class="form-cont" value="-">
             <label for="CarModel">Марка машины</label>
         </div>
         <div class="form-float">

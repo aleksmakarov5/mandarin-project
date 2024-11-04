@@ -58,6 +58,8 @@
             $count_archive = notCounter($applications, Auth::user()->id);
             $applications = DB::table('applications')->where('id_status', '=', '27')->get();
             $count_temp = notCounter($applications, Auth::user()->id);
+            $applications = DB::table('applications')->where('id_status', '=', '28')->get();
+            $count_priem = notCounter($applications, Auth::user()->id);
             $notifications = DB::table('notifies')
                 ->where('notifies.id_user', '=', Auth::user()->id)
                 ->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -128,6 +130,11 @@
 
                             </li>
                             @can('company')
+                                <li class="nav-item"><a href="\priem"
+                                        class="nav-link {{ session('rout') == 'priem' ? 'tn-active' : '' }}">Приемка</a><notify-buttons
+                                        :user="{{ Auth::user()->id }}" :pi=`priem`
+                                        :count_in="{{ json_encode($count_priem) }}"></notify-buttons>
+                                </li>
                                 <li class="nav-item"><a href="\failures"
                                         class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a><notify-buttons
                                         :user="{{ Auth::user()->id }}" :pi=`failures`

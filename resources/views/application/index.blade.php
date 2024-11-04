@@ -147,86 +147,85 @@
                 {{ $application->StatusName }}
             </th>
         </tr>
-        @if (session('rout') == 'directions')
-            <tr></tr>
-            <tr>
-                <th>№ убытка</th>
-                <th>
-                    {{ $application->ub_number }}
-                </th>
-            </tr>
-            <tr>
-                <th>Год выпуска ТС</th>
-                <th>
-                    {{ $application->mnf_year }}
-                </th>
-            </tr>
-            <tr>
-                <th>Страховой полис</th>
-                <th>
-                    {{ $application->dogovor }}
-                </th>
-            </tr>
-            <tr>
-                <th>Деффектовка во время ремонта</th>
-                <th>
-                    @if ($application->def == 0)
-                        Да
-                    @else
-                        Нет
-                    @endif
-                </th>
-            </tr>
-            <tr>
-                <th>Дата начала ремонта</th>
-                <th>
-                    {{ $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : '' }}
-                </th>
-            </tr>
-            <tr>
-                <th>Дата окончания ремонта</th>
-                <th>
-                    {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
-                </th>
-            </tr>
-            <tr>
-                <th>Срок поставки запчастей</th>
-                <th>
-                    {{ $application->wait_sp }}
-                </th>
-            </tr>
-            <tr>
-                <th colspan=2>
-                    <h1>Паспорт РФ</h1>
-                </th>
+        <tr></tr>
+        <tr>
+            <th>№ убытка</th>
+            <th>
+                {{ $application->ub_number }}
+            </th>
+        </tr>
+        <tr>
+            <th>Год выпуска ТС</th>
+            <th>
+                {{ $application->mnf_year }}
+            </th>
+        </tr>
+        <tr>
+            <th>Страховой полис</th>
+            <th>
+                {{ $application->dogovor }}
+            </th>
+        </tr>
+        <tr>
+            <th>Деффектовка во время ремонта</th>
+            <th>
+                @if ($application->def == 0)
+                    Да
+                @else
+                    Нет
+                @endif
+            </th>
+        </tr>
+        <tr>
+            <th>Дата начала ремонта</th>
+            <th>
+                {{ $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : '' }}
+            </th>
+        </tr>
+        <tr>
+            <th>Дата окончания ремонта</th>
+            <th>
+                {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
+            </th>
+        </tr>
+        <tr>
+            <th>Срок поставки запчастей</th>
+            <th>
+                {{ $application->wait_sp }}
+            </th>
+        </tr>
+        <tr>
+            <th colspan=2>
+                <h1>Паспорт РФ</h1>
+            </th>
 
-            </tr>
+        </tr>
 
-            <tr>
-                <th>Серия</th>
-                <th>
-                    {{ $application->ClientPasport }}
-                </th>
-            </tr>
-            <tr>
-                <th>Номер</th>
-                <th>
-                    {{ $application->ClientPasport_number }}
-                </th>
-            </tr>
-            <tr>
-                <th>Дата выдачи</th>
-                <th>
-                    {{ $application->ClientPasport_date }}
-                </th>
-            </tr>
-            <tr>
-                <th>Орган, выдавший паспорт</th>
-                <th>
-                    {{ $application->ClientPasport_struct }}
-                </th>
-            </tr>
-        @endif
+        <tr>
+            <th>Серия</th>
+            <th>
+                {{ $application->ClientPasport }}
+            </th>
+        </tr>
+        <tr>
+            <th>Номер</th>
+            <th>
+                {{ $application->ClientPasport_number }}
+            </th>
+        </tr>
+        <tr>
+            <th>Дата выдачи</th>
+            <th>
+                {{ $application->ClientPasport_date }}
+            </th>
+        </tr>
+        <tr>
+            <th>Орган, выдавший паспорт</th>
+            <th>
+                {{ $application->ClientPasport_struct }}
+            </th>
+        </tr>
+
         </tbody>
     </table>
 @endsection

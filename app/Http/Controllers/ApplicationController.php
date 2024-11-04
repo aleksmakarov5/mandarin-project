@@ -553,6 +553,50 @@ class ApplicationController extends Controller
         $applications = $this->configure($applications);
         return view('applications', ['applications' => $applications],);
     }
+    public function priem()
+    {
+        $applications = DB::table('applications')
+            ->where('id_status', '=', '28')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->get()->sortDesc();
+        // dd($applications);
+
+        session(['rout' => 'priem']);
+
+        $current = carbon::now();
+        foreach ($applications as $application) {
+            $application->count_hour = 1;
+            $application->max_hour = 1000;
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
+        }
+        $applications = $this->configure($applications);
+        return view('applications', ['applications' => $applications],);
+    }
 
     public function directions(Request $request)
     {
@@ -927,6 +971,8 @@ class ApplicationController extends Controller
             session(['rout' => 'archive']);
         if ($application->id_status == 27)
             session(['rout' => 'temp']);
+        if ($application->id_status == 28)
+            session(['rout' => 'priem']);
 
 
         return view('application.index', ['application' => $application, 'id' => $id, 'empty' => $empty, 'hide_menu' => $hide_menu]);
@@ -1064,8 +1110,10 @@ class ApplicationController extends Controller
     public function create()
     {
         $InsuranceCompany = new InsuranceCompany;
-        return view('application.create', ['InsuranceCompany' => $InsuranceCompany->all()]);
+        $OurCompany = new OurCompany;
+        return view('application.create', ['InsuranceCompany' => $InsuranceCompany->all(), 'OurCompany' => $OurCompany->all()]);
     }
+
 
 
     public function store(Request $request)
@@ -1086,14 +1134,18 @@ class ApplicationController extends Controller
             'vehicle_passport' => 'nullable|string',
             'Color' => 'nullable|string',
             'ClientPassport' => 'nullable|string',
-            'DTPdate' => 'nullable|date'
+            'DTPdate' => 'nullable|date',
+            'our_company' => 'nullable|string',
 
         ]);
         $application = new application;
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_status = 2;
-        $application->id_status = 2;
+        if (session('rout') == 'priem')
+            $application->id_status = 28;
+        else
+            $application->id_status = 2;
 
 
 

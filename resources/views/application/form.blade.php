@@ -178,68 +178,65 @@
 </div>
 
 
-@if (session('rout') == 'directions')
-    <hr>
-    <div class="form-float">
-        <input type="text" name="ub_number" id="ub_number" class="form-cont"
-            value="{{ $application->ub_number }}">
-        <div class='lbl'><label for="ub_number">№ убытка</label></div>
-    </div>
-    <div class="form-float">
-        <input type="text" name="mnf_year" id="mnf_year" class="form-cont"
-            value="{{ $application->mnf_year }}">
-        <div class='lbl'>
-            <label for="mnf_year">Год выпуска ТС</label>
-        </div>
-    </div>
-    <div class="form-float">
-        <input type="text" name="dogovor" id="dogovor" class="form-cont" value="{{ $application->dogovor }}">
-        <div class='lbl'><label for="dogovor">Страховой полис</label></div>
-    </div>
+
+<hr>
+<div class="form-float">
+    <input type="text" name="ub_number" id="ub_number" class="form-cont" value="{{ $application->ub_number }}">
+    <div class='lbl'><label for="ub_number">№ убытка</label></div>
+</div>
+<div class="form-float">
+    <input type="text" name="mnf_year" id="mnf_year" class="form-cont" value="{{ $application->mnf_year }}">
     <div class='lbl'>
-        <label for="def">Деффектовка во время ремонта</label>
+        <label for="mnf_year">Год выпуска ТС</label>
     </div>
-    <div class="form-float">
+</div>
+<div class="form-float">
+    <input type="text" name="dogovor" id="dogovor" class="form-cont" value="{{ $application->dogovor }}">
+    <div class='lbl'><label for="dogovor">Страховой полис</label></div>
+</div>
+<div class='lbl'>
+    <label for="def">Деффектовка во время ремонта</label>
+</div>
+<div class="form-float">
 
-        <select class="form-cont" id="def" name="def">
-            <option value="0" @if ($application->def == 0) selected @endif>Да</option>
-            <option value="1"@if ($application->def == 1) selected @endif>Нет</option>
-        </select>
+    <select class="form-cont" id="def" name="def">
+        <option value="0" @if ($application->def == 0) selected @endif>Да</option>
+        <option value="1"@if ($application->def == 1) selected @endif>Нет</option>
+    </select>
 
-    </div>
-    <div class="form-float">
-        <input type="date" name="start_date" id="start_date" class="form-cont"
-            value="{{ $application->start_date }}">
-        <div class='lbl'><label for="start_date">Дата начала ремонта</label></div>
-    </div>
+</div>
+<div class="form-float">
+    <input type="date" name="start_date" id="start_date" class="form-cont"
+        value="{{ $application->start_date }}">
+    <div class='lbl'><label for="start_date">Дата начала ремонта</label></div>
+</div>
 
-    <div class="form-float">
-        <input type="text" name="wait_sp" id="wait_sp" class="form-cont" value="{{ $application->wait_sp }}">
-        <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
+<div class="form-float">
+    <input type="text" name="wait_sp" id="wait_sp" class="form-cont" value="{{ $application->wait_sp }}">
+    <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
+</div>
+<h1>Паспорт РФ</h1>
+<div class="form-float">
+    <input type="text" name="ClientPasport" id="ClientPasport" class="form-cont"
+        value="{{ $application->ClientPasport }}">
+    <div class='lbl'>
+        <label for="ClientPasport">Серия</label>
     </div>
-    <h1>Паспорт РФ</h1>
-    <div class="form-float">
-        <input type="text" name="ClientPasport" id="ClientPasport" class="form-cont"
-            value="{{ $application->ClientPasport }}">
-        <div class='lbl'>
-            <label for="ClientPasport">Серия</label>
-        </div>
+</div>
+<div class="form-float">
+    <input type="text" name="ClientPasport_number" id="ClientPasport_number" class="form-cont"
+        value="{{ $application->ClientPasport }}">
+    <div class='lbl'><label for="ClientPasport_number">Номер</label></div>
+</div>
+<div class="form-float">
+    <input type="date" name="ClientPasport_date" id="ClientPasport_date" class="form-cont"
+        value="{{ $application->ClientPasport_date }}">
+    <div class='lbl'>
+        <label for="ClientPasport_date">Дата выдачи</label>
     </div>
-    <div class="form-float">
-        <input type="text" name="ClientPasport_number" id="ClientPasport_number" class="form-cont"
-            value="{{ $application->ClientPasport }}">
-        <div class='lbl'><label for="ClientPasport_number">Номер</label></div>
-    </div>
-    <div class="form-float">
-        <input type="date" name="ClientPasport_date" id="ClientPasport_date" class="form-cont"
-            value="{{ $application->ClientPasport_date }}">
-        <div class='lbl'>
-            <label for="ClientPasport_date">Дата выдачи</label>
-        </div>
-    </div>
-    <div class="form-float">
-        <input type="text" name="ClientPasport_struct" id="ClientPasport_struct" class="form-cont"
-            value="{{ $application->ClientPasport_struct }}">
-        <div class='lbl'><label for="ClientPasport_struct">Орган, выдавший паспорт</label></div>
-    </div>
-@endif
+</div>
+<div class="form-float">
+    <input type="text" name="ClientPasport_struct" id="ClientPasport_struct" class="form-cont"
+        value="{{ $application->ClientPasport_struct }}">
+    <div class='lbl'><label for="ClientPasport_struct">Орган, выдавший паспорт</label></div>
+</div>

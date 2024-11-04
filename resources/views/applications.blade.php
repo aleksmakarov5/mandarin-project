@@ -5,9 +5,10 @@
 @section('main_content')
     <h1>
         Все заявки</h1>
-    @can('admin')
-        <a href="/applications/create" class="nav-link">Добавить заявку</a>
-    @endcan
+
+    <a href="/applications/create" class="nav-link">Добавить заявку</a>
+
+
     @can('mrk')
         @if (session('rout') == 'applications' || session('rout') == 'directions')
             <a href="?only_me={{ isset($only_me) && $only_me ? '0' : '1' }}"

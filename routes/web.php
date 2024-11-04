@@ -152,6 +152,7 @@ Route::middleware("auth:web")->group(
         Route::get('/lawyers',  [ApplicationController::class, 'lawyers'])->name('lawyers');
         Route::get('/archive',  [ApplicationController::class, 'archive'])->name('archive');
         Route::get('/temp',  [ApplicationController::class, 'temp'])->name('temp');
+        Route::get('/priem',  [ApplicationController::class, 'priem'])->name('priem');
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
         Route::post('/find',  [ApplicationController::class, 'find'])->name('find');
 
@@ -173,6 +174,7 @@ Route::middleware("auth:web")->group(
 
         Route::get('applications/create', [ApplicationController::class, 'create'])
             ->name('applications.create');
+
         Route::get('applications/add_mail/{type}/{id}/{message_id}', [ApplicationController::class, 'add_mail'])
             ->name('applications.add_mail');
         Route::get('applications/new_mail/{type}/{id}/{message_id}/{id_application}', [ApplicationController::class, 'new_mail'])
