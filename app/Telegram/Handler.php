@@ -503,4 +503,13 @@ class Handler extends WebhookHandler
             ->send();
         $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
+    public function doc_ocr(): void
+    {
+        try {
+            $document = attachment::where('id_application', '=', $this->data->get('id'))->where('id_status', '=', 31)->first();
+        } catch (\Exception $e) {
+            $this->chat->Message("Паспорт не загружен")->send();
+            return;
+        }
+    }
 }
