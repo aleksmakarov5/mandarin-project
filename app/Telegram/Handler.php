@@ -507,8 +507,7 @@ class Handler extends WebhookHandler
     {
         try {
             $id = $this->data->get('id');
-
-            $document = attachment::where('id_application', '=', $this->data->get('id'))->where('id_status', '=', 31)->first();
+            $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 31)->first();
             rename('storage/files/' . $id . '/' . $document->location, 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
             rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $document->location);
@@ -516,7 +515,7 @@ class Handler extends WebhookHandler
             $data = array(
                 "mimeType" => "JPEG",
                 "languageCodes" => ["*"],
-                "model" => "vehicle-registration-front",
+                "model" => "passport",
                 "content" => $output
             );
 
