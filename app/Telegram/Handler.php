@@ -244,7 +244,9 @@ class Handler extends WebhookHandler
         if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12');
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
