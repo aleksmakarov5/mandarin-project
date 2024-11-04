@@ -9,6 +9,7 @@ use App\Models\attachment;
 use App\Models\estimate;
 use App\Models\application;
 use App\Models\troubleshooting;
+use Jenssegers\Date\Date;
 
 
 class WordController extends Controller
@@ -524,8 +525,8 @@ class WordController extends Controller
         $templateProcessor->setValue('wait_sp', $application->wait_sp);
         $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
         $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-        $templateProcessor->setValue('pass_date', $application->ClientPasport_date);
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct);
+        $templateProcessor->setValue('pass_date',  Date::parse($application->ClientPasport_date)->format('j F Yг.') ?? "_________________");
+        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_____________ _________________ ________________");
 
         $i = 1;
 
