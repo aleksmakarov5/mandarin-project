@@ -205,6 +205,13 @@
     <input type="text" name="wait_sp" id="wait_sp" class="form-cont" value="{{ $application->wait_sp }}">
     <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
 </div>
+<div class="form-float">
+    <input type="date" name="birthday" id="birthday" class="form-cont"
+        value="{{ $application->ClientPasport_date }}">
+    <div class='lbl'>
+        <label for="birthday">Дата рождения клиента</label>
+    </div>
+</div>
 <h1>Паспорт РФ</h1>
 <div class="form-float">
     <input type="text" name="ClientPasport" id="ClientPasport" class="form-cont"

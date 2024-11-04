@@ -196,6 +196,12 @@
             </th>
         </tr>
         <tr>
+            <th>Дата рождения клиента</th>
+            <th>
+                {{ $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : '' }}
+            </th>
+        </tr>
+        <tr>
             <th colspan=2>
                 <h1>Паспорт РФ</h1>
             </th>
@@ -217,7 +223,7 @@
         <tr>
             <th>Дата выдачи</th>
             <th>
-                {{ Date::parse($application->ClientPasport_date)->format('j F Yг.') }}
+                {{ $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : '' }}
             </th>
         </tr>
         <tr>
