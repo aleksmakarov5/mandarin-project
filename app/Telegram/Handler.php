@@ -41,104 +41,157 @@ class Handler extends WebhookHandler
             $name = '';
             $zip_name = '';
             $load = true;
-            switch ($telegram_action->number) {
-                case 0:
-                    $load = false;
-                    break;
-                case 21:
-                    $path = $path . "Фото_первичного_осмотра";
-                    $name = "Фото первичного осмотра";
-                    $zip_name = "Фото_первичного_осмотра";
-                    break;
-                case 3:
-                    $path = $path . "Договор_с_клиентом";
-                    $name = "Договор с клиентом";
-                    $zip_name = "Договор_с_клиентом";
-                    break;
-                case 5:
-                    $path = $path . "Доп_соглашение";
-                    $name = "Доп соглашение";
-                    $zip_name = "Доп_соглашение";
-                    break;
-                case 7:
-                    $path = $path . "Информационный_акт";
-                    $name = "Информационный акт";
-                    $zip_name = "Информационный_акт";
-                    break;
-                case 9:
-                    $path = $path . "Акт_приема_автомобиля_на_ремонт";
-                    $name = "Акт приема автомобиля на ремонт";
-                    $zip_name = "Акт_приема_автомобиля_на_ремонт";
+            if ($telegram_action->number < 31) {
+                switch ($telegram_action->number) {
+                    case 0:
+                        $load = false;
+                        break;
+                    case 21:
+                        $path = $path . "Фото_первичного_осмотра";
+                        $name = "Фото первичного осмотра";
+                        $zip_name = "Фото_первичного_осмотра";
+                        break;
+                    case 3:
+                        $path = $path . "Договор_с_клиентом";
+                        $name = "Договор с клиентом";
+                        $zip_name = "Договор_с_клиентом";
+                        break;
+                    case 5:
+                        $path = $path . "Доп_соглашение";
+                        $name = "Доп соглашение";
+                        $zip_name = "Доп_соглашение";
+                        break;
+                    case 7:
+                        $path = $path . "Информационный_акт";
+                        $name = "Информационный акт";
+                        $zip_name = "Информационный_акт";
+                        break;
+                    case 9:
+                        $path = $path . "Акт_приема_автомобиля_на_ремонт";
+                        $name = "Акт приема автомобиля на ремонт";
+                        $zip_name = "Акт_приема_автомобиля_на_ремонт";
 
-                    break;
-                case 10:
-                    $path = $path . "Фото_приема_автомобиля";
-                    $name = "Фото приема автомобиля";
-                    $zip_name = "Фото_приема_автомобиля";
+                        break;
+                    case 10:
+                        $path = $path . "Фото_приема_автомобиля";
+                        $name = "Фото приема автомобиля";
+                        $zip_name = "Фото_приема_автомобиля";
 
-                    break;
-                case 12:
-                    $path = $path . "Акт_скрытых_повреждений";
-                    $name = "Акт скрытых повреждений";
-                    $zip_name = "Акт_скрытых_повреждений";
-                    break;
-                case 30:
-                    $path = $path . "Фото_дефектовки";
-                    $name = "Фото дефектовки";
-                    $zip_name = "Фото_дефектовки";
-                    break;
-                case 14:
-                    $path = $path . "Акт_сдачи_автомобиля";
-                    $name = "Акт сдачи автомобиля";
-                    $zip_name = "Акт_сдачи_автомобиля";
+                        break;
+                    case 12:
+                        $path = $path . "Акт_скрытых_повреждений";
+                        $name = "Акт скрытых повреждений";
+                        $zip_name = "Акт_скрытых_повреждений";
+                        break;
+                    case 30:
+                        $path = $path . "Фото_дефектовки";
+                        $name = "Фото дефектовки";
+                        $zip_name = "Фото_дефектовки";
+                        break;
+                    case 14:
+                        $path = $path . "Акт_сдачи_автомобиля";
+                        $name = "Акт сдачи автомобиля";
+                        $zip_name = "Акт_сдачи_автомобиля";
 
-                    break;
-                case 15:
-                    $path = $path . "Фото_сдачи_автомобиля";
-                    $name = "Фото сдачи автомобиля";
-                    $zip_name = "Фото_сдачи_автомобиля";
-                    break;
-            }
-            if ($load) {
-                $path = $path . "_" . date('d-m-y');
-                $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
-                $name = $name . " " . date('d-m-y');
-                if (!is_dir($path)) {
-                    mkdir($path, 0777, true);
+                        break;
+                    case 15:
+                        $path = $path . "Фото_сдачи_автомобиля";
+                        $name = "Фото сдачи автомобиля";
+                        $zip_name = "Фото_сдачи_автомобиля";
+                        break;
                 }
-                $zip_path = $path . '.zip';
-                $zip_bool = true;
-                if (file_exists($zip_path)) {
-                    $zip = Zip::open($zip_path);
-                    $zip_bool = false;
-                } else {
-                    $zip = Zip::create($zip_path);
-                }
-                $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
-                $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
-                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-                if ($size) {
-                    $telegram_action->count = $telegram_action->count + 1;
-                    if ($telegram_action->message_id)
-                        $this->chat->deleteMessage($telegram_action->message_id)->send();
-                    $keyboard = [];
-                    $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+                if ($load) {
+                    $path = $path . "_" . date('d-m-y');
+                    $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
+                    $name = $name . " " . date('d-m-y');
+                    if (!is_dir($path)) {
+                        mkdir($path, 0777, true);
+                    }
+                    $zip_path = $path . '.zip';
+                    $zip_bool = true;
+                    if (file_exists($zip_path)) {
+                        $zip = Zip::open($zip_path);
+                        $zip_bool = false;
+                    } else {
+                        $zip = Zip::create($zip_path);
+                    }
+                    $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+                    $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
+                    $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                    if ($size) {
+                        $telegram_action->count = $telegram_action->count + 1;
+                        if ($telegram_action->message_id)
+                            $this->chat->deleteMessage($telegram_action->message_id)->send();
+                        $keyboard = [];
+                        $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                    $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
-                    $telegram_action->message_id = json_decode($message)->result->message_id;
-                    $telegram_action->save();
-                    // $file = "storage/files/405/test.txt";
-                    // file_put_contents($file, json_decode($message)->result->message_id);
-                    // // Optimize::path($filename);
-                    $zip->setpath($path)->add($filename);
-                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons($keyboard)
+                            )
+                            ->send();
+                        $telegram_action->message_id = json_decode($message)->result->message_id;
+                        $telegram_action->save();
+                        // $file = "storage/files/405/test.txt";
+                        // file_put_contents($file, json_decode($message)->result->message_id);
+                        // // Optimize::path($filename);
+                        $zip->setpath($path)->add($filename);
+                        // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $this->chat->deleteMessage($this->message->id())->send();
+                    } else {
+                        $this->chat->deleteMessage($this->message->id())->send();
+                    }
+                    $zip->close();
+                    $document = attachment::updateOrCreate(
+                        ['id_application' => $telegram_action->id_application, 'file_name' => $name],
+                        [
+                            'id_application' => $telegram_action->id_application,
+                            'id_status' => $telegram_action->number,
+                            'file_name' => $name,
+                            'message_id' => 0,
+                            'mime_type' => 'application/zip-compressed',
+                            'file_size' => filesize($zip_path),
+                            'location' => $zip_name,
+                        ]
+                    );
                 }
-                $zip->close();
+            } else {
+                $location = '';
+                switch ($telegram_action->number) {
+                    case 31:
+                        $name = "Паспорт (стр 2-3)";
+                        $location = "Паспорт_(стр_2-3)";
+                        break;
+                    case 32:
+                        $name = "СТС (лицевая сторона)";
+                        $location = "СТС_(лицевая_сторона)";
+                        break;
+                    case 33:
+                        $name = "СТС (обратная сторона)";
+                        $location = "СТС_(обратная_сторона)";
+                        break;
+                    case 34:
+                        $name = "В/У (лицевая сторона)";
+                        $location = "В/У_(лицевая_сторона)";
+                        break;
+                }
+                $location = $location . ".jpg";
+                $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
+                $telegram_action->count = $telegram_action->count + 1;
+                if ($telegram_action->message_id)
+                    $this->chat->deleteMessage($telegram_action->message_id)->send();
+                $keyboard = [];
+                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                $message = $this->chat->message("Получено изображений: {$telegram_action->count} Нажмите ГОТОВО или отправьте изображение заново")
+                    ->keyboard(
+                        Keyboard::make()
+                            ->buttons($keyboard)
+                    )
+                    ->send();
+                $telegram_action->message_id = json_decode($message)->result->message_id;
+                $telegram_action->save();
                 $document = attachment::updateOrCreate(
                     ['id_application' => $telegram_action->id_application, 'file_name' => $name],
                     [
@@ -147,13 +200,12 @@ class Handler extends WebhookHandler
                         'file_name' => $name,
                         'message_id' => 0,
                         'mime_type' => 'application/zip-compressed',
-                        'file_size' => filesize($zip_path),
-                        'location' => $zip_name,
+                        'file_size' => filesize($path . '/' . $location),
+                        'location' => $location,
                     ]
                 );
             }
         }
-        $this->chat->deleteMessage($this->message->id())->send();
     }
     public function hello(string $name): void
     {
@@ -331,20 +383,27 @@ class Handler extends WebhookHandler
     }
     public function doc_load(): void
     {
+        $app = application::where('id', '=', $this->data->get('id'))->first();
         $keyboard = [];
         $i = 0;
         $keyboard[$i++] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$this->data->get('id')}");
+        $keyboard[$i++] = Button::make("Паспорт (стр 2-3)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "31");
+        $keyboard[$i++] = Button::make("СТС (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "32");
+        $keyboard[$i++] = Button::make("СТС (обратная сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "33");
+        $keyboard[$i++] = Button::make("В/У (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "34");
         $keyboard[$i++] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
-        $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
-        $keyboard[$i++] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
-        $keyboard[$i++] = Button::make("Информационный акт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "7");
-        $keyboard[$i++] = Button::make("Акт приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "9");
-        $keyboard[$i++] = Button::make("Фото приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "10");
-        $keyboard[$i++] = Button::make("Акт скрытых повреждений")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "12");
-        $keyboard[$i++] = Button::make("Фото дефектовки")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "30");
-        $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
-        $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
-
+        if ($app->id_status < 25) {
+            $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
+            $keyboard[$i++] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
+            $keyboard[$i++] = Button::make("Информационный акт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "7");
+            $keyboard[$i++] = Button::make("Акт приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "9");
+            $keyboard[$i++] = Button::make("Фото приема автомобиля на ремонт")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "10");
+            $keyboard[$i++] = Button::make("Акт скрытых повреждений")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "12");
+            $keyboard[$i++] = Button::make("Фото дефектовки")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "30");
+            $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
+            $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
+        }
         $this->chat->message("Выберите тип загружаемых данных")
             ->keyboard(
                 Keyboard::make()
