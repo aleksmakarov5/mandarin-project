@@ -507,6 +507,7 @@ class Handler extends WebhookHandler
     {
         try {
             $document = attachment::where('id_application', '=', $this->data->get('id'))->where('id_status', '=', 31)->first();
+            $this->chat->Message("Паспорт {$document->file_name}")->send();
         } catch (\Exception $e) {
             $this->chat->Message("Паспорт не загружен")->send();
             return;
