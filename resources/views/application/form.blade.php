@@ -194,17 +194,7 @@
     <input type="text" name="dogovor" id="dogovor" class="form-cont" value="{{ $application->dogovor }}">
     <div class='lbl'><label for="dogovor">Страховой полис</label></div>
 </div>
-<div class='lbl'>
-    <label for="def">Деффектовка во время ремонта</label>
-</div>
-<div class="form-float">
 
-    <select class="form-cont" id="def" name="def">
-        <option value="0" @if ($application->def == 0) selected @endif>Да</option>
-        <option value="1"@if ($application->def == 1) selected @endif>Нет</option>
-    </select>
-
-</div>
 <div class="form-float">
     <input type="date" name="start_date" id="start_date" class="form-cont"
         value="{{ $application->start_date }}">
@@ -225,7 +215,7 @@
 </div>
 <div class="form-float">
     <input type="text" name="ClientPasport_number" id="ClientPasport_number" class="form-cont"
-        value="{{ $application->ClientPasport }}">
+        value="{{ $application->ClientPasport_number }}">
     <div class='lbl'><label for="ClientPasport_number">Номер</label></div>
 </div>
 <div class="form-float">
