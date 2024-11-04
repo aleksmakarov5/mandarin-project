@@ -25,11 +25,20 @@ use Jenssegers\Date\Date;
 use \ZanySoft\Zip\Facades\Zip;
 use \Golchha21\ReSmushIt\Facades\Optimize;
 use App\Models\attachment;
+use App\Models\User as user_prof;
 
 
 
 class Handler extends WebhookHandler
 {
+    public function messUpdate($id)
+    {
+        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
+        if ($user->message_id)
+            $this->chat->deleteMessage($user->message_id)->send();
+        $user->message_id = $id;
+        $user->save();
+    }
     public function handleChatMessage(Stringable $text): void
     {
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
@@ -120,8 +129,6 @@ class Handler extends WebhookHandler
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
                         $telegram_action->count = $telegram_action->count + 1;
-                        if ($telegram_action->message_id)
-                            $this->chat->deleteMessage($telegram_action->message_id)->send();
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
@@ -131,8 +138,7 @@ class Handler extends WebhookHandler
                                     ->buttons($keyboard)
                             )
                             ->send();
-                        $telegram_action->message_id = json_decode($message)->result->message_id;
-                        $telegram_action->save();
+                        $this->messUpdate(json_decode($message)->result->message_id);
                         // $file = "storage/files/405/test.txt";
                         // file_put_contents($file, json_decode($message)->result->message_id);
                         // // Optimize::path($filename);
@@ -190,6 +196,7 @@ class Handler extends WebhookHandler
                             ->buttons($keyboard)
                     )
                     ->send();
+                $this->messUpdate(json_decode($message)->result->message_id);
                 $telegram_action->message_id = json_decode($message)->result->message_id;
                 $telegram_action->save();
                 $this->chat->deleteMessage($this->message->id())->send();
@@ -263,11 +270,12 @@ class Handler extends WebhookHandler
         foreach ($applications as $application) {
             $keyboard[$i++] = Button::make("{$application->id}|  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
-        $this->chat->message("Список заявок")
+        $message = $this->chat->message("Список заявок")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
             )->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
     }
     public function directions(): void
     {
@@ -304,11 +312,12 @@ class Handler extends WebhookHandler
         foreach ($applications as $application) {
             $keyboard[$i++] = Button::make("{$application->id}|  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
-        $this->chat->message("Список направлений")
+        $message = $this->chat->message("Список направлений")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
             )->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
     }
     public function application(): void
     {
@@ -322,7 +331,7 @@ class Handler extends WebhookHandler
             ->where('applications.id', '=', $this->data->get('id'))
             ->first();
         $date = Date::parse($application->created_at)->format('j F Yг. H:i');
-        $this->chat->message(
+        $message = $this->chat->message(
             "#|{$application->id}\n<i>Дата заявки</i>:{$date}\n<i>Страховая компания</i>: {$application->name}\n<i>Марка машины</i>: {$application->CarModel}\n<i>ГНЗ</i>: {$application->gnz}\n<i>Статус заявки</i>: {$application->StatusName}\n<i>Клиент</i>: {$application->ClientName}\n<i>Телефон клиента</i>: {$application->ClientPhone}
             "
         )->keyboard(Keyboard::make()
@@ -332,6 +341,8 @@ class Handler extends WebhookHandler
 
             ]))
             ->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
+
         $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
     }
     public function documents(): void
@@ -373,7 +384,7 @@ class Handler extends WebhookHandler
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Отправить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
-        $this->chat->message("Документы|Заявка {$application->id}| {$application->gnz}")
+        $message = $this->chat->message("Документы|Заявка {$application->id}| {$application->gnz}")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
@@ -381,6 +392,7 @@ class Handler extends WebhookHandler
 
 
             ->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
     }
     public function doc_load(): void
     {
@@ -405,12 +417,13 @@ class Handler extends WebhookHandler
             $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
             $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
         }
-        $this->chat->message("Выберите тип загружаемых данных")
+        $message = $this->chat->message("Выберите тип загружаемых данных")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
             )
             ->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
     }
 
     public function doc_save(): void
@@ -477,11 +490,12 @@ class Handler extends WebhookHandler
                 break;
         }
 
-        $this->chat->message($message . ". По окончанию загрузки нажмите кнопку ГОТОВО")
+        $message = $this->chat->message($message . ". По окончанию загрузки нажмите кнопку ГОТОВО")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
             )
             ->send();
+        $this->messUpdate(json_decode($message)->result->message_id);
     }
 }
