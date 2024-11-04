@@ -39,7 +39,7 @@
 
         <div class="form-float">
             <input type="text" name="numberInsuranceCompanyApplication" id="numberInsuranceCompanyApplication"
-                class="form-cont" value={{ date('dmY') }}>
+                class="form-cont" value={{ date('dmY_hms') }}>
             <label for="numberInsuranceCompanyApplication">Номер заявки страховой компании</label>
         </div>
 
