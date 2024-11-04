@@ -217,7 +217,7 @@
         <tr>
             <th>Дата выдачи</th>
             <th>
-                {{ $application->ClientPasport_date }}
+                {{ Date::parse($application->ClientPasport_date)->format('j F Yг.') }}
             </th>
         </tr>
         <tr>
