@@ -112,6 +112,22 @@
         </thead>
         <tbody>
             <tr>
+                <th scope="col">Заявление о страховом возмещении</th>
+                <th scope="col">
+                    @include('document.form_print', [
+                        'status_id' => 11,
+                        'template' => 'export_zayav',
+                    ])
+                </th>
+                <th scope="col">
+                    @include('document.form_scan', [
+                        'status_id' => 12,
+                        'load_name' => 'Заявление о страховом возмещении',
+                        'load_location' => 'Заявление_о_страховом_возмещении',
+                    ])
+                </th>
+            </tr>
+            <tr>
                 <th scope="col">Акт первичного осмотра</th>
 
                 <th scope="col" colspan=2>
