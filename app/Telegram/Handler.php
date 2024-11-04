@@ -354,7 +354,7 @@ class Handler extends WebhookHandler
         $i = 0;
         $keyboard = [];
         $dir = 'storage/files/' . $this->data->get('id');
-
+        $application = application::where('id', '=', $this->data->get('id'))->first();
         foreach ($documents as $attach) {
             if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif' && pathinfo($attach->location, PATHINFO_EXTENSION) != 'png') {
                 if (
@@ -373,7 +373,7 @@ class Handler extends WebhookHandler
         }
         $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$this->data->get('id')}");
         $keyboard[$i++] = Button::make("Отправить документ")->action("doc_load")->param('id', "{$this->data->get('id')}");
-        $this->chat->message("Документы")
+        $this->chat->message("Документы|Заявка {$application->id}| {$application->gnz}")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
