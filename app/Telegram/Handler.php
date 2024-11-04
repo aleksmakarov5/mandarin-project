@@ -192,6 +192,7 @@ class Handler extends WebhookHandler
                     ->send();
                 $telegram_action->message_id = json_decode($message)->result->message_id;
                 $telegram_action->save();
+                $this->chat->deleteMessage($this->message->id())->send();
                 $document = attachment::updateOrCreate(
                     ['id_application' => $telegram_action->id_application, 'file_name' => $name],
                     [
