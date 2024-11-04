@@ -5,6 +5,7 @@
 @section('main')
     @canany(['admin', 'mrk'])
         <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
+        <br> <a href="/application/{{ $id }}/tg_load" class="nav-link">Загрузить данные через Telegram</a>
         <br>
         <a href="/applications/{{ $application->id }}/edit" class="nav-link">Изменить</a>
         <br>

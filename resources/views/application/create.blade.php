@@ -59,9 +59,16 @@
             <input type="text" name="ClientName" id="ClientName" class="form-cont">
             <label for="ClientName">ФИО клиента</label>
         </div>
-        <div class="form-float">
-            <input type="text" name="ClientName" id="ClientName" class="form-cont">
-            <label for="ClientName">Телефон клиента</label>
+        <div class="form-float @error('ClientPhone')
+                    alert alert-danger
+                @enderror">
+
+            <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont" placeholder="+7(000)000-00-00"
+                data-phone-pattern>
+            <div class='lbl'>
+                <label for="ClientPhone">Телефон клиента</label>
+            </div>
+
         </div>
         <input type="submit" value="Создать" class="nav-link">
 

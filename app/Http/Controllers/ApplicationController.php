@@ -40,6 +40,7 @@ use App\Events\MessageSent;
 use Tochka\Calendar\WorkCalendar;
 use App\Models\status_chat;
 use App\Models\status_message;
+use App\Models\telegram_action;
 use Illuminate\Support\Number;
 
 
@@ -1011,6 +1012,7 @@ class ApplicationController extends Controller
             [
                 'application' => $application,
                 'InsuranceCompany' => $InsuranceCompany->all(),
+
                 'mrks' => $mrks,
                 'services' => $services,
                 'spms' => $spms,
@@ -1125,7 +1127,7 @@ class ApplicationController extends Controller
             'gnz' => 'nullable|string',
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
-            'ClientPhone' => 'nullable|string',
+            'ClientPhone' => 'required|string',
             'id_MRK' => 'nullable|integer',
             'id_spm' => 'nullable|integer',
             'id_service' => 'nullable|integer',
@@ -1149,10 +1151,17 @@ class ApplicationController extends Controller
 
 
 
+        $phone = $data['ClientPhone'];
+        $phone = preg_replace('/[^0-9]/', '', $phone);
+        $start = mb_strpos($phone, '9');
+        $phone = mb_substr($phone, $start);
+        $phone = '+7 (' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
+        $data['ClientPhone'] = $phone;
 
         foreach ($data as $key => $value) {
             $application->$key = $value;
         }
+
         $application->save();
         try {
             $estimate = estimate::findorfail('id_application', '=', $application->id);
@@ -1503,6 +1512,66 @@ class ApplicationController extends Controller
             ->where('id_application', '=', $id)
             ->get();
         return view('application.doc_load', ['id' => $id], ['documents' => $documents]);
+    }
+    public function tg_load($id)
+    {
+        if (Auth::user()->telegram_notify) {
+            $new_chat = TelegraphChat::where('chat_id', '=', Auth::user()->telegram_id)->first();
+            $telegram_action = telegram_action::updateOrCreate(
+                ['id_chat' => Auth::user()->telegram_id],
+                [
+                    'id_chat' => Auth::user()->telegram_id,
+                    'id_application' => $id,
+                    'action' => 1,
+                    'number' => 0,
+                    'id_message' => 0,
+                    'count' => 0,
+                    'message_id' => 0
+                ]
+            );
+            $documents = DB::table('attachments')
+                ->where('id_application', '=', $id)
+                ->get()->all();
+            $i = 0;
+            $keyboard = [];
+            $dir = 'storage/files/' . $id;
+            $application = application::where('id', '=', $id)->first();
+            foreach ($documents as $attach) {
+                if (pathinfo($attach->location, PATHINFO_EXTENSION) != 'gif' && pathinfo($attach->location, PATHINFO_EXTENSION) != 'png') {
+                    if (
+                        pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                        pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                        pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+                    )
+                        $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name . '?hide_menu=1';
+                    else
+
+                        $path = "https://mandarin-portal.ru/" . $dir . '/' . $attach->location;
+
+                    $name = pathinfo($attach->file_name, PATHINFO_FILENAME);
+                    $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+                }
+            }
+            $keyboard[$i++] = Button::make("Основная информация")->action("application")->param('id', "{$id}");
+            $keyboard[$i++] = Button::make("Отправить документ")->action("doc_load")->param('id', "{$id}");
+            $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
+
+            $message = $new_chat->message("Документы|Заявка {$application->id}| {$application->gnz}")
+                ->keyboard(
+                    Keyboard::make()
+                        ->buttons($keyboard)
+                )
+
+
+                ->send();
+            $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
+            if ($user->message_id)
+                $new_chat->deleteMessage($user->message_id)->send();
+            $user->message_id = json_decode($message)->result->message_id;
+            $user->save();
+        }
+
+        return redirect()->back();
     }
 
     public function data_load(Request $request, $id)
