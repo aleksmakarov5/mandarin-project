@@ -611,12 +611,23 @@ class Handler extends WebhookHandler
                 $applications[$entity['name']] = $entity['text'];
             }
             $applications['issued_by'] = mb_convert_case($applications['issued_by'], MB_CASE_UPPER, "UTF-8");
-            $applications['number'] = mb_substr($applications['number'], 0, 4) . ' ' . mb_substr($applications['number'], 4, 6);
+
+            $applications['birth_place'] = mb_convert_case($applications['birth_place'], MB_CASE_UPPER, "UTF-8");
+
+            $applications['number'] = mb_substr($applications['number'], 0, 4) . ' №' . mb_substr($applications['number'], 4, 6);
             $applications['ClientName']
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
-            $file = "storage/files/test.txt";
-            file_put_contents($file, json_encode($applications));
+
+            $keyboard = [];
+            $keyboard[0] = Button::make("Назад")->action("doc_load")->param('id', "{$this->data->get('id')}");
+
+            $message = $this->chat->message("Паспорт распознан! \n\n" . json_encode($applications))->keyboard(
+                Keyboard::make()
+                    ->buttons($keyboard)
+            )
+                ->send();
+            $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
         } catch (\Exception $e) {
             $this->chat->Message("Паспорт не загружен")->send();
             return;
