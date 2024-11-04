@@ -176,7 +176,7 @@ class WordController extends Controller
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->join('cities', 'applications.', '=', 'cities.id')
+            ->join('cities', 'applications.id_city', '=', 'cities.id')
 
             ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
             ->where('applications.id', '=', $id)
@@ -574,7 +574,11 @@ class WordController extends Controller
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+            ->join('cities', 'applications.id_city', '=', 'cities.id')
+
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
+
+
             ->where('applications.id', '=', $id)
             ->first();
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ds.docx');
