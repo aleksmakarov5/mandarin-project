@@ -462,6 +462,18 @@ class Handler extends WebhookHandler
             case 15:
                 $message = "Отправить фото сдачи автомобиля";
                 break;
+            case 31:
+                $message = "Отправить паспорт (стр 2-3)";
+                break;
+            case 32:
+                $message = "Отправить СТС (лицевая сторона)";
+                break;
+            case 33:
+                $message = "Отправить СТС (обратная сторона)";
+                break;
+            case 34:
+                $message = "Отправить В/У (лицевая сторона)";
+                break;
         }
 
         $this->chat->message($message . ". По окончанию загрузки нажмите кнопку ГОТОВО")
