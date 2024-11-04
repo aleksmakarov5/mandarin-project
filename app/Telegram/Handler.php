@@ -620,7 +620,7 @@ class Handler extends WebhookHandler
             //dd($applications);
 
             $keyboard = [];
-            $keyboard[0] = Button::make("Назад")->action("doc_load")->param('id', "{$this->data->get('id')}");
+            $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
 
             $message = $this->chat->message("Паспорт распознан! \n\n" . json_encode($applications))->keyboard(
                 Keyboard::make()
