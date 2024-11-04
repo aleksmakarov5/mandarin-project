@@ -123,11 +123,10 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/hda.docx');
         //dd($application);
         $number = date('Hi');
-        $date = date('d-m-y');
 
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('num', $number);
-        $templateProcessor->setValue('date', $date);
+        $templateProcessor->setValue('date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -156,7 +155,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Акт скрытых повреждений №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "Акт скрытых повреждений №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -187,52 +186,12 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/dk.docx');
         //dd($application);
         $number = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
 
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -263,7 +222,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Договор о проведении восстановительного ремонта №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "Договор о проведении восстановительного ремонта №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -288,54 +247,14 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ap.docx');
         //dd($application);
         $number = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
 
 
 
         $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -360,7 +279,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -388,52 +307,12 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/as.docx');
         //dd($application);
         $number = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
 
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('city', $application->city);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -458,7 +337,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Приемо-сдаточный Акт №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "Приемо-сдаточный Акт №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -484,52 +363,12 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/if.docx');
         //dd($application);
         $number = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
 
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -560,7 +399,68 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Информационный акт №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
+        $document->message_id = 0;
+        $document->mime_type = mime_content_type($pathToSave);
+        $document->id_application = $id;
+        $document->file_size = filesize($pathToSave);
+        $document->location = $filename;
+        $document->id_status = 6;
+        $document->save();
+        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+
+        exec('chmod 755 "' . $pathToSave . '"');
+        return redirect()->route('document', $id);
+    }
+    public function export_zayav($id)
+    {
+        $application = DB::table('applications')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+            ->where('applications.id', '=', $id)
+            ->first();
+        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/zayav.docx');
+        //dd($application);
+        $number = date('Hi');
+
+
+
+        $templateProcessor->setValue('clientName', $application->ClientName);
+        $templateProcessor->setValue('date', Date::parse()->format('j F Y'));
+        $templateProcessor->setValue('CarModel', $application->CarModel);
+        $templateProcessor->setValue('gnz', $application->gnz);
+        $templateProcessor->setValue('vin', $application->vin);
+        $templateProcessor->setValue('mnf_year', $application->mnf_year);
+        $templateProcessor->setValue('birthday',  $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+        $templateProcessor->setValue('DTPdate',  $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+
+        $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+
+        $i = 1;
+
+
+        //  dd ($array);
+
+        $filename = "Информационный акт №" . date('d-m-y_hms') . ".docx";
+
+        $dir = 'storage/files/' . $id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $i = 1;
+        if (file_exists($dir . '/' . $filename)) {
+            while (file_exists($dir . '/' . $filename))
+                $filename .= '(' . $i++ . ')';
+        }
+        $pathToSave = $dir . '/' . $filename;
+        $templateProcessor->saveAs($pathToSave);
+        $document = new Attachment();
+        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -589,52 +489,12 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ds.docx');
         //dd($application);
         $number = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
 
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -692,7 +552,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . $date . ".docx";
+        $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -717,53 +577,13 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/zn.docx');
         //dd($application);
         $num = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
         $estimate = estimate::where('id_application', '=', $id)->first();
         // dd($estimate);
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -819,7 +639,7 @@ class WordController extends Controller
             $templateProcessor->setValue('price_work', in_money($estimate->price_work));
             $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
             $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-            $estimate->zn_number = $num . ' от ' . $date . 'г.';
+            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j f y') . 'г.';
             $estimate->save();
         }
 
@@ -842,7 +662,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Заказ-наряд №" . $num . ' от ' . $date . ".docx";
+        $document->file_name = "Заказ-наряд №" . $num . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -870,53 +690,13 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/pzn.docx');
         //dd($application);
         $num = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
         $estimate = estimate::where('id_application', '=', $id)->first();
         // dd($estimate);
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -981,7 +761,7 @@ class WordController extends Controller
             $templateProcessor->setValue('price_work', in_money($estimate->price_work));
             $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
             $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
-            $estimate->zn_number = $num . ' от ' . $date . 'г.';
+            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j f y') . 'г.';
             $estimate->save();
         }
 
@@ -1004,7 +784,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . $date . ".docx";
+        $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -1028,53 +808,13 @@ class WordController extends Controller
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/sch.docx');
         //dd($application);
         $num = date('Hi');
-        $month = date('m');
-        $month_name = '';
-        switch ($month) {
-            case 1:
-                $month_name = 'января';
-                break;
-            case 2:
-                $month_name = 'февраля';
-                break;
-            case 3:
-                $month_name = 'марта';
-                break;
-            case 4:
-                $month_name = 'апреля';
-                break;
-            case 5:
-                $month_name = 'мая';
-                break;
-            case 6:
-                $month_name = 'июня';
-                break;
-            case 7:
-                $month_name = 'июля';
-                break;
-            case 8:
-                $month_name = 'августа';
-                break;
-            case 9:
-                $month_name = 'сентября';
-                break;
-            case 10:
-                $month_name = 'октября';
-                break;
-            case 11:
-                $month_name = 'ноября';
-                break;
-            case 12:
-                $month_name = 'декабря';
-                break;
-        }
-        $date = date('d') . ' ' . $month_name . ' ' . date('Y');
+
         $estimate = estimate::where('id_application', '=', $id)->first();
         // dd($estimate);
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', $date);
+        $templateProcessor->setValue('Date', Date::parse()->format('j f y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -1105,7 +845,7 @@ class WordController extends Controller
         $templateProcessor->saveAs($pathToSave);
         exec('chmod 755 "' . $pathToSave . '"');
         $document = new Attachment();
-        $document->file_name = "Счет №" . $num . ' от ' . $date . ".docx";
+        $document->file_name = "Счет №" . $num . ' от ' . Date::parse()->format('j f y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
