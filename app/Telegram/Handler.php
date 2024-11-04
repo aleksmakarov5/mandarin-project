@@ -239,6 +239,7 @@ class Handler extends WebhookHandler
 
     public function applications(): void
     {
+        $this->chat->deleteMessage($this->message->id())->send();
         $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
         if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
@@ -255,7 +256,9 @@ class Handler extends WebhookHandler
         } else {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12');
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
                 ->where('applications.id_MRK', '=', $user->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -280,6 +283,7 @@ class Handler extends WebhookHandler
     }
     public function directions(): void
     {
+        $this->chat->deleteMessage($this->message->id())->send();
         $user = UserSys::where('telegram_id', '=', $this->chat->chat_id)->first();
         if ($user->GroupId < 5 || $user->GroupId > 6) {
             $applications = application::where(function ($query) {
