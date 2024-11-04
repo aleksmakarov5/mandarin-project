@@ -738,7 +738,7 @@ class Handler extends WebhookHandler
         try {
             $applications = [];
             $id = $this->data->get('id');
-            $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 32)->first();
+            $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 33)->first();
             rename('storage/files/' . $id . '/' . $document->location, 'storage/files/' . $id . '/work.pdf');
             exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
             rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $document->location);
