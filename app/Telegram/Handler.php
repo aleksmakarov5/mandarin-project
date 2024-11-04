@@ -130,6 +130,7 @@ class Handler extends WebhookHandler
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
                         $telegram_action->count = $telegram_action->count + 1;
+                        $telegram_action->save();
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
@@ -187,10 +188,8 @@ class Handler extends WebhookHandler
                 $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
                 $telegram_action->count = $telegram_action->count + 1;
                 $telegram_action->save();
-
                 $keyboard = [];
                 $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
-
                 $message = $this->chat->message("Получено изображений: {$telegram_action->count} \nНажмите ГОТОВО или отправьте изображение заново")
                     ->keyboard(
                         Keyboard::make()
@@ -198,8 +197,7 @@ class Handler extends WebhookHandler
                     )
                     ->send();
                 $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-                $telegram_action->message_id = json_decode($message)->result->message_id;
-                $telegram_action->save();
+
                 $this->chat->deleteMessage($this->message->id())->send();
                 $document = attachment::updateOrCreate(
                     ['id_application' => $telegram_action->id_application, 'file_name' => $name],
