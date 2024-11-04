@@ -520,8 +520,8 @@ class WordController extends Controller
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('start_date', $application->start_date);
-        $templateProcessor->setValue('end_date', $application->end_date);
+        $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
         $templateProcessor->setValue('wait_sp', $application->wait_sp);
         $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
         $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
