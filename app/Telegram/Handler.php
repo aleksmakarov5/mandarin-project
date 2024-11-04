@@ -446,7 +446,7 @@ class Handler extends WebhookHandler
             ]
         );
         $keyboard = [];
-        $keyboard[0] = Button::make("Назад")->action("documents")->param('id', "{$this->data->get('id')}");
+        $keyboard[0] = Button::make("Назад")->action("doc_load")->param('id', "{$this->data->get('id')}");
         $message = "";
 
         switch ($this->data->get('id_doc')) {
