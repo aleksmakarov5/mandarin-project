@@ -34,8 +34,8 @@ class Handler extends WebhookHandler
     public function messUpdate($user_id, $id)
     {
         $user = user_prof::where('telegram_id', '=', $user_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
+        $this->chat->message("{$user->name}")->send();
+
         $user->message_id = $id;
         $user->save();
         return 1;
