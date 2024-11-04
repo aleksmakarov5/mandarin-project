@@ -622,7 +622,7 @@ class Handler extends WebhookHandler
             $application->ClientName = $applications['ClientName'];
             $application->ClientPasport = mb_substr($applications['number'], 0, 4);
             $application->ClientPasport_number = mb_substr($applications['number'], 4, 6);
-            $application->ClientPasport_date = $applications['issue_date'];
+            $application->ClientPasport_date = date('Y-m-d', strtotime($applications['issue_date']));
             $application->ClientPasport_struct = $applications['issued_by'];
             $application->save();
             $file = "storage/files/test.txt";
