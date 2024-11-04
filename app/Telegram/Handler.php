@@ -507,6 +507,7 @@ class Handler extends WebhookHandler
     {
         $message_error = '';
         try {
+            $applications = [];
             $id = $this->data->get('id');
             $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 31)->first();
             rename('storage/files/' . $id . '/' . $document->location, 'storage/files/' . $id . '/work.pdf');
@@ -619,11 +620,232 @@ class Handler extends WebhookHandler
             $applications['ClientName']
                 = mb_convert_case($applications['name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['middle_name'], MB_CASE_TITLE, "UTF-8") . ' ' . mb_convert_case($applications['surname'], MB_CASE_TITLE, "UTF-8");
             //dd($applications);
-
-
+            $file = "storage/files/test.txt";
+            file_put_contents($file, json_encode($applications));
         } catch (\Exception $e) {
             $message_error .= 'Ошибка распознания паспорта. Попробуйте снова.\n';
         }
+        try {
+            $applications = [];
+            $id = $this->data->get('id');
+            $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 32)->first();
+            rename('storage/files/' . $id . '/' . $document->location, 'storage/files/' . $id . '/work.pdf');
+            exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $document->location);
+            $output = file_get_contents('storage/files/' . $id . '/output.txt');
+            $data = array(
+                "mimeType" => "JPEG",
+                "languageCodes" => ["*"],
+                "model" => "vehicle-registration-front",
+                "content" => $output
+            );
+
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POST,
+                1
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                json_encode($data, JSON_UNESCAPED_UNICODE)
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+            // echo $res['id'];
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $html = curl_exec($ch);
+            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+            if (isset($html['error']['httpCode']))
+                while (isset($html['error'])) {
+                    // echo ($html['error']['httpCode'] . '<br>');
+                    $html = curl_exec($ch);
+                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                }
+            $html = curl_exec($ch);
+            $html = explode("\n", $html);
+            $passport = [];
+            $i = 0;
+            foreach ($html as $key => $value) {
+                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+            }
+            curl_close($ch);
+            // $data = $passport[0]['textAnnotation']['entities'];
+            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
+                $applications[$entity['name']] = $entity['text'];
+            }
+            $file = "storage/files/test1.txt";
+            file_put_contents($file, json_encode($applications));
+        } catch (\Exception $e) {
+            $message_error .= 'Ошибка распознания СТС (лицевая сторона). Попробуйте снова.\n';
+        }
+        try {
+            $applications = [];
+            $id = $this->data->get('id');
+            $document = attachment::where('id_application', '=', $id)->where('id_status', '=', 32)->first();
+            rename('storage/files/' . $id . '/' . $document->location, 'storage/files/' . $id . '/work.pdf');
+            exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $document->location);
+            $output = file_get_contents('storage/files/' . $id . '/output.txt');
+            $data = array(
+                "mimeType" => "JPEG",
+                "languageCodes" => ["*"],
+                "model" => "vehicle-registration-back",
+                "content" => $output
+            );
+
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POST,
+                1
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_POSTFIELDS,
+                json_encode($data, JSON_UNESCAPED_UNICODE)
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $res = curl_exec($ch);
+            curl_close($ch);
+
+            $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+            // echo $res['id'];
+
+            $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+            curl_setopt(
+                $ch,
+                CURLOPT_RETURNTRANSFER,
+                true
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HTTPHEADER,
+                array(
+                    'Content-Type:application/json',
+                    'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                    'x-folder-id: b1gcnqkpepfcp6fulsah',
+                    'x-data-logging-enabled: true'
+                )
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_SSL_VERIFYPEER,
+                false
+            );
+            curl_setopt(
+                $ch,
+                CURLOPT_HEADER,
+                false
+            );
+            $html = curl_exec($ch);
+            $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+            if (isset($html['error']['httpCode']))
+                while (isset($html['error'])) {
+                    // echo ($html['error']['httpCode'] . '<br>');
+                    $html = curl_exec($ch);
+                    $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                }
+            $html = curl_exec($ch);
+            $html = explode("\n", $html);
+            $passport = [];
+            $i = 0;
+            foreach ($html as $key => $value) {
+                $passport[$i++] = json_decode($value, JSON_UNESCAPED_UNICODE);
+            }
+            curl_close($ch);
+            // $data = $passport[0]['textAnnotation']['entities'];
+            foreach ($passport[0]['result']['textAnnotation']['entities'] as $entity) {
+                $applications[$entity['name']] = $entity['text'];
+            }
+            $file = "storage/files/test2.txt";
+            file_put_contents($file, json_encode($applications));
+        } catch (\Exception $e) {
+            $message_error .= 'Ошибка распознания СТС (лицевая сторона). Попробуйте снова.\n';
+        }
+
         $keyboard = [];
         $text = '';
 
