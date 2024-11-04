@@ -176,7 +176,9 @@ class WordController extends Controller
         $application = DB::table('applications')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
+            ->join('cities', 'applications.', '=', 'cities.id')
+
+            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
             ->where('applications.id', '=', $id)
             ->first();
         $app = application::findOrFail($id);
@@ -234,6 +236,12 @@ class WordController extends Controller
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
+        $templateProcessor->setValue('city', $application->city);
+        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+
         $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
         $array = [];
         $i = 1;
@@ -624,10 +632,11 @@ class WordController extends Controller
         $templateProcessor->setValue('start_date', $application->start_date);
         $templateProcessor->setValue('end_date', $application->end_date);
         $templateProcessor->setValue('wait_sp', $application->wait_sp);
-        $templateProcessor->setValue('pass_ser', $application->ClientPasport);
-        $templateProcessor->setValue('pass_num', $application->ClientPasport_number);
-        $templateProcessor->setValue('pass_date', $application->ClientPasport_date);
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct);
+        $templateProcessor->setValue('city', $application->city);
+        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
         $array = [];
         $SpareParts = DB::table('spare_parts')
             ->where('id_application', '=', $id)
