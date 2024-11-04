@@ -33,11 +33,12 @@ class Handler extends WebhookHandler
 {
     public function messUpdate($user_id, $id)
     {
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
+        $user = user_prof::where('telegram_id', '=', $user_id)->first();
         if ($user->message_id)
             $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
+        $user->message_id = $id;
         $user->save();
+        return 1;
     }
     public function handleChatMessage(Stringable $text): void
     {
@@ -138,11 +139,7 @@ class Handler extends WebhookHandler
                                     ->buttons($keyboard)
                             )
                             ->send();
-                        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-                        if ($user->message_id)
-                            $this->chat->deleteMessage($user->message_id)->send();
-                        $user->message_id = json_decode($message)->result->message_id;
-                        $user->save();
+                        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
                         // $file = "storage/files/405/test.txt";
                         // file_put_contents($file, json_decode($message)->result->message_id);
                         // // Optimize::path($filename);
@@ -200,11 +197,7 @@ class Handler extends WebhookHandler
                             ->buttons($keyboard)
                     )
                     ->send();
-                $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-                if ($user->message_id)
-                    $this->chat->deleteMessage($user->message_id)->send();
-                $user->message_id = json_decode($message)->result->message_id;
-                $user->save();
+                $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
                 $telegram_action->message_id = json_decode($message)->result->message_id;
                 $telegram_action->save();
                 $this->chat->deleteMessage($this->message->id())->send();
@@ -283,11 +276,7 @@ class Handler extends WebhookHandler
                 Keyboard::make()
                     ->buttons($keyboard)
             )->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
     public function directions(): void
     {
@@ -329,11 +318,7 @@ class Handler extends WebhookHandler
                 Keyboard::make()
                     ->buttons($keyboard)
             )->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
     public function application(): void
     {
@@ -357,11 +342,7 @@ class Handler extends WebhookHandler
 
             ]))
             ->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
 
         $bot = \DefStudio\Telegraph\Models\TelegraphBot::find(1);
     }
@@ -412,11 +393,7 @@ class Handler extends WebhookHandler
 
 
             ->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
     public function doc_load(): void
     {
@@ -447,11 +424,7 @@ class Handler extends WebhookHandler
                     ->buttons($keyboard)
             )
             ->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
 
     public function doc_save(): void
@@ -524,10 +497,6 @@ class Handler extends WebhookHandler
                     ->buttons($keyboard)
             )
             ->send();
-        $user = user_prof::where('telegram_id', '=', $this->chat->chat_id);
-        if ($user->message_id)
-            $this->chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
     }
 }
