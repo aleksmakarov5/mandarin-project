@@ -126,7 +126,7 @@ class WordController extends Controller
 
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('num', $number);
-        $templateProcessor->setValue('date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -155,7 +155,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Акт скрытых повреждений №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Акт скрытых повреждений №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -191,7 +191,7 @@ class WordController extends Controller
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -222,7 +222,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Договор о проведении восстановительного ремонта №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Договор о проведении восстановительного ремонта №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -254,7 +254,7 @@ class WordController extends Controller
         $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -279,7 +279,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -312,7 +312,7 @@ class WordController extends Controller
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('city', $application->city);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -337,7 +337,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Приемо-сдаточный Акт №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Приемо-сдаточный Акт №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -399,7 +399,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -461,7 +461,7 @@ class WordController extends Controller
         $pathToSave = $dir . '/' . $filename;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Заявление о страховом возмещении №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Заявление о страховом возмещении №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -495,7 +495,7 @@ class WordController extends Controller
 
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
@@ -553,7 +553,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -584,7 +584,7 @@ class WordController extends Controller
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -640,7 +640,7 @@ class WordController extends Controller
             $templateProcessor->setValue('price_work', in_money($estimate->price_work));
             $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
             $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F y') . 'г.';
+            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F Y') . 'г.';
             $estimate->save();
         }
 
@@ -663,7 +663,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -697,7 +697,7 @@ class WordController extends Controller
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -762,7 +762,7 @@ class WordController extends Controller
             $templateProcessor->setValue('price_work', in_money($estimate->price_work));
             $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
             $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
-            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F y') . 'г.';
+            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F Y') . 'г.';
             $estimate->save();
         }
 
@@ -785,7 +785,7 @@ class WordController extends Controller
         // dd($templateProcessor);
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
-        $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
@@ -815,7 +815,7 @@ class WordController extends Controller
         $templateProcessor->setValue('Client', $application->ClientName);
         $templateProcessor->setValue('num', $num);
         $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F y'));
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('mnf_date', $application->mnf_year);
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
@@ -846,7 +846,7 @@ class WordController extends Controller
         $templateProcessor->saveAs($pathToSave);
         exec('chmod 755 "' . $pathToSave . '"');
         $document = new Attachment();
-        $document->file_name = "Счет №" . $num . ' от ' . Date::parse()->format('j F y') . ".docx";
+        $document->file_name = "Счет №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
         $document->message_id = 0;
         $document->mime_type = mime_content_type($pathToSave);
         $document->id_application = $id;
