@@ -130,6 +130,7 @@ class WordController extends Controller
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
         $templateProcessor->setValue('vin', $application->vin);
+        $templateProcessor->setValue('mnf_year', $application->mnf_year);
         $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
         $array = [];
         $i = 1;
