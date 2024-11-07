@@ -247,7 +247,7 @@ class WordController extends Controller
 
             foreach ($Works as $work) {
                 $array1[] = array(
-                    'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
+                    'work_name' => str_replace('<', 'МЕНЕЕ ', $work->name),
                     'price_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->price)),
                     'count_hours' => str_replace('<', 'МЕНЕЕ ', dec2($work->count_hours)),
                     'sum_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->summ))
@@ -256,7 +256,7 @@ class WordController extends Controller
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
 
-            $templateProcessor->cloneRowAndSetValues('name', $array1);
+            $templateProcessor->cloneRowAndSetValues('work_name', $array1);
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
@@ -302,7 +302,7 @@ class WordController extends Controller
             $price_repair = 0;
             foreach ($Works as $work) {
                 $array1[] = array(
-                    'name' => $work->count_hours_pzn != 0 ? bold_text(
+                    'work_name' => $work->count_hours_pzn != 0 ? bold_text(
                         str_replace('<', 'МЕНЕЕ ', $work->name)
                     ) : str_replace('<', 'МЕНЕЕ ', $work->name),
                     'price_w' => $work->count_hours_pzn != 0 ? bold_text(
@@ -322,7 +322,7 @@ class WordController extends Controller
                     + $price_repair
             );
 
-            $templateProcessor->cloneRowAndSetValues('name', $array1);
+            $templateProcessor->cloneRowAndSetValues('work_name', $array1);
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('price_repair', in_money($price_repair));
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
