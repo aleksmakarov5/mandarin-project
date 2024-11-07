@@ -105,6 +105,271 @@ class WordController extends Controller
         }
         return $month_name;
     }
+    public function export_doc($id, $template, $filename, $doc_type)
+    {
+
+
+        $location = $filename . date('d-m-y_hms') . ".docx";
+        $application = DB::table('applications')
+            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->leftjoin('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->leftjoin('legal_entities', 'our_companies.id_legal', '=', 'legal_entities.id')
+            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+            ->select('applications.*', 'cities.name as city', 'legal_entities.*', 'services.service_description', 'our_companies.our_email')
+            ->where('applications.id', '=', $id)
+            ->first();
+        // dd($application);
+        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
+        //dd($application);
+        $fio = '';
+        if ($application->director) {
+            $fio = $application->director;
+            $fio = explode(' ', $fio);
+            $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
+        }
+        $number = date('Hi');
+        $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+        $templateProcessor->setValue('number', $number);
+        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
+        $templateProcessor->setValue('CarModel', $application->CarModel);
+        $templateProcessor->setValue('gnz', $application->gnz);
+        $templateProcessor->setValue('vin', $application->vin);
+        $templateProcessor->setValue('city', $application->city);
+        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+        $templateProcessor->setValue('ub_number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+        $templateProcessor->setValue('mnf_year', $application->mnf_year);
+        $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+        $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+        $templateProcessor->setValue('wait_sp', $application->wait_sp);
+        $templateProcessor->setValue('phone', $application->ClientPhone);
+        $templateProcessor->setValue('birthday',  $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+        $templateProcessor->setValue('DTPdate',  $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+        $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+        $templateProcessor->setValue('bank', $application->bank);
+        $templateProcessor->setValue('inn', $application->inn);
+        $templateProcessor->setValue('kpp', $application->kpp);
+        $templateProcessor->setValue('ogrn', $application->ogrn);
+        $templateProcessor->setValue('okpo', $application->okpo);
+        $templateProcessor->setValue('sch_korr', $application->sch_korr);
+        $templateProcessor->setValue('bik', $application->bik);
+        $templateProcessor->setValue('sch_numb', $application->sch_numb);
+        $templateProcessor->setValue('fullname', $application->fullname);
+        $templateProcessor->setValue('address', $application->address);
+        $templateProcessor->setValue('director', $application->director);
+        $templateProcessor->setValue('name', $application->name);
+        $templateProcessor->setValue('in_face', $application->in_face);
+        $templateProcessor->setValue('service_description', $application->service_description);
+        $templateProcessor->setValue('fio', $fio);
+        $templateProcessor->setValue('email', $application->our_email);
+
+
+
+
+        if ($doc_type == 11) {
+            $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
+            $array = [];
+            $i = 1;
+
+            foreach ($troubleshooting as $trouble) {
+                $array[] = array('id_row' => $i, 'PartName' => $trouble->PartName . ' - ' . $trouble->Сonclusion, 'Work' => $trouble->Work);
+                $i++;
+            }
+            // dd($array);
+
+            $templateProcessor->cloneRowAndSetValues('PartName', $array);
+        }
+
+        if ($doc_type == 4) {
+            $array = [];
+            $SpareParts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('selected_mrk', '>', '0')
+                ->where('selected_mrk', '<', '4')
+                ->get();
+            $i = 1;
+
+            foreach ($SpareParts as $sparepart) {
+                $array[] = array('id_sp' => str($i), 'SparePart' => $sparepart->name);
+                $i++;
+            }
+            $templateProcessor->cloneRowAndSetValues('id_sp', $array);
+            $array1 = [];
+            $Works = DB::table('works')
+                ->where('id_application', '=', $id)
+                ->where('price_service', '<>', '0')
+                ->get();
+            $i = 1;
+            foreach ($Works as $work) {
+                $array1[] = array('num' => str($i), 'Work' => str_replace('<', 'МЕНЕЕ ', $work->name));
+                $i++;
+            }
+
+            $templateProcessor->cloneRowAndSetValues('num', $array1);
+        }
+
+        if ($doc_type == 16) {
+            $array = [];
+            $SpareParts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('price', '<>', '0')
+                ->orderBy('npp')
+                ->get();
+            $i = 1;
+
+            foreach ($SpareParts as $sparepart) {
+                $array[] = array(
+                    'SparePart' => $sparepart->name,
+                    'price' => in_money(
+                        $sparepart->price
+                    ),
+                    'count' => $sparepart->count,
+                    'summ' => in_money(
+                        $sparepart->price_ic_full
+                    ),
+                    'iznos' => $sparepart->iznos,
+                    'sum_half' => in_money(
+                        $sparepart->price_ic_half
+                    ),
+                    'part_number' => $sparepart->part_number
+                );
+            }
+            $templateProcessor->cloneRowAndSetValues('SparePart', $array);
+            $array1 = [];
+            $Works = DB::table('works')
+                ->where('id_application', '=', $id)
+                ->where('price', '<>', '0')
+                ->orderBy('npp')
+                ->get();
+
+            foreach ($Works as $work) {
+                $array1[] = array(
+                    'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
+                    'price_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->price)),
+                    'count_hours' => str_replace('<', 'МЕНЕЕ ', dec2($work->count_hours)),
+                    'sum_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->summ))
+                );
+            }
+            // dd($array1);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+            $templateProcessor->cloneRowAndSetValues('name', $array1);
+            if (isset($estimate->price_repair)) {
+                $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
+                $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
+                $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
+                $templateProcessor->setValue('price_work', in_money($estimate->price_work));
+                $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
+                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                $estimate->zn_number = $number . ' от ' . Date::parse()->format('j F Y') . 'г.';
+                $estimate->save();
+            }
+        }
+        if ($doc_type == 35) {
+            $array = [];
+            $SpareParts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('price', '<>', '0')
+                ->orderBy('npp')
+                ->get();
+            $i = 1;
+            $price_sp_full = 0;
+            foreach ($SpareParts as $sparepart) {
+                $array[] = array(
+                    'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : bold_text($sparepart->name),
+                    'count' => $sparepart->count,
+                    'summ' => $sparepart->price_sto == 0 ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
+                    'iznos' => $sparepart->iznos,
+                    'sum_half' => ($sparepart->price_ic_half),
+                    'part_number' => $sparepart->price_sto == 0 ? $sparepart->part_number : bold_text($sparepart->part_number)
+                );
+                $price_sp_full
+                    += $sparepart->price_sto == 0
+                    ? str2number($sparepart->price_ic_full)
+                    : str2number($sparepart->price_sto);
+            }
+            // dd($array);
+            $templateProcessor->cloneRowAndSetValues('SparePart', $array);
+            $array1 = [];
+            $Works = DB::table('works')
+                ->where('id_application', '=', $id)
+                ->where('price', '<>', '0')
+                ->orderBy('npp')
+                ->get();
+            $price_repair = 0;
+            foreach ($Works as $work) {
+                $array1[] = array(
+                    'name' => $work->count_hours_pzn != 0 ? bold_text(
+                        str_replace('<', 'МЕНЕЕ ', $work->name)
+                    ) : str_replace('<', 'МЕНЕЕ ', $work->name),
+                    'price_w' => $work->count_hours_pzn != 0 ? bold_text(
+                        in_money(str2number($work->price))
+                    ) : in_money(str2number($work->price)),
+                    'count_hours' => $work->count_hours_pzn != 0 ? bold_text(dec2($work->count_hours_pzn))  : dec2(str2number($work->count_hours)),
+                    'sum_w' => $work->count_hours_pzn != 0 ? bold_text(in_money($work->count_hours_pzn * str2number($work->price))) : in_money(str2number(($work->summ)))
+                );
+                $price_repair += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
+            }
+            // dd($array1);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+            in_money(
+                $price_repair_full = $price_sp_full +
+                    (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+                    + $price_repair
+            );
+
+            $templateProcessor->cloneRowAndSetValues('name', $array1);
+            if (isset($estimate->price_repair)) {
+                $templateProcessor->setValue('price_repair', in_money($price_repair));
+                $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
+                $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
+                $templateProcessor->setValue('price_work', in_money($estimate->price_work));
+                $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
+                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
+                $estimate->save();
+            }
+        }
+        if ($doc_type == 18 || $doc_type == 37) {
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+            if (isset($estimate->price_repair)) {
+                $templateProcessor->setValue('zn_num', $estimate->zn_number);
+                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
+            }
+        }
+
+
+
+        //  dd ($array);
+
+        $dir = 'storage/files/' . $id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $i = 1;
+        if (file_exists($dir . '/' . $location)) {
+            while (file_exists($dir . '/' . $location))
+                $location .= '(' . $i++ . ')';
+        }
+        $pathToSave = $dir . '/' . $location;
+        $templateProcessor->saveAs($pathToSave);
+        $document = new Attachment();
+        $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
+        $document->message_id = 0;
+        $document->mime_type = mime_content_type($pathToSave);
+        $document->id_application = $id;
+        $document->file_size = filesize($pathToSave);
+        $document->location = $location;
+        $document->id_status = $doc_type;
+        $document->save();
+        exec('chmod 755 "' . $pathToSave . '"');
+        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+    }
 
     /**
      * Склоняем словоформу
@@ -114,756 +379,105 @@ class WordController extends Controller
 
     public function export_hda($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/hda.docx');
-        //dd($application);
-        $number = date('Hi');
-
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('num', $number);
-        $templateProcessor->setValue('date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('mnf_year', $application->mnf_year);
-        $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
-        $array = [];
-        $i = 1;
-
-        foreach ($troubleshooting as $trouble) {
-            $array[] = array('id_row' => $i, 'PartName' => $trouble->PartName . ' - ' . $trouble->Сonclusion, 'Work' => $trouble->Work);
-            $i++;
-        }
-        // dd($array);
-
-        $templateProcessor->cloneRowAndSetValues('PartName', $array);
-        $filename = "Акт скрытых повреждений №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Акт скрытых повреждений №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 11;
-        $document->save();
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-
-        exec('chmod 755 "' . $pathToSave . '"');
+        $template = 'hda.docx';
+        $filename = "Акт скрытых повреждений №";
+        $doc_type = 11;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_dk($id)
     {
-
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->join('cities', 'applications.id_city', '=', 'cities.id')
-
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
-            ->where('applications.id', '=', $id)
-            ->first();
         $app = application::findOrFail($id);
-        $app->id_status = 9;
+        if ($app->id_status < 9)
+            $app->id_status = 9;
         $app->save();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/dk.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('city', $application->city);
-        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
-        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-
-        $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
-        $array = [];
-        $i = 1;
-
-
-        //  dd ($array);
-
-        $filename = "Договор о проведении восстановительного ремонта №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Договор о проведении восстановительного ремонта №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 2;
-        $document->save();
-
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        $template = 'dk.docx';
+        $filename = "Договор о проведении восстановительного ремонта №";
+        $doc_type = 2;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_ap($id, $status_id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ap.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-
-        $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('number', $number);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $troubleshooting = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
-        $array = [];
-        $i = 1;
-
-
-        //  dd ($array);
-
-        $filename = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = $status_id;
-        $document->save();
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        $template = 'ap.docx';
+        $filename = "Приемо-сдаточный Акт №";
+        $doc_type = $status_id;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_as($id, $status_id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->join('cities', 'applications.id_city', '=', 'cities.id')
-
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
-
-
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/as.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('city', $application->city);
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-
-        $i = 1;
-
-
-        //  dd ($array);
-
-        $filename = "Приемо-сдаточный Акт №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Приемо-сдаточный Акт №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = $status_id;
-        // echo $pathToSave;
-        $document->save();
-
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        $template = 'as.docx';
+        $filename = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №";
+        $doc_type = $status_id;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_if($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/if.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('wait_sp', $application->wait_sp);
-        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
-        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-
-        $i = 1;
-
-
-        //  dd ($array);
-
-        $filename = "Информационный акт №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Информационный акт №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 6;
-        $document->save();
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-
-        exec('chmod 755 "' . $pathToSave . '"');
+        $template = 'if.docx';
+        $filename = "Информационный акт №";
+        $doc_type = 6;
+        $this->export_doc($id, $template, $filename,  $doc_type);
+        return redirect()->route('document', $id);
+    }
+    public function export_sogl($id)
+    {
+        $template = 'sogl.docx';
+        $filename = "СОГЛАШЕНИЕ О РЕМОНТЕ №";
+        $doc_type = 39;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
     public function export_zayav($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/zayav.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-        $templateProcessor->setValue('clientName', $application->ClientName);
-        $templateProcessor->setValue('date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('phone', $application->ClientPhone);
-        $templateProcessor->setValue('mnf_year', $application->mnf_year);
-        $templateProcessor->setValue('birthday',  $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
-        $templateProcessor->setValue('DTPdate',  $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
-
-        $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
-        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
-        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-
-        $i = 1;
-
-
-        //  dd ($array);
-
-        $filename = "Заявление о страховом возмещении №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Заявление о страховом возмещении №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 6;
-        $document->save();
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-
-        exec('chmod 755 "' . $pathToSave . '"');
+        $template = 'zayav.docx';
+        $filename = "Заявление о страховом возмещении №";
+        $doc_type = 38;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_ds($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->join('cities', 'applications.id_city', '=', 'cities.id')
-
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName', 'cities.name as city')
-
-
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/ds.docx');
-        //dd($application);
-        $number = date('Hi');
-
-
-
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $templateProcessor->setValue('start_date', $application->start_date);
-        $templateProcessor->setValue('end_date', $application->end_date);
-        $templateProcessor->setValue('wait_sp', $application->wait_sp);
-        $templateProcessor->setValue('city', $application->city);
-        $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
-        $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-        $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-        $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-        $array = [];
-        $SpareParts = DB::table('spare_parts')
-            ->where('id_application', '=', $id)
-            ->where('selected_mrk', '>', '0')
-            ->where('selected_mrk', '<', '4')
-            ->get();
-        $i = 1;
-
-        foreach ($SpareParts as $sparepart) {
-            $array[] = array('id_sp' => str($i), 'SparePart' => $sparepart->name);
-            $i++;
-        }
-        $templateProcessor->cloneRowAndSetValues('id_sp', $array);
-        $array1 = [];
-        $Works = DB::table('works')
-            ->where('id_application', '=', $id)
-            ->where('price_service', '<>', '0')
-            ->get();
-        $i = 1;
-        foreach ($Works as $work) {
-            $array1[] = array('num' => str($i), 'Work' => str_replace('<', 'МЕНЕЕ ', $work->name));
-            $i++;
-        }
-
-        $templateProcessor->cloneRowAndSetValues('num', $array1);
-
-
-
-
-        // dd($array, $array1);
-
-        $filename = "Дополнительное соглашение №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        // dd($templateProcessor);
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Дополнительное соглашение №" . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 4;
-        $document->save();
-
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        $template = 'ds.docx';
+        $filename = "Дополнительное соглашение №";
+        $doc_type = 4;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_zn($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/zn.docx');
-        //dd($application);
-        $num = date('Hi');
-
-        $estimate = estimate::where('id_application', '=', $id)->first();
-        // dd($estimate);
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('num', $num);
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('mnf_date', $application->mnf_year);
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $array = [];
-        $SpareParts = DB::table('spare_parts')
-            ->where('id_application', '=', $id)
-            ->where('price', '<>', '0')
-            ->orderBy('npp')
-            ->get();
-        $i = 1;
-
-        foreach ($SpareParts as $sparepart) {
-            $array[] = array(
-                'SparePart' => $sparepart->name,
-                'price' => in_money(
-                    $sparepart->price
-                ),
-                'count' => $sparepart->count,
-                'summ' => in_money(
-                    $sparepart->price_ic_full
-                ),
-                'iznos' => $sparepart->iznos,
-                'sum_half' => in_money(
-                    $sparepart->price_ic_half
-                ),
-                'part_number' => $sparepart->part_number
-            );
-        }
-        $templateProcessor->cloneRowAndSetValues('SparePart', $array);
-        $array1 = [];
-        $Works = DB::table('works')
-            ->where('id_application', '=', $id)
-            ->where('price', '<>', '0')
-            ->orderBy('npp')
-            ->get();
-
-        foreach ($Works as $work) {
-            $array1[] = array(
-                'name' => str_replace('<', 'МЕНЕЕ ', $work->name),
-                'price_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->price)),
-                'count_hours' => str_replace('<', 'МЕНЕЕ ', dec2($work->count_hours)),
-                'sum_w' => str_replace('<', 'МЕНЕЕ ', in_money($work->summ))
-            );
-        }
-        // dd($array1);
-
-        $templateProcessor->cloneRowAndSetValues('name', $array1);
-        if (isset($estimate->price_repair)) {
-            $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
-            $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
-            $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
-            $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-            $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
-            $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F Y') . 'г.';
-            $estimate->save();
-        }
-
-
-
-        // dd($array, $array1);
-
-        $filename = "Заказ-наряд №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        // dd($templateProcessor);
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 16;
-        $document->save();
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-
-
-
-        // dd($estimate);
+        $template = 'zn.docx';
+        $filename = "Заказ-наряд №";
+        $doc_type = 16;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
 
     public function export_pzn($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/pzn.docx');
-        //dd($application);
-        $num = date('Hi');
-
-        $estimate = estimate::where('id_application', '=', $id)->first();
-        // dd($estimate);
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('num', $num);
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('mnf_date', $application->mnf_year);
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        $array = [];
-        $SpareParts = DB::table('spare_parts')
-            ->where('id_application', '=', $id)
-            ->where('price', '<>', '0')
-            ->orderBy('npp')
-            ->get();
-        $i = 1;
-        $price_sp_full = 0;
-        foreach ($SpareParts as $sparepart) {
-            $array[] = array(
-                'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : bold_text($sparepart->name),
-                'count' => $sparepart->count,
-                'summ' => $sparepart->price_sto == 0 ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
-                'iznos' => $sparepart->iznos,
-                'sum_half' => ($sparepart->price_ic_half),
-                'part_number' => $sparepart->price_sto == 0 ? $sparepart->part_number : bold_text($sparepart->part_number)
-            );
-            $price_sp_full
-                += $sparepart->price_sto == 0
-                ? str2number($sparepart->price_ic_full)
-                : str2number($sparepart->price_sto);
-        }
-        // dd($array);
-        $templateProcessor->cloneRowAndSetValues('SparePart', $array);
-        $array1 = [];
-        $Works = DB::table('works')
-            ->where('id_application', '=', $id)
-            ->where('price', '<>', '0')
-            ->orderBy('npp')
-            ->get();
-        $price_repair = 0;
-        foreach ($Works as $work) {
-            $array1[] = array(
-                'name' => $work->count_hours_pzn != 0 ? bold_text(
-                    str_replace('<', 'МЕНЕЕ ', $work->name)
-                ) : str_replace('<', 'МЕНЕЕ ', $work->name),
-                'price_w' => $work->count_hours_pzn != 0 ? bold_text(
-                    in_money(str2number($work->price))
-                ) : in_money(str2number($work->price)),
-                'count_hours' => $work->count_hours_pzn != 0 ? bold_text(dec2($work->count_hours_pzn))  : dec2(str2number($work->count_hours)),
-                'sum_w' => $work->count_hours_pzn != 0 ? bold_text(in_money($work->count_hours_pzn * str2number($work->price))) : in_money(str2number(($work->summ)))
-            );
-            $price_repair += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
-        }
-        // dd($array1);
-
-        in_money(
-            $price_repair_full = $price_sp_full +
-                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
-                + $price_repair
-        );
-
-        $templateProcessor->cloneRowAndSetValues('name', $array1);
-        if (isset($estimate->price_repair)) {
-            $templateProcessor->setValue('price_repair', in_money($price_repair));
-            $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
-            $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
-            $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-            $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
-            $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
-            $estimate->zn_number = $num . ' от ' . Date::parse()->format('j F Y') . 'г.';
-            $estimate->save();
-        }
-
-
-
-        // dd($array, $array1);
-
-        $filename = "Предварительный заказ-наряд №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        // dd($templateProcessor);
-        $templateProcessor->saveAs($pathToSave);
-        $document = new Attachment();
-        $document->file_name = "Предварительный заказ-наряд №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 16;
-        $document->save();
-        exec('chmod 755 "' . $pathToSave . '"');
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-        // dd($estimate);
+        $template = 'pzn.docx';
+        $filename = "Предварительный заказ-наряд №";
+        $doc_type = 35;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
     public function export_sch($id)
     {
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-            ->select('applications.*', 'insurance_companies.name', 'application_statuses.StatusName')
-            ->where('applications.id', '=', $id)
-            ->first();
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/sch.docx');
-        //dd($application);
-        $num = date('Hi');
-
-        $estimate = estimate::where('id_application', '=', $id)->first();
-        // dd($estimate);
-        $templateProcessor->setValue('Client', $application->ClientName);
-        $templateProcessor->setValue('num', $num);
-        $templateProcessor->setValue('number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
-        $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-        $templateProcessor->setValue('mnf_date', $application->mnf_year);
-        $templateProcessor->setValue('CarModel', $application->CarModel);
-        $templateProcessor->setValue('gnz', $application->gnz);
-        $templateProcessor->setValue('vin', $application->vin);
-        if (isset($estimate->price_repair)) {
-            $templateProcessor->setValue('zn_num', $estimate->zn_number);
-            $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-            $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
-        }
-
-
-
-        // dd($array, $array1);
-
-        $filename = "Счет №" . date('d-m-y_hms') . ".docx";
-
-        $dir = 'storage/files/' . $id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
-        $i = 1;
-        if (file_exists($dir . '/' . $filename)) {
-            while (file_exists($dir . '/' . $filename))
-                $filename .= '(' . $i++ . ')';
-        }
-        $pathToSave = $dir . '/' . $filename;
-        // dd($templateProcessor);
-        $templateProcessor->saveAs($pathToSave);
-        exec('chmod 755 "' . $pathToSave . '"');
-        $document = new Attachment();
-        $document->file_name = "Счет №" . $num . ' от ' . Date::parse()->format('j F Y') . ".docx";
-        $document->message_id = 0;
-        $document->mime_type = mime_content_type($pathToSave);
-        $document->id_application = $id;
-        $document->file_size = filesize($pathToSave);
-        $document->location = $filename;
-        $document->id_status = 18;
-        $document->save();
-        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-
-        // dd($estimate);
+        $template = 'sch.docx';
+        $filename = "Счет №";
+        $doc_type = 18;
+        $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }
     public function create_all($id, $status_id)
     {
-
-
         $this->export_dk($id);
         $this->export_ds($id);
         $this->export_if($id);
