@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\status_chat;
 use App\Models\notify;
 use Jenssegers\Date\Date;
+use Illuminate\Support\Facades\Auth;
 
 
 class ChatController extends Controller
@@ -108,6 +109,11 @@ class ChatController extends Controller
             ->where('id_user', '=', $data['user_id'])
             ->where('id_text', '=', '2')->get()->all();
         foreach ($notify as $notif) {
+            if ($notif->id_message) {
+                $user = User::where('id', '=', Auth::user()->id)->first();
+                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                $ch = $new_chat->deleteMessage($notif->id_message);
+            }
             $notif->delete();
         }
         return response()->json(['message' => 'All readed'], 200);
