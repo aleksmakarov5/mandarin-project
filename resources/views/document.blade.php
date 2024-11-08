@@ -111,7 +111,7 @@
             </tr>
         </thead>
         <tbody>
-            @if ($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6)
+            @if (($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6) && $application->id_status == 28)
 
                 <tr>
                     <th scope="col">Заявление о страховом возмещении</th>
