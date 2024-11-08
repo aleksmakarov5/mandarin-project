@@ -1297,8 +1297,8 @@ class ApplicationController extends Controller
     {
         $notify = notify::where('id_application', '=', $id)
             ->where('id_user', '=', Auth::user()->id)
-            ->where('id_text', '=', '1')
-            ->get();
+            ->where('id_text', '=', 1)
+            ->get()->all();
         dd($notify);
         foreach ($notify as $notif) {
             dd($notif);
