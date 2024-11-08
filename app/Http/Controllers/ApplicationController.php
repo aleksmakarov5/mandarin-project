@@ -1299,6 +1299,7 @@ class ApplicationController extends Controller
             ->where('id_user', '=', Auth::user()->id)
             ->where('id_text', '=', '1')->get()->all();
         foreach ($notify as $notif) {
+            dd($notif);
             if ($notif->id_message) {
                 $user = User::where('id', '=', Auth::user()->id)->first();
                 $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
