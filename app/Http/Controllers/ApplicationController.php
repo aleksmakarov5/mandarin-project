@@ -1302,7 +1302,7 @@ class ApplicationController extends Controller
         foreach ($notify as $notif) {
             if ($notif->id_message) {
 
-                dd($notif);
+                // dd($notif);
                 $user = User::where('id', '=', Auth::user()->id)->first();
                 $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
                 $ch = $new_chat->deleteMessage($notif->id_message)->send();
