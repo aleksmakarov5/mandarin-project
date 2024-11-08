@@ -129,11 +129,13 @@ class ImapController extends Controller
             $message->message_date = $email->getdate();
             $message->application_id = $applications->id;
             $id = $applications->id;
-            $history = new History;
-            $history->id_application = $applications->id;
-            $history->id_status = 1;
-            $history->id_user = 2;
-            $history->save();
+            if ($applications->id_status == 1) {
+                $history = new History;
+                $history->id_application = $applications->id;
+                $history->id_status = 1;
+                $history->id_user = 2;
+                $history->save();
+            }
             $message->is_parsed = true;
             $message->mailbox_id = $our_company;
             $message->save();
@@ -184,7 +186,6 @@ class ImapController extends Controller
                         $notify->id_text = 3;
                         $notify->link = "/application/";
 
-                        $notify->save();
                         $notify_id = $notify->id;
                         $status_application = new status_application;
                         $status_application->id_user = $user->id;
@@ -202,7 +203,9 @@ class ImapController extends Controller
                                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                                 )
                                 ->send();
+                            $notify->id_message = json_decode($ch)->result->message_id;
                         }
+                        $notify->save();
 
 
                         $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -247,37 +250,41 @@ class ImapController extends Controller
             $user = User::find(2);
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
-            $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
-            foreach ($users as $user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 1;
-                $notify->link = "/mail/";
-                $notify->save();
-                $notify_id = $notify->id;
-                $status_message = new status_message;
-                $status_message->id_user = $user->id;
-                $status_message->id_application = $id;
-                $status_message->is_readed = false;
-                $status_message->save();
-                $url = "https://mandarin-portal.ru/mail/" . $id;
-                if ($user->telegram_notify) {
+            if ($applications->id_status != 27) {
+                $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
 
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $user->id;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+                    $url = "https://mandarin-portal.ru/mail/" . $id;
+                    if ($user->telegram_notify) {
+
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        echo $att;
+                        $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons($keyboard)
+                            )
+                            ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
+                    }
+                    $notify->save();
                 }
-            }
 
-            $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                ->select('notifies.*', 'text_notifies.text')->first();
-            broadcast(new MessageSent($notification));
+                $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                    ->select('notifies.*', 'text_notifies.text')->first();
+                broadcast(new MessageSent($notification));
+            }
         } else {
             // echo $app_number . '<br>';
             $start_pos_gnz = mb_strripos($subject, ' ');
@@ -327,11 +334,13 @@ class ImapController extends Controller
             $message->message_date = $email->getdate();
             $message->application_id = $applications->id;
             $id = $applications->id;
-            $history = new History;
-            $history->id_application = $applications->id;
-            $history->id_status = 1;
-            $history->id_user = 2;
-            $history->save();
+            if ($applications->id_status == 1) {
+                $history = new History;
+                $history->id_application = $applications->id;
+                $history->id_status = 1;
+                $history->id_user = 2;
+                $history->save();
+            }
             $message->is_parsed = true;
             $message->save();
             $text = strip_tags($email->getHTMLBody());
@@ -381,7 +390,7 @@ class ImapController extends Controller
                         $notify->id_text = 3;
                         $notify->link = "/application/";
 
-                        $notify->save();
+
                         $notify_id = $notify->id;
                         $status_application = new status_application;
                         $status_application->id_user = $user->id;
@@ -399,8 +408,9 @@ class ImapController extends Controller
                                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                                 )
                                 ->send();
+                            $notify->id_message = json_decode($ch)->result->message_id;
                         }
-
+                        $notify->save();
 
                         $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                             ->select('notifies.*', 'text_notifies.text')->first();
@@ -444,37 +454,41 @@ class ImapController extends Controller
             $user = User::find(2);
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
-            $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
-            foreach ($users as $user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 1;
-                $notify->link = "/mail/";
-                $notify->save();
-                $notify_id = $notify->id;
-                $status_message = new status_message;
-                $status_message->id_user = $user->id;
-                $status_message->id_application = $id;
-                $status_message->is_readed = false;
-                $status_message->save();
-                $url = "https://mandarin-portal.ru/mail/" . $id;
-                if ($user->telegram_notify) {
+            if ($applications->id_status != 27) {
+                $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $user->id;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+                    $url = "https://mandarin-portal.ru/mail/" . $id;
+                    if ($user->telegram_notify) {
 
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    // echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        // echo $att;
+                        $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons($keyboard)
+                            )
+                            ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
+                    }
+
+                    $notify->save();
                 }
-            }
 
-            $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                ->select('notifies.*', 'text_notifies.text')->first();
-            broadcast(new MessageSent($notification));
+                $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                    ->select('notifies.*', 'text_notifies.text')->first();
+                broadcast(new MessageSent($notification));
+            }
         }
     }
     public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
@@ -564,11 +578,13 @@ class ImapController extends Controller
         $message->message_date = $email->getdate();
         $message->application_id = $applications->id;
         $id = $applications->id;
-        $history = new History;
-        $history->id_application = $applications->id;
-        $history->id_status = 1;
-        $history->id_user = 2;
-        $history->save();
+        if ($applications->id_status == 1)
+            $history = new History; {
+            $history->id_application = $applications->id;
+            $history->id_status = 1;
+            $history->id_user = 2;
+            $history->save();
+        }
         $message->is_parsed = true;
 
         $message->mailbox_id = $our_company;
@@ -617,7 +633,6 @@ class ImapController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -635,7 +650,10 @@ class ImapController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
 
 
                     $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -679,37 +697,40 @@ class ImapController extends Controller
         $user = User::find(2);
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
-        $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
-        foreach ($users as $user) {
-            $notify = new notify;
-            $notify->id_user = $user->id;
-            $notify->id_application = $id;
-            $notify->id_text = 1;
-            $notify->link = "/mail/";
-            $notify->save();
-            $notify_id = $notify->id;
-            $status_message = new status_message;
-            $status_message->id_user = $user->id;
-            $status_message->id_application = $id;
-            $status_message->is_readed = false;
-            $status_message->save();
-            $url = "https://mandarin-portal.ru/mail/" . $id;
-            if ($user->telegram_notify) {
+        if ($applications->id_status != 27) {
+            $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+            foreach ($users as $user) {
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $user->id;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+                $url = "https://mandarin-portal.ru/mail/" . $id;
+                if ($user->telegram_notify) {
 
-                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                // echo $att;
-                $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons($keyboard)
-                    )
-                    ->send();
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    // echo $att;
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons($keyboard)
+                        )
+                        ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
+                }
+                $notify->save();
             }
-        }
 
-        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-            ->select('notifies.*', 'text_notifies.text')->first();
-        broadcast(new MessageSent($notification));
+            $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                ->select('notifies.*', 'text_notifies.text')->first();
+            broadcast(new MessageSent($notification));
+        }
     }
     public function recieve()
     {

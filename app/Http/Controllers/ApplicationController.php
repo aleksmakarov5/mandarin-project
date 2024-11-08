@@ -1475,7 +1475,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 2;
                 $notify->link = "/chat/";
 
-                $notify->save();
+
                 $status_chat = new status_chat;
                 $status_chat->id_user = $to;
                 $status_chat->id_application = $id;
@@ -1492,7 +1492,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
             }
         }
 
@@ -2436,7 +2439,7 @@ class ApplicationController extends Controller
         $notify->id_application = $id;
         $notify->id_text = 3;
         $notify->link = "/application/";
-        $notify->save();
+
         $status_application = new status_application;
         $status_application->id_user = $user->id;
         $status_application->id_application = $id;
@@ -2456,13 +2459,16 @@ class ApplicationController extends Controller
                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                 )
                 ->send();
+            $notify->id_message = json_decode($ch)->result->message_id;
         }
+
+        $notify->save();
         $notify = new notify;
         $notify->id_user = $spm->id;
         $notify->id_application = $id;
         $notify->id_text = 3;
         $notify->link = "/application/";
-        $notify->save();
+
         $status_application = new status_application;
         $status_application->id_user = $spm->id;
         $status_application->id_application = $id;
@@ -2482,7 +2488,10 @@ class ApplicationController extends Controller
                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                 )
                 ->send();
+            $notify->id_message = json_decode($ch)->result->message_id;
         }
+
+        $notify->save();
         return redirect()->route('applications');
     }
     public function change_status($id, $variant)
@@ -2530,7 +2539,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
 
                     $status_application = new status_application;
@@ -2549,7 +2558,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
             case 3:
@@ -2561,7 +2573,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -2579,7 +2591,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
             case 5:
@@ -2591,7 +2606,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -2609,7 +2624,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
                 break;
             case 6:
@@ -2621,7 +2639,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -2639,7 +2657,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
                 break;
             case 8:
@@ -2651,7 +2672,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -2669,7 +2690,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
         }
@@ -2716,7 +2740,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -2734,7 +2758,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
             case 3:
@@ -2746,7 +2773,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -2764,7 +2791,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
             case 5:
@@ -2776,7 +2806,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -2794,7 +2824,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
                 break;
             case 6:
@@ -2806,7 +2839,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -2824,7 +2857,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
                 break;
             case 8:
@@ -2836,7 +2872,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -2855,7 +2891,10 @@ class ApplicationController extends Controller
                             )
                             ->send();
                     }
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
                 break;
         }
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -3158,7 +3197,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -3176,7 +3215,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
             case 5:
@@ -3188,7 +3230,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -3206,7 +3248,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
                 break;
             case 6:
@@ -3218,7 +3263,7 @@ class ApplicationController extends Controller
                 $notify->id_text = 3;
                 $notify->link = "/application/";
 
-                $notify->save();
+
                 $notify_id = $notify->id;
                 $status_application = new status_application;
                 $status_application->id_user = $user->id;
@@ -3236,7 +3281,10 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                         )
                         ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
                 }
+
+                $notify->save();
 
 
                 break;
@@ -3249,7 +3297,7 @@ class ApplicationController extends Controller
                     $notify->id_text = 3;
                     $notify->link = "/application/";
 
-                    $notify->save();
+
                     $notify_id = $notify->id;
                     $status_application = new status_application;
                     $status_application->id_user = $user->id;
@@ -3267,7 +3315,10 @@ class ApplicationController extends Controller
                                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
                             )
                             ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
                 }
                 break;
         }
