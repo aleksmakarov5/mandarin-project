@@ -960,6 +960,11 @@ class ApplicationController extends Controller
             ->where('id_user', '=', Auth::user()->id)
             ->where('id_text', '=', '3')->get()->all();
         foreach ($notify as $notif) {
+            if ($notif->id_message) {
+                $user = User::where('id', '=', Auth::user()->id)->first();
+                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                $ch = $new_chat->deleteMessage($notif->id_message)->send();
+            }
             $notif->delete();
         }
         if ($application->id_status < 12 && $application->id_status != 6 && $application->id_status != 7)
@@ -1294,6 +1299,11 @@ class ApplicationController extends Controller
             ->where('id_user', '=', Auth::user()->id)
             ->where('id_text', '=', '1')->get()->all();
         foreach ($notify as $notif) {
+            if ($notif->id_message) {
+                $user = User::where('id', '=', Auth::user()->id)->first();
+                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                $ch = $new_chat->deleteMessage($notif->id_message)->send();
+            }
             $notif->delete();
         }
 
