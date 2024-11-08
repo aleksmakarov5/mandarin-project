@@ -112,7 +112,7 @@ class ChatController extends Controller
             if ($notif->id_message) {
                 $user = User::where('id', '=', $data['user_id'])->first();
                 $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                $ch = $new_chat->deleteMessage($notif->id_message);
+                $ch = $new_chat->deleteMessage($notif->id_message)->send();
             }
             $notif->delete();
         }
