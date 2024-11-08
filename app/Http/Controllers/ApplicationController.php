@@ -1492,7 +1492,7 @@ class ApplicationController extends Controller
                                 ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$id}"),])
                         )
                         ->send();
-                    dd(json_decode($ch));
+                    // dd(json_decode($ch));
                     $notify->id_message = json_decode($ch)->result->message_id;
                 }
 
