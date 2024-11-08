@@ -111,22 +111,25 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <th scope="col">Заявление о страховом возмещении</th>
-                <th scope="col">
-                    @include('document.form_print', [
-                        'status_id' => 11,
-                        'template' => 'export_zayav',
-                    ])
-                </th>
-                <th scope="col">
-                    @include('document.form_scan', [
-                        'status_id' => 12,
-                        'load_name' => 'Заявление о страховом возмещении',
-                        'load_location' => 'Заявление_о_страховом_возмещении',
-                    ])
-                </th>
-            </tr>
+            @if ($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6)
+
+                <tr>
+                    <th scope="col">Заявление о страховом возмещении</th>
+                    <th scope="col">
+                        @include('document.form_print', [
+                            'status_id' => 11,
+                            'template' => 'export_zayav',
+                        ])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', [
+                            'status_id' => 12,
+                            'load_name' => 'Заявление о страховом возмещении',
+                            'load_location' => 'Заявление_о_страховом_возмещении',
+                        ])
+                    </th>
+                </tr>
+            @endif
             <tr>
                 <th scope="col">Акт первичного осмотра</th>
 
@@ -141,7 +144,7 @@
                     @include('document.form_scan', [
                         'status_id' => 21,
                         'load_name' => 'Фото первичного осмотра автомобиля',
-                        'load_location' => 'photo_first',
+                        'load_location' => 'Фото_первичного_осмотра_автомобиля',
                     ])
                 </th>
             </tr>
@@ -176,7 +179,7 @@
                     @include('document.form_scan', [
                         'status_id' => 17,
                         'load_name' => 'Заказ наряд',
-                        'load_location' => 'zakaz-naryad',
+                        'load_location' => 'Заказ_наряд',
                     ])
                 </th>
             </tr>
@@ -189,7 +192,7 @@
                     @include('document.form_scan', [
                         'status_id' => 3,
                         'load_name' => 'Договор с клиентом',
-                        'load_location' => 'dogovor_client',
+                        'load_location' => 'Договор_с_клиентом',
                     ])
                 </th>
 
@@ -203,105 +206,38 @@
                     @include('document.form_scan', [
                         'status_id' => 5,
                         'load_name' => 'Дополнительное соглашение с клиентом',
-                        'load_location' => 'ds_client',
+                        'load_location' => 'Дополнительное_соглашение_с_клиентом',
                     ])
                 </th>
             </tr>
-            <tr>
-                <th scope="col">Информационный акт</th>
-                <th scope="col">
-                    @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
-                </th>
-                <th scope="col">
-                    @include('document.form_scan', [
-                        'status_id' => 7,
-                        'load_name' => 'Информационный акт',
-                        'load_location' => 'infact',
-                    ])
-                </th>
-            </tr>
-            @if ($def == 1)
+            @if ($application->id_insuranceCompany == 1)
                 <tr>
-                    <th scope="col">Акт приема автомобиля на деффектовку</th>
+                    <th scope="col">Информационный акт</th>
                     <th scope="col">
-                        @include('document.form_print', [
-                            'status_id' => 24,
-                            'template' => 'export_ap',
-                        ])
+                        @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
                     </th>
                     <th scope="col">
                         @include('document.form_scan', [
-                            'status_id' => 25,
-                            'load_name' => 'Акт приема автомобиля на деффектовку',
-                            'load_location' => 'akt_priem_def',
+                            'status_id' => 7,
+                            'load_name' => 'Информационный акт',
+                            'load_location' => 'Информационный_акт',
                         ])
                     </th>
                 </tr>
-                <tr>
-                    <th scope="col">Фото приема автомобиля на деффектовку</th>
+            @endif
+            @if ($application->id_insuranceCompany == 6)
 
 
-                    <th scope="col" colspan=2>
-                        @include('document.form_scan', [
-                            'status_id' => 26,
-                            'load_name' => 'Фото приема автомобиля на деффектовку',
-                            'load_location' => 'priemka_def',
-                        ])
-                    </th>
-                </tr>
                 <tr>
-                    <th scope="col">Акт скрытых повреждений</th>
+                    <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
                     <th scope="col">
-                        @include('document.form_print', [
-                            'status_id' => 11,
-                            'template' => 'export_hda',
-                        ])
+                        @include('document.form_print', ['status_id' => 39, 'template' => 'export_sogl'])
                     </th>
                     <th scope="col">
                         @include('document.form_scan', [
-                            'status_id' => 12,
-                            'load_name' => 'Акт скрытых повреждений',
-                            'load_location' => 'akt_sp_def',
-                        ])
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="col">Фото деффектовки</th>
-
-
-                    <th scope="col" colspan=2>
-                        @include('document.form_scan', [
-                            'status_id' => 30,
-                            'load_name' => 'Фото деффектовки',
-                            'load_location' => 'deffect',
-                        ])
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="col">Акт сдачи автомобиля после дефектовки</th>
-                    <th scope="col">
-                        @include('document.form_print', [
-                            'status_id' => 27,
-                            'template' => 'export_as',
-                        ])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', [
-                            'status_id' => 28,
-                            'load_name' => 'Акт сдачи автомобиля после дефектовки',
-                            'load_location' => 'akt_sdachi_def',
-                        ])
-                    </th>
-                </tr>
-                <tr>
-                    <th scope="col">Фото сдачи автомобиля после деффектовки</th>
-
-
-                    <th scope="col" colspan=2>
-                        @include('document.form_scan', [
-                            'status_id' => 29,
-                            'load_name' => 'Фото cдачи автомобиля после деффектовки',
-                            'load_location' => 'photo_return_def',
+                            'status_id' => 7,
+                            'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
+                            'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
                         ])
                     </th>
                 </tr>
@@ -314,8 +250,8 @@
                 <th scope="col">
                     @include('document.form_scan', [
                         'status_id' => 9,
-                        'load_name' => 'Акт приема автомобиля на ремонт',
-                        'load_location' => 'akt_priema',
+                        'load_name' => 'Акт приема автомобиля',
+                        'load_location' => 'Акт_приема_автомобиля',
                     ])
                 </th>
             </tr>
@@ -326,8 +262,8 @@
                 <th scope="col" colspan=2>
                     @include('document.form_scan', [
                         'status_id' => 10,
-                        'load_name' => 'Фото приема автомобиля на ремонт',
-                        'load_location' => 'priemka_rem',
+                        'load_name' => 'Фото приема автомобиля',
+                        'load_location' => 'Фото_приема_автомобиля',
                     ])
                 </th>
             </tr>
@@ -344,7 +280,7 @@
                         @include('document.form_scan', [
                             'status_id' => 12,
                             'load_name' => 'Акт скрытых повреждений',
-                            'load_location' => 'akt_sp',
+                            'load_location' => 'Акт_скрытых_повреждений',
                         ])
                     </th>
                 </tr>
@@ -356,33 +292,33 @@
                         @include('document.form_scan', [
                             'status_id' => 10,
                             'load_name' => 'Фото деффектовки',
-                            'load_location' => 'deffect',
+                            'load_location' => 'Фото_деффектовки',
                         ])
                     </th>
                 </tr>
             @endif
             <tr>
-                <th scope="col">Акт сдачи автомобиля после ремонта</th>
+                <th scope="col">Акт сдачи автомобиля</th>
                 <th scope="col">
                     @include('document.form_print', ['status_id' => 13, 'template' => 'export_as'])
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
                         'status_id' => 14,
-                        'load_name' => 'Акт сдачи автомобиля после ремонта',
-                        'load_location' => 'akt_sdachi',
+                        'load_name' => 'Акт сдачи автомобиля',
+                        'load_location' => 'Акт_сдачи_автомобиля',
                     ])
                 </th>
             </tr>
             <tr>
-                <th scope="col">Фото сдачи автомобиля после ремонта</th>
+                <th scope="col">Фото сдачи автомобиля</th>
 
 
                 <th scope="col" colspan=2>
                     @include('document.form_scan', [
                         'status_id' => 15,
-                        'load_name' => 'Фото cдачи автомобиля после ремонта',
-                        'load_location' => 'photo_return_rem',
+                        'load_name' => 'Фото cдачи автомобиля',
+                        'load_location' => 'Фото_cдачи_автомобиля',
                     ])
                 </th>
             </tr>
@@ -395,7 +331,7 @@
                     @include('document.form_scan', [
                         'status_id' => 17,
                         'load_name' => 'Заказ наряд',
-                        'load_location' => 'zakaz-naryad',
+                        'load_location' => 'Заказ_наряд',
                     ])
                 </th>
             </tr>
@@ -408,7 +344,7 @@
                     @include('document.form_scan', [
                         'status_id' => 19,
                         'load_name' => 'Счет',
-                        'load_location' => 'schet',
+                        'load_location' => 'Счет',
                     ])
                 </th>
             </tr>

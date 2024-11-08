@@ -226,10 +226,11 @@ class MainController extends Controller
             ->where('id', '=', $id)
             ->select('def')
             ->first();
+        $application = application::where('id', '=', $id)->first();
 
 
         // dd($doc_statuses->all());
-        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'hide_menu' => $hide_menu], ['id' => $id]);
+        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'hide_menu' => $hide_menu, 'application' => $application], ['id' => $id]);
     }
     public function showdoc($id, $locations)
     {
