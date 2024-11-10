@@ -118,10 +118,10 @@
             <td  :class="sparePartStatus(sparepart.status_id)">
 {{ sparepart.StatusName }}
         </td>
-        <td > {{sparepart.date_price}}
+        <td > {{formatDate(sparepart.date_price)}}
         </td>
         <td >
-            {{sparepart.date_wait}}
+            {{formatDate(sparepart.date_wait)}}
         </td>
 
         </template>
