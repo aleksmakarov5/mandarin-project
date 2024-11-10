@@ -21,12 +21,12 @@
         </thead>
         <tbody>
             <tr>
-                        <th scope="col" v-if="ic_pay_date_show" @click="ic_pay_date_show=changeShow()">&nbsp{{fortmatDate(ic_pay_date)}}</th>
+                        <th scope="col" v-if="ic_pay_date_show" @click="ic_pay_date_show=false">&nbsp{{fortmatDate(ic_pay_date)}}</th>
                         <th scope="col" v-else>
                             <input type="date" name="ic_pay_date" id="ic_pay_date" v-model="ic_pay_date" @blur="updateDate()" @keydown.enter="updateDate()">
                         </th>
 
-                        <th scope="col" v-if="sto_pay_date_show" @click="sto_pay_date_show=changeShow()">{{fortmatDate(sto_pay_date)}}</th>
+                        <th scope="col" v-if="sto_pay_date_show" @click="sto_pay_date_show=false">{{fortmatDate(sto_pay_date)}}</th>
                         <th scope="col" v-else>
                             <input type="date" name="sto_pay_date" id="sto_pay_date" v-model="sto_pay_date" @blur="updateDate()" @keydown.enter="updateDate()">
                         </th>

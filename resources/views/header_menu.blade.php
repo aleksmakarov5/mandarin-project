@@ -282,10 +282,15 @@
                                     </tr>
                                 </table>
                             @endif
-                            <date-pay :app_id={{ $id }} :in_ic_pay_date="{{ json_encode($app->ic_pay_date) }}"
-                                :in_sto_pay_date="{{ json_encode($app->sto_pay_date) }}"
-                                :in_zp_date="{{ json_encode($app->zp_date) }}"
-                                :in_finish_pay_date="{{ json_encode($app->finish_pay_date) }}" />
+                            @canany(['buh', 'admin'])
+                                @if (session('rout') == 'directions')
+                                    <date-pay :app_id={{ $id }}
+                                        :in_ic_pay_date="{{ json_encode($app->ic_pay_date) }}"
+                                        :in_sto_pay_date="{{ json_encode($app->sto_pay_date) }}"
+                                        :in_zp_date="{{ json_encode($app->zp_date) }}"
+                                        :in_finish_pay_date="{{ json_encode($app->finish_pay_date) }}" />
+                                @endif
+                            @endcanany
                         </td>
 
                     </tr>

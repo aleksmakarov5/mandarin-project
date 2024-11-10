@@ -54,9 +54,8 @@
                             <th scope="col">Сумма З/Ч</th>
                             <th scope="col">Сумма ремонта</th>
                             <th scope="col">Затраты на ремонт</th>
-                            <th scope="col">Оплата СК</th>
-                            <th scope="col">Дата оплаты</th>
-                            <th scope="col">Оплаты СТО</th>
+                            <th scope="col">Оплата CК</th>
+                            <th scope="col">Оплата СТО</th>
                             <th scope="col">Остаток</th>
                             <th scope="col"></th>
                         @endcan
@@ -105,7 +104,6 @@
                             onkeyup="tableSearch(15,'applications')"></th>
                     @if (session('rout') == 'directions')
                         @can('company')
-                            <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
                             <th scope="col"></th>
@@ -266,14 +264,14 @@
                                 <td scope="col"
                                     onclick="window.location.href='/application/{{ $application->id }}'; return false">
                                     {{ $application->summ_full }}</td>
+
                                 <td scope="col"
                                     onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->ic_pay_date ? Date::parse($application->ic_pay_date)->format('j F Yг.') : '' }}
                                 </td>
                                 <td scope="col"
                                     onclick="window.location.href='/application/{{ $application->id }}'; return false">
-                                </td>
-                                <td scope="col"
-                                    onclick="window.location.href='/application/{{ $application->id }}'; return false">
+                                    {{ $application->sto_pay_date ? Date::parse($application->sto_pay_date)->format('j F Yг.') : '' }}
                                 </td>
                                 <td scope="col"
                                     onclick="window.location.href='/application/{{ $application->id }}'; return false">
