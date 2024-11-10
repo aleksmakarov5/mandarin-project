@@ -215,7 +215,6 @@
                 this.summ_sto = res.data[2]
                 this.delta_res_full = res.data[3]
                 this.statuses=res.data[4]
-                console.log(res)
 
 
         },
@@ -246,7 +245,6 @@
             this.date_wait = date_wait
 
 
-            console.log(this)
         },
         isEdit(id){
             return this.EditSparePartId===id
@@ -272,7 +270,6 @@
            .then(res => {
             this.getSpareParts(res)
            })
-           console.log(this)
            this.changeEditSparePartId(null)
 
 

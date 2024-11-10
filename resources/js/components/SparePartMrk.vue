@@ -183,7 +183,6 @@
                 this.summ_ic_full = res.data[1]
                 this.summ_sto = res.data[2]
                 this.delta_res_full = res.data[3]
-                console.log(res)
 
 
         },
@@ -201,7 +200,6 @@
             this.name=name
             this.comment=comment
             this.price_sto = price_sto
-            console.log(this)
         },
         isEdit(id){
             return this.EditSparePartId===id
