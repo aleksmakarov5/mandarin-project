@@ -130,10 +130,10 @@
             <td  :class="sparePartStatus(sparepart.status_id)">
 {{ sparepart.StatusName }}
         </td>
-        <td > {{sparepart.date_price}}
+         <td > {{fortmatDate(sparepart.date_price)}}
         </td>
         <td >
-            {{sparepart.date_wait}}
+            {{fortmatDate(sparepart.date_wait)}}
         </td>
 
         </template>
@@ -426,6 +426,17 @@
             let price_ic_full = document.getElementById('price_ic_full_'+id);
             this.price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id)
+        },
+        fortmatDate(date)
+        {
+            let options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
+            if(date)
+                return new Date(date).toLocaleString('ru', options);
+        else return ''
         }
 
 

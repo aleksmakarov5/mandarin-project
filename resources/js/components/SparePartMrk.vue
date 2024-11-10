@@ -99,10 +99,11 @@
                     <template v-if="rout_it=='directions'">
         <td  :class="sparePartStatus(sparepart.status_id)">
         {{ sparepart.StatusName }}</td>
+         <td > {{fortmatDate(sparepart.date_price)}}
+        </td>
         <td >
-        {{ sparepart.date_price }}</td>
-        <td >
-        {{ sparepart.date_wait }}</td>
+            {{fortmatDate(sparepart.date_wait)}}
+        </td>
         </template>
     <td scope="col"><a @click.prevent="deletesparepart(sparepart.id)" >
         <img src="/storage/img/delete.png" width="20" alt="delete"></a>
@@ -307,7 +308,18 @@
                                 return 'blue';
                             else
                 return 'gray';
-            }
+            },
+        fortmatDate(date)
+        {
+            let options = {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+            };
+            if(date)
+                return new Date(date).toLocaleString('ru', options);
+        else return ''
+        }
 
     }
 

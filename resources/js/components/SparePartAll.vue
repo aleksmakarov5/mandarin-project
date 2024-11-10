@@ -399,7 +399,6 @@
             if(date)
                 return new Date(date).toLocaleString('ru', options);
         else return ''
-
         }
 
 
