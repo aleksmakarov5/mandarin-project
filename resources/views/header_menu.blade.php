@@ -271,7 +271,11 @@
                                                             @else
                                                             alert alert-danger @endif
                                                             ">
-                                                    {{ in_money(($eco_delta_full * 2) / 10) }} руб;
+                                                    @if ($app->our_company == 2)
+                                                        {{ in_money(($eco_delta_full * 13) / 100) }} руб;
+                                                    @else
+                                                        {{ in_money(($eco_delta_full * 20) / 100) }} руб;
+                                                    @endif
                                                 </div>
                                             </td>
                                         @endcan
