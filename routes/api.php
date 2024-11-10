@@ -52,6 +52,14 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });
+Route::group(['namespace' => 'Date', 'prefix' => 'date'], function () {
+    // Route::delete('/{id}', [NotificationController::class, 'delete']);
+    // Route::get('/{id}', 'ShowController');
+    Route::post('/{id}/update', [
+        TroubleshootingController::class,
+        'update_date'
+    ])->name('date.update');
+});
 Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
 
     Route::post('/send', [ChatController::class, 'chat_send'])->name('chat.send');

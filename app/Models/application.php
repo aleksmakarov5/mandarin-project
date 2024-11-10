@@ -41,6 +41,10 @@ class application extends Model
         'ub_type',
         'id_city',
         'pred',
-        'pred_phone'
+        'pred_phone',
+        'id_application',
+        'ic_pay_date',
+        'sto_pay_date',
+        'zp_date',
     ];
 }
