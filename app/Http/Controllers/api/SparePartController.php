@@ -124,6 +124,8 @@ class SparePartController extends Controller
             if (($key == 'date_wait' || $key == 'date_price')) {
                 if (!empty($value))
                     $sparepart->$key = $value;
+                else
+                    $sparepart->$key = null;
             } else
                 $sparepart->$key = $value;
         }

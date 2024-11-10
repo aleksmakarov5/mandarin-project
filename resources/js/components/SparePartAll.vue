@@ -242,6 +242,7 @@
         },
         updateSparePart(id)
         {
+                console.log(this.date_wait)
             axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
                 name: this.name,
