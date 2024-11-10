@@ -108,10 +108,10 @@
                             </select>
 
         </td>
-        <td > <input type="date" name="date_price" id="date_price" v-model="date_price" @change="updateSparePart(sparepart.id)">
+        <td > <input type="date" name="date_price" id="date_price" v-model="date_price" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
         </td>
         <td >
-            <input type="date" name="date_wait" id="date_wait" v-model="date_wait" @change="updateSparePart(sparepart.id)">
+            <input type="date" name="date_wait" id="date_wait" v-model="date_wait" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
         </td>
         </template>
         <template v-else>
