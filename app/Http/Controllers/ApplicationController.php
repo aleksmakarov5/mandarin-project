@@ -1000,17 +1000,27 @@ class ApplicationController extends Controller
             ->select('applications.*', 'insurance_companies.name')
             ->where('applications.id', '=', $id)
             ->first();
-        $cities = DB::table('cities')
-            ->join('city_companies', 'cities.id', '=', 'city_companies.id_city')
-            ->where('city_companies.id_company', '=', $application->our_company)
-            ->select('cities.*', 'city_companies.id_city as city_companies_id')
-            ->get();
-        $mrks = DB::table('users')
-            ->join('mrk_companies', 'users.id', '=', 'mrk_companies.id_mrk')
-            ->where('users.GroupId', '=', 5)
-            ->where('mrk_companies.id_company', '=', $application->our_company)
-            ->select('users.*', 'users.id as user_id')
-            ->get();
+        if (Auth::user()->id == 2) {
+            $cities = DB::table('cities')
+                ->get();
+            $mrks = DB::table('users')
+                ->where('users.GroupId', '=', 5)
+                ->select('users.*', 'users.id as user_id')
+                ->get();
+        } else {
+            $cities = DB::table('cities')
+                ->join('city_companies', 'cities.id', '=', 'city_companies.id_city')
+                ->where('city_companies.id_company', '=', $application->our_company)
+                ->select('cities.*', 'city_companies.id_city as city_companies_id')
+                ->get();
+
+            $mrks = DB::table('users')
+                ->join('mrk_companies', 'users.id', '=', 'mrk_companies.id_mrk')
+                ->where('users.GroupId', '=', 5)
+                ->where('mrk_companies.id_company', '=', $application->our_company)
+                ->select('users.*', 'users.id as user_id')
+                ->get();
+        }
         // dd($cities);
         return view(
             'application.edit',
