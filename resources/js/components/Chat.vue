@@ -44,6 +44,10 @@
          @keydown.delete="deleteContact()" @focus="contact_show=false">
 
         </div>
+        <div class="add-button" @click.prevent="addDot()">
+            <a title="Добавить получателя">
+       <img src="/storage/img/add.png" width="30px"></a>
+        </div>
         <div class="message-button" @click.prevent="sendMessage()">
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
@@ -131,6 +135,12 @@ export default {
         editMessage() {
             let mess = document.getElementById('message_');
             this.message = mess.innerText;
+        },
+        addDot() {
+
+            let mess = document.getElementById('message_');
+            mess.innerHTML += '@';
+            this.contactShow();
         },
         selectContact(id, name) {
             this.to.push({ id: id, name: name });
