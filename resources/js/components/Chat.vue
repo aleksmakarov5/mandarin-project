@@ -140,6 +140,13 @@ export default {
 
             let mess = document.getElementById('message_');
             mess.innerHTML += '@';
+
+            const range = document.createRange();
+            range.selectNodeContents(mess);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
             this.contactShow();
         },
         selectContact(id, name) {
