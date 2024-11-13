@@ -120,6 +120,44 @@ class ChatController extends Controller
         }
         return response()->json(['message' => 'All readed'], 200);
     }
+    public function unreaded(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'user_id' => 'required'
+        ]);
+
+
+        $status_chat = new status_chat;
+        $status_chat->id_user = $data['user_id'];
+        $status_chat->id_application = $data['id_application'];
+        $status_chat->is_readed = false;
+        $status_chat->save();
+
+        $notify = new notify;
+        $notify->id_user = $data['user_id'];
+        $notify->id_application = $data['id_application'];
+        $notify->id_text = 2;
+        $notify->link = "/chat/";
+        $notify->save();
+        $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+            ->select('notifies.*', 'text_notifies.text')->first();
+        broadcast(new MessageSent($notification));
+        $chats = DB::table('chats')
+            ->where('id_application', '=', $data['id_application'])
+            ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
+            ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
+            ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+            ->get();
+        foreach ($chats as $chat) {
+            $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
+                ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')
+                ->select('userto.name as to_name')->get();
+            $chat->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
+        }
+        return $chats;
+    }
+
     public function destroy($id)
     {
         chat::destroy($id);

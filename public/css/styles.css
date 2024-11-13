@@ -1459,12 +1459,15 @@ form .nav-link {
     margin-top: 20px;
     margin-left: 5px;
     padding: 5px;
-    height: 100%;
-    display: none;
+    display: inline-block;
     vertical-align: middle;
     cursor: pointer;
     border-radius: 25px;
     background-color: #6b6969;
+}
+
+.show-reply-button {
+    display: none;
 }
 
 .message-reply:hover {

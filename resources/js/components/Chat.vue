@@ -19,10 +19,17 @@
             </div>
             <div class="time">{{ chat.time }}</div>
             </div>
-            <div :id="'answer_'+chat.id" class="message-reply" v-if="styleId(chat.from)!='right'" @click="answerReply(chat.from,chat.from_name,chat.message,chat.time)">
+<div :id="'answer_'+chat.id" class="show-reply-button" v-if="styleId(chat.from)!='right'">
+            <div class="message-reply"  @click="answerReply(chat.from,chat.from_name,chat.message,chat.time)">
 
        <img src="/storage/img/reply.png" width="15px">
 
+            </div>
+            <div class="message-reply"  @click="unreaded(chat.id)">
+
+       <img src="/storage/img/unreaded.png" width="15px">
+
+            </div>
             </div>
         </div>
 
@@ -102,7 +109,8 @@ export default {
     )
 
   },
-    methods: {getCounts(){
+    methods: {
+        getCounts() {
             axios.get(`/api/notifycount/application/${this.app_id}/${this.user_id}`)
             .then(res => {
                 this.count = res.data
@@ -254,11 +262,26 @@ export default {
 
                    })
                 .then(res => {
-            this.count.chat=0
+                     this.count.chat = 0
+
 
            })
 
 
+        },
+        unreaded() {
+            axios.post(`/api/chat/unreaded`, {
+                id_application: this.app_id,
+                user_id: this.user_id,
+
+                   })
+                .then(res => {
+
+                     this.count.chat =this.count.chat+1
+                    this.chats = res.data;
+
+
+           })
         },
         findContact() {
             if (this.is_find)

@@ -64,6 +64,7 @@ Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
 
     Route::post('/send', [ChatController::class, 'chat_send'])->name('chat.send');
     Route::post('/readed', [ChatController::class, 'readed'])->name('chat.readed');
+    Route::post('/unreaded', [ChatController::class, 'unreaded'])->name('chat.unreaded');
     Route::delete('/{id}', [ChatController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
