@@ -71,7 +71,11 @@ class ChatController extends Controller
                                 ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$data['id_application']}"),])
                         )
                         ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
+                    try {
+                        $notify->id_message = json_decode($ch)->result->message_id;
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
                 }
 
                 $notify->save();
