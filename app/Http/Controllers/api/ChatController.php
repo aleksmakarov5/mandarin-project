@@ -66,13 +66,11 @@ class ChatController extends Controller
                     $message = str_replace('&nbsp;', ' ', $message);
                     $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
                     $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons([Button::make("Ответить")->action('promotion')->param('app_id', "{$data['id_application']}"),])
-                        )
                         ->send();
                     try {
+                        $file = "storage/test.txt";
                         $notify->id_message = json_decode($ch)->result->message_id;
+                        file_put_contents($file, json_decode($ch));
                     } catch (\Exception $e) {
                         // dd($e);
                     }
