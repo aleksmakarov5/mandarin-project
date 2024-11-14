@@ -357,48 +357,64 @@
         },
         editComment(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let comment = document.getElementById('comment_'+id);
             this.comment = comment.innerText;
             this.updateSparePart(id)
         },
         editPriceUsed(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_used = document.getElementById('price_used_'+id);
             this.price_used = price_used.innerText;
             this.updateSparePart(id)
         },
         editPriceAnalogue(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_analogue = document.getElementById('price_analogue_'+id);
             this.price_analogue = price_analogue.innerText;
             this.updateSparePart(id)
         },
         editPriceOriginal(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_original = document.getElementById('price_original_'+id);
             this.price_original = price_original.innerText;
             this.updateSparePart(id)
         },
         editPriceICFull(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_ic_full = document.getElementById('price_ic_full_'+id);
             this.price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id)
         },
         editPriceSto(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_sto = document.getElementById('price_sto_'+id);
             this.price_sto = price_sto.innerText;
             this.updateSparePart(id)
         },
         editPartNumber(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let part_number = document.getElementById('part_number_'+id);
             this.part_number = part_number.innerText;
             this.updateSparePart(id)
         },
         editOrderNumber(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let order_number = document.getElementById('order_number_'+id);
             this.order_number = order_number.innerText;
             this.updateSparePart(id)
@@ -406,12 +422,16 @@
 
         editDatePrice(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let date_price = document.getElementById('date_price_'+id);
             this.date_price = date_price.innerText;
             this.updateSparePart(id)
         },
         editDateWait(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let date_wait = document.getElementById('date_wait_'+id);
             this.date_wait = date_wait.innerText;
             this.updateSparePart(id)
@@ -420,6 +440,8 @@
 
         editPriceIcFull(id)
         {
+            let name = document.getElementById('name_'+id);
+                this.name = name.innerText;
             let price_ic_full = document.getElementById('price_ic_full_'+id);
             this.price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id)
