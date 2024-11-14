@@ -578,8 +578,8 @@ class ImapController extends Controller
         $message->message_date = $email->getdate();
         $message->application_id = $applications->id;
         $id = $applications->id;
-        if ($applications->id_status == 1)
-            $history = new History; {
+        if ($applications->id_status == 1) {
+            $history = new History;
             $history->id_application = $applications->id;
             $history->id_status = 1;
             $history->id_user = 2;
@@ -778,8 +778,8 @@ class ImapController extends Controller
         $message->message_date = $email->getdate();
         $message->application_id = $applications->id;
         $id = $applications->id;
-        if ($applications->id_status == 1)
-            $history = new History; {
+        if ($applications->id_status == 1) {
+            $history = new History;
             $history->id_application = $applications->id;
             $history->id_status = 1;
             $history->id_user = 2;
