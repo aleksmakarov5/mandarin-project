@@ -390,6 +390,7 @@ class SparePartController extends Controller
         $html = 'works.html';
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
+        // dd($file);
         $file = html_entity_decode($file);
         $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
@@ -492,6 +493,7 @@ class SparePartController extends Controller
                             $SpareParts[$j++] = $SparePart_array[$i];
                             // echo $SparePart_array[$i] . '<br />';
                         }
+
                         // dd($SpareParts);
                     } else {
                         if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
@@ -652,7 +654,38 @@ class SparePartController extends Controller
                     }
                 }
             }
+        } else if ($app->id_insuranceCompany == 4) {
+            // dd($file);
+            $SparePart_start = mb_strpos($file, 'износом, руб');
+
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, 'ИТОГО');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 18);
+            $SparePart_array = explode('<br/>', $SparePart);
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+                // echo $SparePart_array[$i] . '<br />';
+            }
+            // dd($SpareParts);
         }
+
 
 
         // dd($SparePart_array);

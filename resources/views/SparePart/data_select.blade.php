@@ -29,6 +29,17 @@
                 <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
             @endfor
         @endif
+        @if ($id_ic == 4)
+            @for ($i = 0, $j = 1; $i < count($SpareParts) - 6; $i += 6, $j++)
+                <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i] }}">
+                <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
+                <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
+                <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
+                <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
+                <input type="hidden" name="part_number[{{ $j }}]" value="{{ $j }}">
+                <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
+            @endfor
+        @endif
         <button class="nav-link" type="submit">Сохранить</button>
 
     </form>
@@ -94,6 +105,27 @@
                         </tr>
                     @endfor
                 @endif
+                @if ($id_ic == 4)
+                    @for ($i = 0, $j = 1; $i < count($SpareParts) - 6; $i += 6, $j++)
+                        <tr>
+                            <td> {{ $j }} </td>
+                            <td> </td>
+                            <td> {{ $SpareParts[$i] }}<input type="checkbox"
+                                    name='iskl[{{ $i }}]'value={{ $i }}> </td>
+                            <td> {{ $SpareParts[$i + 1] }}<input type="checkbox"
+                                    name='iskl[{{ $i + 1 }}]'value={{ $i + 1 }}> </td>
+                            <td> {{ $SpareParts[$i + 2] }}<input type="checkbox"
+                                    name='iskl[{{ $i + 2 }}]'value={{ $i + 2 }}> </td>
+                            <td> {{ $SpareParts[$i + 3] }} <input type="checkbox" name='iskl[{{ $i + 3 }}]'
+                                    value={{ $i + 3 }}> </td>
+                            <td> {{ $SpareParts[$i + 4] }}<input type="checkbox"
+                                    name='iskl[{{ $i + 4 }}]'value={{ $i + 4 }}> </td>
+                            <td> {{ $SpareParts[$i + 5] }}<input type="checkbox"
+                                    name='iskl[{{ $i + 5 }}]'value={{ $i + 5 }}> </td>
+                        </tr>
+                    @endfor
+                @endif
+
 
             </tbody>
         </table>
