@@ -480,6 +480,39 @@ class WorkController extends Controller
                 // // dd($works);
 
             }
+        } else if ($app->id_insuranceCompany == 4) {
+            dd($file);
+            $work_start = mb_strpos($file, 'н-час');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+            $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+            $work_array = explode('<br/>', $work);
+            // dd($work_array);
+            $j = 0;
+
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час"
+
+
+                ) {
+                } else
+
+
+                    $works[$j++] = $work_array[$i];
+                // echo $work_array[$i] . '<br />';
+            }
+            // dd($works);
+            session(['works' => $works]);
         }
 
 

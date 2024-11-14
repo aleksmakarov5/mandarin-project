@@ -2171,25 +2171,39 @@ class ApplicationController extends Controller
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
                 $file = str_replace("/\u{A0}/", '', $file);
-                $application_start = mb_strpos($file, '<br/>Объект');
-                $application_end = mb_strpos($file, 'Заключение');
-                $application = mb_substr($file, $application_start + 20, $application_end - $application_start);
-                $smeta = false;
-                if ($application_start)
-                    $smeta = true;
-
+                // dd($file);
+                $application_start = mb_strpos($file, 'Марка, модель');
+                $application = mb_substr($file, $application_start);
                 $application_array = explode('<br/>', $application);
-                if (isset($application_array['1'])) {
-                    $applications['CarModel'] = $application_array[15];
-                    $applications['gnz'] = $application_array[2];
-                    $applications['vin'] = $application_array[9];
-                    $applications['Color'] = $application_array[45];
-                    $applications['mnf_year'] = $application_array[27];
-                    $applications['mileage'] = (int) $application_array[33];
-                    $applications['vehicle_passport'] = $application_array[68];
-                    $applications['ClientName'] = $application_array[74];
-                    //dd($application_array);
-                }
+                $applications['CarModel'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Дата выпуска');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mnf_year'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Регистр. знак');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['gnz'] = $application_array[1];
+                $application_start = mb_strpos($file, '№ кузова');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['vin'] = $application_array[1];
+                $application_start = mb_strpos($file, 'одометра');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mileage'] = (int) $application_array[1];
+                $application_start = mb_strpos($file, 'Свид.о регистр.');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['vehicle_passport'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Собственник');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['ClientName'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Дата:');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['DTPdate'] = $application_array[1];
 
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
