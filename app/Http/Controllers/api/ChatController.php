@@ -80,18 +80,17 @@ class ChatController extends Controller
             }
         }
 
-        $chats = DB::table('chats')
-            ->where('id_application', '=', $data['id_application'])
+        $chats = chat::where('chats.id', '=', $chat->id)
             ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
             ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
             ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-            ->get();
-        foreach ($chats as $chat) {
-            $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
-                ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')
-                ->select('userto.name as to_name')->get();
-            $chat->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
-        }
+            ->first();
+
+        $chats->user_to = chat_rec::where('id_chat', '=', $chat->id)
+            ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')
+            ->select('userto.name as to_name')->get();
+        $chats->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
+
         return $chats;
     }
 
@@ -148,7 +147,7 @@ class ChatController extends Controller
             ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
             ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
             ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-            ->get();
+            ->get()->sortDesc();
         foreach ($chats as $chat) {
             $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
                 ->join('users as userto', 'chat_recs.id_to', '=', 'userto.id')

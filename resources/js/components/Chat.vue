@@ -87,7 +87,7 @@ export default {
     data() {
 
         return {
-            chats: this.in_chats,
+            chats: this.in_chats.sort().reverse(),
             show: false,
             message: '',
             to: [],
@@ -247,7 +247,8 @@ export default {
                 from: this.user_id,
                  })
            .then(res => {
-               this.chats = res.data;
+               this.chats.unshift(res.data);
+
                     mess.innerHTML = '';
                     this.to = []
            })
@@ -278,7 +279,6 @@ export default {
                 .then(res => {
 
                      this.count.chat =this.count.chat+1
-                    this.chats = res.data;
 
 
            })

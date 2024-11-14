@@ -1444,14 +1444,14 @@ class ApplicationController extends Controller
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
 
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get()->sortDesc();
+                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')->sortDesc()
+                ->get();
         } else {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
-                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
+                ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')->sortDesc()
                 ->get();
         }
         foreach ($chats as $chat) {
