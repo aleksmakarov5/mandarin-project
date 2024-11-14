@@ -317,7 +317,6 @@ export default {
             if (answer!= null) {
                 answer.style.display = "none";
             }
-            answer.style.display = "none";
         },
         answerReply(from, from_name, message, time) {
             this.to.push({ id: from, name: from_name });
