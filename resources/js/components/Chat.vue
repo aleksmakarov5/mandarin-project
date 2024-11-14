@@ -308,10 +308,15 @@ export default {
         },
         answerShow(id) {
             let answer = document.getElementById('answer_' + id);
-            answer.style.display = "block";
+            if (answer != null) {
+                answer.style.display = "block";
+            }
         },
         answerHide(id) {
             let answer = document.getElementById('answer_' + id);
+            if (answer!= null) {
+                answer.style.display = "none";
+            }
             answer.style.display = "none";
         },
         answerReply(from, from_name, message, time) {
