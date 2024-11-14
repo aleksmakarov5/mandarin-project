@@ -85,6 +85,17 @@
                     </th>
                 </tr>
             @endif
+            @if (isset($applications['numberInsuranceCompanyApplication']))
+                <tr>
+                    <th>№ акта осмотра</th>
+                    <th>
+                        <input type="text" name="numberInsuranceCompanyApplication"
+                            value="{{ $applications['numberInsuranceCompanyApplication'] }}">
+                        {{-- {{ $application-> CarModel }} --}}
+
+                    </th>
+                </tr>
+            @endif
             @if (isset($applications['issued_by']))
                 <tr>
                     <th>Выдан кем</th>

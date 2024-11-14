@@ -2368,6 +2368,67 @@ class ApplicationController extends Controller
                 }
 
                 // dd($price);
+            } else if ($app->id_insuranceCompany == 4) {
+
+                $file = preg_replace("(\u{A0})", ' ', $file);
+
+                $file = str_replace("/\u{A0}/", '', $file);
+
+                $application_start = mb_strpos($file, 'марка модель');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['CarModel'] = $application_array[1];
+                $application_start = mb_strpos($file, 'дата выпуска');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mnf_year'] = $application_array[1];
+                $application_start = mb_strpos($file, 'гос.номер');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['gnz'] = $application_array[1];
+                $application_start = mb_strpos($file, 'VIN');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['vin'] = $application_array[1];
+                $application_start = mb_strpos($file, 'пробег');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mileage'] = (int) $application_array[1];
+                $application_start = mb_strpos($file, 'основании акта осмотра');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['numberInsuranceCompanyApplication'] = $application_array[1];
+                $estimate_start = mb_strpos($file, 'узлов и деталей с учетом мелких деталей:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[0] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'узлов и деталей с учетом износа:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[1] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'стоимость ремонтных работ:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[2] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'стоимость окраски/контроля:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[3] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'стоимость расходных материалов:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[4] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'устранения дефектов АМТС (без учета износа):');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[6] = $estimate[1];
+                // dd($applications);
             }
         }
 
@@ -2419,7 +2480,8 @@ class ApplicationController extends Controller
                 'id_spm' => 'nullable',
                 'dogovor' => 'nullable',
                 'mnf_year' => 'nullable',
-                'ub_number' => 'nullable'
+                'ub_number' => 'nullable',
+                'numberInsuranceCompanyApplication' => 'nullable'
             ]);
             // dd($data);
             if (isset($data['mileage']))
