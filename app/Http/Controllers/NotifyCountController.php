@@ -50,7 +50,7 @@ class NotifyCountController extends Controller
     {
         $count = ['application' => 0, 'chat' => 0, 'message' => 0];
         $applications = application::where(function ($query) {
-            $query->where('id_status', '>', '7')
+            $query->where('id_status', '>', '11')
                 ->where('id_status', '<', '25');
         })
 
