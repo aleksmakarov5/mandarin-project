@@ -1672,6 +1672,15 @@ class ApplicationController extends Controller
         // }
 
         $users = DB::table('users')->get();
+        $groups = DB::table('cities')->get();
+        foreach ($groups as $group) {
+            $group->members = DB::table('users')->join('user_cities', function ($join) use ($group) {
+                $join
+                    ->where('user_cities.id_city', '=', $group->id)
+                    ->on('user_cities.id_user', '=', 'users.id');
+            })->get();
+        }
+        dd($groups);
         if ($request->input('only_me') || Gate::allows('service')) {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
