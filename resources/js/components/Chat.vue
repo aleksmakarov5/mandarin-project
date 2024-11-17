@@ -1,7 +1,46 @@
+<style>
+  input[type="file"]{
+    position: absolute;
+    top: -500px;
+  }
+  div.file-listing{
+    width: 200px;
+  }
+  span.remove-file{
+    color: red;
+    cursor: pointer;
+    float: right;
+  }
+  .add-attachment{
+    position: absolute;
+    bottom: 105px;
+    right: 50px;
+    padding: 10px;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+  }
+  .add-button {
+    position: absolute;
+    bottom: 105px;
+    right: 15px;
+    padding: 10px;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+</style>
 <template>
 
 
     <div class="chat" v-if="show">
+        <div >
+
+        <input type="file" id="files" ref="files" multiple  accept="image/png, image/gif, image/jpeg" v-on:change="handleFileUpload()"/>
+
+    </div>
         <div class="close" @click="show=!show">
 
             <img  src="/storage/img/close.png" width="20px">
@@ -19,15 +58,15 @@
             </div>
             <div class="time">{{ chat.time }}</div>
             </div>
-<div :id="'answer_'+chat.id" class="show-reply-button" v-if="styleId(chat.from)!='right'">
+            <div :id="'answer_'+chat.id" class="show-reply-button" v-if="styleId(chat.from)!='right'">
             <div class="message-reply"  @click="answerReply(chat.from,chat.from_name,chat.message,chat.time)">
 
-       <img src="/storage/img/reply.png" width="15px">
+                <img src="/storage/img/reply.png" width="15px">
 
             </div>
             <div class="message-reply"  @click="unreaded(chat.id)">
 
-       <img src="/storage/img/unreaded.png" width="15px">
+            <img src="/storage/img/unreaded.png" width="15px">
 
             </div>
             </div>
@@ -55,6 +94,10 @@
             <a title="Добавить получателя">
        <img src="/storage/img/add.png" width="30px"></a>
         </div>
+         <div class="add-attachment" @click.prevent="addFiles()">
+            <a title="Добавить картинку">
+       <img src="/storage/img/attachment.png" width="30px"></a>
+        </div>
         <div class="message-button" @click.prevent="sendMessage()">
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
@@ -62,11 +105,13 @@
 
 
     </div>
+
     <div class="chat-button" @click="showChat()" :class="styleButton()">
 <p class="badge badge-green" v-if="count.chat!=0">{{count.chat}} </p>
             <img src="/storage/img/chat.png" width="30px">
 
     </div>
+
 
 
 </template>
@@ -97,7 +142,8 @@ export default {
             dotLength: 0,
             dotLengthHTML:0,
             is_find: false,
-            reply:''
+            reply: '',
+            files: ''
 
         }
     },
@@ -117,7 +163,11 @@ export default {
 
              })
 
-    },
+        },
+    addFiles(){
+        this.$refs.files.click();
+        },
+
         contactShow() {
             this.contact_show = true
             let mess = document.getElementById('message_');
@@ -238,23 +288,49 @@ export default {
                 return
             else {
                 for (let i = 0; i < this.to.length; i++) {
-                    to[i] = this.to[i].id
+                    formData.append('to['+i+']', to)
                 }
-                axios.post(`/api/chat/send`, {
-                id_application: this.app_id,
-                message: this.message,
-                to: to,
-                from: this.user_id,
-                 })
+
+                let formData = new FormData();
+                formData.append('message', this.message)
+                formData.append('id_application', this.app_id)
+                formData.append('from', this.user_id)
+
+
+                for( let i = 0; i < this.files.length; i++ ){
+                    let file = this.files[i];
+                    formData.append('files[' + i + ']', file);
+                }
+
+
+
+
+
+                axios.post(`/api/chat/send`, formData,
+                   { headers: {
+                    'Content-Type': 'multipart/form-data',
+                    }
+                    }
+                )
+
+
            .then(res => {
                this.chats.unshift(res.data);
 
                     mess.innerHTML = '';
-                    this.to = []
+               this.to = []
+                    this.message = ''
+                    this.files = []
+
            })
 
             }
         },
+        handleFilesUpload(){
+            this.files = this.$refs.files.files;
+
+        },
+
         showChat() {
             this.show = !this.show;
             axios.post(`/api/chat/readed`, {

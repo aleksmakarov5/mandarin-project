@@ -1521,16 +1521,7 @@ form .nav-link {
     cursor: pointer;
 }
 
-.add-button {
-    position: absolute;
-    bottom: 105px;
-    right: 35px;
-    padding: 10px;
-    color: white;
-    border-radius: 25px;
-    border: none;
-    cursor: pointer;
-}
+
 
 
 
