@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Gate;
+
 use App\Models\doc_status;
 use App\Models\OurCompany;
 use Illuminate\Http\Request;
@@ -12,7 +14,7 @@ use App\Models\message;
 use App\Models\application;
 use App\Models\attachment;
 use App\Models\User;
-use App\Models\history;
+use App\Models\user_role;
 use App\Jobs\QueueSenderEmФail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
@@ -119,7 +121,14 @@ class MainController extends Controller
         //         ->where('type', '=', 'to')
         //         ->get();
         // }
-        $our_companies = new OurCompany;
+        if (Gate::allows('administrator'))
+            $our_companies = new OurCompany;
+        else {
+            $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
+            $our_companies = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
+                ->where('role_companies.id_role', '=', $user_role->id)->select('our_companies.*')
+                ->get();
+        }
 
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;

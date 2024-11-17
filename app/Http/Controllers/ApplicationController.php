@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 use App\Models\application;
 use App\Models\work;
 
@@ -28,7 +29,7 @@ use App\Models\address;
 use App\Models\service;
 use App\Models\notify;
 use App\Models\SparePart;
-use App\Models\text_notify;
+use App\Models\user_role;
 use App\Models\troubleshooting;
 use App\Models\OurCompany;
 use App\Models\status_application;
@@ -1354,7 +1355,11 @@ class ApplicationController extends Controller
     public function create()
     {
         $InsuranceCompany = new InsuranceCompany;
-        $OurCompany = new OurCompany;
+        $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
+        $OurCompany = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
+            ->where('role_companies.id_role', '=', $user_role->id)
+            ->select('our_companies.*')
+            ->get();
         return view('application.create', ['InsuranceCompany' => $InsuranceCompany->all(), 'OurCompany' => $OurCompany->all()]);
     }
 
