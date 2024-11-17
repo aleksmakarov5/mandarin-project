@@ -60,8 +60,13 @@ Route::middleware("can:administrator")->group(
         Route::post('/user_register',  [AdminController::class, 'user_register'])->name('user_register');
         Route::get('/user/{id}', [AdminController::class, 'user_edit'])->name('user_edit');
         Route::post('/user/{id}/update', [AdminController::class, 'update_user'])->name('user_update');
+        Route::post('/role_company/{id}/create', [AdminController::class, 'role_company_create'])->name('role_company_create');
         Route::get('user/{id}/delete', [AdminController::class, 'destroy_user'])
             ->name('user.destroy');
+        Route::get('user_role/delete/{role_id}', [AdminController::class, 'destroy_role'])
+            ->name('user_role.destroy');
+        Route::get('user_company/delete/{id}', [AdminController::class, 'destroy_company'])
+            ->name('user_company.destroy');
         Route::prefix('/services')->group(
             function () {
                 Route::get('/', [AdminController::class, 'services_index'])->name('services');

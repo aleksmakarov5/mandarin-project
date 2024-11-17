@@ -5,11 +5,16 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\user;
 use App\Models\usergroup;
+use App\Models\OurCompany;
+use App\Models\user_role;
+use App\Models\user_city;
 
 use App\Models\ApplicationStatus;
 use App\Models\InsuranceCompany;
 use App\Models\failure_var;
 use App\Models\service;
+use App\Models\role_company;
+use App\Models\city;
 
 use Illuminate\Support\Facades\DB;
 
@@ -25,8 +30,6 @@ class AdminController extends Controller
     public function users_index()
     {
         $users = DB::table('users')
-            ->join('user_groups', 'users.GroupId', '=', 'user_groups.id')
-            ->select('users.*', 'user_groups.GroupName')
             ->get();
 
         return view('admin.users.index', ['users' => $users]);
@@ -46,6 +49,32 @@ class AdminController extends Controller
         return redirect()
             ->route('users');
     }
+    public function destroy_role($role_id)
+    {
+        $role_companies = role_company::where('id_role', '=', $role_id)->get();
+        foreach ($role_companies as $rc) {
+            $rc->delete();
+        }
+
+        $user_role = user_role::findOrFail($role_id);
+        $user_role->delete();
+        return redirect()
+            ->back();
+    }
+    public function destroy_company($id)
+    {
+        $role_company = role_company::findOrFail($id);
+        $role_company->delete();
+        return redirect()
+            ->back();
+    }
+    public function destroy_city($id)
+    {
+        $user_city = user_city::findOrFail($id);
+        $user_city->delete();
+        return redirect()
+            ->back();
+    }
     public function create_user()
     {
         $groups = new usergroup();
@@ -57,8 +86,7 @@ class AdminController extends Controller
             'name' => ["required", "string"],
             'email' => ["required", "email", "unique:users"],
             'password' => ["required", "confirmed"],
-            'phone' => ["required", "string"],
-            'GroupId' => ["required", "integer"]
+            'phone' => ["required", "string"]
         ]);
 
         // dd($data);
@@ -66,8 +94,7 @@ class AdminController extends Controller
             'name' => $data["name"],
             'email' => $data["email"],
             'password' => bcrypt($data["password"]),
-            'phone' => $data["phone"],
-            'GroupId' => $data["GroupId"]
+            'phone' => $data["phone"]
         ]);
         //  dd($user);
         return redirect()->route('users');
@@ -76,8 +103,25 @@ class AdminController extends Controller
     public function user_edit($id)
     {
         $user = User::findOrFail($id);
+        $user->roles = user_role::where('id_user', '=', $user->id)
+            ->join('user_groups', 'user_groups.id', '=', 'user_roles.id_group')
+            ->select('user_roles.*', 'user_groups.GroupName')
+            ->get();
+        $user->city = user_city::where('id_user', '=', $user->id)
+            ->join('cities', 'cities.id', '=', 'user_cities.id_city')
+            ->select('user_cities.*', 'cities.name as city')
+            ->get();
+        foreach ($user->roles as $role) {
+            $role->company = role_company::where('id_role', '=', $role->id)
+                ->join('our_companies', 'our_companies.id', '=', 'role_companies.id_company')
+                ->select('role_companies.*', 'our_companies.our_name')
+                ->get();
+        }
+        // dd($user);
         $groups = new usergroup();
-        return view('admin.users.edit', ['user' => $user, 'groups' => $groups->all()]);
+        $companies = new OurCompany();
+        $cities = new city();
+        return view('admin.users.edit', ['user' => $user, 'groups' => $groups->all(), 'companies' => $companies->all(), 'cities' => $cities->all()]);
     }
     public function update_user(Request $request, $id)
     {
@@ -85,22 +129,52 @@ class AdminController extends Controller
         $data = $request->validate([
             'name' => ["required", "string"],
             'email' => ["required", "email"],
-            'password' => ["required", "confirmed"],
+            'password' => ["nullable", "confirmed"],
             'phone' => ["required", "string"],
-            'groupid' => ["nullable", "integer"]
+            'groupid' => ["nullable", "integer"],
+            'id_city' => ["nullable", "integer"]
         ]);
 
         // dd($data);
         $user->name = $data["name"];
         $user->email = $data["email"];
-        $user->password = bcrypt($data["password"]);
+        if ($data["password"])
+            $user->password = bcrypt($data["password"]);
         $user->phone = $data["phone"];
-        $user->GroupId = $data["groupid"];
         $user->save();
 
-        return redirect()->route('users');
-    }
+        if ($data['groupid'] != null) {
 
+            $user_role = user_role::firstorcreate(
+                ['id_user' => $id, 'id_group' => $data['groupid']]
+            );
+        }
+
+        if ($data['id_city'] != null) {
+            $user_city = user_city::firstorcreate(
+                ['id_user' => $id, 'id_city' => $data['id_city']]
+            );
+        }
+
+        return redirect()->back();
+    }
+    public function role_company_create(Request $request, $id)
+    {
+
+        $data = $request->validate([
+
+            'id_company' => ["nullable", "integer"],
+
+        ]);
+
+        if ($data['id_company'] != null && $data['id_company'] != 0) {
+            $role_company = role_company::firstorcreate(
+                ['id_role' => $id, 'id_company' => $data['id_company']]
+            );
+        }
+
+        return redirect()->back();
+    }
     public function usergroups_index()
 
     {

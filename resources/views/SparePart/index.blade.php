@@ -4,25 +4,32 @@
 @endsection
 @section('main')
     {{-- {{ session('GroupId') }} --}}
-
-
-    @if (session('GroupId') == 5)
-        <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
+    @if (Gate::allows('km') || Gate::allows('km') || (Gate::allows('mrk') && Gate::allows('spm')))
+        <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
             :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
-            :in_statuses="{{ json_encode($statuses) }}" :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-mrk>
+            :in_statuses="{{ json_encode($statuses) }}" :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
     @else
-        @if (session('GroupId') == 6)
-            <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
+        @if (Gate::allows('mrk'))
+            <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
                 :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
                 :in_statuses="{{ json_encode($statuses) }}"
-                :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-zap>
+                :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-mrk>
         @else
-            <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
-                :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
-                :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
-                :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-all>
+            @if (Gate::allows('spm'))
+                <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}`
+                    :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
+                    :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
+                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-zap>
+            @else
+                <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
+                    :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
+                    :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
+                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-all>
+            @endif
         @endif
     @endif
+
+
     @can('company')
         <work :app_id={{ $id }} :in_summ=`{{ $summ_ic }}` :in_summ_pzn=`{{ $summ_pzn }}`
             :in_works="{{ json_encode($Works) }}"></work>

@@ -251,7 +251,15 @@ class ImapController extends Controller
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
             if ($applications->id_status != 27) {
-                $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+
+                $users = user::join('user_roles', function ($join) {
+                    $join->on('user_roles.id_user', '=', 'users.id')
+                        ->where('user_roles.id_group', '=', 2);
+                })
+                    ->join('role_companies', function ($join) use ($our_company) {
+                        $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+                    })
+                    ->get();
                 foreach ($users as $user) {
                     $notify = new notify;
                     $notify->id_user = $user->id;
@@ -455,7 +463,14 @@ class ImapController extends Controller
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
             if ($applications->id_status != 27) {
-                $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+                $users = user::join('user_roles', function ($join) {
+                    $join->on('user_roles.id_user', '=', 'users.id')
+                        ->where('user_roles.id_group', '=', 2);
+                })
+                    ->join('role_companies', function ($join) use ($our_company) {
+                        $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+                    })
+                    ->get();
                 foreach ($users as $user) {
                     $notify = new notify;
                     $notify->id_user = $user->id;
@@ -698,7 +713,14 @@ class ImapController extends Controller
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
         if ($applications->id_status != 27) {
-            $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+            $users = user::join('user_roles', function ($join) {
+                $join->on('user_roles.id_user', '=', 'users.id')
+                    ->where('user_roles.id_group', '=', 2);
+            })
+                ->join('role_companies', function ($join) use ($our_company) {
+                    $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+                })
+                ->get();
             foreach ($users as $user) {
                 $notify = new notify;
                 $notify->id_user = $user->id;
@@ -844,7 +866,14 @@ class ImapController extends Controller
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
         // if ($applications->id_status != 27) {
-        //     $users = user::where('GroupId', '=', 2)->orWhere('GroupId', '=', 1)->get()->all();
+        //     $users = user::join('user_roles', function ($join) {
+        //     $join->on('user_roles.id_user', '=', 'users.id')
+        //         ->where('user_roles.id_group', '=', 2);
+        // })
+        //     ->join('role_companies', function ($join) use ($our_company) {
+        //         $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+        //     })
+        //     ->get();
         //     foreach ($users as $user) {
         //         $notify = new notify;
         //         $notify->id_user = $user->id;

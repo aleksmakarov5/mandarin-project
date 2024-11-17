@@ -239,6 +239,7 @@
         isEdit(id){
             return this.EditSparePartId===id
         },
+
         updateSparePart(id)
         {
             axios.post(`/api/sparepart/${id}/update`, {

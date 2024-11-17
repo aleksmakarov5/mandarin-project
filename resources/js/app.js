@@ -15,6 +15,7 @@ import Work from './components/Work.vue';
 import SparePartMrk from './components/SparePartMrk.vue';
 import SparePartZap from './components/SparePartZap.vue';
 import SparePartAll from './components/SparePartAll.vue';
+import SparePartKm from './components/SparePartKm.vue';
 import Chat from './components/Chat.vue';
 import DatePay from './components/DatePay.vue';
 
@@ -42,7 +43,9 @@ const app = createApp({
     Work,
     SparePartMrk,
     SparePartZap,
-        SparePartAll,
+    SparePartAll,
+    SparePartKm,
+
 
      NotifyApp,
         NextStep,

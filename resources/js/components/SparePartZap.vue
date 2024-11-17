@@ -283,9 +283,6 @@
             .then(res => {
             this.getSpareParts(res)
            })
-
-
-
         },
 
         createSparePart()
