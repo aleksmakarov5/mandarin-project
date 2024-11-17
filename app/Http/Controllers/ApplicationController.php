@@ -153,8 +153,42 @@ class ApplicationController extends Controller
         $only_me = 0;
         $only_me = $request->get('only_me');
 
+        if (Gate::allows('administrator')) {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
+            })
 
-        if (Gate::allows('admin') || Gate::allows('km')  || $only_me) {
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
+
+                ->select(
+                    'applications.*',
+                    'insurance_companies.name',
+                    'insurance_companies.insurance_companies_theme',
+                    'services.service_name',
+                    'services.services_theme',
+                    'lawyers.lawyer_name',
+                    'lawyers.color as lawyers_color',
+                    'application_statuses.StatusName',
+                    'application_statuses.status_theme',
+                    'application_statuses.current_group',
+                    'our_companies.our_name',
+                    'users.name as MRK_name',
+                    'cities.name as city'
+                )
+                ->get()
+
+                ->sortDesc();
+        } elseif (Gate::allows('admin') || Gate::allows('km')  || $only_me) {
 
 
             $applications = application::where(function ($query) {
@@ -329,42 +363,77 @@ class ApplicationController extends Controller
 
     public function failures()
     {
-
-
-        $applications = DB::table('applications')
-            ->where('id_status', '=', '7')
-            ->orwhere('id_status', '=', '6')
-            ->join('user_roles', function ($join) {
-                $join
-                    ->where('user_roles.id_group', '=', 8)
-                    ->where('user_roles.id_user', '=', Auth::user()->id);
+        if (Gate::allows('administrator')) {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
-            ->join('role_companies', function ($join) {
-                $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-            })
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-            ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-            ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-            ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-            ->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->get()->sortDesc();
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
+
+                ->select(
+                    'applications.*',
+                    'insurance_companies.name',
+                    'insurance_companies.insurance_companies_theme',
+                    'services.service_name',
+                    'services.services_theme',
+                    'lawyers.lawyer_name',
+                    'lawyers.color as lawyers_color',
+                    'application_statuses.StatusName',
+                    'application_statuses.status_theme',
+                    'application_statuses.current_group',
+                    'our_companies.our_name',
+                    'users.name as MRK_name',
+                    'cities.name as city'
+                )
+                ->get()
+
+                ->sortDesc();
+        } else {
+            $applications = DB::table('applications')
+                ->where('id_status', '=', '7')
+                ->orwhere('id_status', '=', '6')
+                ->join('user_roles', function ($join) {
+                    $join
+                        ->where('user_roles.id_group', '=', 8)
+                        ->where('user_roles.id_user', '=', Auth::user()->id);
+                })
+                ->join('role_companies', function ($join) {
+                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+                })
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->select(
+                    'applications.*',
+                    'insurance_companies.name',
+                    'insurance_companies.insurance_companies_theme',
+                    'services.service_name',
+                    'services.services_theme',
+                    'lawyers.lawyer_name',
+                    'lawyers.color as lawyers_color',
+                    'application_statuses.StatusName',
+                    'application_statuses.status_theme',
+                    'application_statuses.current_group',
+                    'our_companies.our_name',
+                    'users.name as MRK_name',
+                    'cities.name as city'
+                )->get()->sortDesc();
+        }
         // dd($applications);
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -625,7 +694,42 @@ class ApplicationController extends Controller
         $only_me = 0;
         $only_me = $request->get('only_me');
 
-        if (Gate::allows('admin') || Gate::allows('km')) {
+        if (Gate::allows('administrator')) {
+            $applications = application::where(function ($query) {
+                $query
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
+            })
+
+                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
+
+                ->select(
+                    'applications.*',
+                    'insurance_companies.name',
+                    'insurance_companies.insurance_companies_theme',
+                    'services.service_name',
+                    'services.services_theme',
+                    'lawyers.lawyer_name',
+                    'lawyers.color as lawyers_color',
+                    'application_statuses.StatusName',
+                    'application_statuses.status_theme',
+                    'application_statuses.current_group',
+                    'our_companies.our_name',
+                    'users.name as MRK_name',
+                    'cities.name as city'
+                )
+                ->get()
+
+                ->sortDesc();
+        } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
             $applications = application::where(function ($query) {
