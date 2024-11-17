@@ -3,13 +3,11 @@
     position: absolute;
     top: -500px;
   }
-  div.file-listing{
-    width: 200px;
-  }
-  span.remove-file{
+
+  .remove-file{
     color: red;
     cursor: pointer;
-    float: right;
+
   }
   .add-attachment{
     position: absolute;
@@ -31,14 +29,29 @@
     border: none;
     cursor: pointer;
 }
+div.file-listing {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    background-color: white;
+    padding: 5px;
+    overflow-y: scroll;
+    position: absolute;
+
+}
+div.list{
+display: flex;
+justify-content: space-between;
+
+}
 </style>
 <template>
 
 
     <div class="chat" v-if="show">
+
         <div >
 
-        <input type="file" id="files" ref="files" multiple  accept="image/png, image/gif, image/jpeg" v-on:change="handleFileUpload()"/>
+        <input type="file" id="files" ref="files" multiple  accept="image/png, image/gif, image/jpeg" v-on:change="handleFilesUpload()"/>
 
     </div>
         <div class="close" @click="show=!show">
@@ -71,7 +84,13 @@
             </div>
             </div>
         </div>
-
+        <div class="file-listing" v-if="files.length>0">
+ <div class="list" v-for="(file, key) in files">
+    <div>{{ file.name }}</div>
+    <div><img class="remove-file" title="Удалить вложение" src="/storage/img/delete.png" width=20 @click="removeFile( key )">
+    </div>
+</div>
+</div>
         </div>
         <div class="contact-list" v-if="contact_show">
 
@@ -104,7 +123,9 @@
         </div>
 
 
+
     </div>
+
 
     <div class="chat-button" @click="showChat()" :class="styleButton()">
 <p class="badge badge-green" v-if="count.chat!=0">{{count.chat}} </p>
@@ -143,7 +164,7 @@ export default {
             dotLengthHTML:0,
             is_find: false,
             reply: '',
-            files: ''
+            files: []
 
         }
     },
@@ -288,7 +309,7 @@ export default {
                 return
             else {
                 for (let i = 0; i < this.to.length; i++) {
-                    formData.append('to['+i+']', to)
+                    to.push(this.to[i].id)
                 }
 
                 let formData = new FormData();
@@ -306,7 +327,15 @@ export default {
 
 
 
-                axios.post(`/api/chat/send`, formData,
+                axios.post(`/api/chat/send`, {
+                    message: this.message,
+                    to: to,
+                    id_application: this.app_id,
+                    from: this.user_id,
+                    files: this.files,
+
+
+                },
                    { headers: {
                     'Content-Type': 'multipart/form-data',
                     }
@@ -327,7 +356,11 @@ export default {
             }
         },
         handleFilesUpload(){
-            this.files = this.$refs.files.files;
+            let uploadedFiles = this.$refs.files.files;
+            for (var i = 0; i < uploadedFiles.length; i++){
+                this.files.push(uploadedFiles[i]);
+            }
+
 
         },
 
@@ -407,6 +440,9 @@ export default {
             sel.removeAllRanges();
             sel.addRange(range);
 
+        },
+        removeFile( key ){
+             this.files.splice( key, 1 );
         }
 
 
