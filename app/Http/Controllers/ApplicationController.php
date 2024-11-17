@@ -364,13 +364,8 @@ class ApplicationController extends Controller
     public function failures()
     {
         if (Gate::allows('administrator')) {
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
-            })
-
+            $applications = application::where('id_status', '=', '7')
+                ->orwhere('id_status', '=', '6')
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
@@ -697,9 +692,8 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
