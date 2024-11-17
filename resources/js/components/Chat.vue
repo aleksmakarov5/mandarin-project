@@ -309,7 +309,7 @@ export default {
                 return
             else {
                 for (let i = 0; i < this.to.length; i++) {
-                    to.push(this.to[i].id)
+                    to[i]=this.to[i].id
                 }
 
                 let formData = new FormData();
