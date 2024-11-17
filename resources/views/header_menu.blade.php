@@ -113,6 +113,15 @@
         return redirect()->route('applications');
     }
     $users = DB::table('users')->get();
+    $groups = DB::table('cities')->get();
+    foreach ($groups as $group) {
+        $group->members = DB::table('users')
+            ->join('user_cities', function ($join) use ($group) {
+                $join->where('user_cities.id_city', '=', $group->id)->on('user_cities.id_user', '=', 'users.id');
+            })
+            ->select('users.*')
+            ->get();
+    }
 
     $chats = DB::table('chats')
         ->where('id_application', '=', $id)
@@ -138,7 +147,8 @@
 @section('main_content')
     <div id="ch">
         <chat :app_id={{ $id }} :in_chats="{{ json_encode($chats) }}" :user_id={{ Auth::user()->id }}
-            :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"></chat>
+            :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"
+            :in_groups="{{ json_encode($groups) }}"></chat>
     </div>
     <div id="app">
 

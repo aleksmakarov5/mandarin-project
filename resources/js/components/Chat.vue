@@ -140,11 +140,14 @@ div.attachment-show img{
         <div class="contact-list" v-if="contact_show">
 
             <div class="contact-body">
+        <div :id="'find_'+index*1000" class="contact-item" v-for="(group,index) in groups" @click="selectGroup(group)">
+       <i><b>{{ group.name }}</b></i>
+    </div>
     <div :id="'find_'+index" class="contact-item" v-for="(user,index) in users" @click="selectContact(user.id,user.name)">
         <template v-if="user.id == user_id" >
-    Себе
-    </template>
-    <template v-else>{{ user.name }}</template>
+            Себе
+        </template>
+        <template v-else>{{ user.name }}</template>
     </div>
     </div>
 </div>
@@ -191,8 +194,7 @@ export default {
         'in_users',
         'app_id',
         'count_in',
-
-
+        'in_groups',
     ],
 
     data() {
@@ -204,6 +206,7 @@ export default {
             to: [],
             contact_show: false,
             users: this.in_users,
+            groups: this.in_groups,
             count: this.count_in,
             dotLength: 0,
             dotLengthHTML:0,
@@ -227,6 +230,27 @@ export default {
         console.log(this.chats)
     },
     methods: {
+        selectGroup(group) {
+            console.log(group.members)
+            let mess = document.getElementById('message_');
+            for (let i = 0; i < group.members.length; i++) {
+                this.to.push({ id: group.members[i].id, name: group.members[i].name });
+
+
+            mess.innerHTML += '@<b><span style="color:green;">' + group.members[i].name  + '</span></b>&nbsp';
+            }
+            console.log(this.to)
+            mess.focus();
+
+            const range = document.createRange();
+            range.selectNodeContents(mess);
+            range.collapse(false);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+            this.contact_show = false;
+            this.is_find=false
+        },
         getCounts() {
             axios.get(`/api/notifycount/application/${this.app_id}/${this.user_id}`)
             .then(res => {
