@@ -127,6 +127,8 @@
             ->select('userto.name as to_name')
             ->get();
         $chat->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
+
+        $chat->attachment = App\Models\chat_attachment::where('chat_id', '=', $chat->id)->get();
     }
 @endphp
 @extends('layout')

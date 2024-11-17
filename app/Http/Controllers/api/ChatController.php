@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\status_chat;
 use App\Models\notify;
 use Jenssegers\Date\Date;
+use App\Models\chat_attachment;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -38,45 +39,46 @@ class ChatController extends Controller
         $chat->to = 0;
         $chat->message = $data['message'];
         $chat->save();
+        if (isset($data['to'])) {
+            foreach ($data['to'] as $key => $to) {
+                // dd($to);
+                if ($to != 0) {
+                    $recipient = User::findOrFail($to);
+                    $chat_recs = new chat_rec;
+                    $chat_recs->id_chat = $chat->id;
+                    $chat_recs->id_to = $to;
+                    $chat_recs->save();
+                    $notify = new notify;
+                    $notify->id_user = $to;
+                    $notify->id_application = $data['id_application'];
+                    $notify->id_text = 2;
+                    $notify->link = "/chat/";
 
-        foreach ($data['to'] as $key => $to) {
-            // dd($to);
-            if ($to != 0) {
-                $recipient = User::findOrFail($to);
-                $chat_recs = new chat_rec;
-                $chat_recs->id_chat = $chat->id;
-                $chat_recs->id_to = $to;
-                $chat_recs->save();
-                $notify = new notify;
-                $notify->id_user = $to;
-                $notify->id_application = $data['id_application'];
-                $notify->id_text = 2;
-                $notify->link = "/chat/";
-
-                $status_chat = new status_chat;
-                $status_chat->id_user = $to;
-                $status_chat->id_application = $data['id_application'];
-                $status_chat->is_readed = false;
-                $status_chat->save();
-                $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                    ->select('notifies.*', 'text_notifies.text')->first();
-                broadcast(new MessageSent($notification));
-                if ($recipient->telegram_notify) {
-                    $message = strip_tags($data['message'], '<b></b><br>');
-                    $message = str_replace('&nbsp;', ' ', $message);
-                    $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
-                    $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
-                        ->send();
-                    try {
-                        $file = "storage/test.txt";
-                        $notify->id_message = json_decode($ch)->result->message_id;
-                        file_put_contents($file, json_decode($ch));
-                    } catch (\Exception $e) {
-                        // dd($e);
+                    $status_chat = new status_chat;
+                    $status_chat->id_user = $to;
+                    $status_chat->id_application = $data['id_application'];
+                    $status_chat->is_readed = false;
+                    $status_chat->save();
+                    $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                        ->select('notifies.*', 'text_notifies.text')->first();
+                    broadcast(new MessageSent($notification));
+                    if ($recipient->telegram_notify) {
+                        $message = strip_tags($data['message'], '<b></b><br>');
+                        $message = str_replace('&nbsp;', ' ', $message);
+                        $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
+                        $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
+                            ->send();
+                        try {
+                            $file = "storage/test.txt";
+                            $notify->id_message = json_decode($ch)->result->message_id;
+                            file_put_contents($file, json_decode($ch));
+                        } catch (\Exception $e) {
+                            // dd($e);
+                        }
                     }
-                }
 
-                $notify->save();
+                    $notify->save();
+                }
             }
         }
 
@@ -91,6 +93,37 @@ class ChatController extends Controller
             ->select('userto.name as to_name')->get();
         $chats->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
 
+
+        foreach ($request->file('files') as $file) {
+
+            // dd($file);
+            $upload_folder = "" . $chat->id_application;
+            $filenameWithExt = $file->getClientOriginalName(); //
+            // Имя и расширение файла
+            // Только оригинальное имя файла
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            // Расширение
+            $extention = $file->getClientOriginalExtension();
+            // Путь для сохранения
+            $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+            // Сохраняем файл
+            $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+
+            $filename = 'storage/files/' . $chat->id_application . '/' . $fileNameToStore;
+            // dd($file);
+
+            $document = new chat_attachment();
+            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $document->file_name = $filename;
+            $document->chat_id = $chat->id;
+            $document->id_application = $chat->id_application;
+            $document->file_size = $file->getSize();
+            $document->location = $fileNameToStore;
+            // dd($document);
+            $document->save();
+        }
+
+        $chats->attachment = chat_attachment::where('chat_id', '=', $chat->id)->get();
         return $chats;
     }
 

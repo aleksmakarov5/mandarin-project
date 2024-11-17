@@ -43,10 +43,47 @@ display: flex;
 justify-content: space-between;
 
 }
+div.attachment{
+    display: block;
+
+}
+div.attachment img{
+    margin-left: 5px;
+    margin-bottom: 12px;
+    cursor: pointer;
+}
+.attachment-show{
+    background-color: rgba(255, 255, 255, 0.917);
+    position: fixed;
+    left: 15%;
+    top: 5%;
+    height: 90%;
+    z-index: 7;
+    overflow: auto;
+}
+.attachment-show .close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    width: 20px;
+}
+div.attachment-show img{
+
+    max-height: 100%;
+    max-width: 100%;
+}
 </style>
 <template>
 
+<div class="attachment-show" ref="attachment_show" v-if="show_attach">
+    <div class="close" @click="show_attach=!show_attach">
 
+            <img  src="/storage/img/close.png" width="20px">
+
+        </div>
+    <img id="attachment_img" :src="img_path">
+</div>
     <div class="chat" v-if="show">
 
         <div >
@@ -70,6 +107,12 @@ justify-content: space-between;
                 <span v-html="chat.message"></span>
             </div>
             <div class="time">{{ chat.time }}</div>
+            <div class="attachment" v-if="chat.attachment!=null">
+
+                <template v-for="attachment in chat.attachment">
+                <img :src="'/storage/files/'+app_id+'/'+attachment.location" width="60" @click="attachmentShow(attachment.location)">
+                </template>
+            </div>
             </div>
             <div :id="'answer_'+chat.id" class="show-reply-button" v-if="styleId(chat.from)!='right'">
             <div class="message-reply"  @click="answerReply(chat.from,chat.from_name,chat.message,chat.time)">
@@ -82,7 +125,9 @@ justify-content: space-between;
             <img src="/storage/img/unreaded.png" width="15px">
 
             </div>
+
             </div>
+
         </div>
         <div class="file-listing" v-if="files.length>0">
  <div class="list" v-for="(file, key) in files">
@@ -164,7 +209,9 @@ export default {
             dotLengthHTML:0,
             is_find: false,
             reply: '',
-            files: []
+            files: [],
+            show_attach: false,
+            img_path: '',
 
         }
     },
@@ -175,7 +222,10 @@ export default {
     }
     )
 
-  },
+    },
+    mounted() {
+        console.log(this.chats)
+    },
     methods: {
         getCounts() {
             axios.get(`/api/notifycount/application/${this.app_id}/${this.user_id}`)
@@ -279,6 +329,15 @@ export default {
              }
             console.log(this.to)
         },
+        attachmentShow(attachment)
+        {
+            this.show_attach = true;
+            let img = document.getElementById('attachment_img');
+
+            this.img_path = '/storage/files/' + this.app_id + '/' + attachment
+
+            this.$refs.attachment_img.src = '/storage/files/'+this.app_id+'/'+attachment
+        },
         getCursorPosition() {
 	        let selection = window.getSelection()
             let range = new Range
@@ -308,11 +367,11 @@ export default {
             if (this.message.trim == '')
                 return
             else {
+                 let formData = new FormData();
                 for (let i = 0; i < this.to.length; i++) {
-                    to[i]=this.to[i].id
+                    formData.append('to['+i+']',this.to[i].id)
                 }
 
-                let formData = new FormData();
                 formData.append('message', this.message)
                 formData.append('id_application', this.app_id)
                 formData.append('from', this.user_id)
@@ -323,20 +382,9 @@ export default {
                     formData.append('files[' + i + ']', file);
                 }
 
-
-
-
-
-                axios.post(`/api/chat/send`, {
-                    message: this.message,
-                    to: to,
-                    id_application: this.app_id,
-                    from: this.user_id,
-                    files: this.files,
-
-
-                },
-                   { headers: {
+                axios.post(`/api/chat/send`, formData,
+                    {
+                        headers: {
                     'Content-Type': 'multipart/form-data',
                     }
                     }

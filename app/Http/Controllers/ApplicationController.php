@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 
 use App\Models\application;
+use App\Models\chat_attachment;
 use App\Models\work;
 
 use App\Jobs\QueueSenderChat;
@@ -1696,6 +1697,7 @@ class ApplicationController extends Controller
                 ->select('userto.name as to_name')->get();
             $chat->time
                 = Date::parse($chat->created_at)->format('j F Yг. H:i');
+            $chat->attachment = chat_attachment::where('chat_id', '=', $chat->id)->get();
         }
         // dd($chats);
         // dd($rewiew->all()) ;
