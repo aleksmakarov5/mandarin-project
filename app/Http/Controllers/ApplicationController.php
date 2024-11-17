@@ -1355,11 +1355,15 @@ class ApplicationController extends Controller
     public function create()
     {
         $InsuranceCompany = new InsuranceCompany;
-        $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
-        $OurCompany = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
-            ->where('role_companies.id_role', '=', $user_role->id)
-            ->select('our_companies.*')
-            ->get();
+        if (Gate::allows('administrator'))
+            $OurCompany = new OurCompany;
+        else {
+            $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
+            $OurCompany = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
+                ->where('role_companies.id_role', '=', $user_role->id)->select('our_companies.*')
+                ->get();
+        }
+
         return view('application.create', ['InsuranceCompany' => $InsuranceCompany->all(), 'OurCompany' => $OurCompany->all()]);
     }
 
