@@ -112,7 +112,7 @@
     </div>
 </div>
 
-@can('admin')
+@canany(['admin', 'administrator'])
 
     <div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
     <div class="form-float">
@@ -145,7 +145,7 @@
 
     </div>
 
-@endcan
+@endcanany
 <div class='lbl'>
     <label for="id_spm">Сервис</label>
 </div>
