@@ -3,7 +3,7 @@
     Заявкa
 @endsection
 @section('main')
-    @canany(['admin', 'mrk'])
+    @canany(['admin', 'mrk', 'km', 'administrator'])
         <a href="/application/{{ $id }}/doc_load" class="nav-link">Загрузить данные из документа</a>
         <br>
 
