@@ -1680,7 +1680,7 @@ class ApplicationController extends Controller
                     ->on('user_cities.id_user', '=', 'users.id');
             })->get();
         }
-        dd($groups);
+        // dd($groups);
         if ($request->input('only_me') || Gate::allows('service')) {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
