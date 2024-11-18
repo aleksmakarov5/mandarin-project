@@ -259,6 +259,7 @@ class ImapController extends Controller
                     ->join('role_companies', function ($join) use ($our_company) {
                         $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
                     })
+                    ->select('users.*')
                     ->get();
                 foreach ($users as $user) {
                     $notify = new notify;
@@ -470,6 +471,8 @@ class ImapController extends Controller
                     ->join('role_companies', function ($join) use ($our_company) {
                         $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
                     })
+
+                    ->select('users.*')
                     ->get();
                 foreach ($users as $user) {
                     $notify = new notify;
@@ -720,6 +723,8 @@ class ImapController extends Controller
                 ->join('role_companies', function ($join) use ($our_company) {
                     $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
                 })
+
+                ->select('users.*')
                 ->get();
             foreach ($users as $user) {
                 $notify = new notify;
