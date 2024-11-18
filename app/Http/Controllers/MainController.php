@@ -564,7 +564,7 @@ class MainController extends Controller
 
                         $document = new Attachment();
                         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        $document->file_name = $filename;
+                        $document->file_name = $request->load_name;
                         $document->message_id = 0;
                         $document->mime_type = $file->getMimeType();
                         $document->id_application = $id;
