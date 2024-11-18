@@ -551,11 +551,11 @@ class MainController extends Controller
                         $filenameWithExt = $file->getClientOriginalName(); //
                         // Имя и расширение файла
                         // Только оригинальное имя файла
-                        $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                        $filename = $request->load_name . "_" . date('d-m-y_hms');
                         // Расширение
                         $extention = $file->getClientOriginalExtension();
                         // Путь для сохранения
-                        $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                        $fileNameToStore = $filename . '.' . $extention;
                         // Сохраняем файл
                         $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
@@ -564,7 +564,7 @@ class MainController extends Controller
 
                         $document = new Attachment();
                         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        $document->file_name = $request->load_name;
+                        $document->file_name = $filename;
                         $document->message_id = 0;
                         $document->mime_type = $file->getMimeType();
                         $document->id_application = $id;
