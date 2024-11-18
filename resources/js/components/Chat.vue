@@ -29,6 +29,27 @@
     border: none;
     cursor: pointer;
 }
+  .team-button {
+    position: absolute;
+    bottom: 65px;
+    right: 15px;
+    padding: 10px;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+}
+.team-button:hover,
+.add-button:hover,
+.add-attachment:hover {
+    background-color: #555;
+    color: white;
+}
+.team-button:hover img,
+.add-button:hover img,
+.add-attachment:hover img {
+    width: 40px;
+}
 div.file-listing {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
@@ -72,6 +93,18 @@ div.attachment-show img{
 
     max-height: 100%;
     max-width: 100%;
+}
+.work-group-select{
+    position: absolute;
+    bottom: 120px;
+    height: 270px;
+    width: 98%;
+    background-color: white;
+    overflow-y: scroll;
+    z-index: 9;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    padding: 5px;
+
 }
 </style>
 <template>
@@ -138,19 +171,46 @@ div.attachment-show img{
 </div>
         </div>
         <div class="contact-list" v-if="contact_show">
-
             <div class="contact-body">
-        <div :id="'find_'+index*1000" class="contact-item" v-for="(group,index) in groups" @click="selectGroup(group)">
-       <i><b>{{ group.name }}</b></i>
-    </div>
-    <div :id="'find_'+index" class="contact-item" v-for="(user,index) in users" @click="selectContact(user.id,user.name)">
-        <template v-if="user.id == user_id" >
-            Себе
-        </template>
-        <template v-else>{{ user.name }}</template>
-    </div>
-    </div>
+                <div :id="'find_'+index*1000" class="contact-item" v-for="(group,index) in groups" @click="selectGroup(group)">
+                    <i><b>{{ group.name }}</b></i>
+                </div>
+            <div :id="'find_'+index" class="contact-item" v-for="(user,index) in users" @click="selectContact(user.id,user.name)">
+                <template v-if="user.id == user_id" >
+                    Себе
+                </template>
+                <template v-else>{{ user.name }}</template>
+            </div>
+        </div>
+
 </div>
+        <div class="work-group-select" v-if="work_group_show">
+<table class="table table-sm table-hover table-border">
+    <thead>
+        <tr>
+            <th colspan="2">Рабочая группа</th>
+            <th>
+                <img src="/storage/img/add.png" width="30" alt="">
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="user in users">
+            <td>
+                <input type="checkbox" :id="'work_group_'+user.id" :value="user.id" @change="workGroupChange(user.id)">
+                </td>   <td>
+                <label for="'work_group_'+group.id">{{ user.name }}</label>
+            </td>
+            <td>
+
+                <img src="/storage/img/delete.png" width="25" alt="">
+            </td>
+        </tr>
+    </tbody>
+
+</table>
+
+        </div>
         <div class="message-new" @keyup.@="contactShow()">
 
         <div id="message_" class="send-message" contenteditable @keydown="findContact()" @keyup.enter="editMessage()" @blur="editMessage()"
@@ -167,6 +227,9 @@ div.attachment-show img{
         </div>
         <div class="message-button" @click.prevent="sendMessage()">
        <img src="/storage/img/send_mess.png" width="30px">
+        </div>
+        <div class="team-button" @click="work_group_show=!work_group_show">
+            <img src="/storage/img/team.png" width="30px">
         </div>
         </div>
 
@@ -215,6 +278,8 @@ export default {
             files: [],
             show_attach: false,
             img_path: '',
+            work_group_show: false,
+            work_group: [],
 
         }
     },
@@ -273,7 +338,13 @@ export default {
             this.dotLengthHTML = message.length
                 this.is_find=true
 
-      },
+        },
+        workGroupShow()
+        {
+            this.work_group_show = true
+        },
+
+
         styleButton() {
             if (this.show)
                 return "d-none"
