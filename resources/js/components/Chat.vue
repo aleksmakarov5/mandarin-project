@@ -1,5 +1,5 @@
 <style>
-  input[type="file"]{
+  input.in-file{
     position: absolute;
     top: -500px;
   }
@@ -121,7 +121,7 @@ div.attachment-show img{
 
         <div >
 
-        <input type="file" id="files" ref="files" multiple  accept="image/png, image/gif, image/jpeg" v-on:change="handleFilesUpload()"/>
+        <input type="file" class="in-file" id="files" ref="files" multiple  accept="image/png, image/gif, image/jpeg" v-on:change="handleFilesUpload()"/>
 
     </div>
         <div class="close" @click="show=!show">
