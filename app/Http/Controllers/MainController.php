@@ -531,11 +531,11 @@ class MainController extends Controller
             // dd($request->file('userfile'));
             if (isset($request->load_name)) {
 
-                $dir = 'storage/files/' . $id . '/' . $request->load_location . '';
+                $dir = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y');
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
                 }
-                $zip_path = 'storage/files/' . $id . '/' . $request->load_location . '.zip';
+                $zip_path = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
                 $zip_bool = true;
                 if (file_exists($zip_path)) {
                     $zip = Zip::open($zip_path);
@@ -574,7 +574,7 @@ class MainController extends Controller
                         // dd($document);
                         $document->save();
                     } else {
-                        $upload_folder = '' . $id . '/' . $request->load_location;
+                        $upload_folder = '' . $id . '/' . $request->load_location . "_" . date('d-m-y');
                         $filenameWithExt = $file->getClientOriginalName(); //
                         // Имя и расширение файла
                         // Только оригинальное имя файла
@@ -603,7 +603,7 @@ class MainController extends Controller
 
                 $zip->close();
                 if ($zip_bool) {
-                    $document->file_name = $request->load_name;
+                    $document->file_name = $request->load_name . "_" . date('d-m-y');
                     $document->message_id = 0;
                     $document->mime_type = 'application/zip-compressed';
                     $document->id_application = $id;
@@ -624,7 +624,7 @@ class MainController extends Controller
                     $filenameWithExt = $file->getClientOriginalName(); //
                     // Имя и расширение файла
                     // Только оригинальное имя файла
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $filename = $request->load_name;
                     // Расширение
                     $extention = $file->getClientOriginalExtension();
                     // Путь для сохранения
@@ -636,7 +636,7 @@ class MainController extends Controller
                     // dd($file);
 
                     $document = new Attachment();
-                    $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $filename = $request->load_name . "_" . date('d-m-y');
                     $document->file_name = $filename;
                     $document->message_id = 0;
                     $document->mime_type = $file->getMimeType();
