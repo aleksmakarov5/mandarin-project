@@ -93,35 +93,35 @@ class ChatController extends Controller
             ->select('userto.name as to_name')->get();
         $chats->time = Date::parse($chat->created_at)->format('j F Yг. H:i');
 
+        if ($request->file('files'))
+            foreach ($request->file('files') as $file) {
 
-        foreach ($request->file('files') as $file) {
+                // dd($file);
+                $upload_folder = "" . $chat->id_application;
+                $filenameWithExt = $file->getClientOriginalName(); //
+                // Имя и расширение файла
+                // Только оригинальное имя файла
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Расширение
+                $extention = $file->getClientOriginalExtension();
+                // Путь для сохранения
+                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                // Сохраняем файл
+                $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
-            // dd($file);
-            $upload_folder = "" . $chat->id_application;
-            $filenameWithExt = $file->getClientOriginalName(); //
-            // Имя и расширение файла
-            // Только оригинальное имя файла
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            // Расширение
-            $extention = $file->getClientOriginalExtension();
-            // Путь для сохранения
-            $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
-            // Сохраняем файл
-            $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
+                $filename = 'storage/files/' . $chat->id_application . '/' . $fileNameToStore;
+                // dd($file);
 
-            $filename = 'storage/files/' . $chat->id_application . '/' . $fileNameToStore;
-            // dd($file);
-
-            $document = new chat_attachment();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-            $document->file_name = $filename;
-            $document->chat_id = $chat->id;
-            $document->id_application = $chat->id_application;
-            $document->file_size = $file->getSize();
-            $document->location = $fileNameToStore;
-            // dd($document);
-            $document->save();
-        }
+                $document = new chat_attachment();
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                $document->file_name = $filename;
+                $document->chat_id = $chat->id;
+                $document->id_application = $chat->id_application;
+                $document->file_size = $file->getSize();
+                $document->location = $fileNameToStore;
+                // dd($document);
+                $document->save();
+            }
 
         $chats->attachment = chat_attachment::where('chat_id', '=', $chat->id)->get();
         return $chats;
