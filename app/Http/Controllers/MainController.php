@@ -563,7 +563,7 @@ class MainController extends Controller
                         // dd($file);
 
                         $document = new Attachment();
-                        $filename = $request->load_name . "_" . date('d-m-y_hms');
+                        $filename = $request->load_name . "_" . date('d-m-y');
                         $document->file_name = $filename;
                         $document->message_id = 0;
                         $document->mime_type = $file->getMimeType();
