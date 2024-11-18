@@ -606,7 +606,10 @@ class MainController extends Controller
                     $document->message_id = 0;
                     $document->mime_type = 'application/zip-compressed';
                     $document->id_application = $id;
-                    $document->file_size = filesize($dir . '/' . $fileNameToStore);
+                    try {
+                        $document->file_size = filesize($dir . '/' . $fileNameToStore);
+                    } catch (Exception $e) {
+                    }
                     $document->id_status = $request->status_id;
                     $document->location = $request->load_location . '.zip';
                     // dd($document);
