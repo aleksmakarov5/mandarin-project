@@ -545,6 +545,7 @@ class MainController extends Controller
                 }
                 foreach ($request->file('userfile') as $file) {
                     if ($file->getClientOriginalExtension() == 'pdf') {
+                        $zip_bool = false;
                         // dd($file);
                         $upload_folder = '' . $id;
                         $filenameWithExt = $file->getClientOriginalName(); //
