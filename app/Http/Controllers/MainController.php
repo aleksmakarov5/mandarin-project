@@ -612,7 +612,7 @@ class MainController extends Controller
                     } catch (Exception $e) {
                     }
                     $document->id_status = $request->status_id;
-                    $document->location = $request->load_location . '.zip';
+                    $document->location = $request->load_location . "_" . date('d-m-y') . '.zip';
                     // dd($document);
                     $document->save();
                 }
