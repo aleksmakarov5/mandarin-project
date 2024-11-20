@@ -600,7 +600,7 @@ export default {
             }
             for (let i = 0; i < this.work_group_selected.length; i++) {
                 for (let j = 0; j < this.users.length; j++) {
-                    if ((this.users[j].id == this.work_group_selected[i])&&(!to.includes(this.work_group_selected[i])))
+                    if ((this.users[j].id == this.work_group_selected[i])&&(!to.includes(this.work_group_selected[i]))&&(this.work_group_selected[i]!=this.user_id))
                     {
                         to.push(this.work_group_selected[i])
                         let string = '@<b><span style="color:green;">' + this.users[j].name + '</span></b>&nbsp'
