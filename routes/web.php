@@ -65,6 +65,8 @@ Route::middleware("can:administrator")->group(
             ->name('user.destroy');
         Route::get('user_role/delete/{role_id}', [AdminController::class, 'destroy_role'])
             ->name('user_role.destroy');
+        Route::get('user_city/delete/{role_id}', [AdminController::class, 'destroy_city'])
+            ->name('user_city.destroy');
         Route::get('user_company/delete/{id}', [AdminController::class, 'destroy_company'])
             ->name('user_company.destroy');
         Route::prefix('/services')->group(
