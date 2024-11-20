@@ -11,7 +11,7 @@ import Troubleshootings from './components/Troubleshootings.vue';
 import Estimate from './components/Estimate.vue';
 import FactWork from './components/FactWork.vue';
 import Work from './components/Work.vue';
-
+import Zayavki from './components/Zayavki.vue';
 import SparePartMrk from './components/SparePartMrk.vue';
 import SparePartZap from './components/SparePartZap.vue';
 import SparePartAll from './components/SparePartAll.vue';
@@ -45,6 +45,7 @@ const app = createApp({
     SparePartZap,
     SparePartAll,
     SparePartKm,
+    Zayavki,
 
 
      NotifyApp,

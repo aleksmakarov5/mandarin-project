@@ -26,7 +26,9 @@
                 </ul>
             </div>
         @endif
-        <table id ="applications" class="editable">
+        <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications) }}"
+            :rout=`{{ session('rout') }}` />
+        {{-- <table id ="applications" class="editable">
             <thead>
 
                 <tr>
@@ -121,7 +123,7 @@
 
 
 
-                @foreach ($applications->all() as $application)
+                @foreach ($applications as $application)
                     <tr @if (Auth::user()->GroupId != $application->current_group && Auth::user()->GroupId != 9) class="grey" @endif>
                         <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             @if ($application->doc)
@@ -156,14 +158,7 @@
 
                                 </div>
                                 @if ($application->id_status < 5)
-                                    {{-- <div class="progress">
-                                        <div class="progress-bar"
-                                            style="width: {{ ($application->count_five / 5) * 100 }}%;"
-                                            role="progressbar" aria-valuenow="{{ $application->count_five }}"
-                                            aria-valuemin="0" aria-valuemax="5">
-                                            {{ $application->count_five }} часов
-                                        </div>
-                                    </div> --}}
+
                                     <div class="progressbar {{ $application->count_five > 0 ? '' : 'red' }}">
                                         <span
                                             style="width: {{ ($application->count_five / 5) * 100 }}%">{{ $application->count_five > 0 ? $application->count_five : 'просрочено' }}
@@ -181,7 +176,7 @@
                         @endif
                         <td onclick="window.location.href='/application/{{ $application->id }}'; return false">
                             <notify-counter :id_app={{ $application->id }} :user={{ Auth::user()->id }}
-                                :count_in="{{ json_encode($application->count) }}">
+                                :count_in="{{ json_encode($application->count) }}" />
 
                         </td>
                         <td scope="col"
@@ -277,10 +272,10 @@
                                     onclick="window.location.href='/application/{{ $application->id }}'; return false">
                                     <div
                                         class="
-       @if ($application->proc > 61) alert alert-success
-       @else
-       alert alert-danger @endif
-       ">
+                @if ($application->proc > 61) alert alert-success
+                         @else
+                    alert alert-danger @endif
+                          ">
                                         {{ $application->eco_delta_full }} ({{ $application->proc }}%)</div>
                                 </td>
                             @endcan
@@ -293,9 +288,9 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table> --}}
     </div>
-    <script>
+    {{-- <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
             var table = document.getElementById(table);
@@ -370,5 +365,5 @@
                 }
             }
         };
-    </script>
+    </script> --}}
 @endsection
