@@ -1,4 +1,14 @@
 <style>
+.add-work-group {
+    position: absolute;
+    bottom: 400px;
+    max-height: 170px;
+    width: 90%;
+    background-color: white;
+    overflow-y: scroll;
+    z-index: 9;
+}
+
   input.in-file{
     position: absolute;
     top: -500px;
@@ -7,7 +17,13 @@
   .remove-file{
     color: red;
     cursor: pointer;
-
+  }
+  .remove{
+    cursor: pointer;
+  }
+  .remove:hover {
+    opacity: 0.2;
+    transition: opacity 0.2s ease-in-out;
   }
   .add-attachment{
     position: absolute;
@@ -44,12 +60,12 @@
 .add-attachment:hover {
     background-color: #555;
     color: white;
+    opacity: 0.2;
+    transition: opacity 0.2s ease-in-out;
 }
-.team-button:hover img,
-.add-button:hover img,
-.add-attachment:hover img {
-    width: 40px;
-}
+
+
+
 div.file-listing {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
@@ -181,29 +197,51 @@ div.attachment-show img{
                 </template>
                 <template v-else>{{ user.name }}</template>
             </div>
+            </div>
+        </div>
+        <div class="add-work-group"  v-if="add_work_group_show">
+            <div class="contact-body">
+                <div class="contact-item" v-for="(group,index) in groups" @click="selectGroupToWorkGroup(group)">
+                    <i><b>{{ group.name }}</b></i>
+                </div>
+                <div class="contact-item" v-for="(user,index) in users" @click="selectContactToWorkGroup(user.id)">
+                    {{ user.name }}
+                </div>
+            </div>
+        </div>
+        <div class="add-work-group"  v-if="minus_work_group_show">
+            <div class="contact-body">
+                <div class="contact-item" v-for="(group,index) in groups" @click="minusGroupToWorkGroup(group)">
+                    <i><b>{{ group.name }}</b></i>
+                </div>
+            </div>
         </div>
 
-</div>
+
         <div class="work-group-select" v-if="work_group_show">
-<table class="table table-sm table-hover table-border">
+<table class="table ">
     <thead>
         <tr>
-            <th colspan="2">Рабочая группа</th>
             <th>
-                <img src="/storage/img/add.png" width="30" alt="">
+                <input type="checkbox" :checked="work_group_selected.length==work_groups.length" id="all_work_group" @change="workGroupCheckAll()">
+            </th>
+            <th >Рабочая группа</th>
+            <th>
+                <img class="remove" src="/storage/img/add.png" title="Добавить группу участника" width="30" alt="" @click.prevent="add_work_group_show=!add_work_group_show">
+                <img class="remove" src="/storage/img/minus.png" title="Исключить группу участников" width="30" alt="" @click.prevent="minus_work_group_show=!minus_work_group_show">
             </th>
         </tr>
     </thead>
     <tbody>
-        <tr v-for="user in users">
+        <tr v-for="user in work_groups">
             <td>
-                <input type="checkbox" :id="'work_group_'+user.id" :value="user.id" @change="workGroupChange(user.id)">
+                <input title="Исключить из текущего сообщения" :checked="work_group_selected.includes(user.id)" class="remove" type="checkbox" :id="'work_group_'+user.id" @change="workGroupChange(user.id)">
                 </td>   <td>
                 <label for="'work_group_'+group.id">{{ user.name }}</label>
             </td>
             <td>
 
-                <img src="/storage/img/delete.png" width="25" alt="">
+                <img class="remove" src="/storage/img/delete.png" width="25" alt="" title="Удалить участника" @click="minusContactToWorkGroup(user.id)">
             </td>
         </tr>
     </tbody>
@@ -229,7 +267,8 @@ div.attachment-show img{
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
         <div class="team-button" @click="work_group_show=!work_group_show">
-            <img src="/storage/img/team.png" width="30px">
+             <a title="Рабочая группа">
+            <img src="/storage/img/team.png" width="30px"></a>
         </div>
         </div>
 
@@ -258,6 +297,7 @@ export default {
         'app_id',
         'count_in',
         'in_groups',
+        'in_work_groups',
     ],
 
     data() {
@@ -278,8 +318,11 @@ export default {
             files: [],
             show_attach: false,
             img_path: '',
+            add_work_group_show: false,
             work_group_show: false,
-            work_group: [],
+            work_groups: this.in_work_groups,
+            minus_work_group_show: false,
+            work_group_selected:[],
 
         }
     },
@@ -292,19 +335,54 @@ export default {
 
     },
     mounted() {
-        console.log(this.chats)
+        this.WorkGroupSelected()
     },
     methods: {
+        workGroupCheckAll()
+        {
+            if(this.work_group_selected.length==this.work_groups.length)
+            {
+                this.work_group_selected=[]
+            }
+            else
+            {
+                this.WorkGroupSelected()
+            }
+        },
+        workGroupChange(id)
+        {
+            if(this.work_group_selected.includes(id))
+            {
+                this.work_group_selected.splice(this.work_group_selected.indexOf(id), 1);
+            }
+            else
+            {
+                this.work_group_selected.push(id);
+            }
+        },
+        WorkGroupSelected()
+        {
+            this.work_group_selected=[]
+            for (let i = 0; i < this.work_groups.length; i++)
+            {
+                this.work_group_selected[i] = this.work_groups[i].id;
+
+        }
+
+
+        },
+        addToWorkGroup() {
+
+        },
         selectGroup(group) {
-            console.log(group.members)
             let mess = document.getElementById('message_');
+
             for (let i = 0; i < group.members.length; i++) {
                 this.to.push({ id: group.members[i].id, name: group.members[i].name });
 
 
             mess.innerHTML += '@<b><span style="color:green;">' + group.members[i].name  + '</span></b>&nbsp';
             }
-            console.log(this.to)
             mess.focus();
 
             const range = document.createRange();
@@ -320,7 +398,6 @@ export default {
             axios.get(`/api/notifycount/application/${this.app_id}/${this.user_id}`)
             .then(res => {
                 this.count = res.data
-
              })
 
         },
@@ -390,6 +467,63 @@ export default {
             this.contact_show = false;
             this.is_find=false
         },
+        selectContactToWorkGroup(id) {
+
+              axios.post(`/api/chat/add_work_group`, {
+                id_application: this.app_id,
+                id_user: id,
+              })
+                .then(res => {
+                    this.work_groups = res.data
+                    this.add_work_group_show = false
+                    this.WorkGroupSelected()
+           })
+        },
+        minusContactToWorkGroup(id) {
+            if (confirm('Точно удалить?')) {
+                axios.post(`/api/chat/delete_work_group`, {
+                    id_application: this.app_id,
+                    id_user: id,
+                })
+                    .then(res => {
+                        this.work_groups = res.data
+                        this.WorkGroupSelected()
+                    })
+            }
+        },
+        selectGroupToWorkGroup(group) {
+            let gr=[]
+            for (let i = 0; i < group.members.length; i++) {
+                gr.push(group.members[i].id);
+            }
+            axios.post(`/api/chat/add_work_groups`, {
+                id_application: this.app_id,
+                group: gr,
+              })
+                .then(res => {
+                    this.work_groups = res.data
+                    this.add_work_group_show = false
+                    this.WorkGroupSelected()
+           })
+
+        },
+        minusGroupToWorkGroup(group) {
+            if (confirm('Точно исключить <'+group.name+'>?')) {
+                let gr = []
+                for (let i = 0; i < group.members.length; i++) {
+                    gr.push(group.members[i].id);
+                }
+                axios.post(`/api/chat/delete_work_groups`, {
+                    id_application: this.app_id,
+                    group: gr,
+                })
+                    .then(res => {
+                        this.work_groups = res.data
+                        this.minus_work_group_show = false
+                        this.WorkGroupSelected()
+                    })
+            }
+        },
         deleteContact() {
             let mess = document.getElementById('message_');
                  let message = mess.innerHTML
@@ -456,15 +590,40 @@ export default {
 	         }
          },
         sendMessage() {
+
             let mess = document.getElementById('message_');
             this.message = mess.innerHTML
-            let to=[]
+            mess.innerHTML = ''
+            let to = []
+            for (let i = 0; i < this.to.length; i++) {
+                to.push(this.to[i].id)
+            }
+            for (let i = 0; i < this.work_group_selected.length; i++) {
+                for (let j = 0; j < this.users.length; j++) {
+                    if ((this.users[j].id == this.work_group_selected[i])&&(!to.includes(this.work_group_selected[i])))
+                    {
+                        to.push(this.work_group_selected[i])
+                        let string = '@<b><span style="color:green;">' + this.users[j].name + '</span></b>&nbsp'
+                        mess.innerHTML += string
+                    }
+                }
+
+
+            }
+            mess.innerHTML += this.message
+            this.message = mess.innerHTML
+
+
+
+
+
+
             if (this.message.trim == '')
                 return
             else {
                  let formData = new FormData();
-                for (let i = 0; i < this.to.length; i++) {
-                    formData.append('to['+i+']',this.to[i].id)
+                for (let i = 0; i < to.length; i++) {
+                    formData.append('to['+i+']',to[i])
                 }
 
                 formData.append('message', this.message)

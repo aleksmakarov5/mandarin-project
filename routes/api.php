@@ -64,6 +64,10 @@ Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
 
     Route::post('/send', [ChatController::class, 'chat_send'])->name('chat.send');
     Route::post('/readed', [ChatController::class, 'readed'])->name('chat.readed');
+    Route::post('/add_work_group', [ChatController::class, 'add_work_group'])->name('chat.add_work_group');
+    Route::post('/add_work_groups', [ChatController::class, 'add_work_groups'])->name('chat.add_work_groups');
+    Route::post('/delete_work_group', [ChatController::class, 'delete_work_group'])->name('chat.delete_work_group');
+    Route::post('/delete_work_groups', [ChatController::class, 'delete_work_groups'])->name('chat.delete_work_groups');
     Route::post('/unreaded', [ChatController::class, 'unreaded'])->name('chat.unreaded');
     Route::delete('/{id}', [ChatController::class, 'destroy']);
     // Route::post('/', 'StoreController');

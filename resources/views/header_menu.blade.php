@@ -113,6 +113,34 @@
         return redirect()->route('applications');
     }
     $users = DB::table('users')->get();
+
+    // dd($work_groups);
+
+    $km_s = DB::table('users')
+        ->join('user_roles', function ($join) {
+            $join->where('user_roles.id_group', '=', 8)->on('user_roles.id_user', '=', 'users.id');
+        })
+        ->join('role_companies', function ($join) use ($app) {
+            $join
+                ->where('role_companies.id_company', '=', $app->our_company)
+                ->on('role_companies.id_role', '=', 'user_roles.id');
+        })
+        ->select('users.*')
+        ->get();
+
+    foreach ($km_s as $km) {
+        $work_group = App\Models\work_group::firstorcreate(['id_user' => $km->id, 'id_application' => $id]);
+    }
+
+    if ($app->id_MRK) {
+        $work_group = App\Models\work_group::firstorcreate(['id_user' => $app->id_MRK, 'id_application' => $id]);
+    }
+
+    $work_groups = App\Models\User::join('work_groups', 'work_groups.id_user', '=', 'users.id')
+        ->where('work_groups.id_application', '=', $id)
+        ->select('users.*')
+        ->get();
+    // dd($work_groups);
     $groups = DB::table('cities')->get();
     foreach ($groups as $group) {
         $group->members = DB::table('users')
@@ -148,7 +176,7 @@
     <div id="ch">
         <chat :app_id={{ $id }} :in_chats="{{ json_encode($chats) }}" :user_id={{ Auth::user()->id }}
             :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"
-            :in_groups="{{ json_encode($groups) }}"></chat>
+            :in_groups="{{ json_encode($groups) }}" :in_work_groups="{{ json_encode($work_groups) }}"></chat>
     </div>
     <div id="app">
 

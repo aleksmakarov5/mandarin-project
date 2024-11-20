@@ -16,6 +16,7 @@ use App\Models\status_chat;
 use App\Models\notify;
 use Jenssegers\Date\Date;
 use App\Models\chat_attachment;
+use App\Models\work_group;
 use Illuminate\Support\Facades\Auth;
 
 
@@ -151,6 +152,72 @@ class ChatController extends Controller
             $notif->delete();
         }
         return response()->json(['message' => 'All readed'], 200);
+    }
+    public function add_work_group(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'id_user' => 'required'
+        ]);
+        $work_group = work_group::firstOrCreate(['id_user' => $data['id_user'], 'id_application' => $data['id_application']]);
+        $work_groups = User::join('work_groups', 'work_groups.id_user', '=', 'users.id')
+            ->where('work_groups.id_application', '=', $data['id_application'])
+            ->select('users.*')
+            ->get();
+
+        return  $work_groups;
+    }
+    public function add_work_groups(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'group' => 'array|required'
+        ]);
+        foreach ($data['group'] as $user_id) {
+            $work_group = work_group::firstOrCreate(['id_user' => $user_id, 'id_application' => $data['id_application']]);
+        }
+        $work_groups = User::join('work_groups', 'work_groups.id_user', '=', 'users.id')
+            ->where('work_groups.id_application', '=', $data['id_application'])
+            ->select('users.*')
+            ->get();
+
+        return  $work_groups;
+    }
+    public function delete_work_group(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'id_user' => 'required'
+        ]);
+        $work_group = work_group::where('id_user', '=', $data['id_user'])->where('id_application', '=', $data['id_application'])->first();
+
+        $work_group->delete();
+
+        $work_groups = User::join('work_groups', 'work_groups.id_user', '=', 'users.id')
+            ->where('work_groups.id_application', '=', $data['id_application'])
+            ->select('users.*')
+            ->get();
+
+        return  $work_groups;
+    }
+    public function delete_work_groups(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'group' => 'array|required'
+        ]);
+        foreach ($data['group'] as $user_id) {
+            $work_group = work_group::where('id_user', '=', $user_id)
+                ->where('id_application', '=', $data['id_application'])
+                ->first();
+            $work_group->delete();
+        }
+        $work_groups = User::join('work_groups', 'work_groups.id_user', '=', 'users.id')
+            ->where('work_groups.id_application', '=', $data['id_application'])
+            ->select('users.*')
+            ->get();
+
+        return   $work_groups;
     }
     public function unreaded(Request $request)
     {
