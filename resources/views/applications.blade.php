@@ -26,9 +26,9 @@
                 </ul>
             </div>
         @endif
-        <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications) }}"
-            :rout=`{{ session('rout') }}` />
-        {{-- <table id ="applications" class="editable">
+        {{-- <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications) }}"
+            :rout=`{{ session('rout') }}` /> --}}
+        <table id ="applications" class="editable">
             <thead>
 
                 <tr>
@@ -158,7 +158,6 @@
 
                                 </div>
                                 @if ($application->id_status < 5)
-
                                     <div class="progressbar {{ $application->count_five > 0 ? '' : 'red' }}">
                                         <span
                                             style="width: {{ ($application->count_five / 5) * 100 }}%">{{ $application->count_five > 0 ? $application->count_five : 'просрочено' }}
@@ -288,9 +287,9 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table> --}}
+        </table>
     </div>
-    {{-- <script>
+    <script>
         function tableSearch(k, table) {
             var phrase = document.getElementById('search-text' + k);
             var table = document.getElementById(table);
@@ -365,5 +364,5 @@
                 }
             }
         };
-    </script> --}}
+    </script>
 @endsection
