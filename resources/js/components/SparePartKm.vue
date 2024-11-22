@@ -295,8 +295,10 @@
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
          },
         makeCount(n) {
-            if (!n) n = 0;
-            return parseFloat(n).toFixed(0).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
+             if (!n) n = 0;
+            let text = parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")
+            text=text.substring(0, text.indexOf("."))
+            return text;
         },
         classDanger(n) {
             if (n < 0) return 'alert alert-success';
