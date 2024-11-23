@@ -157,7 +157,7 @@
                                     </span>
 
                                 </div>
-                                @if ($application->id_status < 5)
+                        @if ($application->id_status < 5)
                                     <div class="progressbar {{ $application->count_five > 0 ? '' : 'red' }}">
                                         <span
                                             style="width: {{ ($application->count_five / 5) * 100 }}%">{{ $application->count_five > 0 ? $application->count_five : 'просрочено' }}
@@ -166,7 +166,7 @@
                                 @endif
 
 
-                            </td>
+                        </td>
                         @else
                             <td scope="col" class="alert alert-danger"
                                 onclick="window.location.href='/application/{{ $application->id }}'; return false">

@@ -148,18 +148,11 @@
 
                                 </div>
                                 <template v-if="application.id_status < 5">
-                                    <div class="progress">
-                                        <div class="progress-bar"
-                                            :style="'width: '+((application.count_five / 5) * 100 )+'%;'"
-                                            role="progressbar" :aria-valuenow="application.count_five "
-                                            aria-valuemin="0" aria-valuemax="5">
-                                            {{ application.count_five }} часов
-                                        </div>
-                                    </div>
+
                                     <div :class="'progressbar '+(application.count_five > 0 ? '' : 'red' )">
                                         <span
-                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? application.count_five : 'просрочено') }}
-                                            <span>{{ showHours(application.count_five) }}</span></span>
+                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? showHours(application.count_five)  : 'просрочено') }}
+                                            </span>
                                     </div>
                                 </template>
                             </td>
