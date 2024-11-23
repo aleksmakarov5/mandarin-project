@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\api;
 
+use App\Jobs\QueueSenderChat;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DefStudio\Telegraph\Models\TelegraphChat;
@@ -18,6 +19,8 @@ use Jenssegers\Date\Date;
 use App\Models\chat_attachment;
 use App\Models\work_group;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\user\newmessage;
 
 
 class ChatController extends Controller
@@ -77,6 +80,11 @@ class ChatController extends Controller
                             // dd($e);
                         }
                     }
+                    if ($recipient->email_notify) {
+                        $message = $data['message'];
+                        Mail::to($recipient->email)->queue(new newmessage($data['id_application'], $author->name, $data['message']));
+                    }
+
 
                     $notify->save();
                 }

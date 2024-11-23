@@ -1,16 +1,17 @@
-<x-mail::message>
-    Новое сообщение в чате заявки {{ $app_number }}
+Новое сообщение в чате заявки {{ $app_number }}
+<br>
 
-    Автор: {{ $author }}
+<b><i>Автор:</b></i> {{ $author }}
+<br>
+<b><i>Сообщение:</b></i>
+<br>
+@php
+    echo '<br>' . $message . '<br>';
+@endphp
 
-    Сообщение:
+<br> <b><i>Конец сообщения</b></i><br>
 
-    {{ $message }}
-
-
-
-    <a href="http://mandarin-portal.ru/chat/{{ $app_number }}" target="_blank">Перейти к чату можно по ссылке</a>
-
-    С уважением,<br>
-    {{ config('app.name') }}
-</x-mail::message>
+<a href="http://mandarin-portal.ru/chat/{{ $app_number }}" target="_blank">Перейти к чату можно по ссылке</a>
+<br>
+С уважением,<br>
+{{ config('app.name') }}
