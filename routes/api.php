@@ -57,6 +57,11 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');
     Route::delete('/{id}', [ApplicationController::class, 'destroy']);
+    Route::post('/add_filter', [ApplicationController::class, 'add_filter']);
+    Route::post('/delete_filter', [ApplicationController::class, 'delete_filter']);
+    Route::post('/add_filters', [ApplicationController::class, 'add_filters']);
+    Route::post('/delete_filters', [ApplicationController::class, 'delete_filters']);
+
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

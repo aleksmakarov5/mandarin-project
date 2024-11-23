@@ -43,6 +43,8 @@ use Tochka\Calendar\WorkCalendar;
 use App\Models\status_chat;
 use App\Models\status_message;
 use App\Models\telegram_action;
+use App\Models\city;
+use App\Models\user_filter;
 use Illuminate\Support\Number;
 
 
@@ -399,8 +401,9 @@ class ApplicationController extends Controller
         }
         // dd($applications);
         $applications = $this->configure($applications);
+        $city = city::all();
         session(['rout' => 'applications']);
-        return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
+        return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()]);
     }
 
     public function failures()
@@ -482,10 +485,11 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $applications = $this->configure($applications);
+        $city = city::all();
         session(['rout' => 'failures']);
 
 
-        return view('applications', ['applications' => $applications,],);
+        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
 
     public function find(Request $request)
@@ -540,8 +544,8 @@ class ApplicationController extends Controller
         $applications = $this->configure($applications);
         session(['rout' => '']);
 
-
-        return view('applications', ['applications' => $applications,],);
+        $city = city::all();
+        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
 
     // public function lawyers()
@@ -634,7 +638,8 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $applications = $this->configure($applications);
-        return view('applications', ['applications' => $applications],);
+        $city = city::all();
+        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
 
     public function temp()
@@ -680,7 +685,8 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $applications = $this->configure($applications);
-        return view('applications', ['applications' => $applications],);
+        $city = city::all();
+        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
     public function priem()
     {
@@ -725,7 +731,8 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $applications = $this->configure($applications);
-        return view('applications', ['applications' => $applications],);
+        $city = city::all();
+        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
 
     public function directions(Request $request)
@@ -996,7 +1003,8 @@ class ApplicationController extends Controller
             else
                 $application->doc = 0;
         }
-        return view('applications', ['applications' => $applications, 'only_me' => $only_me],);
+        $city = city::all();
+        return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
     // public function waiting(Request $request)
     // {

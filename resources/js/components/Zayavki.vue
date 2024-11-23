@@ -14,6 +14,24 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.city-filter{
+position: absolute;
+background-color: #fff;
+color: #212529;
+padding: 15px;
+}
+.close{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    width: 20px;
+}
+.filter{
+
+    cursor: pointer;
+
+}
 </style>
 <template>
 <div>
@@ -53,7 +71,7 @@
 
 
                 </tr>
-                <tr>
+                <tr style="heigth: 15px;">
                     <th></th>
                     <th scope="col"><input class="inp-cont" type="text" placeholder="Статус" id="search-text2"
                             @keyup="tableSearch(2,'applications')"></th>
@@ -64,8 +82,34 @@
                     </th>
                     <th scope="col"><input class="inp-cont" type="text" placeholder="МРК" id="search-text5"
                             @keyup="tableSearch(5,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Город" id="search-text6"
-                            @keyup="tableSearch(6,'applications')"></th>
+                    <th scope="col">
+                        <div class="filter" @click="city_filter_show=!city_filter_show" >
+
+                                    <img  src="/storage/img/filter.png" width="15px">
+
+                             </div>
+                            <div class="city-filter" v-if="city_filter_show">
+                            <table class="table">
+                                <thead>
+                                    <th>
+                                         <input   type="checkbox" :checked="city_selected.length==city.length" id="all_city" @change="allCitySelect()">
+                                    </th>
+                                    <th>
+                                        Все
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="c in city">
+                                        <td>
+                                            <input  :checked="city_selected.includes(c.id)"  type="checkbox" :id="'city_'+c.id" @change="citySelectedChange(c.id)">
+                                            </td>   <td>{{ c.name }}
+                                        </td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </th>
                     <th scope="col"><input class="inp-cont" type="text" placeholder="СК" id="search-text7"
                             @keyup="tableSearch(7,'applications')"></th>
                     <th scope="col"><input class="inp-cont" type="text" placeholder="СТО" id="search-text8"
@@ -108,7 +152,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="application in applications" :key="application.created_at">
+                <template v-for="application in applications">
+                <tr :key="application.created_at" v-if="city_selected.includes(application.id_city)||city_selected.length==city.length">
                     <td @click="openApplication(application.id)">
                         <template v-if="application.doc">
                             <div class="td_round  yes"> да
@@ -206,6 +251,7 @@
                         </a>
                     </td>
                 </tr>
+                </template>
             </tbody>
             </table>
 
@@ -224,14 +270,27 @@ export default {
             'user_id',
             'in_applications',
             'rout',
-        ],
+            'city',
+        'filter'
+    ],
 
-        data(){
+         data(){
 
             return{
-                applications:this.in_applications,
+                applications: this.in_applications,
+                city_selected: [],
+                city_filter_show:false
 
             }
+    },
+    mounted() {
+        for (let i = 0; i < this.filter.length; i++)
+        {
+            this.city_selected[i] = this.filter[i].id_city
+        }
+        if (this.city_selected.length == 0)
+                this.citySelected()
+
     },
 
 
@@ -240,6 +299,60 @@ export default {
 
 
     methods: {
+        citySelectedChange(id) {
+            if (this.city_selected.includes(id))
+
+            {
+                axios.post(`/api/application/delete_filter`, {
+                id_city: id,
+                id_user: this.user_id,
+              })
+                .then(res => {
+                this.city_selected.splice(this.city_selected.indexOf(id), 1);
+           })
+            }
+            else
+            {
+                 axios.post(`/api/application/add_filter`, {
+                id_city: id,
+                id_user: this.user_id,
+              })
+                .then(res => {
+                   this.city_selected.push(id);
+           })
+
+            }
+        },
+
+        allCitySelect() {
+            if (this.city_selected.length == this.city.length) {
+
+                axios.post(`/api/application/delete_filters`, {
+
+                    id_user: this.user_id,
+                })
+                    .then(res => {
+                        this.city_selected = []
+                    })
+            }
+            else {
+                this.citySelected()
+                axios.post(`/api/application/add_filters`, {
+                    id_city: this.city_selected,
+                    id_user: this.user_id,
+                })
+
+            }
+
+        },
+        citySelected() {
+            this.city_selected = []
+            for (let i = 0; i < this.city.length; i++)
+            {
+                this.city_selected[i] = this.city[i].id
+            }
+
+        },
         tableSearch(k, table){
             var phrase = document.getElementById('search-text' + k);
             var table = document.getElementById(table);
