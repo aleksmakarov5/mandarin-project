@@ -10,6 +10,7 @@ use App\Http\Controllers\api\FactWorkController;
 use App\Http\Controllers\api\WorkController;
 use App\Http\Controllers\api\SparePartController;
 use App\Http\Controllers\api\ChatController;
+use App\Http\Controllers\api\ApplicationController;
 
 
 
@@ -49,6 +50,13 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
         'update'
     ])->name('troubleshooting.update');
     Route::delete('/{id}', [TroubleshootingController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+Route::group(['namespace' => 'Application', 'prefix' => 'application'], function () {
+    // Route::delete('/{id}', [NotificationController::class, 'delete']);
+    // Route::get('/{id}', 'ShowController');
+    Route::delete('/{id}', [ApplicationController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

@@ -1,4 +1,20 @@
 
+<style type="text/css">
+.inp-cont {
+    display: block;
+    width: 10px;
+    font-family: inherit;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+</style>
 <template>
 <div>
 <table id="applications" class="editable">
@@ -39,42 +55,42 @@
                 </tr>
                 <tr>
                     <th></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Статус" id="search-text1"
-                            onkeyup="tableSearch(1,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Статус" id="search-text2"
+                            @keyup="tableSearch(2,'applications')"></th>
 
                     <th scope="col"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="" id="search-text3"
-                            onkeyup="tableSearch(3,'applications')">
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="" id="search-text4"
+                            @keyup="tableSearch(4,'applications')">
                     </th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="МРК" id="search-text4"
-                            onkeyup="tableSearch(4,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Город" id="search-text5"
-                            onkeyup="tableSearch(5,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СК" id="search-text6"
-                            onkeyup="tableSearch(6,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТО" id="search-text7"
-                            onkeyup="tableSearch(7,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Юрист" id="search-text8"
-                            onkeyup="tableSearch(8,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="№ убытка " id="search-text9"
-                            onkeyup="tableSearch(9,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ФИО клиента"
-                            id="search-text10" onkeyup="tableSearch(10,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="Телефон" id="search-text11"
-                            onkeyup="tableSearch(11,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="МРК" id="search-text5"
+                            @keyup="tableSearch(5,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Город" id="search-text6"
+                            @keyup="tableSearch(6,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="СК" id="search-text7"
+                            @keyup="tableSearch(7,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="СТО" id="search-text8"
+                            @keyup="tableSearch(8,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Юрист" id="search-text9"
+                            @keyup="tableSearch(9,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="№ убытка " id="search-text10"
+                            @keyup="tableSearch(10,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="ФИО клиента"
+                            id="search-text11" @keyup="tableSearch(11,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Телефон" id="search-text12"
+                            @keyup="tableSearch(12,'applications')"></th>
 
 
-                    <th scope="col"><input class="form-control" type="text" placeholder="Авто " id="search-text12"
-                            onkeyup="tableSearch(12,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="ГРЗ" id="search-text13"
-                            onkeyup="tableSearch(13,'applications')"> </th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Авто " id="search-text13"
+                            @keyup="tableSearch(13,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="ГРЗ" id="search-text14"
+                            @keyup="tableSearch(14,'applications')"> </th>
                     <th scope="col"></th>
 
 
-                    <th scope="col"><input class="form-control" type="text" placeholder="Тип убытка"
-                            id="search-text14" onkeyup="tableSearch(14,'applications')"></th>
-                    <th scope="col"><input class="form-control" type="text" placeholder="СТОА" id="search-text15"
-                            onkeyup="tableSearch(15,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="Тип убытка"
+                            id="search-text14" @keyup="tableSearch(16,'applications')"></th>
+                    <th scope="col"><input class="inp-cont" type="text" placeholder="СТОА" id="search-text17"
+                            @keyup="tableSearch(17,'applications')"></th>
                             <template v-if="rout=='directions'">
 
 
@@ -92,7 +108,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="application in applications" :key="application.id" @click="openApplication(application.id)">
+                <tr v-for="application in applications" :key="application.created_at" @click="openApplication(application.id)">
                     <td>
                         <template v-if="application.doc">
                             <div class="td_round  yes"> да
@@ -108,8 +124,16 @@
                                 {{ application.StatusName }}
                         </div>
                     </td>
-                    <td>
-                         <div :class="'progressbar '+ (application.count_hour > 0 ? 'blue' : 'red') ">
+                    <template v-if="application.count_hour<=0">
+
+
+                            <td scope="col" class="alert alert-danger">
+                                Просрочено
+                            </td>
+                        </template>
+                        <template v-else>
+                            <td>
+                                <div :class="'progressbar '+ (application.count_hour > 0 ? 'blue' : 'red') ">
                                     <span
                                         :style="'width: '+((application.count_hour < application.max_hour ? application.count_hour : application.max_hour) / application.max_hour) * 100 +'%'">{{ application.count_hour > 0 ? application.count_hour : 'просрочено' }}
                                         <span>
@@ -123,42 +147,71 @@
                                     </span>
 
                                 </div>
-                                <!-- @if (application.id_status < 5)
-                                    {{-- <div class="progress">
+                                <template v-if="application.id_status < 5">
+                                    <div class="progress">
                                         <div class="progress-bar"
-                                            style="width: {{ (application.count_five / 5) * 100 }}%;"
-                                            role="progressbar" aria-valuenow="{{ application.count_five }}"
+                                            :style="'width: '+((application.count_five / 5) * 100 )+'%;'"
+                                            role="progressbar" :aria-valuenow="application.count_five "
                                             aria-valuemin="0" aria-valuemax="5">
                                             {{ application.count_five }} часов
                                         </div>
-                                    </div> --}}
-                                    <div class="progressbar {{ application.count_five > 0 ? '' : 'red' }}">
+                                    </div>
+                                    <div :class="'progressbar '+(application.count_five > 0 ? '' : 'red' )">
                                         <span
-                                            style="width: {{ (application.count_five / 5) * 100 }}%">{{ application.count_five > 0 ? application.count_five : 'просрочено' }}
+                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? application.count_five : 'просрочено') }}
                                             <span>{{ show_hours(application.count_five) }}</span></span>
                                     </div>
-                                @endif -->
+                                </template>
+                            </td>
+                        </template>
 
 
-                    </td>
                     <td>
                         <notify-counter :id_app="application.id" :user="user_id"
                                 :count_in="application.count" />
                     </td>
 
-                    <td>{{ application.mrc }}</td>
+                    <td>{{ mrkFam(application.MRK_name) }}</td>
                     <td>{{ application.city }}</td>
-                    <td>{{ application.sk }}</td>
-                    <td>{{ application.sto }}</td>
-                    <td>{{ application.urist }}</td>
-                    <td>{{ application.number_of_claim }}</td>
-                    <td>{{ application.client_name }}</td>
-                    <td>{{ application.client_phone }}</td>
-                    <td>{{ application.car_brand }}</td>
-                    <td>{{ application.car_number }}</td>
-                    <td>{{ application.date }}</td>
-                    <td>{{ application.type_of_claim }}</td>
-                    <td>{{ application.stoa }}</td>
+                    <td><div :class="'td_round '+application.insurance_companies_theme">{{ application.name }}</div></td>
+                    <td><div :class="'td_round '+application.services_theme">{{ application.service_name }}</div></td>
+                    <td><div :class="'td_round '+lawyersColor(application.lawyers_color)">{{ mrkFam(application.lawyer_name) }} </div></td>
+                    <td>{{ application.numberInsuranceCompanyApplication }}</td>
+                    <td>{{ application.ClientName }}</td>
+                    <td>{{ application.ClientPhone }}</td>
+                    <td>{{ application.CarModel }}</td>
+                    <td>{{ application.gnz }}</td>
+                    <td>{{ formatDate(application.created_at) }}</td>
+                    <td>{{ application.ub_type?'Каско':'Осаго' }}</td>
+                    <td>{{ application.our_name }}</td>
+                    <template v-if="rout=='directions'">
+                                <td>
+                                    {{ application.summ_ic_full }}</td>
+                                <td>
+                                    {{ application.summ_order }}</td>
+                                <td>
+                                    {{ application.summ_service }}</td>
+                                <td>
+                                    {{ application.summ_full }}</td>
+
+                                <td>
+                                    {{ formatDate(application.ic_pay_date) }}
+                                </td>
+                                <td>
+                                    {{ formatDate(application.sto_pay_date) }}
+                                </td>
+                                <td>
+                                    <div
+                                        :class="application.proc > 61?'alert alert-success':'alert alert-danger'">
+                                        {{ application.eco_delta_full }} ({{ application.proc }}%)</div>
+                                </td>
+                    </template>
+                    <td>
+                        <a class="nav-link" @click="deleteApplication(application.id)">
+                            <img
+                                    src="/storage/img/delete.png" width="20" alt="delete">
+                        </a>
+                    </td>
                 </tr>
             </tbody>
             </table>
@@ -183,13 +236,73 @@ export default {
         data(){
 
             return{
-                applications: this.in_applications,
+                applications:[],
+                indexes: Object.keys(this.in_applications).reverse(),
 
             }
-        },
+    },
+    created() {
+        for (let i = 0; i < this.indexes.length; i++)
+        {
+
+             this.applications[i]=this.in_applications[this.indexes[i]]
+        }
+    },
+
+
+
 
 
     methods: {
+        tableSearch(k, table){
+            var phrase = document.getElementById('search-text' + k);
+            var table = document.getElementById(table);
+            var regPhrase = new RegExp(phrase.value, 'i');
+            var flag = false;
+            for (var i = 2; i < table.rows.length; i++) {
+                flag = false;
+                flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
+                if (flag) {
+                    table.rows[i].style.display = "";
+                } else {
+                    table.rows[i].style.display = "none";
+                }
+
+            }
+        },
+        deleteApplication(id) {
+            if (confirm('Точно удалить заявку №' + id + '?')) {
+                axios.delete('/api/application/' + id) .then(res => {
+                    this.applications = this.applications.splice(this.applications.indexOf(id), 1);
+                })
+            }
+            else
+            return false
+
+        },
+        formatDate(date)
+        {
+            let options = {
+                year: 'numeric',
+                month: 'numeric',
+                day: 'numeric',
+            };
+            if(date)
+                return new Date(date).toLocaleString('ru', options);
+        else return ''
+        },
+        lawyersColor(color)
+        {
+            if (color)
+                return 'no'
+            else
+                return 'yes'
+
+        },
+        mrkFam(surname) {
+            let text=surname?surname:' '
+        return text.substring(0,text.indexOf(' '))
+        },
         openApplication(id){
             window.location.href = '/application/' + id
             return false

@@ -1,10 +1,9 @@
 <template>
  <div>
-
     {{id}}
-    <p class="badge badge-blue" v-if="count.application!=0">{{count.application}}</p>
-    <p class="badge badge-red" v-if="count.message!=0">{{count.message}}</p>
-    <p class="badge badge-green" v-if="count.chat!=0">{{count.chat}}</p>
+    <template v-if="count.application!=0"><p class="badge badge-blue">{{count.application}}</p></template>
+    <template v-if="count.message!=0"><p class="badge badge-red" >{{count.message}}</p></template>
+    <template v-if="count.chat!=0"><p class="badge badge-green">{{count.chat}}</p></template>
  </div>
 </template>
 
