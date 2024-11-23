@@ -21,8 +21,11 @@ class ApplicationController extends Controller
             'id_city' => 'required',
             'id_user' => 'required'
         ]);
+
         $user_filter = user_filter::where('id_user', '=', $data['id_user'])->where('id_city', '=', $data['id_city'])->first();
-        $user_filter->delete();
+        if ($user_filter)  // if filter exists then delete it
+            $user_filter->delete();
+
         return true;
     }
     public function add_filter(Request $request)
