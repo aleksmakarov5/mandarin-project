@@ -108,8 +108,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="application in applications" :key="application.created_at" @click="openApplication(application.id)">
-                    <td>
+                <tr v-for="application in applications" :key="application.created_at">
+                    <td @click="openApplication(application.id)">
                         <template v-if="application.doc">
                             <div class="td_round  yes"> да
                                 </div>
@@ -119,7 +119,7 @@
                                 </div>
                         </template>
                     </td>
-                    <td>
+                    <td @click="openApplication(application.id)">
                         <div :class="'td_round '+application.status_theme">
                                 {{ application.StatusName }}
                         </div>
@@ -127,12 +127,12 @@
                     <template v-if="application.count_hour<=0">
 
 
-                            <td scope="col" class="alert alert-danger">
+                            <td scope="col" class="alert alert-danger" @click="openApplication(application.id)">
                                 Просрочено
                             </td>
                         </template>
                         <template v-else>
-                            <td>
+                            <td @click="openApplication(application.id)">
                                 <div :class="'progressbar '+ (application.count_hour > 0 ? 'blue' : 'red') ">
                                     <span
                                         :style="'width: '+((application.count_hour < application.max_hour ? application.count_hour : application.max_hour) / application.max_hour) * 100 +'%'">{{ application.count_hour > 0 ? application.count_hour : 'просрочено' }}
@@ -159,41 +159,41 @@
                         </template>
 
 
-                    <td>
+                    <td @click="openApplication(application.id)">
                         <notify-counter :id_app="application.id" :user="user_id"
                                 :count_in="application.count" />
                     </td>
 
-                    <td>{{ mrkFam(application.MRK_name) }}</td>
-                    <td>{{ application.city }}</td>
-                    <td><div :class="'td_round '+application.insurance_companies_theme">{{ application.name }}</div></td>
-                    <td><div :class="'td_round '+application.services_theme">{{ application.service_name }}</div></td>
-                    <td><div :class="'td_round '+lawyersColor(application.lawyers_color)">{{ mrkFam(application.lawyer_name) }} </div></td>
-                    <td>{{ application.numberInsuranceCompanyApplication }}</td>
-                    <td>{{ application.ClientName }}</td>
-                    <td>{{ application.ClientPhone }}</td>
-                    <td>{{ application.CarModel }}</td>
-                    <td>{{ application.gnz }}</td>
-                    <td>{{ formatDate(application.created_at) }}</td>
-                    <td>{{ application.ub_type?'Каско':'Осаго' }}</td>
-                    <td>{{ application.our_name }}</td>
+                    <td @click="openApplication(application.id)">{{ mrkFam(application.MRK_name) }}</td>
+                    <td @click="openApplication(application.id)">{{ application.city }}</td>
+                    <td @click="openApplication(application.id)"><div :class="'td_round '+application.insurance_companies_theme">{{ application.name }}</div></td>
+                    <td @click="openApplication(application.id)"><div :class="'td_round '+application.services_theme">{{ application.service_name }}</div></td>
+                    <td @click="openApplication(application.id)"><div :class="'td_round '+lawyersColor(application.lawyers_color)">{{ mrkFam(application.lawyer_name) }} </div></td>
+                    <td @click="openApplication(application.id)">{{ application.numberInsuranceCompanyApplication }}</td>
+                    <td @click="openApplication(application.id)">{{ application.ClientName }}</td>
+                    <td @click="openApplication(application.id)">{{ application.ClientPhone }}</td>
+                    <td @click="openApplication(application.id)">{{ application.CarModel }}</td>
+                    <td @click="openApplication(application.id)">{{ application.gnz }}</td>
+                    <td @click="openApplication(application.id)">{{ formatDate(application.created_at) }}</td>
+                    <td @click="openApplication(application.id)">{{ application.ub_type?'Каско':'Осаго' }}</td>
+                    <td @click="openApplication(application.id)">{{ application.our_name }}</td>
                     <template v-if="rout=='directions'">
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ application.summ_ic_full }}</td>
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ application.summ_order }}</td>
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ application.summ_service }}</td>
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ application.summ_full }}</td>
 
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ formatDate(application.ic_pay_date) }}
                                 </td>
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     {{ formatDate(application.sto_pay_date) }}
                                 </td>
-                                <td>
+                                <td @click="openApplication(application.id)">
                                     <div
                                         :class="application.proc > 61?'alert alert-success':'alert alert-danger'">
                                         {{ application.eco_delta_full }} ({{ application.proc }}%)</div>
