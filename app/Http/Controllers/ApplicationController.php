@@ -186,10 +186,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )
-                ->get()
-
-                ->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('km')) {
 
 
@@ -233,10 +231,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )
-                ->get()
-
-                ->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif ($only_me) {
 
 
@@ -278,10 +274,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )
-                ->get()
-
-                ->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -311,7 +305,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')->paginate(20);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -351,7 +345,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')->paginate(20);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -388,7 +382,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')->paginate(20);
         }
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -437,10 +431,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )
-                ->get()
-
-                ->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } else {
             $applications = DB::table('applications')
                 ->where('id_status', '=', '7')
@@ -475,7 +467,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         }
         // dd($applications);
         $current = carbon::now();
@@ -530,7 +523,7 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
-            )->get()->sortDesc();
+            )->get();
         // dd($applications);
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -579,7 +572,7 @@ class ApplicationController extends Controller
     //             'our_companies.our_name',
     //             'users.name as MRK_name',
     //             'cities.name as city'
-    //         )->get()->sortDesc();
+    //         )->get();
     //     // dd($applications);
 
     //     session(['rout' => 'lawyers']);
@@ -624,7 +617,8 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
-            )->get()->sortDesc();
+            )->orderBy('applications.id', 'desc')
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'archive']);
@@ -669,7 +663,8 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
-            )->get()->sortDesc();
+            )->orderBy('applications.id', 'desc')
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'temp']);
@@ -713,7 +708,8 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
-            )->get()->sortDesc();
+            )->orderBy('applications.id', 'desc')
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'priem']);
@@ -768,9 +764,8 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )
-                ->get()
-
-                ->sortDesc();
+                ->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
 
 
@@ -814,9 +809,8 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )
-                ->get()
-
-                ->sortDesc();
+                ->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif ($only_me) {
 
 
@@ -858,9 +852,8 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )
-                ->get()
-
-                ->sortDesc();
+                ->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -889,7 +882,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -928,7 +922,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -961,7 +956,8 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->get()->sortDesc();
+                )->orderBy('applications.id', 'desc')
+                ->paginate(20);
         }
         $applications = $this->configure($applications);
         session(['rout' => 'directions']);
@@ -1031,7 +1027,7 @@ class ApplicationController extends Controller
     //                 'application_statuses.status_theme',
     //                 'application_statuses.current_group',
     //                 'our_companies.our_name'
-    //             )->get()->sortDesc();
+    //             )->get();
     //     } else if (Auth::user()->GroupId == 9) {
     //         $applications = application::where(function ($query) {
     //             $query->where('id_status', '>', '7')
@@ -1057,7 +1053,7 @@ class ApplicationController extends Controller
     //                 'application_statuses.status_theme',
     //                 'application_statuses.current_group',
     //                 'our_companies.our_name'
-    //             )->get()->sortDesc();
+    //             )->get();
     //     } else {
     //         $applications = application::where(function ($query) {
     //             $query->where('id_status', '>', '7')
@@ -1084,7 +1080,7 @@ class ApplicationController extends Controller
     //                 'application_statuses.status_theme',
     //                 'application_statuses.current_group',
     //                 'our_companies.our_name'
-    //             )->get()->sortDesc();
+    //             )->get();
 
     //         // dd($applications);
     //     }
@@ -1534,7 +1530,7 @@ class ApplicationController extends Controller
             ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
             ->join('users', 'histories.id_user', '=', 'users.id')
             ->select('histories.*', 'application_statuses.StatusName', 'users.name')
-            ->get()->sortDesc();
+            ->get();
         // dd($rewiew->all()) ;
         return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
     }
@@ -1568,7 +1564,7 @@ class ApplicationController extends Controller
             ->where('application_id', '=', $id)
             // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
             // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
-            ->get()->sortDesc();
+            ->get();
         foreach ($messages as $message) {
             $message->attachment = DB::table('attachments')
                 ->where('message_id', '=', $message->id)
@@ -1691,14 +1687,14 @@ class ApplicationController extends Controller
 
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
                 ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get()->sortDesc();
+                ->get();
         } else {
             $chats = DB::table('chats')
                 ->where('id_application', '=', $id)
                 ->leftjoin('users as userfrom', 'chats.from', '=', 'userfrom.id')
                 ->leftjoin('users as userto', 'chats.to', '=', 'userto.id')
                 ->select('chats.*', 'userfrom.name as from_name', 'userto.name as to_name')
-                ->get()->sortDesc();
+                ->get();
         }
         foreach ($chats as $chat) {
             $chat->user_to = chat_rec::where('id_chat', '=', $chat->id)
@@ -3886,7 +3882,7 @@ class ApplicationController extends Controller
     }
     public function add_mail($type, $id, $message_id)
     {
-        $applications = application::where('our_company', '=', $id)->get()->sortDesc()->all();
+        $applications = application::where('our_company', '=', $id)->get()->all();
         return view('application.add_mail', [
             'applications' => $applications,
             'message_id' => $message_id,
@@ -3928,7 +3924,7 @@ class ApplicationController extends Controller
     }
     public function combine($id_comp, $id)
     {
-        $applications = application::where('our_company', '=', $id_comp)->get()->sortDesc()->all();
+        $applications = application::where('our_company', '=', $id_comp)->get()->all();
         return view('application.combine', [
             'applications' => $applications,
             'id' => $id,
@@ -4059,7 +4055,7 @@ class ApplicationController extends Controller
     }
     public function move_mail_index($id_prev, $id, $message_id)
     {
-        $applications = application::where('our_company', '=', $id)->get()->sortDesc()->all();
+        $applications = application::where('our_company', '=', $id)->get()->all();
         return view('application.move_mail', [
             'applications' => $applications,
             'message_id' => $message_id,

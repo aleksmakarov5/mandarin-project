@@ -229,18 +229,11 @@ export default {
         data(){
 
             return{
-                applications:[],
-                indexes: Object.keys(this.in_applications).reverse(),
+                applications:this.in_applications,
 
             }
     },
-    created() {
-        for (let i = 0; i < this.indexes.length; i++)
-        {
 
-             this.applications[i]=this.in_applications[this.indexes[i]]
-        }
-    },
 
 
 

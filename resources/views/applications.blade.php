@@ -26,8 +26,10 @@
                 </ul>
             </div>
         @endif
+        {{ $applications->onEachSide(5)->links('/vendor/pagination/default') }}
         <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications->all()) }}"
             :rout=`{{ session('rout') }}` />
+
         {{-- <table id ="applications" class="editable">
             <thead>
 
