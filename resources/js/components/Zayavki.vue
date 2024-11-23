@@ -151,8 +151,8 @@
 
                                     <div :class="'progressbar '+(application.count_five > 0 ? '' : 'red' )">
                                         <span
-                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? showHours(application.count_five)  : 'просрочено') }}
-                                            </span>
+                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? application.count_five : 'просрочено') }}
+                                            <span>{{ showHours(application.count_five) }}</span></span>
                                     </div>
                                 </template>
                             </td>
