@@ -19,6 +19,7 @@ position: absolute;
 background-color: #fff;
 color: #212529;
 padding: 15px;
+z-index: 2;
 }
 .close{
     position: absolute;
@@ -32,9 +33,23 @@ padding: 15px;
     cursor: pointer;
 
 }
+.back-filter{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.005);
+    z-index: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>
 <template>
 <div>
+              <div class="back-filter" v-if="city_filter_show" @click="city_filter_show=false"></div>
+
 <table id="applications" class="editable">
             <thead>
 
@@ -87,28 +102,29 @@ padding: 15px;
 
                                     <img  src="/storage/img/filter.png" width="15px">
 
-                             </div>
-                            <div class="city-filter" v-if="city_filter_show">
-                            <table class="table">
-                                <thead>
-                                    <th>
-                                         <input   type="checkbox" :checked="city_selected.length==city.length" id="all_city" @change="allCitySelect()">
-                                    </th>
-                                    <th>
-                                        Все
-                                    </th>
-                                </thead>
-                                <tbody>
-                                    <tr v-for="c in city">
-                                        <td>
-                                            <input  :checked="city_selected.includes(c.id)"  type="checkbox" :id="'city_'+c.id" @change="citySelectedChange(c.id)">
-                                            </td>   <td>{{ c.name }}
-                                        </td>
-
-                                    </tr>
-                                </tbody>
-                            </table>
                         </div>
+
+                            <div class="city-filter" v-if="city_filter_show">
+                                    <table class="table">
+                                        <thead>
+                                            <th>
+                                                <input   type="checkbox" :checked="city_selected.length==city.length" id="all_city" @change="allCitySelect()">
+                                            </th>
+                                            <th>
+                                                Все
+                                            </th>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="c in city">
+                                                <td>
+                                                    <input  :checked="city_selected.includes(c.id)"  type="checkbox" :id="'city_'+c.id" @change="citySelectedChange(c.id)">
+                                                    </td>   <td>{{ c.name }}
+                                                </td>
+
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
                     </th>
                     <th scope="col"><input class="inp-cont" type="text" placeholder="СК" id="search-text7"
                             @keyup="tableSearch(7,'applications')"></th>

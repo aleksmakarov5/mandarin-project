@@ -122,10 +122,24 @@ div.attachment-show img{
     padding: 5px;
 
 }
+.back{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.016);
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>
 <template>
 
-<div class="attachment-show" ref="attachment_show" v-if="show_attach">
+    <div class="chat" v-if="show" >
+<div class="back" @click="show=false"></div>
+        <div class="attachment-show" ref="attachment_show" v-if="show_attach">
     <div class="close" @click="show_attach=!show_attach">
 
             <img  src="/storage/img/close.png" width="20px">
@@ -133,7 +147,6 @@ div.attachment-show img{
         </div>
     <img id="attachment_img" :src="img_path">
 </div>
-    <div class="chat" v-if="show">
 
         <div >
 
