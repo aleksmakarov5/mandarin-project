@@ -5,7 +5,7 @@
     <form action="/Work/{{ $id }}/data_save" method="post">
         @csrf
         <input type="hidden" name="id_application" value="{{ $id }}">
-        @if ($id_ic == 4)
+        @if (isset($id_ic) && $id_ic == 4)
             @for ($i = 0, $j = 1; $i < count(session('works')) - 4; $i += 5, $j++)
                 <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
                 <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
@@ -37,7 +37,7 @@
                 </tr>
             </thead>
             <tbody>
-                @if ($id_ic == 4)
+                @if (isset($id_ic) && $id_ic == 4)
                     @for ($i = 0; $i < count(session('works')) - 4; $i += 5)
                         <tr>
                             <td> {{ session('works')[$i] }}
