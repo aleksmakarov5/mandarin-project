@@ -117,7 +117,7 @@ div.attachment-show img{
     width: 98%;
     background-color: white;
     overflow-y: scroll;
-    z-index: 9;
+    z-index: 3;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     padding: 5px;
 
@@ -134,10 +134,22 @@ div.attachment-show img{
     justify-content: center;
     align-items: center;
 }
+.group-back{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0);
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 </style>
 <template>
 
-    <div class="chat" v-if="show" >
+    <div class="chat" :style="show?'display: block;':'display: none;'" >
 <div class="back" @click="show=false"></div>
         <div class="attachment-show" ref="attachment_show" v-if="show_attach">
     <div class="close" @click="show_attach=!show_attach">
@@ -200,6 +212,7 @@ div.attachment-show img{
 </div>
         </div>
         <div class="contact-list" v-if="contact_show">
+
             <div class="contact-body">
                 <div :id="'find_'+index*1000" class="contact-item" v-for="(group,index) in groups" @click="selectGroup(group)">
                     <i><b>{{ group.name }}</b></i>
@@ -213,6 +226,7 @@ div.attachment-show img{
             </div>
         </div>
         <div class="add-work-group"  v-if="add_work_group_show">
+
             <div class="contact-body">
                 <div class="contact-item" v-for="(group,index) in groups" @click="selectGroupToWorkGroup(group)">
                     <i><b>{{ group.name }}</b></i>
@@ -232,6 +246,8 @@ div.attachment-show img{
 
 
         <div class="work-group-select" v-if="work_group_show">
+
+            <div class="group-back" @click="work_group_show=false"></div>
 <table class="table ">
     <thead>
         <tr>
