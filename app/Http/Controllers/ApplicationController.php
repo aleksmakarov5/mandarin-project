@@ -2254,7 +2254,7 @@ class ApplicationController extends Controller
             }
             $html = 'works.html';
             $file = file_get_contents('storage/files/' . $id . '/' . $html);
-            // $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = html_entity_decode(strip_tags($file, ['br']));
 
 
 
@@ -2640,7 +2640,7 @@ class ApplicationController extends Controller
                 // dd($price);
             } else if ($app->id_insuranceCompany == 4) {
                 // $file = str_replace("/\u{000D}", '<br/>', $file);
-                dd($file);
+                // dd($file);
 
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
@@ -2649,7 +2649,7 @@ class ApplicationController extends Controller
                 $application_start = mb_strpos($file, 'марка модель');
                 $application = mb_substr($file, $application_start);
                 $application_array = explode('<br/>', $application);
-                dd($application_array);
+                // dd($application_array);
                 $applications['CarModel'] = $application_array[1];
                 $application_start = mb_strpos($file, 'дата выпуска');
                 $application = mb_substr($file, $application_start);

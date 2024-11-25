@@ -5,12 +5,22 @@
     <form action="/Work/{{ $id }}/data_save" method="post">
         @csrf
         <input type="hidden" name="id_application" value="{{ $id }}">
-        @for ($i = 0, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
-            <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
-            <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
-            <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
-            <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
-        @endfor
+        @if ($id_ic == 4)
+            @for ($i = 0, $j = 1; $i < count(session('works')) - 4; $i += 5, $j++)
+                <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
+                <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
+                <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
+                <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 4] }}">
+            @endfor
+        @else
+            @for ($i = 0, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
+                <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
+                <input type="hidden" name="price[{{ $j }}]" value="{{ session('works')[$i + 1] }}">
+                <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
+                <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
+            @endfor
+        @endif
+
         <button class="nav-link" type="submit">Сохранить</button>
     </form>
     <form action="data_load" method="POST">
@@ -27,60 +37,116 @@
                 </tr>
             </thead>
             <tbody>
+                @if ($id_ic == 4)
+                    @for ($i = 0; $i < count(session('works')) - 4; $i += 5)
+                        <tr>
+                            <td> {{ session('works')[$i] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i }}/1">
+                                        <img src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева">
+                                    </a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                            src="/storage/img/up.png" alt="Вверх" width=25px
+                                            title="Объеденить с ячейкой сверху"></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 1] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 1])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 2] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 2])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 4] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 4])))
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 4 }}/0">Удалить</a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 4 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 4 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
 
-                @for ($i = 0; $i < count(session('works')) - 3; $i += 4)
-                    <tr>
-                        <td> {{ session('works')[$i] }}
-                            @if (!is_numeric(str_replace(' ', '', session('works')[$i])))
-                                <br>
-                                <a href="/work_edit/{{ $id }}/{{ $i }}/1">
-                                    <img src="/storage/img/left.png" alt="Влево" width=25px
-                                        title="Объеденить с ячейкой слева">
-                                </a>
-                                <a href="/work_edit/{{ $id }}/{{ $i }}/4"><img
-                                        src="/storage/img/up.png" alt="Вверх" width=25px
-                                        title="Объеденить с ячейкой сверху"></a>
-                            @endif
-                        </td>
-                        <td> {{ session('works')[$i + 1] }}
-                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 1])))
-                                <br>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/1"><img
-                                        src="/storage/img/left.png" alt="Влево" width=25px
-                                        title="Объеденить с ячейкой слева"></a>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/4"><a
-                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                        </tr>
+                    @endfor
+                @else
+                    @for ($i = 0; $i < count(session('works')) - 3; $i += 4)
+                        <tr>
+                            <td> {{ session('works')[$i] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i }}/1">
+                                        <img src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева">
+                                    </a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i }}/4"><img
                                             src="/storage/img/up.png" alt="Вверх" width=25px
-                                            title="Объеденить с ячейкой сверху"></a></a>
-                            @endif
-                        </td>
-                        <td> {{ session('works')[$i + 2] }}
-                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 2])))
-                                <br>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/1"><img
-                                        src="/storage/img/left.png" alt="Влево" width=25px
-                                        title="Объеденить с ячейкой слева"></a>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/4"><a
-                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
-                                            src="/storage/img/up.png" alt="Вверх" width=25px
-                                            title="Объеденить с ячейкой сверху"></a></a>
-                            @endif
-                        </td>
-                        <td> {{ session('works')[$i + 3] }}
-                            @if (!is_numeric(str_replace(' ', '', session('works')[$i + 3])))
-                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/0">Удалить</a>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/1"><img
-                                        src="/storage/img/left.png" alt="Влево" width=25px
-                                        title="Объеденить с ячейкой слева"></a>
-                                <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/4"><a
-                                        href="/work_edit/{{ $id }}/{{ $i }}/4"><img
-                                            src="/storage/img/up.png" alt="Вверх" width=25px
-                                            title="Объеденить с ячейкой сверху"></a></a>
-                            @endif
-                        </td>
+                                            title="Объеденить с ячейкой сверху"></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 1] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 1])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 1 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 2] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 2])))
+                                    <br>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 2 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
+                            <td> {{ session('works')[$i + 3] }}
+                                @if (!is_numeric(str_replace(' ', '', session('works')[$i + 3])))
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/0">Удалить</a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/1"><img
+                                            src="/storage/img/left.png" alt="Влево" width=25px
+                                            title="Объеденить с ячейкой слева"></a>
+                                    <a href="/work_edit/{{ $id }}/{{ $i + 3 }}/4"><a
+                                            href="/work_edit/{{ $id }}/{{ $i }}/4"><img
+                                                src="/storage/img/up.png" alt="Вверх" width=25px
+                                                title="Объеденить с ячейкой сверху"></a></a>
+                                @endif
+                            </td>
 
-                    </tr>
-                @endfor
+                        </tr>
+                    @endfor
+                @endif
+
             </tbody>
         </table>
         {{-- @if ($reset > 0)
