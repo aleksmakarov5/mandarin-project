@@ -340,6 +340,7 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
                 $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
+                $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
                 $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
                 $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
                 $estimate->save();
