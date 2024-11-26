@@ -318,7 +318,7 @@ class WordController extends Controller
                         $work->count_hours_pzn
                     ) != 0 ? bold_text(in_money(str2number($work->count_hours_pzn) * str2number($work->price))) : in_money(str2number(($work->summ)))
                 );
-                $price_repair += isset($work->count_hours_pzn) ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
+                $price_repair += isset($work->count_hours_pzn) && str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
             }
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
