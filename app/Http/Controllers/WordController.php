@@ -273,7 +273,6 @@ class WordController extends Controller
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where('price_ic_full', '<>', '0')
-                ->where('author', '=', 'NULL')
                 ->get();
             $i = 1;
             dd($SpareParts);
