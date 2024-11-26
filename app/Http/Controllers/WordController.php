@@ -302,14 +302,22 @@ class WordController extends Controller
             $price_repair = 0;
             foreach ($Works as $work) {
                 $array1[] = array(
-                    'work_name' => $work->count_hours_pzn != 0 ? bold_text(
+                    'work_name' => str2number(
+                        $work->count_hours_pzn
+                    ) != 0 ? bold_text(
                         str_replace('<', 'МЕНЕЕ ', $work->name)
                     ) : str_replace('<', 'МЕНЕЕ ', $work->name),
-                    'price_w' => $work->count_hours_pzn != 0 ? bold_text(
+                    'price_w' => str2number(
+                        $work->count_hours_pzn
+                    ) != 0 ? bold_text(
                         in_money(str2number($work->price))
                     ) : in_money(str2number($work->price)),
-                    'count_hours' => $work->count_hours_pzn != 0 ? bold_text(dec2($work->count_hours_pzn))  : dec2(str2number($work->count_hours)),
-                    'sum_w' => $work->count_hours_pzn != 0 ? bold_text(in_money($work->count_hours_pzn * str2number($work->price))) : in_money(str2number(($work->summ)))
+                    'count_hours' => str2number(
+                        $work->count_hours_pzn
+                    ) != 0 ? bold_text(dec2($work->count_hours_pzn))  : dec2(str2number($work->count_hours)),
+                    'sum_w' => str2number(
+                        $work->count_hours_pzn
+                    ) != 0 ? bold_text(in_money($work->count_hours_pzn * str2number($work->price))) : in_money(str2number(($work->summ)))
                 );
                 $price_repair += isset($work->count_hours_pzn) ? $work->count_hours_pzn * str2number($work->price) : str2number($work->summ);
             }
