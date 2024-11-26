@@ -296,8 +296,7 @@ class WordController extends Controller
             $array1 = [];
             $Works = DB::table('works')
                 ->where('id_application', '=', $id)
-                ->where('price', '<>', '0')
-                ->orderBy('npp')
+                ->where('summ', '<>', '0')
                 ->get();
             $price_repair = 0;
             foreach ($Works as $work) {
@@ -321,7 +320,7 @@ class WordController extends Controller
                 );
                 $price_repair += isset($work->count_hours_pzn) ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
             }
-            // dd($array1);
+            dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
 
 
