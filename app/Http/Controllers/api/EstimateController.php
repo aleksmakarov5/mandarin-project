@@ -26,8 +26,10 @@ class EstimateController extends Controller
                     'price_zip' => 0,
                     'price_work' => 0,
                     'price_repair_full' =>  0,
+                    'price_repair_full_md2' =>  0,
                     'price_repair_half' => 0,
-                    'emr10' => 0
+                    'emr10' => 0,
+
                 ]
             );
         // if ($estimates->emr10) {
@@ -111,6 +113,7 @@ class EstimateController extends Controller
                     'price_work' => round(str2number($request->price_work) / 1.1, 2),
                     'price_repair_full' =>  round(str2number($request->price_repair_full) / 1.1, 2),
                     'price_repair_half' => round(str2number($request->price_repair_half) / 1.1, 2),
+                    'price_repair_full_md2' => round(str2number($request->price_repair_full_md2) / 1.1, 2),
                     'emr10' => $request->emr10
 
                 ]
@@ -127,6 +130,7 @@ class EstimateController extends Controller
                     'price_work' => str2number($request->price_work),
                     'price_repair_full' =>  str2number($request->price_repair_full),
                     'price_repair_half' => str2number($request->price_repair_half),
+                    'price_repair_full_md2' =>  str2number($request->price_repair_full_md2),
                     'emr10' => $request->emr10
 
                 ]

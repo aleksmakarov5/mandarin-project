@@ -152,6 +152,22 @@
                      @keydown.enter="updateEstimate(estimate.id)">
                         </td>
                     </tr>
+
+                    <tr :class="editRepairFullMD2?'d_none':''">
+                        <th>Cтоимость восстановительного ремонта с учетом мелких деталей </th>
+                        <td  @click="editEstimateRepairFullMD2(estimate.price_repair_full_md2)">
+                            {{ makeMoney(estimate.price_repair_full_md2) }}
+
+                        </td>
+                    </tr>
+                    <tr :class="editRepairFullMD2?'':'d_none'">
+                        <th>Cтоимость восстановительного ремонта с учетом мелких деталей </th>
+                        <td>
+                            <input type="text" id="price_repair_full_md2" v-model="price_repair_full_md2" class="w-100" @blur="updateEstimate(estimate.id)"
+                     @keydown.enter="updateEstimate(estimate.id)">
+                        </td>
+                    </tr>
+
                     <tr>
                         <th>Фактическая стоимость восстановительного ремонта </th>
                         <td>{{ makeMoney(estimate.fact) }}</td>
@@ -193,8 +209,10 @@
                 editZip: false,
                 editWork: false,
                 editRepairFull: false,
+                editRepairFullMD2: false,
                 editSert: false,
                 sert: this.in_sert,
+                price_repair_full_md2: this.in_estimate.price_repair_full_md2,
                 price_sp_full: this.in_estimate.price_sp_full,
                 price_sp_half: this.in_estimate.price_sp_half,
                 price_repair: this.in_estimate.price_repair,
@@ -229,6 +247,10 @@
             }
             if (!this.estimate.price_repair_full) {
                 this.estimate.price_repair_full=0
+
+            }
+            if (!this.estimate.price_repair_full_md2) {
+                this.estimate.price_repair_full_md2=0
             }
             if (!this.estimate.sert) {
                 this.estimate.sert=0
@@ -247,9 +269,10 @@
                 this.price_paint = this.estimate.price_paint
                 this.price_zip = this.estimate.price_zip
                 this.price_work = this.estimate.price_work
-                this.price_repair_full = this.estimate.price_repair_full
+            this.price_repair_full = this.estimate.price_repair_full
+                this.price_repair_full_md2 = this.estimate.price_repair_full_md2
                 this.sert = this.estimate.sert
-                console.log(this)
+                console.log(this.estimate)
 
 
         },
@@ -258,6 +281,7 @@
             this.price_sp_full = SpFull
         this.editSpFull=true
         },
+
         editEstimateEmr(emr)
         {
             this.emr10 = emr
@@ -287,6 +311,10 @@
             this.price_repair_full = RepairFull
             this.editRepairFull=true
         },
+        editEstimateRepairFullMD2(RepairFullMD2) {
+            this.price_repair_full_md2 = RepairFullMD2
+            this.editRepairFullMD2=true
+        },
         editEstimateSert(sert) {
             this.sert = sert
             this.editSert = true
@@ -308,7 +336,8 @@
                 price_work: this.price_work,
                 price_repair_full: this.price_repair_full,
                 price_zip: this.price_zip,
-                sert: this.sert
+                sert: this.sert,
+                price_repair_full_md2: this.price_repair_full_md2,
             })
            .then(res => {
                this.getEstimate(res)
@@ -321,6 +350,7 @@
                this.editWork = false
                this.editRepairFull = false
                this.editSert = false
+               this.editRepairFullMD2 = false
 
            })
 
