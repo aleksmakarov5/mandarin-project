@@ -216,7 +216,6 @@ class WordController extends Controller
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where('price', '<>', '0')
-                ->orderBy('npp')
                 ->get();
             $i = 1;
 
@@ -273,7 +272,6 @@ class WordController extends Controller
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where('price', '<>', '0')
-                ->orderBy('npp')
                 ->get();
             $i = 1;
             $price_sp_full = 0;
