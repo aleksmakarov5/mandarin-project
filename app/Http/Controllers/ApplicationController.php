@@ -393,7 +393,7 @@ class ApplicationController extends Controller
             $application->max_hour = 48;
             $application->created = $application->created_at->toFormattedDateString();
             $application->count_five = 5 - $current->diffInHours($application->check_date);
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
                 $application->doc = $doc->id_status;
             else
