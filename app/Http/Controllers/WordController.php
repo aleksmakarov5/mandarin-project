@@ -276,6 +276,7 @@ class WordController extends Controller
                 ->where('author', '<>', '5')
                 ->get();
             $i = 1;
+            dd($SpareParts);
             $price_sp_full = 0;
             foreach ($SpareParts as $sparepart) {
                 $array[] = array(
