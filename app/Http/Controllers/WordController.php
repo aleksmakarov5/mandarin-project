@@ -216,7 +216,6 @@ class WordController extends Controller
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where('price_ic_full', '<>', '0')
-                ->where('author', '<>', '5')
                 ->get();
             $i = 1;
 
@@ -275,7 +274,7 @@ class WordController extends Controller
                 ->where('price_ic_full', '<>', '0')
                 ->get();
             $i = 1;
-            dd($SpareParts);
+            // dd($SpareParts);
             $price_sp_full = 0;
             foreach ($SpareParts as $sparepart) {
                 $array[] = array(
