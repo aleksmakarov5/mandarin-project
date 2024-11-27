@@ -1,5 +1,5 @@
 <template>
- <div>
+ <div style="display: inline;">
     <template v-if="count.application!=0"><p class="badge badge-blue">{{count.application}}</p></template>
     <template v-if="count.message!=0"><p class="badge badge-red" >{{count.message}}</p></template>
     <template v-if="count.chat!=0"><p class="badge badge-green">{{count.chat}}</p></template>
