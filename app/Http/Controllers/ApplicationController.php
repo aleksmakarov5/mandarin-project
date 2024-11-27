@@ -156,236 +156,236 @@ class ApplicationController extends Controller
         // dd($array->result->message_id);
         $only_me = 0;
         $only_me = $request->get('only_me');
+        $applications = application::all();
+        // if (Gate::allows('administrator')) {
+        //     $applications = application::where(function ($query) {
+        //         $query
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');
+        //     })
 
-        if (Gate::allows('administrator')) {
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
-            })
-
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
-                ->get();
-        } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('km')) {
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
 
 
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
-            })
-                ->join('user_roles', function ($join) {
-                    $join->where(function ($query) {
-                        $query
-                            ->where('user_roles.id_group', '=', 2)
-                            ->orWhere('user_roles.id_group', '=', 8)
-                            ->orWhere('user_roles.id_group', '=', 3);
-                    })->where('user_roles.id_user', '=', Auth::user()->id);
-                })
-                ->join('role_companies', function ($join) {
-                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-                })
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')
+        //         ->get();
+        // } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('km')) {
 
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
-                ->get();
-        } elseif ($only_me) {
+        //     $applications = application::where(function ($query) {
+        //         $query
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');
+        //     })
+        //         ->join('user_roles', function ($join) {
+        //             $join->where(function ($query) {
+        //                 $query
+        //                     ->where('user_roles.id_group', '=', 2)
+        //                     ->orWhere('user_roles.id_group', '=', 8)
+        //                     ->orWhere('user_roles.id_group', '=', 3);
+        //             })->where('user_roles.id_user', '=', Auth::user()->id);
+        //         })
+        //         ->join('role_companies', function ($join) {
+        //             $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+        //         })
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
 
 
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
-            })
-                ->join('user_roles', function ($join) {
-                    $join->where(function ($query) {
-                        $query
-                            ->where('user_roles.id_group', '=', 5);
-                    })->where('user_roles.id_user', '=', Auth::user()->id);
-                })
-                ->join('role_companies', function ($join) {
-                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-                })
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')
+        //         ->get();
+        // } elseif ($only_me) {
 
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
-                ->get();
-        } elseif (Gate::allows('service')) {
-            $applications = application::where(function ($query) {
-                $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
-            })
-                ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')->get();
-        } elseif (Gate::allows('mrk')) {
-            $applications = application::where(function ($query) {
-                $query
+        //     $applications = application::where(function ($query) {
+        //         $query
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');
+        //     })
+        //         ->join('user_roles', function ($join) {
+        //             $join->where(function ($query) {
+        //                 $query
+        //                     ->where('user_roles.id_group', '=', 5);
+        //             })->where('user_roles.id_user', '=', Auth::user()->id);
+        //         })
+        //         ->join('role_companies', function ($join) {
+        //             $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+        //         })
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
 
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
-            })
 
-                ->join('user_roles', function ($join) {
-                    $join
-                        ->where('user_roles.id_group', '=', 5)
-                        ->where('user_roles.id_user', '=', Auth::user()->id);
-                })
-                ->join('role_companies', function ($join) {
-                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-                })
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')
+        //         ->get();
+        // } elseif (Gate::allows('service')) {
+        //     $applications = application::where(function ($query) {
+        //         $query
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');;
+        //     })
+        //         ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')->get();
+        // } elseif (Gate::allows('mrk')) {
+        //     $applications = application::where(function ($query) {
+        //         $query
 
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')->get();
-            // dd($applications);
-        } else {
-            $applications = application::where(function ($query) {
-                $query
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');;
+        //     })
 
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
-            })
-                ->where(function ($query) {
-                    $query
-                        ->Where('applications.id_spm', '=', Auth::user()->id);
-                })
+        //         ->join('user_roles', function ($join) {
+        //             $join
+        //                 ->where('user_roles.id_group', '=', 5)
+        //                 ->where('user_roles.id_user', '=', Auth::user()->id);
+        //         })
+        //         ->join('role_companies', function ($join) {
+        //             $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+        //         })
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')->get();
+        //     // dd($applications);
+        // } else {
+        //     $applications = application::where(function ($query) {
+        //         $query
 
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')->get();
-        }
+        //             ->where('id_status', '<', '12')
+        //             ->where('id_status', '<>', '6')
+        //             ->where('id_status', '<>', '7');;
+        //     })
+        //         ->where(function ($query) {
+        //             $query
+        //                 ->Where('applications.id_spm', '=', Auth::user()->id);
+        //         })
+
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->select(
+        //             'applications.*',
+        //             'insurance_companies.name',
+        //             'insurance_companies.insurance_companies_theme',
+        //             'services.service_name',
+        //             'services.services_theme',
+        //             'lawyers.lawyer_name',
+        //             'lawyers.color as lawyers_color',
+        //             'application_statuses.StatusName',
+        //             'application_statuses.status_theme',
+        //             'application_statuses.current_group',
+        //             'our_companies.our_name',
+        //             'users.name as MRK_name',
+        //             'cities.name as city'
+        //         )->orderBy('applications.id', 'desc')->get();
+        // }
         $current = carbon::now();
         foreach ($applications as $application) {
 
