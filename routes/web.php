@@ -315,4 +315,4 @@ Route::middleware("auth:web")->group(
 );
 
 
-Route::get('/test/{id}/{id_mes}', [ApplicationController::class, 'test'])->name('test');
+Route::get('/test/{id}/{id_mes}', [ApplicationController::class, 'test'])->name('test-new');
