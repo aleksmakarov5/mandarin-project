@@ -35,7 +35,7 @@
 
 <body>
     @auth('web')
-        @php
+        {{-- @php
             $applications = DB::table('applications')
                 ->where(function ($query) {
                     $query->where('id_status', '<', '12')->where('id_status', '<>', '6')->where('id_status', '<>', '7');
@@ -66,7 +66,7 @@
                 ->select('notifies.*', 'text_notifies.text')
                 ->get();
             // dd($count_archive, $count_failures);
-        @endphp
+        @endphp --}}
     @endauth
     <div class="container">
         @if (!isset($hide_menu))
@@ -84,7 +84,7 @@
 
                 </div>
                 <div id="app1" class="mytoast">
-                    <post-notify :user="{{ Auth::user()->id }}" :notification_in="{{ json_encode($notifications) }}" />
+                    {{-- <post-notify :user="{{ Auth::user()->id }}" :notification_in="{{ json_encode($notifications) }}" /> --}}
                 </div>
                 <div class="d1">
                     <form action="/find" method="POST">
@@ -119,26 +119,29 @@
                         @auth('web')
                             <li class="nav-item"><a href="\applications"
                                     class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Запросы</a>
-                                <notify-buttons :user="{{ Auth::user()->id }}" :pi=`applications`
-                                    :count_in="{{ json_encode($count_applications) }}"></notify-buttons>
+                                {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`applications`
+                                    :count_in="{{ json_encode($count_applications) }}"></notify-buttons> --}}
 
                             </li>
                             <li class="nav-item"><a href="\directions"
-                                    class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a><notify-buttons
+                                    class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
+                                {{-- <notify-buttons
                                     :user="{{ Auth::user()->id }}" :pi=`directions`
-                                    :count_in="{{ json_encode($count_directions) }}"></notify-buttons>
+                                    :count_in="{{ json_encode($count_directions) }}"></notify-buttons> --}}
 
                             </li>
                             @can('company')
                                 <li class="nav-item"><a href="\priem"
-                                        class="nav-link {{ session('rout') == 'priem' ? 'tn-active' : '' }}">Приемка</a><notify-buttons
+                                        class="nav-link {{ session('rout') == 'priem' ? 'tn-active' : '' }}">Приемка</a>
+                                    {{-- <notify-buttons
                                         :user="{{ Auth::user()->id }}" :pi=`priem`
-                                        :count_in="{{ json_encode($count_priem) }}"></notify-buttons>
+                                        :count_in="{{ json_encode($count_priem) }}"></notify-buttons> --}}
                                 </li>
                                 <li class="nav-item"><a href="\failures"
-                                        class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a><notify-buttons
+                                        class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
+                                    {{-- <notify-buttons
                                         :user="{{ Auth::user()->id }}" :pi=`failures`
-                                        :count_in="{{ json_encode($count_failures) }}"></notify-buttons>
+                                        :count_in="{{ json_encode($count_failures) }}"></notify-buttons> --}}
                                 </li>
                                 {{-- <li class="nav-item"><a href="\lawyers"
                                         class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С
@@ -146,13 +149,13 @@
                                 </li> --}}
                                 <li class="nav-item"><a href="\archive"
                                         class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
-                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive`
-                                        :count_in="{{ json_encode($count_archive) }}"></notify-buttons>
+                                    {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive`
+                                        :count_in="{{ json_encode($count_archive) }}"></notify-buttons> --}}
                                 </li>
                                 <li class="nav-item"><a href="\temp"
                                         class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Временные</a>
-                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`temp`
-                                        :count_in="{{ json_encode($count_temp) }}"></notify-buttons>
+                                    {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`temp`
+                                        :count_in="{{ json_encode($count_temp) }}"></notify-buttons> --}}
                                 </li>
                                 <li class="nav-item"><a href="\message"
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
