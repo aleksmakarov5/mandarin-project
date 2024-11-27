@@ -684,7 +684,7 @@ class ApplicationController extends Controller
             else
                 $application->doc = 0;
         }
-        $applications = $this->configure($applications);
+        // $applications = $this->configure($applications);
         $city = city::all();
         return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
