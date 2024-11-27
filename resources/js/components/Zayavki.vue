@@ -221,6 +221,7 @@ z-index: 2;
 
 
                     <td @click="openApplication(application.id)">
+                        {{application.id}}
                         <notify-counter :id_app="application.id" :user="user_id"
                                 :count_in="application.count" />
                     </td>
