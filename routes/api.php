@@ -42,13 +42,13 @@ Route::group(['namespace' => 'Troubleshooting', 'prefix' => 'troubleshootings'],
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');
     Route::get('/{id}', [TroubleshootingController::class, 'show'])
-        ->name('troubleshooting.index');
+        ->name('api.troubleshooting.index');
     Route::post('/create', [TroubleshootingController::class, 'store'])
-        ->name('troubleshooting.create');
+        ->name('api.troubleshooting.create');
     Route::post('/{id}/update', [
         TroubleshootingController::class,
         'update'
-    ])->name('troubleshooting.update');
+    ])->name('api.troubleshooting.update');
     Route::delete('/{id}', [TroubleshootingController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
