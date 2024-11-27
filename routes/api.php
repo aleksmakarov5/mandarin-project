@@ -91,13 +91,13 @@ Route::group(['namespace' => 'Estimate', 'prefix' => 'estimate'], function () {
     // Route::delete('/{id}', [NotificationController::class, 'delete']);
     // Route::get('/{id}', 'ShowController');
     Route::get('/{id}', [EstimateController::class, 'show'])
-        ->name('troubleshooting.index');
+        ->name('estimate.index');
     Route::post('/create', [EstimateController::class, 'store'])
-        ->name('troubleshooting.create');
+        ->name('estimate.create');
     Route::post('/{id}/update', [
         EstimateController::class,
         'update'
-    ])->name('troubleshooting.update');
+    ])->name('estimate.update');
     Route::delete('/{id}', [EstimateController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
