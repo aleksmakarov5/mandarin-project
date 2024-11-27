@@ -84,7 +84,7 @@
 
                 </div>
                 <div id="app1" class="mytoast">
-                    {{-- <post-notify :user="{{ Auth::user()->id }}" :notification_in="{{ json_encode($notifications) }}" /> --}}
+                    <post-notify :user="{{ Auth::user()->id }}" :notification_in="{{ json_encode($notifications) }}" />
                 </div>
                 <div class="d1">
                     <form action="/find" method="POST">
