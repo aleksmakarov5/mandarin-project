@@ -36,30 +36,40 @@
 <body>
     @auth('web')
         @php
-            // $applications = DB::table('applications')
-            //     ->where(function ($query) {
-            //         $query->where('id_status', '<', '12')->where('id_status', '<>', '6')->where('id_status', '<>', '7');
-            //     })
-            //     ->get();
-            // $count_applications = notCounter($applications, Auth::user()->id);
-            // $applications = DB::table('applications')
-            //     ->where(function ($query) {
-            //         $query->where('id_status', '>', '11')->where('id_status', '<', '25');
-            //     })
-            //     ->get();
-            // $count_directions = notCounter($applications, Auth::user()->id);
-            // $applications = DB::table('applications')
-            //     ->where('id_status', '=', '7')
-            //     ->orwhere('id_status', '=', '6')
-            //     ->get();
-            // $count_failures = notCounter($applications, Auth::user()->id);
+            $applications = DB::table('applications')
+                ->where('id_status', '<>', '27')
+                ->leftjoin('status_applications', function ($join) {
+                    $join
+                        ->on('status_applications.id_application', '=', 'applications.id')
+                        ->where('status_applications.id_user', '=', Auth::user()->id)
+                        ->where('status_applications.is_readed', '=', '0');
+                })
+                ->leftjoin('status_chats', function ($join) {
+                    $join
+                        ->on('status_chats.id_application', '=', 'applications.id')
+                        ->where('status_chats.id_user', '=', Auth::user()->id)
+                        ->where('status_chats.is_readed', '=', '0');
+                })
+                ->leftjoin('status_messages', function ($join) {
+                    $join
+                        ->on('status_messages.id_application', '=', 'applications.id')
+                        ->where('status_messages.id_user', '=', Auth::user()->id)
+                        ->where('status_messages.is_readed', '=', '0');
+                })
+                ->select(
+                    'applications.id_status as status',
+                    'status_applications as app',
+                    'status_chats.id as chat',
+                    'status_messages.id as message',
+                )
+                ->get();
+            dd($applications);
+            $count_applications = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_directions = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_failures = ['application' => 0, 'chat' => 0, 'message' => 0];
 
-            // $applications = DB::table('applications')->where('id_status', '=', '25')->get();
-            // $count_archive = notCounter($applications, Auth::user()->id);
-            // $applications = DB::table('applications')->where('id_status', '=', '27')->get();
-            // $count_temp = notCounter($applications, Auth::user()->id);
-            // $applications = DB::table('applications')->where('id_status', '=', '28')->get();
-            // $count_priem = notCounter($applications, Auth::user()->id);
+            $count_archive = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_priem = ['application' => 0, 'chat' => 0, 'message' => 0];
             $notifications = DB::table('notifies')
                 ->where('notifies.id_user', '=', Auth::user()->id)
                 ->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
