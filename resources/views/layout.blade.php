@@ -35,38 +35,38 @@
 
 <body>
     @auth('web')
-        {{-- @php
-            $applications = DB::table('applications')
-                ->where(function ($query) {
-                    $query->where('id_status', '<', '12')->where('id_status', '<>', '6')->where('id_status', '<>', '7');
-                })
-                ->get();
-            $count_applications = notCounter($applications, Auth::user()->id);
-            $applications = DB::table('applications')
-                ->where(function ($query) {
-                    $query->where('id_status', '>', '11')->where('id_status', '<', '25');
-                })
-                ->get();
-            $count_directions = notCounter($applications, Auth::user()->id);
-            $applications = DB::table('applications')
-                ->where('id_status', '=', '7')
-                ->orwhere('id_status', '=', '6')
-                ->get();
-            $count_failures = notCounter($applications, Auth::user()->id);
+        @php
+            // $applications = DB::table('applications')
+            //     ->where(function ($query) {
+            //         $query->where('id_status', '<', '12')->where('id_status', '<>', '6')->where('id_status', '<>', '7');
+            //     })
+            //     ->get();
+            // $count_applications = notCounter($applications, Auth::user()->id);
+            // $applications = DB::table('applications')
+            //     ->where(function ($query) {
+            //         $query->where('id_status', '>', '11')->where('id_status', '<', '25');
+            //     })
+            //     ->get();
+            // $count_directions = notCounter($applications, Auth::user()->id);
+            // $applications = DB::table('applications')
+            //     ->where('id_status', '=', '7')
+            //     ->orwhere('id_status', '=', '6')
+            //     ->get();
+            // $count_failures = notCounter($applications, Auth::user()->id);
 
-            $applications = DB::table('applications')->where('id_status', '=', '25')->get();
-            $count_archive = notCounter($applications, Auth::user()->id);
-            $applications = DB::table('applications')->where('id_status', '=', '27')->get();
-            $count_temp = notCounter($applications, Auth::user()->id);
-            $applications = DB::table('applications')->where('id_status', '=', '28')->get();
-            $count_priem = notCounter($applications, Auth::user()->id);
+            // $applications = DB::table('applications')->where('id_status', '=', '25')->get();
+            // $count_archive = notCounter($applications, Auth::user()->id);
+            // $applications = DB::table('applications')->where('id_status', '=', '27')->get();
+            // $count_temp = notCounter($applications, Auth::user()->id);
+            // $applications = DB::table('applications')->where('id_status', '=', '28')->get();
+            // $count_priem = notCounter($applications, Auth::user()->id);
             $notifications = DB::table('notifies')
                 ->where('notifies.id_user', '=', Auth::user()->id)
                 ->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')
                 ->get();
             // dd($count_archive, $count_failures);
-        @endphp --}}
+        @endphp
     @endauth
     <div class="container">
         @if (!isset($hide_menu))
