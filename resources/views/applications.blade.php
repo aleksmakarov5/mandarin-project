@@ -26,9 +26,7 @@
                 </ul>
             </div>
         @endif
-        @if ($applications->onEachSide(5)->links('/vendor/pagination/default'))
-            {{ $applications->onEachSide(5)->links('/vendor/pagination/default') }}
-        @endif
+
         <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications->all()) }}"
             :rout=`{{ session('rout') }}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}" />
 

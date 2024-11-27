@@ -189,7 +189,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('km')) {
 
 
@@ -234,7 +234,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif ($only_me) {
 
 
@@ -277,7 +277,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -307,7 +307,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->orderBy('applications.id', 'desc')->paginate(500);
+                )->orderBy('applications.id', 'desc')->get();
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -347,7 +347,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->orderBy('applications.id', 'desc')->paginate(500);
+                )->orderBy('applications.id', 'desc')->get();
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -384,7 +384,7 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
-                )->orderBy('applications.id', 'desc')->paginate(500);
+                )->orderBy('applications.id', 'desc')->get();
         }
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -435,7 +435,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } else {
             $applications = DB::table('applications')
                 ->where('id_status', '=', '7')
@@ -471,7 +471,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         }
         // dd($applications);
         $current = carbon::now();
@@ -484,7 +484,7 @@ class ApplicationController extends Controller
             else
                 $application->doc = 0;
         }
-        $applications = $this->configure($applications);
+        // $applications = $this->configure($applications);
         $city = city::all();
         session(['rout' => 'failures']);
 
@@ -622,7 +622,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city'
             )->orderBy('applications.id', 'desc')
-            ->paginate(500);
+            ->get();
         // dd($applications);
 
         session(['rout' => 'archive']);
@@ -669,7 +669,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city'
             )->orderBy('applications.id', 'desc')
-            ->paginate(500);
+            ->get();
         // dd($applications);
 
         session(['rout' => 'temp']);
@@ -715,7 +715,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city'
             )->orderBy('applications.id', 'desc')
-            ->paginate(500);
+            ->get();
         // dd($applications);
 
         session(['rout' => 'priem']);
@@ -772,7 +772,7 @@ class ApplicationController extends Controller
                     'cities.name as city'
                 )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
 
 
@@ -817,7 +817,7 @@ class ApplicationController extends Controller
                     'cities.name as city'
                 )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif ($only_me) {
 
 
@@ -860,7 +860,7 @@ class ApplicationController extends Controller
                     'cities.name as city'
                 )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -890,7 +890,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -930,7 +930,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -964,7 +964,7 @@ class ApplicationController extends Controller
                     'users.name as MRK_name',
                     'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(500);
+                ->get();
         }
         $applications = $this->configure($applications);
         session(['rout' => 'directions']);
