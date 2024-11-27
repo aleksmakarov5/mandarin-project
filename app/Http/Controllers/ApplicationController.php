@@ -156,7 +156,6 @@ class ApplicationController extends Controller
         // dd($array->result->message_id);
         $only_me = 0;
         $only_me = $request->get('only_me');
-        $applications = application::all();
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
@@ -400,7 +399,7 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         // dd($applications);
-        // $applications = $this->configure($applications);
+        $applications = $this->configure($applications);
         $city = city::all();
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()]);

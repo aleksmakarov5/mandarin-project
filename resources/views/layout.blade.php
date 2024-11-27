@@ -58,18 +58,75 @@
                 })
                 ->select(
                     'applications.id_status as status',
-                    'status_applications as app',
+                    'status_applications.id as app',
                     'status_chats.id as chat',
                     'status_messages.id as message',
                 )
                 ->get();
-            dd($applications);
+            // dd($applications);
             $count_applications = ['application' => 0, 'chat' => 0, 'message' => 0];
             $count_directions = ['application' => 0, 'chat' => 0, 'message' => 0];
             $count_failures = ['application' => 0, 'chat' => 0, 'message' => 0];
 
             $count_archive = ['application' => 0, 'chat' => 0, 'message' => 0];
             $count_priem = ['application' => 0, 'chat' => 0, 'message' => 0];
+            foreach ($applications as $application) {
+                if ($application->status < 12 && $application->status != 6 && $application->status != 7) {
+                    if ($application->app) {
+                        $count_applications['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_applications['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_applications['message']++;
+                    }
+                }
+                if ($application->status > 11 && $application->status < 25) {
+                    if ($application->app) {
+                        $count_directions['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_directions['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_directions['message']++;
+                    }
+                }
+                if ($application->status > 5 && $application->status < 8) {
+                    if ($application->app) {
+                        $count_failures['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_failures['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_failures['message']++;
+                    }
+                }
+                if ($application->status == 25) {
+                    if ($application->app) {
+                        $count_archive['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_archive['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_archive['message']++;
+                    }
+                }
+                if ($application->status == 28) {
+                    if ($application->app) {
+                        $count_priem['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_priem['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_priem['message']++;
+                    }
+                }
+            }
             $notifications = DB::table('notifies')
                 ->where('notifies.id_user', '=', Auth::user()->id)
                 ->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -129,43 +186,36 @@
                         @auth('web')
                             <li class="nav-item"><a href="\applications"
                                     class="nav-link {{ session('rout') == 'applications' ? 'tn-active' : '' }}">Запросы</a>
-                                {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`applications`
-                                    :count_in="{{ json_encode($count_applications) }}"></notify-buttons> --}}
+                                <notify-buttons :user="{{ Auth::user()->id }}" :pi=`applications`
+                                    :count_in="{{ json_encode($count_applications) }}"></notify-buttons>
 
                             </li>
                             <li class="nav-item"><a href="\directions"
                                     class="nav-link {{ session('rout') == 'directions' ? 'tn-active' : '' }}">Направления</a>
-                                {{-- <notify-buttons
-                                    :user="{{ Auth::user()->id }}" :pi=`directions`
-                                    :count_in="{{ json_encode($count_directions) }}"></notify-buttons> --}}
+                                <notify-buttons :user="{{ Auth::user()->id }}" :pi=`directions`
+                                    :count_in="{{ json_encode($count_directions) }}"></notify-buttons>
 
                             </li>
                             @can('company')
                                 <li class="nav-item"><a href="\priem"
                                         class="nav-link {{ session('rout') == 'priem' ? 'tn-active' : '' }}">Приемка</a>
-                                    {{-- <notify-buttons
-                                        :user="{{ Auth::user()->id }}" :pi=`priem`
-                                        :count_in="{{ json_encode($count_priem) }}"></notify-buttons> --}}
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`priem`
+                                        :count_in="{{ json_encode($count_priem) }}"></notify-buttons>
                                 </li>
                                 <li class="nav-item"><a href="\failures"
                                         class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
-                                    {{-- <notify-buttons
-                                        :user="{{ Auth::user()->id }}" :pi=`failures`
-                                        :count_in="{{ json_encode($count_failures) }}"></notify-buttons> --}}
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`failures`
+                                        :count_in="{{ json_encode($count_failures) }}"></notify-buttons>
                                 </li>
-                                {{-- <li class="nav-item"><a href="\lawyers"
-                                        class="nav-link {{ session('rout') == 'lawyers' ? 'tn-active' : '' }}">С
-                                        автоюристом</a><notify-buttons :user="{{ Auth::user()->id }}" :pi=`lawyers` />
-                                </li> --}}
+
                                 <li class="nav-item"><a href="\archive"
                                         class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
-                                    {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive`
-                                        :count_in="{{ json_encode($count_archive) }}"></notify-buttons> --}}
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive`
+                                        :count_in="{{ json_encode($count_archive) }}"></notify-buttons>
                                 </li>
                                 <li class="nav-item"><a href="\temp"
                                         class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Временные</a>
-                                    {{-- <notify-buttons :user="{{ Auth::user()->id }}" :pi=`temp`
-                                        :count_in="{{ json_encode($count_temp) }}"></notify-buttons> --}}
+
                                 </li>
                                 <li class="nav-item"><a href="\message"
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
