@@ -1361,19 +1361,7 @@ form .nav-link {
 
 
 
-.chat {
-    position: fixed;
-    left: 30px;
-    bottom: 20px;
-    z-index: 5;
-    margin-right: 5px;
-    background-color: #c7dbf9;
-    padding: 10px;
-    width: 800px;
-    height: 90%;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 7px;
-}
+
 
 .message-all {
     display: flex;

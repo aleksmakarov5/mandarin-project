@@ -146,6 +146,20 @@ div.attachment-show img{
     justify-content: center;
     align-items: center;
 }
+.chat {
+    position: fixed;
+    left: 30px;
+    bottom: 20px;
+    z-index: 5;
+    margin-right: 5px;
+    background-color: #c7dbf9;
+    padding: 10px;
+    width: 450px;
+    height: 90%;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 7px;
+    max-width: 100%;
+}
 </style>
 <template>
 
@@ -286,18 +300,18 @@ div.attachment-show img{
         </div>
         <div class="add-button" @click.prevent="addDot()">
             <a title="Добавить получателя">
-       <img src="/storage/img/add.png" width="30px"></a>
+       <img src="/storage/img/add.png" width="20px"></a>
         </div>
          <div class="add-attachment" @click.prevent="addFiles()">
             <a title="Добавить картинку">
-       <img src="/storage/img/attachment.png" width="30px"></a>
+       <img src="/storage/img/attachment.png" width="20px"></a>
         </div>
         <div class="message-button" @click.prevent="sendMessage()">
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
         <div class="team-button" @click="work_group_show=!work_group_show">
              <a title="Рабочая группа">
-            <img src="/storage/img/team.png" width="30px"></a>
+            <img src="/storage/img/team.png" width="20px"></a>
         </div>
         </div>
 
