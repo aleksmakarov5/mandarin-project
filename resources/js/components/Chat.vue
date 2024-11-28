@@ -28,7 +28,7 @@
   .add-attachment{
     position: absolute;
     bottom: 105px;
-    right: 50px;
+    right: 40px;
     padding: 10px;
     color: white;
     border-radius: 25px;
