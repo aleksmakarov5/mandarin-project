@@ -82,6 +82,13 @@
       0 => 'LaravelLang\\Attributes\\ServiceProvider',
     ),
   ),
+  'laravel-lang/config' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'LaravelLang\\Config\\ServiceProvider',
+    ),
+  ),
   'laravel-lang/http-statuses' => 
   array (
     'providers' => 
@@ -103,11 +110,25 @@
       0 => 'LaravelLang\\Locales\\ServiceProvider',
     ),
   ),
+  'laravel-lang/models' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'LaravelLang\\Models\\ServiceProvider',
+    ),
+  ),
   'laravel-lang/publisher' => 
   array (
     'providers' => 
     array (
       0 => 'LaravelLang\\Publisher\\ServiceProvider',
+    ),
+  ),
+  'laravel-lang/routes' => 
+  array (
+    'providers' => 
+    array (
+      0 => 'LaravelLang\\Routes\\ServiceProvider',
     ),
   ),
   'laravel/sail' => 
@@ -140,17 +161,6 @@
     'providers' => 
     array (
       0 => 'Laravel\\Tinker\\TinkerServiceProvider',
-    ),
-  ),
-  'maatwebsite/excel' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    ),
-    'aliases' => 
-    array (
-      'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
     ),
   ),
   'nesbot/carbon' => 
