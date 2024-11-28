@@ -153,9 +153,9 @@ class ApplicationController extends Controller
     }
     public function applications(Request $request)
     {
-        Excel::store(new UsersExport, 'public/files/users.xlsx');
-        exec('libreoffice --headless --convert-to pdf "storage/files/users.xlsx" --outdir storage/files/');
-        // $mass = json_decode('[{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADcwADNgQ","width":90,"height":76,"filesize":1576},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADbQADNgQ","width":320,"height":272,"filesize":25227},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeAADNgQ","width":800,"height":679,"filesize":95924},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeQADNgQ","width":1244,"height":1056,"filesize":172992}]');
+        // Excel::store(new UsersExport, 'public/files/users.xlsx');
+        // exec('libreoffice --headless --convert-to pdf "storage/files/users.xlsx" --outdir storage/files/');
+        // // $mass = json_decode('[{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADcwADNgQ","width":90,"height":76,"filesize":1576},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADbQADNgQ","width":320,"height":272,"filesize":25227},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeAADNgQ","width":800,"height":679,"filesize":95924},{"id":"AgACAgIAAxkBAAIhpGcnFRdukvw3OjtKvHtuxYzi4ASlAAKy4jEbt8w4SZl9KUmv94ciAQADAgADeQADNgQ","width":1244,"height":1056,"filesize":172992}]');
         // $array = json_decode('{"ok":true,"result":{"message_id":9382,"from":{"id":6552669400,"is_bot":true,"first_name":"\u041c\u0430\u043d\u0434\u0430\u0440\u0438\u043d \u041f\u043e\u0440\u0442\u0430\u043b","username":"mandarin_portal_bot"},"chat":{"id":938497694,"first_name":"\u0410\u043b\u0435\u043a\u0441\u0435\u0439","last_name":"\u041c\u0430\u043a\u0430\u0440\u043e\u0432","username":"aleksey_makaro","type":"private"},"date":1730658033,"text":"\u041f\u043e\u043b\u0443\u0447\u0435\u043d\u043e \u0438\u0437\u043e\u0431\u0440\u0430\u0436\u0435\u043d\u0438\u0439: 115"}}');
         // dd($array->result->message_id);
         $only_me = 0;
