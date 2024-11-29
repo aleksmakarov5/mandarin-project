@@ -39,7 +39,7 @@
                     '',
                     str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_half)),
                 );
-            switch ($sparepart->selected_price) {
+            switch ($sparepart->selected_mrk) {
                 case 1:
                     $summ_order =
                         $summ_order +
