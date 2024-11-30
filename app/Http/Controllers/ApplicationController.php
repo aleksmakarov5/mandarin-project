@@ -63,9 +63,9 @@ class ApplicationController extends Controller
     public function configure($applications)
     {
         foreach ($applications as $application) {
-            $spareparts = $application->SpareParts;
+            $spareparts = $application->SpareParts->all();
             $estimates = $application->estimate;
-            $Works_serv = $application->works;
+            $Works_serv = $application->works->all();
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
@@ -128,18 +128,12 @@ class ApplicationController extends Controller
                 $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
             }
             $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = $application->status_applications()->where('id_user', '=', Auth::user()->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['application']++;
-            $readed = $application->status_chats()->where('id_user', '=', Auth::user()->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['chat']++;
-            $readed = $application->status_messages()->where('id_user', '=', Auth::user()->id)
-                ->where('is_readed', '=', '0')->get();
-            foreach ($readed as $read)
-                $count['message']++;
+
+            $count['application'] = $application->status_applications->count();
+
+            $count['chat'] = $application->status_chats->count();
+
+            $count['message'] = $application->status_messages->count();
             $application->count = $count;
             $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
             $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
@@ -175,11 +169,21 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-
-
-
-
-
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('SpareParts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -193,15 +197,13 @@ class ApplicationController extends Controller
                     'application_statuses.current_group',
                     'our_companies.our_name',
                     'users.name as MRK_name',
-                    'cities.name as city'
+                    'cities.name as city',
 
 
 
                 )->orderBy('applications.id', 'desc')
 
                 ->get();
-
-            //dd($applications);
         } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
@@ -766,7 +768,21 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', Auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('SpareParts')
+                ->with('works')
+                ->with('estimate')
 
                 ->select(
                     'applications.*',
