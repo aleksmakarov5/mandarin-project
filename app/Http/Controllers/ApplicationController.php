@@ -168,22 +168,24 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
                 ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
                 ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('SpareParts')
+                ->with('spareparts')
                 ->with('works')
                 ->with('estimate')
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -230,7 +232,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
 
 
                 ->select(
@@ -273,7 +291,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
 
 
                 ->select(
@@ -306,7 +340,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -346,7 +396,23 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -383,7 +449,23 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -431,7 +513,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
 
 
                 ->select(
@@ -469,7 +567,23 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -526,7 +640,23 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->with('status_chats', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_applications', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_messages', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -575,7 +705,23 @@ class ApplicationController extends Controller
     //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
     //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
     //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-    //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+    //
+    //             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+    //  ->with('status_chats', function ($query) {
+    //                     $query->where('id_user', '=', auth::user()->id)
+    //                         ->where('is_readed', '=', '0');
+    //                 })
+    //                 ->with('status_applications', function ($query) {
+    //                     $query->where('id_user', '=', auth::user()->id)
+    //                         ->where('is_readed', '=', '0');
+    //                 })
+    //                 ->with('status_messages', function ($query) {
+    //                     $query->where('id_user', '=', auth::user()->id)
+    //                         ->where('is_readed', '=', '0');
+    //                 })
+    //                 ->with('spareparts')
+    //                 ->with('works')
+    //                 ->with('estimate')
     //         ->select(
     //             'applications.*',
     //             'insurance_companies.name',
@@ -620,7 +766,23 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->with('status_chats', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_applications', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_messages', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -667,7 +829,23 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->with('status_chats', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_applications', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_messages', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -713,7 +891,23 @@ class ApplicationController extends Controller
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->with('status_chats', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_applications', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_messages', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
             ->select(
                 'applications.*',
                 'insurance_companies.name',
@@ -767,22 +961,24 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
                 ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
                 ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', Auth::user()->id)
+                    $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('SpareParts')
+                ->with('spareparts')
                 ->with('works')
                 ->with('estimate')
+
 
                 ->select(
                     'applications.*',
@@ -826,7 +1022,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
 
 
                 ->select(
@@ -869,7 +1081,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
 
 
                 ->select(
@@ -902,7 +1130,23 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -942,7 +1186,23 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -976,7 +1236,23 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('spareparts')
+                ->with('works')
+                ->with('estimate')
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -1170,7 +1446,23 @@ class ApplicationController extends Controller
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
+
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+            ->with('status_chats', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_applications', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('status_messages', function ($query) {
+                $query->where('id_user', '=', auth::user()->id)
+                    ->where('is_readed', '=', '0');
+            })
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->select(
                 'applications.*',
