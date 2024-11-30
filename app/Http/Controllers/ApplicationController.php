@@ -496,7 +496,15 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         // dd($applications);
-        $applications = $this->configure($applications);
+        // $applications = $this->configure($applications);
+        $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+
+        $count['application'] = $application->status_applications->count();
+
+        $count['chat'] = $application->status_chats->count();
+
+        $count['message'] = $application->status_messages->count();
+        $application->count = $count;
         $city = city::all();
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()]);
