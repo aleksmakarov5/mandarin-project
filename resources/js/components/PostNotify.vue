@@ -58,7 +58,7 @@
         deleteNotify(id){
             axios.delete(`/api/notifications/${id}`)
                 .then(res => {
-                    this.notifications=res.data
+                    this.notifications.splice(this.notifications.indexOf(id), 1);
 
                 })
         },
