@@ -283,10 +283,18 @@
             return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
          },
         makeCount(n) {
-            if (!n) n = 0;
+            if (!n) return '';
+            if((n=='-')) return 'нет';
             let text = parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")
             text=text.substring(0, text.indexOf("."))
-            return text;
+            if (text == '0')
+                return ''
+            else
+
+            {
+                return text;
+            }
+
         },
 
         classDanger(n) {
@@ -345,7 +353,8 @@
         },
         editPriceUsed(id)
         {
-            let price_used = document.getElementById('price_used_'+id);
+            let price_used = document.getElementById('price_used_' + id);
+
             this.price_used = price_used.innerText;
             this.updateSparePart(id)
         },

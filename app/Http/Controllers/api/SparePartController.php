@@ -81,7 +81,7 @@ class SparePartController extends Controller
         $sparepart = SparePart::findOrFail($request->id);
         $data = $this->validate($request, [
             'id_application' => 'required',
-            'name' => 'required',
+            'name' => 'nullable',
             'part_number' => 'nullable',
             'order_number' => 'nullable',
             'price_original' => 'nullable',
@@ -107,11 +107,21 @@ class SparePartController extends Controller
         if (isset($data['price_sto']))
             $data['price_sto'] = str2number($data['price_sto']);
         if (isset($data['price_analogue']))
-            $data['price_analogue'] = str2number($data['price_analogue']);
+            if ($data['price_analogue'] == '-' || strtolower($data['price_analogue']) == 'нет')
+                $data['price_analogue'] = '-';
+            else
+                $data['price_analogue'] = str2number($data['price_analogue']);
         if (isset($data['price_used']))
-            $data['price_used'] = str2number($data['price_used']);
+            if ($data['price_used'] == '-' || strtolower($data['price_used']) == 'нет')
+                $data['price_used'] = '-';
+            else
+                $data['price_used'] = str2number($data['price_used']);
+
         if (isset($data['price_original']))
-            $data['price_original'] = str2number($data['price_original']);
+            if ($data['price_original'] == '-' || strtolower($data['price_original']) == 'нет')
+                $data['price_original'] = '-';
+            else
+                $data['price_original'] = str2number($data['price_original']);
         if (isset($data['selected_mrk']) && $sparepart->selected_mrk == $data['selected_mrk'] && isset($sparepart->selected_mrk))
             $data['selected_mrk'] = 0;
         if (isset($data['selected_price']) && $sparepart->selected_price == $data['selected_price'] && isset($sparepart->selected_price))
