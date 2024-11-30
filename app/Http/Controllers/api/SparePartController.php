@@ -128,16 +128,18 @@ class SparePartController extends Controller
             $data['selected_price'] = 0;
 
         foreach ($data as $key => $value) {
-            if ($key != 'date_wait' && $key != 'date_price' && $key != 'status_id')
-                $sparepart->$key = clearHTML($value);
-            else
-            if (($key == 'date_wait' || $key == 'date_price')) {
-                if (!empty($value))
-                    $sparepart->$key = $value;
+            if (!empty($value)) {
+                if ($key != 'date_wait' && $key != 'date_price' && $key != 'status_id')
+                    $sparepart->$key = clearHTML($value);
                 else
-                    $sparepart->$key = null;
-            } else
-                $sparepart->$key = $value;
+            if (($key == 'date_wait' || $key == 'date_price')) {
+                    if (!empty($value))
+                        $sparepart->$key = $value;
+                    else
+                        $sparepart->$key = null;
+                } else
+                    $sparepart->$key = $value;
+            }
         }
         $sparepart->save();
         $res = $this->show($sparepart->id_application);
