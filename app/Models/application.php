@@ -47,4 +47,28 @@ class application extends Model
         'sto_pay_date',
         'zp_date',
     ];
+    public function works()
+    {
+        return $this->hasMany('App\Models\work', 'id_application');
+    }
+    public function SpareParts()
+    {
+        return $this->hasMany('App\Models\SparePart', 'id_application');
+    }
+    public function status_applications()
+    {
+        return $this->hasMany('App\Models\status_application', 'id_application');
+    }
+    public function estimate()
+    {
+        return $this->hasOne('App\Models\estimate', 'id_application');
+    }
+    public function status_chats()
+    {
+        return $this->hasMany('App\Models\status_chat', 'id_application');
+    }
+    public function status_messages()
+    {
+        return $this->hasMany('App\Models\status_message', 'id_application');
+    }
 }

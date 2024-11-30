@@ -63,9 +63,9 @@ class ApplicationController extends Controller
     public function configure($applications)
     {
         foreach ($applications as $application) {
-            $spareparts = DB::table('spare_parts')->where('id_application', '=', $application->id)->get();
-            $estimates = DB::table('estimates')->where('id_application', '=', $application->id)->first();
-            $Works_serv = DB::table('works')->where('id_application', '=', $application->id)->get();
+            $spareparts = $application->SpareParts;
+            $estimates = $application->estimate;
+            $Works_serv = $application->works;
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
@@ -128,15 +128,15 @@ class ApplicationController extends Controller
                 $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
             }
             $count = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $readed = status_application::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+            $readed = $application->status_applications()->where('id_user', '=', Auth::user()->id)
                 ->where('is_readed', '=', '0')->get();
             foreach ($readed as $read)
                 $count['application']++;
-            $readed = status_chat::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+            $readed = $application->status_chats()->where('id_user', '=', Auth::user()->id)
                 ->where('is_readed', '=', '0')->get();
             foreach ($readed as $read)
                 $count['chat']++;
-            $readed = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $application->id)
+            $readed = $application->status_messages()->where('id_user', '=', Auth::user()->id)
                 ->where('is_readed', '=', '0')->get();
             foreach ($readed as $read)
                 $count['message']++;
@@ -177,6 +177,9 @@ class ApplicationController extends Controller
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
 
 
+
+
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -191,9 +194,15 @@ class ApplicationController extends Controller
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
+
+
+
                 )->orderBy('applications.id', 'desc')
+
                 ->get();
-        } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('km')) {
+
+            //dd($applications);
+        } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
             $applications = application::where(function ($query) {
