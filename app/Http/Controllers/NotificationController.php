@@ -16,6 +16,7 @@ class NotificationController extends Controller
             ->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
             ->select('notifies.*', 'text_notifies.text')
             ->get();
+
         return  $notifications;
     }
     public function create()
@@ -32,7 +33,7 @@ class NotificationController extends Controller
     }
     public function delete($id)
     {
-        $notify = notify::findOrFail($id)->first();
+        $notify = notify::where('id', '=', $id)->first();
         $id = $notify->id_user;
         $notify->delete();
         $res = $this->index($id);
