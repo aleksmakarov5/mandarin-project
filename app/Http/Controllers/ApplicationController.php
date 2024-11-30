@@ -182,9 +182,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
 
                 ->select(
                     'applications.*',
@@ -246,9 +244,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
 
 
                 ->select(
@@ -305,9 +301,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
 
 
                 ->select(
@@ -354,9 +348,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -410,9 +402,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -463,9 +453,7 @@ class ApplicationController extends Controller
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
                 })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate')
+
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
