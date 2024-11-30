@@ -549,8 +549,7 @@ class ApplicationController extends Controller
                 )->orderBy('applications.id', 'desc')
                 ->get();
         } else {
-            $applications = DB::table('applications')
-                ->where('id_status', '=', '7')
+            $applications = application::where('id_status', '=', '7')
                 ->orwhere('id_status', '=', '6')
                 ->join('user_roles', function ($join) {
                     $join
@@ -627,8 +626,7 @@ class ApplicationController extends Controller
             'find' => 'required',
         ]);
 
-        $applications = DB::table('applications')
-            ->where('gnz', 'LIKE', '%' . $data['find'] . '%')
+        $applications = application::where('gnz', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('numberInsuranceCompanyApplication', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('ClientName', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('CarModel', 'LIKE', '%' . $data['find'] . '%')
@@ -696,7 +694,7 @@ class ApplicationController extends Controller
     // {
 
 
-    //     $applications = DB::table('applications')
+    //     $applications = Application
     //         ->where('id_status', '=', '26')
     //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
     //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
@@ -757,8 +755,7 @@ class ApplicationController extends Controller
     public function archive()
     {
 
-        $applications = DB::table('applications')
-            ->where('id_status', '=', '25')
+        $applications = application::where('id_status', '=', '25')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -820,8 +817,7 @@ class ApplicationController extends Controller
 
     public function temp()
     {
-        $applications = DB::table('applications')
-            ->where('id_status', '=', '27')
+        $applications = application::where('id_status', '=', '27')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -882,8 +878,7 @@ class ApplicationController extends Controller
     }
     public function priem()
     {
-        $applications = DB::table('applications')
-            ->where('id_status', '=', '28')
+        $applications = application::where('id_status', '=', '28')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1439,8 +1434,7 @@ class ApplicationController extends Controller
         session(['current' => $id]);
         $hide_menu = $request->get('hide_menu');
         // echo (session('rout'));
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        $application = application::join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
 
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
@@ -1535,8 +1529,7 @@ class ApplicationController extends Controller
         $lawyers = DB::table('lawyers')->get();
 
         $InsuranceCompany = new InsuranceCompany;
-        $application = DB::table('applications')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        $application = application::join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->select('applications.*', 'insurance_companies.name')
             ->where('applications.id', '=', $id)
             ->first();
