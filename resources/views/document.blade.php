@@ -111,24 +111,28 @@
             </tr>
         </thead>
         <tbody>
-            @if (($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6) && $application->id_status == 28)
+            @if (isset($application->id_insuranceCompany))
 
-                <tr>
-                    <th scope="col">Заявление о страховом возмещении</th>
-                    <th scope="col">
-                        @include('document.form_print', [
-                            'status_id' => 11,
-                            'template' => 'export_zayav',
-                        ])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', [
-                            'status_id' => 12,
-                            'load_name' => 'Заявление о страховом возмещении',
-                            'load_location' => 'Заявление_о_страховом_возмещении',
-                        ])
-                    </th>
-                </tr>
+
+                @if (($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6) && $application->id_status == 28)
+
+                    <tr>
+                        <th scope="col">Заявление о страховом возмещении</th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 11,
+                                'template' => 'export_zayav',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', [
+                                'status_id' => 12,
+                                'load_name' => 'Заявление о страховом возмещении',
+                                'load_location' => 'Заявление_о_страховом_возмещении',
+                            ])
+                        </th>
+                    </tr>
+                @endif
             @endif
             <tr>
                 <th scope="col">Акт первичного осмотра</th>
@@ -210,37 +214,44 @@
                     ])
                 </th>
             </tr>
-            @if ($application->id_insuranceCompany == 1)
-                <tr>
-                    <th scope="col">Информационный акт</th>
-                    <th scope="col">
-                        @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', [
-                            'status_id' => 7,
-                            'load_name' => 'Информационный акт',
-                            'load_location' => 'Информационный_акт',
-                        ])
-                    </th>
-                </tr>
+            @if (isset($application->id_insuranceCompany))
+                @if ($application->id_insuranceCompany == 1)
+                    <tr>
+                        <th scope="col">Информационный акт</th>
+                        <th scope="col">
+                            @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', [
+                                'status_id' => 7,
+                                'load_name' => 'Информационный акт',
+                                'load_location' => 'Информационный_акт',
+                            ])
+                        </th>
+                    </tr>
+                @endif
             @endif
-            @if ($application->id_insuranceCompany == 6)
+            @if (isset($application->id_insuranceCompany))
+                @if ($application->id_insuranceCompany == 6)
 
 
-                <tr>
-                    <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
-                    <th scope="col">
-                        @include('document.form_print', ['status_id' => 39, 'template' => 'export_sogl'])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', [
-                            'status_id' => 7,
-                            'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
-                            'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
-                        ])
-                    </th>
-                </tr>
+                    <tr>
+                        <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                                'status_id' => 39,
+                                'template' => 'export_sogl',
+                            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', [
+                                'status_id' => 7,
+                                'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
+                                'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
+                            ])
+                        </th>
+                    </tr>
+                @endif
             @endif
             <tr>
                 <th scope="col">Акт приема автомобиля на ремонт</th>
