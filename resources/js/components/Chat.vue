@@ -1,4 +1,19 @@
 <style>
+.chat-content {
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column-reverse;
+
+}
+.contact-list {
+    position: absolute;
+    bottom: 180px;
+    height: 170px;
+    width: 90%;
+    background-color: white;
+    overflow-y: scroll;
+    z-index: 6;
+}
 .add-work-group {
     position: absolute;
     bottom: 400px;
@@ -98,12 +113,24 @@ div.attachment img{
     z-index: 7;
     overflow: auto;
 }
-.attachment-show .close{
+.reply-show{
+    background-color: rgba(255, 255, 255, 0.17);
+    position: absolute;
+    width: 95%;
+    max-height: 10%;
+    overflow: auto;
+    z-index: 1;
+}
+
+
+
+.close{
     position: absolute;
     top: 5px;
     right: 5px;
     cursor: pointer;
     width: 20px;
+    z-index: 8;
 }
 div.attachment-show img{
 
@@ -170,7 +197,7 @@ div.attachment-show img{
 
             <img  src="/storage/img/close.png" width="20px">
 
-        </div>
+    </div>
     <img id="attachment_img" :src="img_path">
 </div>
 
@@ -184,7 +211,7 @@ div.attachment-show img{
             <img  src="/storage/img/close.png" width="20px">
 
         </div>
-        <div class="chat-content">
+        <div class="chat-content" :style="replayShow ?'max-height: 65%;':'max-height: 75%;'">
 
 
         <div v-for="chat in chats" :key="chat.id" class="message-all" @mouseover="answerShow(chat.id)" @mouseout="answerHide(chat.id)">
@@ -256,6 +283,16 @@ div.attachment-show img{
                     <i><b>{{ group.name }}</b></i>
                 </div>
             </div>
+        </div>
+         <div class="reply-show">
+           <div class="close" @click="noReply()">
+
+            <img  src="/storage/img/close.png" width="20px">
+
+        </div>
+                <div id="reply_" >
+
+                </div>
         </div>
 
 
@@ -365,7 +402,8 @@ export default {
             work_group_show: false,
             work_groups: this.in_work_groups,
             minus_work_group_show: false,
-            work_group_selected:[],
+            work_group_selected: [],
+            replayShow: false,
 
         }
     },
@@ -574,12 +612,7 @@ export default {
                      this.contact_show = false
                         this.is_find=false
                  }
-            if ((message.slice(0, this.reply.length) == this.reply)&&this.reply.length>0)
-            {
-                mess.innerHTML = message.slice(this.reply.length+1, message.length)
-                this.to.splice(0, 1);
-                this.reply=''
-                message= mess.innerHTML}
+
 
 
             let position = this.getCursorPosition()
@@ -633,7 +666,10 @@ export default {
         sendMessage() {
 
             let mess = document.getElementById('message_');
-            this.message = mess.innerHTML
+            let reply = document.getElementById('reply_')
+
+                this.message = mess.innerHTML
+
             mess.innerHTML = ''
             let to = []
             for (let i = 0; i < this.to.length; i++) {
@@ -653,6 +689,12 @@ export default {
             }
             mess.innerHTML += this.message
             this.message = mess.innerHTML
+            if (this.replayShow){
+                this.message = reply.innerHTML + '<br>' + this.message
+                this.replayShow = false
+                reply.innerHTML = ''
+            }
+
 
 
 
@@ -771,10 +813,12 @@ export default {
             }
         },
         answerReply(from, from_name, message, time) {
+            this.replayShow = true;
             this.to.push({ id: from, name: from_name });
-            let mess = document.getElementById('message_');
+            let mess = document.getElementById('reply_');
             this.reply = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<br/>__________________________</div>&nbsp';
             mess.innerHTML = this.reply;
+            mess = document.getElementById('message_');
             mess.focus();
             const range = document.createRange();
             range.selectNodeContents(mess);
@@ -783,6 +827,14 @@ export default {
             sel.removeAllRanges();
             sel.addRange(range);
 
+        },
+        noReply() {
+
+            let mess = document.getElementById('reply_');
+            mess.innerHTML = '';
+            this.replayShow = false;
+            this.to.splice(0, 1);
+            console.log(this.to);
         },
         removeFile( key ){
              this.files.splice( key, 1 );
