@@ -424,7 +424,7 @@ export default {
                 this.to.push({ id: group.members[i].id, name: group.members[i].name });
 
 
-            mess.innerHTML += '@<b><span style="color:green;">' + group.members[i].name  + '</span></b>&nbsp';
+            mess.innerHTML = '@<b><span style="color:green;">' + group.members[i].name  + '</span></b>&nbsp<br/>'+mess.innerHTML;
             }
             mess.focus();
 
@@ -483,8 +483,6 @@ export default {
         addDot() {
 
             let mess = document.getElementById('message_');
-            mess.innerHTML += '@';
-
             const range = document.createRange();
             range.selectNodeContents(mess);
             range.collapse(false);
@@ -498,7 +496,7 @@ export default {
 
             let mess = document.getElementById('message_');
             mess.innerHTML = mess.innerHTML.substring(0,this.dotLengthHTML);
-            mess.innerHTML += '<b><span style="color:green;">' + name + '</span></b>&nbsp';
+            mess.innerHTML = '@<b><span style="color:green;">' + name + '</span></b>&nbsp<br/>'+mess.innerHTML;
             mess.focus();
 
             const range = document.createRange();
@@ -646,8 +644,8 @@ export default {
                     if ((this.users[j].id == this.work_group_selected[i])&&(!to.includes(this.work_group_selected[i]))&&(this.work_group_selected[i]!=this.user_id))
                     {
                         to.push(this.work_group_selected[i])
-                        let string = '@<b><span style="color:green;">' + this.users[j].name + '</span></b>&nbsp'
-                        mess.innerHTML += string
+                        let string = '@<b><span style="color:green;">' + this.users[j].name + '</span></b>&nbsp<br/>'
+                        mess.innerHTML = string + mess.innerHTML
                     }
                 }
 
@@ -775,7 +773,7 @@ export default {
         answerReply(from, from_name, message, time) {
             this.to.push({ id: from, name: from_name });
             let mess = document.getElementById('message_');
-            this.reply = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<br>__________________________</div>&nbsp';
+            this.reply = '<div class="reply"><div class="from">' + from_name + '</div>' + message + '<br/>__________________________</div>&nbsp';
             mess.innerHTML = this.reply;
             mess.focus();
             const range = document.createRange();
