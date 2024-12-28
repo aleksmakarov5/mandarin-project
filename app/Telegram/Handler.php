@@ -272,7 +272,7 @@ class Handler extends WebhookHandler
 
         foreach ($applications as $application) {
             $carModel = str_replace('/', ' ', $application->CarModel);
-            $carModel = substr($carModel, 0, 20);
+            $carModel = substr($carModel, 0, 15);
             $keyboard[$i++] = Button::make("{$application->id}|  {$carModel} |  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
         $message = $this->chat->message("Список заявок")
