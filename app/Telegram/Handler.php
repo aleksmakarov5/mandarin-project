@@ -271,7 +271,8 @@ class Handler extends WebhookHandler
         $keyboard = [];
 
         foreach ($applications as $application) {
-            $keyboard[$i++] = Button::make("{$application->id}|  { str_replace('/','-',$application->CarModel)}|  {$application->gnz}")->action('application')->param('id', "{$application->id}");
+            $carModel = str_replace('/', '-', $application->CarModel);
+            $keyboard[$i++] = Button::make("{$application->id}|  { $carModel} |  {$application->gnz}")->action('application')->param('id', "{$application->id}");
         }
         $message = $this->chat->message("Список заявок")
             ->keyboard(
