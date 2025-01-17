@@ -73,7 +73,8 @@
     </td>
     <td  :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
         {{ sparepart.name }}</td>
-    <td  :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
+<td>
+    <!-- :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)"> -->
         {{ sparepart.part_number }}</td>
     <td  :id="'order_number_'+sparepart.id" contenteditable @blur="editOrderNumber(sparepart.id)" @keydown.enter="editOrderNumber(sparepart.id)">
         {{ sparepart.order_number }}</td>
