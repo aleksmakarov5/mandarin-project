@@ -2,7 +2,7 @@
 @section('title')
 {{ $id }} Галерея
 @endsection
-@endsection
+
 @section('main_content')
     <div class="container gallery-container">
 
