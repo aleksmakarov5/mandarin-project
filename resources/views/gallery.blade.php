@@ -1,6 +1,6 @@
 @extends('header_menu')
 @section('title')
-    Галерея
+{{ $id }} Галерея
 @endsection
 @section('main')
     <div class="container gallery-container">
