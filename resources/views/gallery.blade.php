@@ -1,8 +1,9 @@
-@extends('header_menu')
+@extends('layout')
 @section('title')
 {{ $id }} Галерея
 @endsection
-@section('main')
+@endsection
+@section('main_content')
     <div class="container gallery-container">
 
         <h1>{{ $name }}</h1>
