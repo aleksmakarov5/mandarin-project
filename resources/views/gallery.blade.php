@@ -3,7 +3,7 @@
 {{ $id }} Галерея
 @endsection
 
-@section('main')
+@section('gallery')
     <div class="container gallery-container">
 
         <h1>{{ $name }}</h1>
