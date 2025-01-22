@@ -137,7 +137,14 @@
                      @keydown.enter="updateEstimate(estimate.id)" >
                         </td>
                     </tr>
+                        <tr>
 
+                        <th>Cтоимость восстановительного ремонта (С учетом износа) </th>
+                        <td >
+                            {{ makeMoney(estimate.price_repair_half) }}
+
+                        </td>
+                    </tr>
                     <tr :class="editRepairFull?'d_none':''">
                         <th>Cтоимость восстановительного ремонта (Всего) </th>
                         <td  @click="editEstimateRepairFull(estimate.price_repair_full)">
