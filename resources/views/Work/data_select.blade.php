@@ -19,12 +19,16 @@
                 <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
                 <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 3] }}">
             @endfor
+            @if (session('works_paint'))
+
+
             @for ($i = 0, $j = 1; $i < count(session('works_paint')) - 3; $i += 4, $j++)
                 <input type="hidden" name="name_paint[{{ $j }}]" value="{{ session('works_paint')[$i] }}">
                 <input type="hidden" name="price_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 1] }}">
                 <input type="hidden" name="count_hours_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 2] }}">
                 <input type="hidden" name="summ_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 3] }}">
             @endfor
+            @endif
         @endif
 
         <button class="nav-link" type="submit">Сохранить</button>
@@ -156,6 +160,7 @@
 
             </tbody>
         </table>
+        @if (session('works_paint'))
         <h3>Окрасочные работы</h3>
         <table class="table table-striped-columns table-hover table-group-divider table-responsive">
             <thead>
@@ -264,6 +269,7 @@
 
             </tbody>
         </table>
+        @endif
         {{-- @if ($reset > 0)
             <input type="hidden" name="reset" value=1>
             <button class="nav-link" type="submit">Сброс</button>
