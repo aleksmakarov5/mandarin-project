@@ -689,21 +689,22 @@ class WorkController extends Controller
                 ]
             );
         }
-        for ($i = 1; $i <= count($name_paint); $i++) {
-            Work::updateOrCreate(
-                [
-                    'id_application' => $id_application,
-                    'name' => clearHTML($name_paint[$i]),
-                ],
-                [
-                    'price' => str2number($price_paint[$i]),
-                    'count_hours' => str2number($count_hours_paint[$i]),
-                    'summ' => str2number($summ_paint[$i]),
-                    'npp' => $i,
-                    'paint' => '1'
-                ]
-            );
-        }
+        if ($name_paint)
+            for ($i = 1; $i <= count($name_paint); $i++) {
+                Work::updateOrCreate(
+                    [
+                        'id_application' => $id_application,
+                        'name' => clearHTML($name_paint[$i]),
+                    ],
+                    [
+                        'price' => str2number($price_paint[$i]),
+                        'count_hours' => str2number($count_hours_paint[$i]),
+                        'summ' => str2number($summ_paint[$i]),
+                        'npp' => $i,
+                        'paint' => '1'
+                    ]
+                );
+            }
 
         return redirect()->route('SparePart', $id);
     }
