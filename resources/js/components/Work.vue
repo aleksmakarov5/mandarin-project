@@ -2,7 +2,7 @@
 <template>
     <div>
      <button class="accordion-est" @click="show=!show">
-            Работы по калькуляции
+            Ремонтные работы по калькуляции
         </button>
 <div  :class="show?'':'d_none'">
     <a :href="'/Work/'+app_id +'/doc_load'" class="nav-link">Загрузить данные из калькуляции</a>

@@ -33,6 +33,8 @@
     @can('company')
         <work :app_id={{ $id }} :in_summ=`{{ $summ_ic }}` :in_summ_pzn=`{{ $summ_pzn }}`
             :in_works="{{ json_encode($Works) }}"></work>
+        <work-paint :app_id={{ $id }} :in_summ=`{{ $summ_paint }}` :in_summ_pzn=`{{ $summ_pzn_paint }}` :in_works="{{ json_encode($Works_paint) }}">
+        </work-paint>
     @endcan
     <fact-work :app_id={{ $id }} :in_summ_service=`{{ $summ_service }}`
         :in_works="{{ json_encode($Works_serv) }}"></fact-work>

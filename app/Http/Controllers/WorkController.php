@@ -263,14 +263,7 @@ class WorkController extends Controller
                 $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
                 $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
                 // dd($file);
-                $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
-                // echo $work_start . 'Раб_Старт<br /><br />';
 
-                if ($work_start) {
-                    $work_end = mb_strpos($file, 'www.autoins.ru');
-
-                    $work .= mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
-                }
                 $work_array = explode('<br/>', $work);
                 // dd($work_array, $work_end);
 
@@ -301,8 +294,50 @@ class WorkController extends Controller
                     // echo $work_array[$i] . '<br />';
                 }
 
+
                 // dd($works, $work_array);
                 session(['works' => $works]);
+                $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
+                // echo $work_start . 'Раб_Старт<br /><br />';
+                $work = '';
+                if ($work_start) {
+                    $work_end = mb_strpos($file, 'www.autoins.ru');
+
+                    $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+                }
+
+                $work_array = [];
+                $works = [];
+                $work_array = explode('<br/>', $work);
+                // dd($work_array, $work_end);
+
+                $j = 0;
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час" ||
+                        trim($work_array[$i]) == "Цена" ||
+                        trim($work_array[$i]) == "Нормо-час" ||
+                        trim($work_array[$i]) == "Кол-во" ||
+                        trim($work_array[$i]) == "Сумма"
+
+
+
+                    ) {
+                    } else {
+                        if (($i - 3) % 5 != 0)
+                            $works[$j++] = $work_array[$i];
+                    }
+
+
+                    // echo $work_array[$i] . '<br />';
+                }
+                session(['works_paint' => $works]);
             } else {
                 if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
                     // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
@@ -595,6 +630,10 @@ class WorkController extends Controller
         $summ = $request['summ'];
         $price = $request['price'];
         $count_hours = $request['count_hours'];
+        $name_paint = $request['name_paint'];
+        $summ_paint = $request['summ_paint'];
+        $price_paint = $request['price_paint'];
+        $count_hours_paint = $request['count_hours_paint'];
         $id_application = $request['id_application'];
         $works = Work::where('id_application', '=', $id_application)
             ->where('summ', '<>', 0)
@@ -616,7 +655,23 @@ class WorkController extends Controller
                     'price' => str2number($price[$i]),
                     'count_hours' => str2number($count_hours[$i]),
                     'summ' => str2number($summ[$i]),
-                    'npp' => $i
+                    'npp' => $i,
+                    'paint' => 0
+                ]
+            );
+        }
+        for ($i = 1; $i <= count($name_paint); $i++) {
+            Work::updateOrCreate(
+                [
+                    'id_application' => $id_application,
+                    'name' => clearHTML($name_paint[$i]),
+                ],
+                [
+                    'price' => str2number($price_paint[$i]),
+                    'count_hours' => str2number($count_hours_paint[$i]),
+                    'summ' => str2number($summ_paint[$i]),
+                    'npp' => $i,
+                    'paint' => '1'
                 ]
             );
         }

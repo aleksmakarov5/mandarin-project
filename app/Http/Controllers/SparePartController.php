@@ -159,6 +159,12 @@ class SparePartController extends Controller
         $Works_ic = DB::table('works')
             ->where('id_application', '=', $id)
             ->where('summ', '<>', 0)
+            ->where('paint', '=', '0')
+            ->get();
+        $Works_paint = DB::table('works')
+            ->where('id_application', '=', $id)
+            ->where('summ', '<>', 0)
+            ->where('paint', '=', '1')
             ->get();
         $Works_serv = DB::table('works')
             ->where('id_application', '=', $id)
@@ -171,6 +177,12 @@ class SparePartController extends Controller
         foreach ($Works_ic as $work) {
             $summ_ic = $summ_ic + str2number($work->summ);
             $summ_pzn += str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
+        }
+        $summ_paint = 0;
+        $summ_pzn_paint = 0;
+        foreach ($Works_paint as $work) {
+            $summ_paint = $summ_paint + str2number($work->summ);
+            $summ_pzn_paint += str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
         }
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + str2number($work->price_service);
@@ -199,6 +211,9 @@ class SparePartController extends Controller
             'delta' => $delta,
             'summ_ic' => $summ_ic,
             'summ_pzn' => $summ_pzn,
+            'Works_paint' => $Works_paint->all(),
+            'summ_paint' => $summ_paint,
+            'summ_pzn_paint' => $summ_pzn_paint,
         ]);
     }
 

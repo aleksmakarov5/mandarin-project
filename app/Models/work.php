@@ -16,6 +16,7 @@ class work extends Model
         'summ',
         'npp',
         'author',
-        'count_hours_pzn'
+        'count_hours_pzn',
+        'paint'
     ];
 }
