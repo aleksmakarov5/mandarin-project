@@ -237,6 +237,7 @@ Route::middleware("auth:web")->group(
 
         Route::get('/Work/{id}', [WorkController::class, 'Work'])->name('Work');
         Route::get('/work_edit/{id}/{id_work}/{count}', [WorkController::class, 'Work_edit'])->name('Work_edit');
+        Route::get('/work_edit_paint/{id}/{id_work}/{count}', [WorkController::class, 'Work_edit_paint'])->name('Work_edit_paint');
         Route::get('Work/{id}/edit', [WorkController::class, 'edit'])
             ->name('Work.edit');
         Route::get('Work/{id}/create', [WorkController::class, 'create'])

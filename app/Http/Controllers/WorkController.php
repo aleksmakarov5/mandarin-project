@@ -623,6 +623,35 @@ class WorkController extends Controller
 
         return view('Work.data_select', ['id' => $id]);
     }
+    public function work_edit_paint($id, $id_work, $count)
+    {
+        if ($count == 0) {
+
+            $works = session('works_paint');
+            for ($i = $id_work; $i < count($works) - 1; $i++) {
+                $works[$i] = $works[$i + 1];
+            }
+            unset($works[count($works) - 1]);
+
+            // dd($works);
+            session(['works' => $works]);
+        } else {
+
+            $works = session('works_paint');
+            $works[$id_work - $count] = $works[$id_work - $count] . ' ' . $works[$id_work];
+            for ($i = $id_work; $i < count($works) - 1; $i++) {
+                $works[$i] = $works[$i + 1];
+            }
+
+            unset($works[count($works) - 1]);
+            // dd($works);
+            // unset(session('works')[count($works) - 1]);
+            session(['works_paint' => $works]);
+            // dd(session('works'));
+        }
+
+        return view('Work.data_select', ['id' => $id]);
+    }
     public function data_save(Request $request, $id)
     {
 
