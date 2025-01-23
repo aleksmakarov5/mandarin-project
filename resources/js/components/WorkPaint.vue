@@ -121,7 +121,7 @@
         deletework(id) {
             if (confirm('Точно удалить?'))
             {
-axios.delete(`/api/work/${id}`)
+axios.delete(`/api/work/${id}/paint`)
                 .then(res => {
                     this.getWorks(res)
                 console.log(res)
@@ -139,7 +139,7 @@ axios.delete(`/api/work/${id}`)
         },
         updateWork(id)
         {
-            axios.post(`/api/work/${id}/update`, {
+            axios.post(`/api/work/${id}/update_paint`, {
                 id_application: this.app_id,
                 name: this.name,
                 count_hours_pzn: this.count_hours_pzn,
@@ -154,7 +154,7 @@ axios.delete(`/api/work/${id}`)
         },
         createWork()
         {
-             axios.post(`/api/work/create`, {
+             axios.post(`/api/work/create_paint`, {
                 id_application: this.app_id,
                 name: this.name_Cr,
                 price: this.price_Cr,

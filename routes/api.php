@@ -130,6 +130,13 @@ Route::group(['namespace' => 'Work', 'prefix' => 'work'], function () {
         'update'
     ])->name('api.work.update');
     Route::delete('/{id}', [WorkController::class, 'destroy']);
+    Route::post('/create_paint', [WorkController::class, 'store_paint'])
+        ->name('api.work.create_paint');
+    Route::post('/{id}/update_paint', [
+        WorkController::class,
+        'update_paint'
+    ])->name('api.work.update_paint');
+    Route::delete('/{id}/paint', [WorkController::class, 'destroy_paint']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

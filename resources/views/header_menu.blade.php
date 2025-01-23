@@ -11,10 +11,13 @@ try {
     $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
     $summ_service = 0;
     $summ_service_ic = 0;
+    $summ_pzn=0;
     foreach ($Works_serv as $work) {
         $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
         $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
+        $summ_pzn += $work->count_hours_pzn == 0 ? str2number($work->summ) : $work->count_hours_pzn * str2number($work->price);
     }
+
 
     // dd($rewiew->all()) ;
     $summ_ic_full = 0;
@@ -232,93 +235,88 @@ foreach ($chats as $chat) {
                         @can('company')
                             <td>
                                 @if (isset($eco_delta_full))
-                                    <table class="table-count">
-                                        <tr>
-                                            <td>
-                                                Ожидаемая сумма:
-                                            </td>
-                                            <td>
-                                                Теоретическая выгода:
-                                            </td>
-                                            <td>
-                                                Остаток от полной стоимости:
-                                            </td>
-                                            <td> Стоимость запчастей</td>
-                                            <td>Стоимость работ</td>
-                                            <td>ЗП</td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <div class="alert alert-success">
-                                                    {{ in_money(
-                $sum_teor +
-                (isset($estimates->price_repair)
-                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_repair))
-                    : $summ_service_ic) +
-                (isset($estimates->price_paint)
-                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_paint))
-                    : 0) +
-                (isset($estimates->price_zip)
-                    ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
-                    : 0),
-            ) }}
-                                                    руб;
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="
-                                                            @if ($proc_t > 59) alert alert-success
-                                                            @else
-                                                            alert alert-danger @endif
-                                                            ">
-                                                    {{ in_money($teor) }} руб; ({{ $proc_t }}%)
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="
-                                                            @if ($proc > 59) alert alert-success
-                                                            @else
-                                                            alert alert-danger @endif
-                                                            ">
-                                                    {{ in_money($eco_delta_full) }} руб; ({{ $proc }}%)
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div class="alert alert-success">
-                                                    {{ in_money($summ_order) }} руб;
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="
-                                                                @if ($summ_service > 0) alert alert-success
-                                                                @else
-                                                                alert alert-danger @endif
-                                                                ">
-                                                    {{ in_money($summ_service) }} руб;
-                                                </div>
+                                                            <table class="table-count">
+                                                                <tr>
+                                                                    <td>
+                                                                        Ожидаемая сумма:
+                                                                    </td>
+                                                                    <td>
+                                                                        Теоретическая выгода:
+                                                                    </td>
+                                                                    <td>
+                                                                        Остаток от полной стоимости:
+                                                                    </td>
+                                                                    <td> Стоимость запчастей</td>
+                                                                    <td>Стоимость работ</td>
+                                                                    <td>ЗП</td>
+                                                                </tr>
+                                                                <tr>
+                                                                    <td>
+                                                                        <div class="alert alert-success">
+                                                                            {{ in_money(
+                                        $sum_teor +
+                                                    $summ_pzn +
+                                        (isset($estimates->price_zip)
+                                            ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
+                                            : 0),
+                                    ) }}
+                                                                            руб;
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="
+                                                                                    @if ($proc_t > 59) alert alert-success
+                                                                                    @else
+                                                                                    alert alert-danger @endif
+                                                                                    ">
+                                                                            {{ in_money($teor) }} руб; ({{ $proc_t }}%)
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="
+                                                                                    @if ($proc > 59) alert alert-success
+                                                                                    @else
+                                                                                    alert alert-danger @endif
+                                                                                    ">
+                                                                            {{ in_money($eco_delta_full) }} руб; ({{ $proc }}%)
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div class="alert alert-success">
+                                                                            {{ in_money($summ_order) }} руб;
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="
+                                                                                        @if ($summ_service > 0) alert alert-success
+                                                                                        @else
+                                                                                        alert alert-danger @endif
+                                                                                        ">
+                                                                            {{ in_money($summ_service) }} руб;
+                                                                        </div>
 
-                                            </td>
-                                            <td>
-                                                <div
-                                                    class="
-                                                            @if ($eco_delta_full > 0) alert alert-success
-                                                            @else
-                                                            alert alert-danger @endif
-                                                            ">
-                                                    @if ($app->our_company == 2)
-                                                        {{ in_money(($eco_delta_full * 13) / 100) }} руб;
-                                                    @else
-                                                        {{ in_money(($eco_delta_full * 20) / 100) }} руб;
-                                                    @endif
-                                                </div>
-                                            </td>
-                                        @endcan
-                                    </tr>
-                                </table>
-                            @endif
+                                                                    </td>
+                                                                    <td>
+                                                                        <div
+                                                                            class="
+                                                                                    @if ($eco_delta_full > 0) alert alert-success
+                                                                                    @else
+                                                                                    alert alert-danger @endif
+                                                                                    ">
+                                                                            @if ($app->our_company == 2)
+                                                                                {{ in_money(($eco_delta_full * 13) / 100) }} руб;
+                                                                            @else
+                                                                                {{ in_money(($eco_delta_full * 20) / 100) }} руб;
+                                                                            @endif
+                                                                        </div>
+                                                                    </td>
+                                                                @endcan
+                                                            </tr>
+                                                        </table>
+                                @endif
                             @canany(['buh', 'admin'])
                                 @if (session('rout') == 'directions')
                                     <date-pay :app_id={{ $id }}
