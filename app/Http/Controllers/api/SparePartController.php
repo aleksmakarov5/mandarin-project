@@ -137,7 +137,7 @@ class SparePartController extends Controller
                         if (!empty($value))
                             $sparepart->$key = $value;
                         else
-                            $sparepart->$key = 0;
+                            $sparepart->$key = null;
                     } else
                         $sparepart->$key = $value;
                 }
