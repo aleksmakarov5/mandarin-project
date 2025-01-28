@@ -104,7 +104,7 @@ class SparePartController extends Controller
 
         if (isset($data['price_ic_full']))
             $data['price_ic_full'] = str2number($data['price_ic_full']);
-        if (isset($data['price_sto']))
+        if (isset($data['price_sto']) || $data['price_sto'] == '0')
             $data['price_sto'] = str2number($data['price_sto']);
         if (isset($data['price_analogue']))
             if ($data['price_analogue'] == '-' || strtolower($data['price_analogue']) == 'нет')
