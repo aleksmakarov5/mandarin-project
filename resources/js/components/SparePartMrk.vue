@@ -21,6 +21,7 @@
                         <th scope="col">Оригинал</th>
                         <th scope="col">Аналог</th>
                         <th scope="col">Б/у</th>
+                        <th scope="col">СТО</th>
 
                         <th scope="col">Разница </th>
 
@@ -43,7 +44,7 @@
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
                         <th scope="col">{{ makeMoney(summ_sto) }}</th>
-                        <th scope="col" colspan="3"></th>
+                        <th scope="col" colspan="4"></th>
                         <th scope="col">
 
                                 <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
@@ -88,6 +89,17 @@
         {{ makeCount(sparepart.price_analogue) }}</td>
         <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @dblclick.prevent="updateSparePartMrk(sparepart.id,3,sparepart.name,index)">
         {{ makeCount(sparepart.price_used) }}</td>
+        <td  :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)" :id="'price_service_'+sparepart.id"  @dblclick.prevent="updateSparePartMrk(sparepart.id,4,sparepart.name,index)">
+        <template v-if="sparepart.selected_service==1">
+                    О
+                </template>
+                <template v-if="sparepart.selected_service==2">
+                    А
+                </template>
+                <template v-if="sparepart.selected_service==3">
+                    Б/У
+                </template>
+            {{ makeCount(sparepart.price_service) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{

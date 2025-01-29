@@ -48,6 +48,9 @@ class SparePartController extends Controller
                 case 3:
                     $summ_order = $summ_order +  str_replace(' ', '', $sparepart->price_used);
                     break;
+                case 4:
+                    $summ_order = $summ_order + str2number($sparepart->price_service);
+                    break;
             }
         }
         if (isset($estimates->price_repair_full)) {
@@ -123,6 +126,10 @@ class SparePartController extends Controller
                     $summ_order = $summ_order + str2number($sparepart->price_used);
                     $delta_full[$i] = str2number($sparepart->price_used) -  str2number($sparepart->price_ic_full);
                     $delta_half[$i] = str2number($sparepart->price_used) - str2number($sparepart->price_ic_half);
+                    break;
+                case 4:
+                    $summ_order = $summ_order + str2number($sparepart->price_service);
+                    $sparepart->delta = str2number($sparepart->price_service) -  str2number($sparepart->price_ic_full);
                     break;
                 default:
                     $delta_full[$i] = 0 - str2number($sparepart->price_ic_full);
