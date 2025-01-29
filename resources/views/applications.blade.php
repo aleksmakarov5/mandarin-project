@@ -30,9 +30,15 @@
                 </ul>
             </div>
         @endif
-
+@php
+    $rout= session('rout');
+    if (Gate::allows('service'))
+    {
+        $rout='applications';
+    }
+@endphp
         <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications->all()) }}"
-            :rout=`{{ session('rout') }}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}" />
+            :rout=`{{$rout}}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}" />
 
         {{-- <table id ="applications" class="editable">
             <thead>
