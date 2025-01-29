@@ -6,12 +6,12 @@
 @section('main')
     @if (!isset($hide_menu))
             @php
-        $all = true;
-        foreach ($document as $doc) {
-            if ($doc->id_status != 0) {
-                $all = false;
-            }
+    $all = true;
+    foreach ($document as $doc) {
+        if ($doc->id_status != 0) {
+            $all = false;
         }
+    }
             @endphp
 
             <form action="/documents/{{ $id }}/doc_add" method="post" enctype="multipart/form-data">
@@ -40,10 +40,10 @@
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
                                                             <a @if (
-                                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
-                                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
-                                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
-                                                                ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
+                pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
+            ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
                                                             @else
 
                                                     @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc')
@@ -104,6 +104,9 @@
         </div>
         <br>
     @endif
+    @can('company')
+
+
     <table class='editable'>
         <thead>
             <tr>
@@ -122,16 +125,16 @@
                         <th scope="col">Заявление о страховом возмещении</th>
                         <th scope="col">
                             @include('document.form_print', [
-            'status_id' => 11,
-            'template' => 'export_zayav',
-        ])
+                'status_id' => 11,
+                'template' => 'export_zayav',
+            ])
                         </th>
                         <th scope="col">
                             @include('document.form_scan', [
-            'status_id' => 12,
-            'load_name' => 'Заявление о страховом возмещении',
-            'load_location' => 'Заявление_о_страховом_возмещении',
-        ])
+                'status_id' => 12,
+                'load_name' => 'Заявление о страховом возмещении',
+                'load_location' => 'Заявление_о_страховом_возмещении',
+            ])
                         </th>
                     </tr>
                 @endif
@@ -148,10 +151,10 @@
 
                 <th scope="col" colspan="2">
                     @include('document.form_scan', [
-    'status_id' => 21,
-    'load_name' => 'Фото первичного осмотра автомобиля',
-    'load_location' => 'Фото_первичного_осмотра_автомобиля',
-])
+        'status_id' => 21,
+        'load_name' => 'Фото первичного осмотра автомобиля',
+        'load_location' => 'Фото_первичного_осмотра_автомобиля',
+    ])
                 </th>
             </tr>
             <tr>
@@ -183,10 +186,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 17,
-    'load_name' => 'Заказ наряд',
-    'load_location' => 'Заказ_наряд',
-])
+        'status_id' => 17,
+        'load_name' => 'Заказ наряд',
+        'load_location' => 'Заказ_наряд',
+    ])
                 </th>
             </tr>
             <tr>
@@ -196,10 +199,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 3,
-    'load_name' => 'Договор с клиентом',
-    'load_location' => 'Договор_с_клиентом',
-])
+        'status_id' => 3,
+        'load_name' => 'Договор с клиентом',
+        'load_location' => 'Договор_с_клиентом',
+    ])
                 </th>
 
             </tr>
@@ -210,10 +213,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 5,
-    'load_name' => 'Дополнительное соглашение с клиентом',
-    'load_location' => 'Дополнительное_соглашение_с_клиентом',
-])
+        'status_id' => 5,
+        'load_name' => 'Дополнительное соглашение с клиентом',
+        'load_location' => 'Дополнительное_соглашение_с_клиентом',
+    ])
                 </th>
             </tr>
             @if (isset($application->id_insuranceCompany))
@@ -225,10 +228,10 @@
                         </th>
                         <th scope="col">
                             @include('document.form_scan', [
-            'status_id' => 7,
-            'load_name' => 'Информационный акт',
-            'load_location' => 'Информационный_акт',
-        ])
+                'status_id' => 7,
+                'load_name' => 'Информационный акт',
+                'load_location' => 'Информационный_акт',
+            ])
                         </th>
                     </tr>
                 @endif
@@ -241,16 +244,16 @@
                         <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
                         <th scope="col">
                             @include('document.form_print', [
-            'status_id' => 39,
-            'template' => 'export_sogl',
-        ])
+                'status_id' => 39,
+                'template' => 'export_sogl',
+            ])
                         </th>
                         <th scope="col">
                             @include('document.form_scan', [
-            'status_id' => 7,
-            'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
-            'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
-        ])
+                'status_id' => 7,
+                'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
+                'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
+            ])
                         </th>
                     </tr>
                 @endif
@@ -262,10 +265,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 9,
-    'load_name' => 'Акт приема автомобиля',
-    'load_location' => 'Акт_приема_автомобиля',
-])
+        'status_id' => 9,
+        'load_name' => 'Акт приема автомобиля',
+        'load_location' => 'Акт_приема_автомобиля',
+    ])
                 </th>
             </tr>
             <tr>
@@ -274,10 +277,10 @@
 
                 <th scope="col" colspan=2>
                     @include('document.form_scan', [
-    'status_id' => 10,
-    'load_name' => 'Фото приема автомобиля',
-    'load_location' => 'Фото_приема_автомобиля',
-])
+        'status_id' => 10,
+        'load_name' => 'Фото приема автомобиля',
+        'load_location' => 'Фото_приема_автомобиля',
+    ])
                 </th>
             </tr>
             @if (!$def)
@@ -285,16 +288,16 @@
                     <th scope="col">Акт скрытых повреждений</th>
                     <th scope="col">
                         @include('document.form_print', [
-        'status_id' => 11,
-        'template' => 'export_hda',
-    ])
+            'status_id' => 11,
+            'template' => 'export_hda',
+        ])
                     </th>
                     <th scope="col">
                         @include('document.form_scan', [
-        'status_id' => 12,
-        'load_name' => 'Акт скрытых повреждений',
-        'load_location' => 'Акт_скрытых_повреждений',
-    ])
+            'status_id' => 12,
+            'load_name' => 'Акт скрытых повреждений',
+            'load_location' => 'Акт_скрытых_повреждений',
+        ])
                     </th>
                 </tr>
                 <tr>
@@ -303,10 +306,10 @@
 
                     <th scope="col" colspan=2>
                         @include('document.form_scan', [
-        'status_id' => 10,
-        'load_name' => 'Фото деффектовки',
-        'load_location' => 'Фото_деффектовки',
-    ])
+            'status_id' => 10,
+            'load_name' => 'Фото деффектовки',
+            'load_location' => 'Фото_деффектовки',
+        ])
                     </th>
                 </tr>
             @endif
@@ -317,10 +320,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 14,
-    'load_name' => 'Акт сдачи автомобиля',
-    'load_location' => 'Акт_сдачи_автомобиля',
-])
+        'status_id' => 14,
+        'load_name' => 'Акт сдачи автомобиля',
+        'load_location' => 'Акт_сдачи_автомобиля',
+    ])
                 </th>
             </tr>
             <tr>
@@ -329,10 +332,10 @@
 
                 <th scope="col" colspan=2>
                     @include('document.form_scan', [
-    'status_id' => 15,
-    'load_name' => 'Фото cдачи автомобиля',
-    'load_location' => 'Фото_cдачи_автомобиля',
-])
+        'status_id' => 15,
+        'load_name' => 'Фото cдачи автомобиля',
+        'load_location' => 'Фото_cдачи_автомобиля',
+    ])
                 </th>
             </tr>
             <tr>
@@ -342,10 +345,10 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 17,
-    'load_name' => 'Заказ наряд',
-    'load_location' => 'Заказ_наряд',
-])
+        'status_id' => 17,
+        'load_name' => 'Заказ наряд',
+        'load_location' => 'Заказ_наряд',
+    ])
                 </th>
             </tr>
             <tr>
@@ -355,13 +358,14 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 19,
-    'load_name' => 'Счет',
-    'load_location' => 'Счет',
-])
+        'status_id' => 19,
+        'load_name' => 'Счет',
+        'load_location' => 'Счет',
+    ])
                 </th>
             </tr>
 
         </tbody>
     </table>
+    @endcan
 @endsection
