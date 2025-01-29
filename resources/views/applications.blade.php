@@ -5,6 +5,8 @@
 @section('main_content')
     <h1>
         Все заявки</h1>
+@can('company')
+
 
     <a href="/applications/create" class="nav-link">Добавить заявку</a>
 
@@ -15,7 +17,9 @@
                 class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
         @endif
     @endif
+@endcan
     </div>
+
     <div id="app">
         @if ($errors->any())
             <div>
