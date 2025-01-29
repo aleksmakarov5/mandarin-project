@@ -33,19 +33,20 @@
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td >
+    <td  :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
         {{ sparepart.name }}</td>
-    <td >
+    <td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
         {{ sparepart.part_number }}</td>
 
-         <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
-        {{ makeCount(sparepart.price_original) }}</td>
+        <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id)" @keydown.enter="editPriceIcFull(sparepart.id)">
+        {{ makeCount(sparepart.price_ic_full) }}</td>
+         <td :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
+        {{ makeCount(sparepart.price_service) }}</td>
 
 
 
         <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
         {{ sparepart.comment }}</td>
-
 
 
 
@@ -57,7 +58,7 @@
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
                     <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
-                    <td><input type="text"  id="part_number" v-model="name_Cr" class="w-100"></td>
+                    <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
 
 
                 </tr>
