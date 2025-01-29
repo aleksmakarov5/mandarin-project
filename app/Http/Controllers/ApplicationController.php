@@ -336,18 +336,7 @@ class ApplicationController extends Controller
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
+
 
                 ->select(
                     'applications.*',
