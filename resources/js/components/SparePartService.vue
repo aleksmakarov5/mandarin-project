@@ -13,55 +13,17 @@
                         <th scope="col">#</th>
                     <th scope="col">Наименование</th>
                     <th scope="col">Кат. номер</th>
-                    <th scope="col">Зак. номер</th>
 
                         <th scope="col">Цена СК</th>
-                        <th scope="col">Цена ПЗН</th>
-
-                        <th scope="col">Оригинал</th>
-                        <th scope="col">Аналог</th>
-                        <th scope="col">Б/у</th>
-
-                        <th scope="col">Разница </th>
+                        <th scope="col">Цена сервиса</th>
 
 
 
 
                     <th scope="col">Комментарий</th>
-                    <template v-if="rout_it=='directions'">
-                        <th scope="col">Статус</th>
-                        <th scope="col">Дата заказа</th>
-                        <th scope="col">Ожидаемая дата</th>
-                    </template>
-
-                            <th scope="col"></th>
-                    </tr>
-                   <tr>
-                        <th scope="col"></th>
-                        <th scope="col">Итого</th>
-                        <th scope="col"></th>
-                        <th scope="col"></th>
-                        <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
-                        <th scope="col">{{ makeMoney(summ_sto) }}</th>
-                        <th scope="col" colspan="3"></th>
-                        <th scope="col">
-
-                                <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
-
-
-                        </th>
-
-                        <th scope="col" colspan=2></th>
-                    <template v-if="rout_it=='directions'">
-                            <th scope="col"></th>
-
-
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                            <th scope="col"></th>
-                    </template>
 
                     </tr>
+
 
 
         </thead>
@@ -71,64 +33,22 @@
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td  :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
+    <td >
         {{ sparepart.name }}</td>
-    <td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
+    <td >
         {{ sparepart.part_number }}</td>
-    <td  :id="'order_number_'+sparepart.id" contenteditable @blur="editOrderNumber(sparepart.id)" @keydown.enter="editOrderNumber(sparepart.id)">
-        {{ sparepart.order_number }}</td>
-        <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id)" @keydown.enter="editPriceIcFull(sparepart.id)">
-        {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
-        {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
+
+         <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)"   :id="'price_analogue_'+sparepart.id" contenteditable @blur="editPriceAnalogue(sparepart.id)" @keydown.enter="editPriceAnalogue(sparepart.id)">
-        {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)":id="'price_used_'+sparepart.id" contenteditable @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
-        {{ makeCount(sparepart.price_used) }}</td>
-        <th >
-            <div :class="classDanger(sparepart.delta)">
-        {{
-            makeCount(sparepart.delta) }}</div></th>
+
+
 
         <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
         {{ sparepart.comment }}</td>
 
-                    <template v-if="rout_it=='directions'">
-                        <template v-if="isEdit(sparepart.id)">
 
 
-        <td :class="sparePartStatus(sparepart.status_id)">
-<select class=sel id="status_id" name="status_id" v-model="status_id" @change="updateSparePart(sparepart.id)">
-    <option value=0 >------</option>
-    <template v-for="status in statuses">
-                                <option :value="status.id" >{{status.StatusName}}</option>
-                                </template>
-                            </select>
 
-        </td>
-        <td > <input type="date" name="date_price" id="date_price" v-model="date_price" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
-        </td>
-        <td >
-            <input type="date" name="date_wait" id="date_wait" v-model="date_wait" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
-        </td>
-        </template>
-        <template v-else>
-            <td  :class="sparePartStatus(sparepart.status_id)">
-{{ sparepart.StatusName }}
-        </td>
-        <td > {{fortmatDate(sparepart.date_price)}}
-        </td>
-        <td >
-            {{fortmatDate(sparepart.date_wait)}}
-        </td>
-
-        </template>
-        </template>
-    <td scope="col"><a @click.prevent="deletesparepart(sparepart.id)">
-        <img src="/storage/img/delete.png" width="20" alt="delete"></a>
-    </td>
 </tr>
  </template>
 <tr>
@@ -137,6 +57,7 @@
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
                     <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
+                    <td><input type="text"  id="part_number" v-model="name_Cr" class="w-100"></td>
 
 
                 </tr>
