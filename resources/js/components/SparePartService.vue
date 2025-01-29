@@ -145,7 +145,7 @@
 
         updateSparePart(id)
         {
-            console.log(this.price_sto)
+            console.log(this.selected_service)
             axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
                 name: this.name,
