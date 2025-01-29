@@ -129,7 +129,8 @@ class SparePartController extends Controller
                     break;
                 case 4:
                     $summ_order = $summ_order + str2number($sparepart->price_service);
-                    $sparepart->delta = str2number($sparepart->price_service) -  str2number($sparepart->price_ic_full);
+                    $delta_full[$i] = str2number($sparepart->price_service) -  str2number($sparepart->price_ic_full);
+                    $delta_half[$i] = str2number($sparepart->price_service) - str2number($sparepart->price_ic_half);
                     break;
                 default:
                     $delta_full[$i] = 0 - str2number($sparepart->price_ic_full);
