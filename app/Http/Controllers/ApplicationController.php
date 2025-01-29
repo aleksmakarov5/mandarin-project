@@ -321,7 +321,6 @@ class ApplicationController extends Controller
                 )->orderBy('applications.id', 'desc')
                 ->get();
         } elseif (Gate::allows('service')) {
-            dd(service::where('id_user', '=', Auth::user()->id)->first()->id);
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '12')
