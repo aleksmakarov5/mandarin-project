@@ -70,35 +70,17 @@ class SparePartController extends Controller
     public function SparePart($id)
     {
         $eco = '';
-        if (Gate::allows('service')) {
-            $spareparts = DB::table('spare_parts')
-                ->where('id_application', '=', $id)
-                ->where(function ($query) {
-                    $query->where(function ($query) {
-                        $query->where('selected_mrk', '>', 0)
-                            ->where('selected_mrk', '<', 4);
-                    })
-                        ->orWhere('author', '=', 9);
-                })
 
-
-                ->get();
-            foreach ($spareparts as $sparepart) {
-                $sparepart->price_original *= 1.1;
-                $sparepart->price_analogue *= 1.1;
-                $sparepart->price_used *= 1.1;
-            }
-        } else
-            $spareparts = DB::table('spare_parts')
-                ->where('id_application', '=', $id)
-                ->leftJoin(
-                    'sparepart_statuses',
-                    'sparepart_statuses.id',
-                    '=',
-                    'spare_parts.status_id'
-                )
-                ->select('spare_parts.*', 'sparepart_statuses.StatusName')
-                ->get();
+        $spareparts = DB::table('spare_parts')
+            ->where('id_application', '=', $id)
+            ->leftJoin(
+                'sparepart_statuses',
+                'sparepart_statuses.id',
+                '=',
+                'spare_parts.status_id'
+            )
+            ->select('spare_parts.*', 'sparepart_statuses.StatusName')
+            ->get();
 
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         // dd($estimates);

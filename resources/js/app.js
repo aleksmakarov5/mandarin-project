@@ -17,6 +17,7 @@ import WorkPaint from './components/WorkPaint.vue';
 import SparePartMrk from './components/SparePartMrk.vue';
 import SparePartZap from './components/SparePartZap.vue';
 import SparePartAll from './components/SparePartAll.vue';
+import SparePartService from './components/SparePartService.vue';
 import SparePartKm from './components/SparePartKm.vue';
 
 import DatePay from './components/DatePay.vue';
@@ -48,6 +49,7 @@ const app = createApp({
     SparePartMrk,
     SparePartZap,
     SparePartAll,
+    SparePartService,
     SparePartKm,
     NotifyApp,
     NextStep,
