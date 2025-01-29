@@ -21,6 +21,7 @@
                         <th scope="col">Оригинал</th>
                         <th scope="col">Аналог</th>
                         <th scope="col">Б/у</th>
+                        <th scope="col">СТО</th>
 
                         <th scope="col">Разница </th>
 
@@ -43,7 +44,7 @@
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
                         <th scope="col">{{ makeMoney(summ_sto) }}</th>
-                        <th scope="col" colspan="3"></th>
+                        <th scope="col" colspan="4"></th>
                         <th scope="col">
 
                                 <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
