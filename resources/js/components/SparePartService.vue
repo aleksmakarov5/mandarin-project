@@ -48,21 +48,21 @@
 
         <td>
 <select class=sel id="selected_service" name="selected_service" v-model="selected_service" @change="updateSparePart(sparepart.id)">
-    <option value=0 >Оригинал</option>
-    <option value=1 >Аналог</option>
-    <option value=2 >Б/У</option>
+    <option value=1 >Оригинал</option>
+    <option value=2 >Аналог</option>
+    <option value=3 >Б/У</option>
 </select>
         </td>
         </template>
         <template v-else>
             <td>
-                <template v-if="sparepart.selected_service==0">
+                <template v-if="sparepart.selected_service==1">
                     О
                 </template>
-                <template v-if="sparepart.selected_service==1">
+                <template v-if="sparepart.selected_service==2">
                     А
                 </template>
-                <template v-if="sparepart.selected_service==2">
+                <template v-if="sparepart.selected_service==3">
                     Б/У
                 </template>
             </td>
