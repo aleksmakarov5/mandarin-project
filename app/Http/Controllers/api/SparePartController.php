@@ -66,7 +66,8 @@ class SparePartController extends Controller
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'required',
-            'author' => 'nullable'
+            'author' => 'nullable',
+            'part_number' => 'nullable'
         ]);
         foreach ($data as $key => $value) {
             $sparepart->$key = $value;

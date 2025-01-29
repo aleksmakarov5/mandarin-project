@@ -30,7 +30,7 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr :class="isAuthor(sparepart.author)"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment,sparepart.status_id,sparepart.date_price,sparepart.date_wait)">
+<tr :class="isAuthor(sparepart.author)"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.selected_service,sparepart.price_service,sparepart.comment)">
     <td scope="col">
         {{ index+1 }}
     </td>
@@ -39,9 +39,9 @@
     <td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
         {{ sparepart.part_number }}</td>
 
-        <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id)" @keydown.enter="editPriceIcFull(sparepart.id)">
+        <td >
         {{ makeCount(sparepart.price_ic_full) }}</td>
-         <td :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
+         <td :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceService(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_service) }}</td>
     <template v-if="isEdit(sparepart.id)">
 
@@ -82,7 +82,7 @@
                         <img src="/storage/img/edit.png" width="30" alt="create"></a>
                     </td>
                     <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
-                    <td><input type="text"  id="name" v-model="name_Cr" class="w-100"></td>
+                    <td><input type="text"  id="part_number" v-model="part_number_Cr" class="w-100"></td>
 
 
                 </tr>
@@ -97,12 +97,7 @@
 	export default{
         props:[
             'app_id',
-            'rout',
-            'in_statuses',
             'in_spareparts',
-            'in_summ_sto',
-            'in_summ_ic_full',
-            'in_delta_res_full',
         ],
 
         data(){
@@ -110,29 +105,12 @@
             return{
                 spareparts:this.in_spareparts,
                 id_app: this.app_id,
-                rout_it:this.rout,
                 EditSparePartId:null,
                 name: '',
-                part_number: '',
-                order_number: '',
-                price_ic_full:'',
-                price_original:'',
-                price_analogue:'',
-                price_used: '',
-                price_sto:'',
-                date_price: '',
-                statusname: '',
-                date_wait: '',
-                status_id: '',
+                selected_service: '',
                 comment: '',
-                summ_sto:this.in_summ_sto,
-                delta_res_full: this.in_delta_res_full,
-                delta: 0,
-                selected_price: '',
-                selected_mrk:'',
-                statuses: this.in_statuses,
-                summ_ic_full:this.in_summ_ic_full,
                 name_Cr: '',
+                part_number_Cr: '',
                 show: true,
 
             }
@@ -146,39 +124,18 @@
         getSpareParts(res){
 
                 this.spareparts = res.data[0]
-                this.summ_ic_full = res.data[1]
-                this.summ_sto = res.data[2]
-                this.delta_res_full = res.data[3]
-                this.statuses=res.data[4]
 
 
 
         },
-        deletesparepart(id) {
-            if (confirm('Точно удалить?'))
-            {
-        axios.delete(`/api/sparepart/${id}`)
-                .then(res => {
-                    this.getSpareParts(res)
-                })
-            }
 
-        },
         //  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used)"
-        changeEditSparePartId(id,name,part_number,order_number,price_ic_full,price_sto,price_original,price_analogue,price_used,comment,status_id,date_price,date_wait) {
+        changeEditSparePartId(id,name,selected_service,price_service,comment) {
             this.EditSparePartId=id
-            this.name=name
-            this.comment=comment
-            this.price_sto = price_sto
-            this.price_analogue = price_analogue
-            this.price_used = price_used
-            this.price_original = price_original
-            this.part_number = part_number
-            this.order_number = order_number
-            this.price_ic_full = price_ic_full
-            this.status_id = status_id
-            this.date_price = date_price
-            this.date_wait = date_wait
+            this.comment = comment
+            this.name = name
+            this.price_service = price_service
+            this.selected_service = selected_service
 
 
         },
@@ -193,16 +150,8 @@
                 id_application: this.app_id,
                 name: this.name,
                 comment: this.comment,
-                price_sto: this.price_sto,
-                price_analogue: this.price_analogue,
-                price_used: this.price_used,
-                price_original: this.price_original,
-                part_number: this.part_number,
-                order_number: this.order_number,
-                price_ic_full: this.price_ic_full,
-                status_id: this.status_id,
-                date_price: this.date_price,
-                date_wait: this.date_wait
+                price_service: this.price_service,
+                selected_service: this.selected_service,
 
             })
            .then(res => {
@@ -219,11 +168,13 @@
              axios.post(`/api/sparepart/create`, {
                  id_application: this.app_id,
                  name: this.name_Cr,
+                 part_number: this.part_number_Cr
             })
            .then(res => {
             this.getSpareParts(res)
            })
             this.name_Cr = ''
+            this.part_number_Cr = ''
         },
          makeMoney(n) {
             if (!n) n = 0;
@@ -298,55 +249,16 @@
             this.comment = comment.innerText;
             this.updateSparePart(id)
         },
-        editPriceUsed(id)
-        {
-            let price_used = document.getElementById('price_used_' + id);
 
-            this.price_used = price_used.innerText;
-            this.updateSparePart(id)
-        },
-        editPriceAnalogue(id)
+        editPriceService(id)
         {
-            let price_analogue = document.getElementById('price_analogue_'+id);
-            this.price_analogue = price_analogue.innerText;
+            let price_service = document.getElementById('price_service_'+id);
+            this.price_service = price_service.innerText;
             this.updateSparePart(id)
         },
-        editPriceOriginal(id)
-        {
-            let price_original = document.getElementById('price_original_'+id);
-            this.price_original = price_original.innerText;
-            this.updateSparePart(id)
-        },
-        editPriceICFull(id)
-        {
-            let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.price_ic_full = price_ic_full.innerText;
-            this.updateSparePart(id)
-        },
-        editPriceSto(id)
-        {
-            let price_sto = document.getElementById('price_sto_'+id);
-            this.price_sto = price_sto.innerText;
-            this.updateSparePart(id)
-        },
-        editPartNumber(id)
-        {
-            let part_number = document.getElementById('part_number_'+id);
-            this.part_number = part_number.innerText;
-            this.updateSparePart(id)
-        },
-        editOrderNumber(id)
-        {
-            let order_number = document.getElementById('order_number_'+id);
-            this.order_number = order_number.innerText;
-            this.updateSparePart(id)
-        },
-        editPriceIcFull(id)
-        {
-            let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.price_ic_full = price_ic_full.innerText;
-            this.updateSparePart(id)
-        },
+
+
+
         fortmatDate(date)
         {
             let options = {
