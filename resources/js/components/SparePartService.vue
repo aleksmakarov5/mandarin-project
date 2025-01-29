@@ -16,6 +16,7 @@
 
                         <th scope="col">Цена СК</th>
                         <th scope="col">Цена сервиса</th>
+                        <th scope="col">Вид ЗЧ</th>
 
 
 
@@ -42,7 +43,30 @@
         {{ makeCount(sparepart.price_ic_full) }}</td>
          <td :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_service) }}</td>
+    <template v-if="isEdit(sparepart.id)">
 
+
+        <td>
+<select class=sel id="selected_service" name="selected_service" v-model="selected_service" @change="updateSparePart(sparepart.id)">
+    <option value=0 >Оригинал</option>
+    <option value=1 >Аналог</option>
+    <option value=2 >Б/У</option>
+</select>
+        </td>
+        </template>
+        <template v-else>
+            <td>
+                <template v-if="sparepart.selected_service==0">
+                    О
+                </template>
+                <template v-if="sparepart.selected_service==1">
+                    А
+                </template>
+                <template v-if="sparepart.selected_service==2">
+                    Б/У
+                </template>
+            </td>
+        </template>
 
 
         <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
