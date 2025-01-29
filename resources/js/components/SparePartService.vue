@@ -39,7 +39,7 @@
     <td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
         {{ sparepart.part_number }}</td>
 
-        <td >
+        <td  class="ic_price">
         {{ makeCount(sparepart.price_ic_full) }}</td>
          <td :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_service_'+sparepart.id" contenteditable @blur="editPriceService(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_service) }}</td>
