@@ -89,7 +89,16 @@
         <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)":id="'price_used_'+sparepart.id" contenteditable @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
         {{ makeCount(sparepart.price_used) }}</td>
         <td  :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)":id="'price_service_'+sparepart.id" >
-        {{ makeCount(sparepart.price_service) }}</td>
+        <template v-if="sparepart.selected_service==1">
+                    О
+                </template>
+                <template v-if="sparepart.selected_service==2">
+                    А
+                </template>
+                <template v-if="sparepart.selected_service==3">
+                    Б/У
+                </template>
+            {{ makeCount(sparepart.price_service) }}</td>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{
