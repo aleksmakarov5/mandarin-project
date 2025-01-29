@@ -321,6 +321,7 @@ class ApplicationController extends Controller
                 )->orderBy('applications.id', 'desc')
                 ->get();
         } elseif (Gate::allows('service')) {
+            dd(service::where('id_user', '=', Auth::user()->id)->first()->id);
             $applications = application::where(function ($query) {
                 $query
                     ->where('id_status', '<', '12')
@@ -334,10 +335,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-
-
                 ->select(
                     'applications.*',
                     'insurance_companies.name',
@@ -351,7 +349,7 @@ class ApplicationController extends Controller
                     'application_statuses.current_group',
                     'our_companies.our_name',
                     'users.name as MRK_name',
-                    'cities.name as city'
+                    'cities.name as city',
                 )->orderBy('applications.id', 'desc')->get();
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
