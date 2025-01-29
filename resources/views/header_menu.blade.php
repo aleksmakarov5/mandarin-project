@@ -15,7 +15,7 @@
         foreach ($Works_serv as $work) {
             $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
             $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
-            $summ_pzn += $work->count_hours_pzn == 0 ? str2number($work->summ) : $work->count_hours_pzn * str2number($work->price);
+            $summ_pzn += $work->count_hours_pzn == 0 ? str2number($work->summ) : str2number($work->count_hours_pzn) * str2number($work->price);
         }
 
 
