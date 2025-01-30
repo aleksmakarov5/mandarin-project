@@ -4017,17 +4017,32 @@ class ApplicationController extends Controller
     {
         $application = application::findOrFail($id);
         $subject = '';
+        $application = application::findOrFail($id);
+        $subject = '';
+        $to = '';
         if ($application->id_insuranceCompany == 3) {
-            $subject = 'Проблема с полисом МРК';
-        } else {
             $gnz = $application->gnz;
             if (strpos($gnz, 'ru'))
                 $gnz = substr($gnz, 0, strpos($gnz, 'ru'));
             if (strpos($gnz, 'RU'))
                 $gnz = substr($gnz, 0, strpos($gnz, 'RU'));
-
+            $to = DB::table('insurance_companies')
+                ->where('id', '=', $application->id_insuranceCompany)
+                ->first()
+                ->trouble_email;
             $subject = $application->numberInsuranceCompanyApplication + ' ' + $gnz;
+        } else {
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $subject =
+                message::where('application_id', '=', $id)->first()->subject;
+            $to = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first()
+                ->email;
         }
+
+
 
         $users = DB::table('users')->get();
         $attachments = attachment::where('id_application', '=', $id)->get()->all();
