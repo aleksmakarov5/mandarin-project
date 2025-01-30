@@ -4030,7 +4030,7 @@ class ApplicationController extends Controller
                 ->where('id', '=', $application->id_insuranceCompany)
                 ->first()
                 ->trouble_email;
-            $subject = $application->numberInsuranceCompanyApplication + ' ' + $gnz;
+            $subject = $application->numberInsuranceCompanyApplication . ' ' . $gnz;
         } else {
             $message_id = message::where('application_id', '=', $id)->first()->id;
             $subject =
