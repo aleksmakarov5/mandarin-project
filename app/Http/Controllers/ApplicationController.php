@@ -4013,6 +4013,27 @@ class ApplicationController extends Controller
 
         return view('application.answer_ic_mrk', ['users' => $users->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
     }
+    public function answer_ic_trouble(Request $request, $id)
+    {
+        $application = application::findOrFail($id);
+        $subject = '';
+        if ($application->id_insuranceCompany == 3) {
+            $subject = 'Проблема с полисом МРК';
+        } else {
+            $gnz = $application->gnz;
+            if (strpos($gnz, 'ru'))
+                $gnz = substr($gnz, 0, strpos($gnz, 'ru'));
+            if (strpos($gnz, 'RU'))
+                $gnz = substr($gnz, 0, strpos($gnz, 'RU'));
+
+            $subject = $application->numberInsuranceCompanyApplication + ' ' + $gnz;
+        }
+
+        $users = DB::table('users')->get();
+        $attachments = attachment::where('id_application', '=', $id)->get()->all();
+
+        return view('application.answer_ic_mrk', ['users' => $users->all(), 'application' => $application, 'id' => $id, 'to' => $to, 'attach' => $attachments, 'subject' => $subject]);
+    }
 
     public function answer_ic_mrk_sent(Request $request, $id)
     {
