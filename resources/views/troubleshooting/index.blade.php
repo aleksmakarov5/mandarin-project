@@ -3,8 +3,9 @@
     Скрытые повреждения
 @endsection
 @section('main')
-@can('company')
+
     <a href="/export_hda/{{ $id }}/11" class="nav-link">Создать печатную форму</a>
+    @can('company')
     @if (session('GroupId') != 6 && session('GroupId') != 5)
         <a href="/answer_ic_trouble/{{ $id }}" class="nav-link">Отправить в страховую компанию</a>
     @endif

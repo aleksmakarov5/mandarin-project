@@ -188,7 +188,7 @@ class WordController extends Controller
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
                 ->where('selected_mrk', '>', '0')
-                ->where('selected_mrk', '<', '4')
+                ->where('selected_mrk', '<', '5')
                 ->get();
             $i = 1;
 
