@@ -180,7 +180,46 @@
                     @include('document.form_scan', ['status_id' => '23'])
                 </th>
             </tr>
-            @endcan
+             @if (isset($application->id_insuranceCompany))
+                @if ($application->id_insuranceCompany == 1)
+                    <tr>
+                        <th scope="col">Информационный акт</th>
+                        <th scope="col">
+                            @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', [
+                'status_id' => 7,
+                'load_name' => 'Информационный акт',
+                'load_location' => 'Информационный_акт',
+            ])
+                        </th>
+                    </tr>
+                @endif
+            @endif
+            @if (isset($application->id_insuranceCompany))
+                @if ($application->id_insuranceCompany == 6)
+
+
+                    <tr>
+                        <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
+                        <th scope="col">
+                            @include('document.form_print', [
+                'status_id' => 39,
+                'template' => 'export_sogl',
+            ])
+                        </th>
+                        <th scope="col">
+                            @include('document.form_scan', [
+                'status_id' => 7,
+                'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
+                'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
+            ])
+                        </th>
+                    </tr>
+                @endif
+            @endif
+
             <tr>
                 <th scope="col">Предварительный заказ наряд</th>
                 <th scope="col">
@@ -188,12 +227,13 @@
                 </th>
                 <th scope="col">
                     @include('document.form_scan', [
-    'status_id' => 17,
-    'load_name' => 'Заказ наряд',
-    'load_location' => 'Заказ_наряд',
-])
+        'status_id' => 17,
+        'load_name' => 'Заказ наряд',
+        'load_location' => 'Заказ_наряд',
+    ])
                 </th>
             </tr>
+            @endcan
             <tr>
                 <th scope="col">Договор с клиентом</th>
                 <th scope="col">
@@ -221,45 +261,7 @@
 ])
                 </th>
             </tr>
-            @if (isset($application->id_insuranceCompany))
-                @if ($application->id_insuranceCompany == 1)
-                    <tr>
-                        <th scope="col">Информационный акт</th>
-                        <th scope="col">
-                            @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
-                        </th>
-                        <th scope="col">
-                            @include('document.form_scan', [
-            'status_id' => 7,
-            'load_name' => 'Информационный акт',
-            'load_location' => 'Информационный_акт',
-        ])
-                        </th>
-                    </tr>
-                @endif
-            @endif
-            @if (isset($application->id_insuranceCompany))
-                @if ($application->id_insuranceCompany == 6)
 
-
-                    <tr>
-                        <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
-                        <th scope="col">
-                            @include('document.form_print', [
-            'status_id' => 39,
-            'template' => 'export_sogl',
-        ])
-                        </th>
-                        <th scope="col">
-                            @include('document.form_scan', [
-            'status_id' => 7,
-            'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
-            'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
-        ])
-                        </th>
-                    </tr>
-                @endif
-            @endif
             <tr>
                 <th scope="col">Акт приема автомобиля на ремонт</th>
                 <th scope="col">
