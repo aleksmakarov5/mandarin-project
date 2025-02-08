@@ -125,7 +125,7 @@ class Handler extends WebhookHandler
                     } else {
                         $zip = Zip::create($zip_path);
                     }
-                    file_put_contents('data.txt', json_decode(json_encode($this->bot->find(1)->getFileInfo($this->message->photos()[2]->id()))));
+                    file_put_contents('data.txt', $this->bot->find(1)->getFileInfo($this->message->photos()[2]->id())->name());
                     // file_put_contents('data.txt', $this->message->photos()[2]->id());
 
                     $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
