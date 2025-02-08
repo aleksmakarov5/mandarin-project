@@ -135,7 +135,7 @@ class Handler extends WebhookHandler
 
 
 
-                    $filePath = $response->json();
+                    $filePath = $response->json('result');
                     file_put_contents('data.txt', $filePath);
 
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
