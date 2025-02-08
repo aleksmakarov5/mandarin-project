@@ -126,10 +126,18 @@ class Handler extends WebhookHandler
                         $zip = Zip::create($zip_path);
                     }
                     // file_put_contents('data.txt', $this->bot->find(1)->getFileInfo($this->message->photos()[2]->id())->name());
-                    // file_put_contents('data.txt', $this->message->photos()[2]->id());
 
                     $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path);
+                    $fileId = is_string($$this->message->photos()->get(2)) ? $this->message->photos()->get(1) : $this->message->photos()->get(1)->id();
+
+                    $response = $this->bot->find(1)->getFileInfo($fileId)->send();
+
+
+
+                    $filePath = $response->json();
+                    file_put_contents('data.txt', $filePath);
+
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
                         $telegram_action->count = $telegram_action->count + 1;
