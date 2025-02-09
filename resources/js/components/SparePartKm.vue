@@ -400,6 +400,7 @@
             this.updateSparePart(id)
              let n = -1;
             let sum = 0;
+            console.log(this.spareparts.length);
             for (let i = 0; i < this.spareparts.length; i++)
             {
                 if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.name[i].includes('мелкие детали') || this.name[i].includes('Мелкие Детали'))
