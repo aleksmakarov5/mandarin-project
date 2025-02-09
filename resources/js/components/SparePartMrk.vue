@@ -302,7 +302,35 @@
         {
             let price_sto = document.getElementById('price_sto_'+id);
             this.price_sto = price_sto.innerText;
-            this.updateSparePart(id,index)
+            this.updateSparePart(id, index)
+             let n = -1;
+            let sum = 0;
+            for (i = 0; i < this.name.length; i++)
+            {
+                if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.name[i].includes('мелкие детали') || this.name[i].includes('Мелкие Детали'))
+                    n = i;
+                else
+                {
+                    sum += this.spareparts[i].price_sto;
+                }
+            }
+
+            if (n != -1) {
+                this.spareparts[n].price_sto = sum * 0.02;
+                this.price_sto = this.spareparts[n].price_sto;
+                this.name = this.spareparts[n].name;
+                this.comment = this.spareparts[n].comment;
+                this.price_analogue = this.spareparts[n].price_analogue;
+                this.price_used = this.spareparts[n].price_used;
+                this.price_original = this.spareparts[n].price_original;
+                this.part_number = this.spareparts[n].part_number;
+                this.order_number = this.spareparts[n].order_number;
+                this.price_ic_full = this.spareparts[n].price_ic_full;
+                this.status_id = this.spareparts[n].status_id;
+                this.date_price = this.spareparts[n].date_price;
+                this.date_wait = this.spareparts[n].date_wait;
+                this.updateSparePart(n, index);
+            }
         },
         editComment(id,index)
         {
