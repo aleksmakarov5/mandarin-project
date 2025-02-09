@@ -305,7 +305,7 @@
             this.updateSparePart(id, index)
              let n = -1;
             let sum = 0;
-            for (let i = 0; i < this.name.length; i++)
+            for (let i = 0; i < this.spareparts.length; i++)
             {
                 if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.name[i].includes('мелкие детали') || this.name[i].includes('Мелкие Детали'))
                     n = i;
