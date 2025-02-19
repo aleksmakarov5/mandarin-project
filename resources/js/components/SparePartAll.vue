@@ -80,7 +80,7 @@
         {{ sparepart.order_number }}</td>
         <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id)" @keydown.enter="editPriceIcFull(sparepart.id)">
         {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
+        <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id,index)" @keydown.enter="editPriceSto(sparepart.id,index)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
         <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_original) }}</td>
@@ -389,11 +389,47 @@
             this.price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id)
         },
-        editPriceSto(id)
+        editPriceSto(id,index)
         {
             let price_sto = document.getElementById('price_sto_'+id);
             this.price_sto = price_sto.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_sto = this.price_sto;
+              let n = -1;
+            let sum = 0;
+            this.updateSparePart(id);
+            // console.log(this.spareparts.length);
+            for (let i = 0; i < this.spareparts.length; i++)
+            {
+                if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.spareparts[i].name.includes('мелкие детали') || this.spareparts[i].name.includes('Мелкие Детали'))
+
+                {
+                    n = i;
+
+                    }
+                else
+                {
+                    sum += parseFloat(this.spareparts[i].price_sto);
+                }
+            }
+
+            if (n != -1)
+            {
+                this.spareparts[n].price_sto = sum * 0.02;
+                console.log(this.spareparts[n].price_sto);
+                this.price_sto = this.spareparts[n].price_sto;
+                this.name = this.spareparts[n].name;
+                this.comment = this.spareparts[n].comment;
+                this.price_analogue= this.spareparts[n].price_analogue;
+                this.price_used= this.spareparts[n].price_used;
+                this.price_original = this.spareparts[n].price_original;
+                this.part_number= this.spareparts[n].part_number;
+                this.order_number= this.spareparts[n].order_number;
+                this.price_ic_full= this.spareparts[n].price_ic_full;
+                this.status_id= this.spareparts[n].status_id;
+                this.date_price= this.spareparts[n].date_price;
+                this.date_wait= this.spareparts[n].date_wait;
+                this.updateSparePart(this.spareparts[n].id);
+            }
         },
         editPartNumber(id)
         {
