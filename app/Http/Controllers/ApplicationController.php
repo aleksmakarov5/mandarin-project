@@ -1879,6 +1879,7 @@ class ApplicationController extends Controller
 
         $messages = DB::table('messages')
             ->where('application_id', '=', $id)
+            ->orderBy('messages.id', 'desc')
             // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
             // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
             ->get();
