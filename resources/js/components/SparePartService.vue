@@ -255,7 +255,7 @@
         editPriceService(id)
         {
             let price_service = document.getElementById('price_service_'+id);
-            this.price_service = price_service.innerText;
+            this.price_service = price_service.innerText.split(" ").join("");
             this.updateSparePart(id)
         },
 

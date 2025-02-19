@@ -375,31 +375,31 @@
         {
             let price_used = document.getElementById('price_used_' + id);
 
-            this.spareparts[index].price_used = price_used.innerText;
+            this.spareparts[index].price_used = price_used.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceAnalogue(id,index)
         {
             let price_analogue = document.getElementById('price_analogue_'+id);
-            this.spareparts[index].price_analogue = price_analogue.innerText;
+            this.spareparts[index].price_analogue = price_analogue.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceOriginal(id,index)
         {
             let price_original = document.getElementById('price_original_'+id);
-            this.spareparts[index].price_original = price_original.innerText;
+            this.spareparts[index].price_original = price_original.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceICFull(id,index)
         {
             let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.spareparts[index].price_ic_full = price_ic_full.innerText;
+            this.spareparts[index].price_ic_full = price_ic_full.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceSto(id,index)
         {
             let price_sto = document.getElementById('price_sto_'+id);
-            this.spareparts[index].price_sto = price_sto.innerText;
+            this.spareparts[index].price_sto = price_sto.innerText.split(" ").join("");
             let n = -1;
             let sum = 0;
             this.updateSparePart(id,index);
@@ -437,7 +437,7 @@
         editPriceIcFull(id,index)
         {
             let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.spareparts[index].price_ic_full = price_ic_full.innerText;
+            this.spareparts[index].price_ic_full = price_ic_full.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         fortmatDate(date)
