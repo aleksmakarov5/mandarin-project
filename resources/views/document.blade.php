@@ -5,104 +5,112 @@
 
 @section('main')
     @if (!isset($hide_menu))
-            @php
-    $all = true;
-    foreach ($document as $doc) {
-        if ($doc->id_status != 0) {
-            $all = false;
+                @php
+        $all = true;
+        foreach ($document as $doc) {
+            if ($doc->id_status != 0) {
+                $all = false;
+            }
         }
-    }
-            @endphp
+                @endphp
 
-            <form action="/documents/{{ $id }}/doc_add" method="post" enctype="multipart/form-data">
-                @csrf <!-- с версии Laravel 5.6 -->
-                <table class='table'>
-                    <tr>
-                        <td><input type="file" name="userfile[]" multiple onchange="this.form.submit()"></td>
-
+                <form action="/documents/{{ $id }}/doc_add" method="post" enctype="multipart/form-data">
+                    @csrf <!-- с версии Laravel 5.6 -->
+                    <table class='table'>
+                        <tr>
+                            <td><input type="file" name="userfile[]" multiple onchange="this.form.submit()"></td>
 
 
 
-                    </tr>
-                </table>
+
+                        </tr>
+                    </table>
 
 
-            </form>
-            <br>
+                </form>
+                <br>
 
-            <div class="row">
-                @foreach ($document as $doc)
-                                @if (pathinfo($doc->location, PATHINFO_EXTENSION) != 'gif')
+                <div class="row">
+                    @foreach ($document as $doc)
+                                            @if (pathinfo($doc->location, PATHINFO_EXTENSION) != 'gif')
 
 
 
-                                                <div class="card" style="width: 20rem;">
-                                                    <div class="row g-0">
-                                                        <div class="col-md-4">
-                                                            <a @if (
-                pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
-                pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
-                pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
-            ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
-                                                            @else
+                                                                                    <div class="card" style="width: 20rem;">
+                                                                                        <div class="row g-0">
+                                                                                            <div class="col-md-4">
+                                                                                                <a @if (
+                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                                                    pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
+                                                ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
+                                                                                                @else
 
-                                                    @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc')
+                                                                                                    @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc')
 
-                                                    @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
-                                                    href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
-                                                    @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
-                                                            @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
-                                                                target="_blank"
-                                            @endif>
-                                            <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
-                                                class="card-img-top"
-                                                alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                                                                                                        @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
+                                                                                                        href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
+                                                                                                        @else
+                                                                                                            @php
+                                                                                                            $pathToSave='/storage/files/'. $id .'/'. $doc->location ;
+                                                                                                            $dir = '/storage/files/'. $id ;
+                                                                                                                exec('chmod 755 "' . $pathToSave . '"');
+                                                                                                                exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+                                                                                                            @endphp
+                                                                                                            href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
+                                                                                                        {{-- href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif --}}
+                                                                                                    @else href="/storage/files/{{ $id }}/{{ $doc->location }}" @endif
+                                                                                                                target="_blank"
+                                                                                                @endif>
+                                                                                <img src="/storage/img/{{ mb_substr($doc->location, mb_strripos($doc->location, '.') + 1, mb_strlen($doc->location) - mb_strripos($doc->location, '.')) }}.png"
+                                                                                    class="card-img-top"
+                                                                                    alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
 
-                                            </a>
-                                    </div>
+                                                                                </a>
+                                                                        </div>
 
-                                    <div class="col-md-8">
-                                        <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img src="/storage/img/edit.png"
-                                                width="35" alt="edit">
-                                        </a>
-                                        <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
-                                            href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img src="/storage/img/delete.png"
-                                                width="35" alt="delete">
-                                        </a>
-                                        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
-                                                src="/storage/img/download.png" width="35" alt="Скачать">
-                                        </a>
-                                        <div class="card-body">
-                                            @if (isset($document_edit->id))
-                                                @if ($document_edit->id == $doc->id)
-                                                    <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}" method="POST">
-                                                        @csrf
-                                                        <input type="text" name="file_name" value="{{ $doc_name }}">
-                                                        <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
-                                                        <input type="submit" value="ок">
-                                                    </form>
-                                                @else
-                                                    <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
-                                                    </h5>
-                                                @endif
-                                            @else
-                                                <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
-                                                </h5>
+                                                                        <div class="col-md-8">
+                                                                            <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img src="/storage/img/edit.png"
+                                                                                    width="35" alt="edit">
+                                                                            </a>
+                                                                            <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
+                                                                                href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img src="/storage/img/delete.png"
+                                                                                    width="35" alt="delete">
+                                                                            </a>
+                                                                            <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
+                                                                                    src="/storage/img/download.png" width="35" alt="Скачать">
+                                                                            </a>
+                                                                            <div class="card-body">
+                                                                                @if (isset($document_edit->id))
+                                                                                    @if ($document_edit->id == $doc->id)
+                                                                                        <form action="/document/{{ $id }}/doc_update/{{ $doc->id }}" method="POST">
+                                                                                            @csrf
+                                                                                            <input type="text" name="file_name" value="{{ $doc_name }}">
+                                                                                            <input type="hidden" name="file_ext" value="{{ $doc_ext }}">
+                                                                                            <input type="submit" value="ок">
+                                                                                        </form>
+                                                                                    @else
+                                                                                        <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
+                                                                                        </h5>
+                                                                                    @endif
+                                                                                @else
+                                                                                    <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
+                                                                                    </h5>
+                                                                                @endif
+                                                                                <p class="file-size">
+                                                                                    {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
+
+
+                                                                            </div>
+
+                                                                        </div>
+                                                                        </div>
+
+                                                                        </div>
                                             @endif
-                                            <p class="file-size">
-                                                {{ round($doc->file_size / 1024 / 1024, 2) }} мб</p>
-
-
-                                        </div>
-
-                                    </div>
-                                    </div>
-
-                                    </div>
-                                @endif
-                @endforeach
-        </div>
-        <br>
+                    @endforeach
+            </div>
+            <br>
     @endif
 
 
