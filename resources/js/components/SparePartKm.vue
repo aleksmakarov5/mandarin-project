@@ -68,19 +68,19 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr :class="isAuthor(sparepart.author)"  @click="changeEditSparePartId(sparepart.id,sparepart.name,sparepart.part_number,sparepart.order_number,sparepart.price_ic_full,sparepart.price_sto,sparepart.price_original,sparepart.price_analogue,sparepart.price_used,sparepart.comment,sparepart.status_id,sparepart.date_price,sparepart.date_wait)">
+<tr :class="isAuthor(sparepart.author)">
     <td scope="col">
         {{ index+1 }}
     </td>
-    <td  :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id)" @keydown.enter="editName(sparepart.id)">
+    <td  :id="'name_'+sparepart.id" contenteditable @blur="editName(sparepart.id,index)" @keydown.enter="editName(sparepart.id,index)">
         {{ sparepart.name }}</td>
-<td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id)" @keydown.enter="editPartNumber(sparepart.id)">
+<td :id="'part_number_'+sparepart.id" contenteditable @blur="editPartNumber(sparepart.id,index)" @keydown.enter="editPartNumber(sparepart.id,index)">
         {{ sparepart.part_number }}</td>
-    <td  :id="'order_number_'+sparepart.id" contenteditable @blur="editOrderNumber(sparepart.id)" @keydown.enter="editOrderNumber(sparepart.id)">
+    <td  :id="'order_number_'+sparepart.id" contenteditable @blur="editOrderNumber(sparepart.id,index)" @keydown.enter="editOrderNumber(sparepart.id,index)">
         {{ sparepart.order_number }}</td>
-        <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id)" @keydown.enter="editPriceIcFull(sparepart.id)">
+        <td  class="ic_price"  :id="'price_ic_full_'+sparepart.id" contenteditable @blur="editPriceIcFull(sparepart.id,index)" @keydown.enter="editPriceIcFull(sparepart.id,index)">
         {{ makeCount(sparepart.price_ic_full) }}</td>
-        <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id)" @keydown.enter="editPriceSto(sparepart.id)">
+        <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id,index)" @keydown.enter="editPriceSto(sparepart.id,index)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
         <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name,index)" :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
         {{ makeCount(sparepart.price_original) }}</td>
@@ -104,7 +104,7 @@
         {{
             makeCount(sparepart.delta) }}</div></th>
 
-        <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
+        <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id,index)" @keydown.enter="editComment(sparepart.id,index)">
         {{ sparepart.comment }}</td>
 
                     <template v-if="rout_it=='directions'">
@@ -112,7 +112,7 @@
 
 
         <td :class="sparePartStatus(sparepart.status_id)">
-<select class=sel id="status_id" name="status_id" v-model="status_id" @change="updateSparePart(sparepart.id)">
+<select class=sel id="status_id" name="status_id" v-model="spareparts[index].status_id" @change="updateSparePart(sparepart.id,index)">
     <option value=0 >------</option>
     <template v-for="status in statuses">
                                 <option :value="status.id" >{{status.StatusName}}</option>
@@ -120,10 +120,10 @@
                             </select>
 
         </td>
-        <td > <input type="date" name="date_price" id="date_price" v-model="date_price" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
+        <td > <input type="date" name="date_price" id="date_price" v-model="spareparts[index].date_price" @blur="updateSparePart(sparepart.id,index)" @keydown.enter="updateSparePart(sparepart.id,index)">
         </td>
         <td >
-            <input type="date" name="date_wait" id="date_wait" v-model="date_wait" @blur="updateSparePart(sparepart.id)" @keydown.enter="updateSparePart(sparepart.id)">
+            <input type="date" name="date_wait" id="date_wait" v-model="spareparts[index].date_wait" @blur="updateSparePart(sparepart.id,index)" @keydown.enter="updateSparePart(sparepart.id,index)">
         </td>
         </template>
         <template v-else>
@@ -258,22 +258,22 @@
             this.getSpareParts(res)
            })
         },
-        updateSparePart(id)
+        updateSparePart(id,index)
         {
             axios.post(`/api/sparepart/${id}/update`, {
                 id_application: this.app_id,
-                name: this.name,
-                comment: this.comment,
-                price_sto: this.price_sto,
-                price_analogue: this.price_analogue,
-                price_used: this.price_used,
-                price_original: this.price_original,
-                part_number: this.part_number,
-                order_number: this.order_number,
-                price_ic_full: this.price_ic_full,
-                status_id: this.status_id,
-                date_price: this.date_price,
-                date_wait: this.date_wait
+                name: this.spareparts[index].name,
+                comment: this.spareparts[index].comment,
+                price_sto: this.spareparts[index].price_sto,
+                price_analogue: this.spareparts[index].price_analogue,
+                price_used: this.spareparts[index].price_used,
+                price_original: this.spareparts[index].price_original,
+                part_number: this.spareparts[index].part_number,
+                order_number: this.spareparts[index].order_number,
+                price_ic_full: this.spareparts[index].price_ic_full,
+                status_id: this.spareparts[index].status_id,
+                date_price: this.spareparts[index].date_price,
+                date_wait: this.spareparts[index].date_wait
 
             })
            .then(res => {
@@ -357,97 +357,86 @@
             return this.isAuthor(author)
 
         },
-            editName(id)
+            editName(id,index)
         {
            let name = document.getElementById('name_'+id);
-                this.name = name.innerText;
-                this.updateSparePart(id)
+                this.spareparts[index].name = name.innerText;
+                this.updateSparePart(id,index)
         },
-        editComment(id)
+        editComment(id,index)
         {
             let comment = document.getElementById('comment_'+id);
-            this.comment = comment.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].comment = comment.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceUsed(id)
+        editPriceUsed(id,index)
         {
             let price_used = document.getElementById('price_used_'+id);
-            this.price_used = price_used.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_used = price_used.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceAnalogue(id)
+        editPriceAnalogue(id,index)
         {
             let price_analogue = document.getElementById('price_analogue_'+id);
-            this.price_analogue = price_analogue.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_analogue = price_analogue.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceOriginal(id)
+        editPriceOriginal(id,index)
         {
             let price_original = document.getElementById('price_original_'+id);
-            this.price_original = price_original.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_original = price_original.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceICFull(id)
+        editPriceICFull(id,index)
         {
             let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.price_ic_full = price_ic_full.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_ic_full = price_ic_full.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceSto(id)
+         editPriceSto(id,index)
         {
             let price_sto = document.getElementById('price_sto_'+id);
-            this.price_sto = price_sto.innerText;
-            this.updateSparePart(id)
-             let n = -1;
+            this.spareparts[index].price_sto = price_sto.innerText;
+            let n = -1;
             let sum = 0;
-            console.log(this.spareparts.length);
+            this.updateSparePart(id,index);
+            // console.log(this.spareparts.length);
             for (let i = 0; i < this.spareparts.length; i++)
             {
-                if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.name[i].includes('мелкие детали') || this.name[i].includes('Мелкие Детали'))
+                if (this.spareparts[i].name.includes('МЕЛКИЕ ДЕТАЛИ') || this.spareparts[i].name.includes('мелкие детали') || this.spareparts[i].name.includes('Мелкие Детали'))
+                {
                     n = i;
+                }
                 else
                 {
-                    sum += this.spareparts[i].price_sto;
+                    sum += this.parseF(this.spareparts[i].price_sto)==0?this.parseF(this.spareparts[i].price_ic_full):this.parseF(this.spareparts[i].price_sto);
                 }
             }
 
-            if (n != -1)
+            if (n != (-1))
             {
                 this.spareparts[n].price_sto = sum * 0.02;
-                this.price_sto = this.spareparts[n].price_sto;
-                this.name = this.spareparts[n].name;
-                this.comment = this.spareparts[n].comment;
-                this.price_analogue= this.spareparts[n].price_analogue;
-                this.price_used= this.spareparts[n].price_used;
-                this.price_original = this.spareparts[n].price_original;
-                this.part_number= this.spareparts[n].part_number;
-                this.order_number= this.spareparts[n].order_number;
-                this.price_ic_full= this.spareparts[n].price_ic_full;
-                this.status_id= this.spareparts[n].status_id;
-                this.date_price= this.spareparts[n].date_price;
-                this.date_wait= this.spareparts[n].date_wait;
-                this.updateSparePart(n);
+                this.updateSparePart(this.spareparts[n].id,n);
             }
-
-
         },
-        editPartNumber(id)
+
+        editPartNumber(id,index)
         {
             let part_number = document.getElementById('part_number_'+id);
-            this.part_number = part_number.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].part_number = part_number.innerText;
+            this.updateSparePart(id,index)
         },
-        editOrderNumber(id)
+        editOrderNumber(id,index)
         {
             let order_number = document.getElementById('order_number_'+id);
-            this.order_number = order_number.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].order_number = order_number.innerText;
+            this.updateSparePart(id,index)
         },
-        editPriceIcFull(id)
+        editPriceIcFull(id,index)
         {
             let price_ic_full = document.getElementById('price_ic_full_'+id);
-            this.price_ic_full = price_ic_full.innerText;
-            this.updateSparePart(id)
+            this.spareparts[index].price_ic_full = price_ic_full.innerText;
+            this.updateSparePart(id,index)
         },
         fortmatDate(date)
         {
