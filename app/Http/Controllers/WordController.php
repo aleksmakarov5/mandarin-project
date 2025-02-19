@@ -278,12 +278,12 @@ class WordController extends Controller
             $price_sp_full = 0;
             foreach ($SpareParts as $sparepart) {
                 $array[] = array(
-                    'SparePart' => $sparepart->price_sto == 0 ? $sparepart->name : bold_text($sparepart->name),
+                    'SparePart' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? $sparepart->name : bold_text($sparepart->name),
                     'count' => $sparepart->count,
                     'summ' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
                     'iznos' => $sparepart->iznos,
                     'sum_half' => ($sparepart->price_ic_half),
-                    'part_number' => $sparepart->price_sto == 0 ? $sparepart->part_number : bold_text($sparepart->part_number)
+                    'part_number' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? $sparepart->part_number : bold_text($sparepart->part_number)
                 );
                 $price_sp_full
                     += $sparepart->price_sto == 0
