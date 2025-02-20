@@ -1932,6 +1932,10 @@ class ApplicationController extends Controller
                 $body = str_replace('png', 'png"', $body);
                 $body = str_replace('""', '"', $body);
                 $body = str_replace('=">', '="">', $body);
+                if (strpos($body, '<blockquote')) {
+                    $body = preg_replace("~<blockquote(.*?)>(.*)</blockquote>~si", "", ' ' . $body . ' ');
+                    // $body = substr($body, 0, strpos($body, '<blockquote'));
+                }
                 $loc = Attachment::where('message_id', '=', $message->id)
                     ->where('file_name', 'like', '%image001.png%')
                     ->first();

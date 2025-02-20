@@ -67,10 +67,8 @@
                             </div>
                         </div>
                         <div class="message-body">
-
                             <div class="message-content">
                                 @php
-
                                     echo $message->body;
                                 @endphp
                             </div>
