@@ -100,10 +100,10 @@ $i = 1;
                 <tr>
                 @php
             $i++;
-            $major = !$sparepart->price_original ? 0 : $sparepart->price_original + $sparepart->price_original * rand(2, 7) / 10;
-            $piter = !$sparepart->price_original ? 0 : $sparepart->price_original - $sparepart->price_original * rand(1, 6) / 10;
-            $emex = !$sparepart->price_original ? 0 : $sparepart->price_original + $sparepart->price_original * rand(3, 9) / 10;
-            $sred = ($major + $piter + $emex) / 3
+            $major = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(2, 7) / 100);
+            $piter = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(-1, 4) / 100);
+            $emex = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(3, 8) / 100);
+            $sred = (int)( ($major + $piter + $emex) / 3);
 
                 @endphp
                       <td  style="
