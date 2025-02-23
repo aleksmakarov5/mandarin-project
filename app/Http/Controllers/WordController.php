@@ -10,7 +10,8 @@ use App\Models\estimate;
 use App\Models\application;
 use App\Models\troubleshooting;
 use Jenssegers\Date\Date;
-
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\ReportExport;
 
 class WordController extends Controller
 {
@@ -368,6 +369,21 @@ class WordController extends Controller
             while (file_exists($dir . '/' . $location))
                 $location .= '(' . $i++ . ')';
         }
+        if ($doc_type == 35) {
+            $file_save =  'public/files/' . $id . '/' . $filename . date('d-m-y_hms') . ".xlsx";
+            Excel::store(new ReportExport($id), $file_save);
+            $file_save = $dir . '/' . $filename . date('d-m-y_hms') . ".xlsx";
+            $document = new Attachment();
+            $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".xlsx";
+            $document->message_id = 0;
+            $document->mime_type = mime_content_type($file_save);
+            $document->id_application = $id;
+            $document->file_size = filesize($file_save);
+            $document->location = $filename . date('d-m-y_hms') . ".xlsx";
+            $document->id_status = $doc_type;
+            $document->save();
+        }
+
         $pathToSave = $dir . '/' . $location;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
@@ -499,5 +515,21 @@ class WordController extends Controller
         $this->export_zn($id);
         $this->export_sch($id);
         return redirect()->route('document', $id);
+    }
+    public function export($id)
+    {
+        $spareparts = DB::table('spare_parts')
+            ->where('id_application', '=', $id)
+            ->leftJoin(
+                'sparepart_statuses',
+                'sparepart_statuses.id',
+                '=',
+                'spare_parts.status_id'
+            )
+            ->select('spare_parts.*', 'sparepart_statuses.StatusName')
+            ->get();
+
+        // return view('exportReport', ['spareparts' => $spareparts]);
+        // return Excel::download(new ReportExport($id), 'Запчасти.xlsx');
     }
 }
