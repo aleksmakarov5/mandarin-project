@@ -370,16 +370,16 @@ class WordController extends Controller
                 $location .= '(' . $i++ . ')';
         }
         if ($doc_type == 35) {
-            $file_save =  'public/files/' . $id . '/' . $filename . date('d-m-y_hms') . ".xlsx";
+            $file_save =  'public/files/' . $id . '/таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
             Excel::store(new ReportExport($id), $file_save);
-            $file_save = $dir . '/' . $filename . date('d-m-y_hms') . ".xlsx";
+            $file_save = $dir . '/таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
             $document = new Attachment();
-            $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".xlsx";
+            $document->file_name = 'таблица_запчастей_' . $number . ' от ' . Date::parse()->format('j F Y') . ".xlsx";
             $document->message_id = 0;
             $document->mime_type = mime_content_type($file_save);
             $document->id_application = $id;
             $document->file_size = filesize($file_save);
-            $document->location = $filename . date('d-m-y_hms') . ".xlsx";
+            $document->location = 'таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
             $document->id_status = $doc_type;
             $document->save();
         }
