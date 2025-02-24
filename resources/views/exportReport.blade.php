@@ -271,7 +271,7 @@ for ($j = 3; $j <= $i; $j++)
     background-color: orange;
     text-align: center;
     ">
-=D{{$i}}-C{{$i}}
+=D{{$i+1}}-C{{$i+1}}
 </td>
 <td></td>
 <td colspan="2" rowspan="2" style="
@@ -316,7 +316,7 @@ for ($j = 3; $j <= $i; $j++)
     background-color: lightblue;
     text-align: center;
     ">
-        =F{{$i}}-C{{$i}}
+        =F{{$i+1}}-C{{$i+1}}
     </td>
 </tr>
 <tr>
@@ -335,7 +335,7 @@ for ($j = 3; $j <= $i; $j++)
     background-color: green;
     text-align: center;
     ">
-        =E{{$i}}-C{{$i}}
+        =E{{$i+1}}-C{{$i+1}}
     </td>
 </tr>
  </tbody>
