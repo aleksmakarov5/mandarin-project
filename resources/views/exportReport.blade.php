@@ -94,71 +94,71 @@ font-family: Calibri;
 $i = 1;
 @endphp
 @foreach ($spareparts as $sparepart)
-        @if (($sparepart->price_sto != 0) && ((int) $sparepart->price_sto != (int) $sparepart->price_ic_full))
+    @if (($sparepart->price_sto != 0) && ((int) $sparepart->price_sto != (int) $sparepart->price_ic_full))
 
 
-                <tr>
-                @php
-            $i++;
-            $major = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(2, 7) / 100);
-            $piter = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(-1, 4) / 100);
-            $emex = !$sparepart->price_original ? 0 : $sparepart->price_original + (int)($sparepart->price_original * rand(3, 8) / 100);
-            $sred = (int)( ($major + $piter + $emex) / 3);
+            <tr>
+            @php
+                $i++;
+                $major = !$sparepart->price_sto ? 0 : $sparepart->price_sto*1.05 + (int)($sparepart->price_sto * rand(-3, 6) / 100);
+                $piter = !$sparepart->price_sto ? 0 : $sparepart->price_sto * 1.05 + (int)($sparepart->price_sto * rand(-2, 4) / 100);
+                $emex = !$sparepart->price_sto ? 0 : $sparepart->price_sto * 1.05 + (int)($sparepart->price_sto * rand(-4, 8) / 100);
+                $sred = (int)( ($major + $piter + $emex) / 3);
 
-                @endphp
-                      <td  style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$sparepart->part_number}} </td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$sparepart->name}}</td>
+            @endphp
+                  <td  style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$sparepart->part_number}} </td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$sparepart->name}}</td>
 
-                       <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$sparepart->price_ic_full}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            " data-format  bgcolor="orange">{{$sred}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            " bgcolor="green"
+                   <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$sparepart->price_ic_full}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        " data-format  bgcolor="orange">{{$sred}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        " bgcolor="green"
 
-            >{{$sparepart->price_sto}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            "  bgcolor="lightblue">{{$sparepart->price_analogue}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$major}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$piter}}</td>
-                      <td style="
-            border: 1px solid black;
-            font-size: 11pt;
-            font-family: Calibri;
-            ">{{$emex}}</td>
+        >{{$sparepart->price_sto}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        "  bgcolor="lightblue">{{$sparepart->price_analogue}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$major}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$piter}}</td>
+                  <td style="
+        border: 1px solid black;
+        font-size: 11pt;
+        font-family: Calibri;
+        ">{{$emex}}</td>
 
 
 
-                    </tr>
-        @endif
+                </tr>
+    @endif
 @endforeach
 
 <tr>
