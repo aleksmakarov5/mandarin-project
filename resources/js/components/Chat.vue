@@ -346,10 +346,10 @@ div.attachment-show img{
         <div class="message-button" @click.prevent="sendMessage()">
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
-        <div class="team-button" @click="work_group_show=!work_group_show">
+        <!-- <div class="team-button" @click="work_group_show=!work_group_show">
              <a title="Рабочая группа">
             <img src="/storage/img/team.png" width="20px"></a>
-        </div>
+        </div> -->
         </div>
 
 
@@ -400,7 +400,7 @@ export default {
             img_path: '',
             add_work_group_show: false,
             work_group_show: false,
-            work_groups: this.in_work_groups,
+            work_groups: [], //this.in_work_groups,
             minus_work_group_show: false,
             work_group_selected: [],
             replayShow: false,
