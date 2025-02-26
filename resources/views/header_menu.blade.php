@@ -179,6 +179,7 @@ foreach ($chats as $chat) {
 @endphp
 @extends('layout')
 @section('main_content')
+
     <div id="ch">
         <chat :app_id={{ $id }} :in_chats="{{ json_encode($chats) }}" :user_id={{ Auth::user()->id }}
             :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"

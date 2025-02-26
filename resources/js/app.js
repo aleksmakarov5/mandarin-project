@@ -19,6 +19,8 @@ import SparePartZap from './components/SparePartZap.vue';
 import SparePartAll from './components/SparePartAll.vue';
 import SparePartService from './components/SparePartService.vue';
 import SparePartKm from './components/SparePartKm.vue';
+import SendMail from './components/SendMail.vue';
+import NewMail from './components/NewMail.vue';
 
 import DatePay from './components/DatePay.vue';
 
@@ -37,6 +39,7 @@ const app1 = createApp({
 })
 app1.mount('#app1')
 
+
 const app = createApp({
   components: {
     NotifyCounter,
@@ -53,7 +56,9 @@ const app = createApp({
     SparePartKm,
     NotifyApp,
     NextStep,
-    DatePay
+        DatePay,
+    SendMail,
+        NewMail
   },
 })
 app.mount('#app')
@@ -67,7 +72,7 @@ nb.mount('#nb')
 
 const ch = createApp({
   components: {
-    Chat,
+    Chat
   },
 })
 ch.mount('#ch')

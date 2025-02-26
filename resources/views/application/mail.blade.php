@@ -1,9 +1,13 @@
 @extends('header_menu')
 @section('title')
-    Заявкa
+    Переписка с СК
 @endsection
 @section('main')
-    </div>
+
+
+
+
+
     <div class="content-wrapper">
         <div class="email-wrapper wrapper">
 
@@ -69,7 +73,7 @@
                         <div class="message-body">
                             <div class="message-content">
                                 @php
-                                    echo $message->body;
+    echo $message->body;
                                 @endphp
                             </div>
                             <div class="attachments-sections">
@@ -104,67 +108,75 @@
         </div>
     </div>
     @can('admin')
-        <div class="row">
+        @php
+            $to=[];
+            $to[0]= $to_email;
+        @endphp
+            <new-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+                :status="22" />
+                {{-- <div class="row">
 
-            <div class="col">
+                    <div class="col">
 
-                <ul class="list-unstyled">
+                        <ul class="list-unstyled">
 
 
-                    <form action="/answer_ic_sch_sent/{{ $id }}" method="post">
-                        @csrf
-                        <div class="form-float">
-                            <input type="text" name="to" id="to" class="form-cont" value='{{ $to_email }}'>
-                            <label for="to">Получатель</label>
-                        </div>
-                        <input type="hidden" name="from" value="{{ Auth::user()->id }}">
-                        <input type="hidden" name="subject"
-                            value="@if (isset($subject)) {{ $subject }} @else ---- @endif">
-                        <li class="bg-white mb-3">
+                            <form action="/answer_ic_sch_sent/{{ $id }}" method="post">
 
-                            <div class="form-outline">
-                                <textarea class="form-cont" id="textAreaExample2" rows="15" name="message">
+                                @csrf
+                                <div class="form-float">
+                                    <input type="text" name="to" id="to" class="form-cont" value='{{ $to_email }}'>
+                                    <label for="to">Получатель</label>
+                                </div>
+                                <input type="hidden" name="from" value="{{ Auth::user()->id }}">
+                                <input type="hidden" name="subject"
+                                    value="@if (isset($subject)) {{ $subject }} @else ---- @endif">
+                                <li class="bg-white mb-3">
 
-              </textarea>
+                                    <div class="form-outline">
+                                        <textarea class="form-cont" id="textAreaExample2" rows="15" name="message">
 
-                            </div>
+                      </textarea>
 
-                            <div class="row">
-                                @if (isset($attach))
-                                    @foreach ($attach as $key => $doc)
-                                        <div class="card" style="width: 20rem;">
-                                            <div class="row g-0">
-                                                <div class="col-md-4">
-                                                    <form name="form{{ $key }}" action="data_load" method="POST">
-                                                        @csrf
-                                                        {{-- <input type="hidden" name="location" value='{{ $doc->location }}'> --}}
-                                                        <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
-                                                            class="card-img-top"
-                                                            alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
-                                                    </form>
-                                                </div>
+                                    </div>
 
-                                                <div class="col-md-8">
+                                    <div class="row">
+                                        @if (isset($attach))
+                                            @foreach ($attach as $key => $doc)
+                                                <div class="card" style="width: 20rem;">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-4">
+                                                            <form name="form{{ $key }}" action="data_load" method="POST">
+                                                                @csrf
+                                                                 <img src="/storage/img/{{ pathinfo($doc->location, PATHINFO_EXTENSION) }}.png"
+                                                                    class="card-img-top"
+                                                                    alt="{{ mb_substr($doc->mime_type, mb_strpos($doc->mime_type, '/'), strlen($doc->mime_type) - mb_strpos($doc->mime_type, '/')) }}">
+                                                            </form>
+                                                        </div>
 
-                                                    <div class="card-body">
+                                                        <div class="col-md-8">
 
-                                                        <h5 class="card-title">{{ $doc->file_name }}</h5>
-                                                        <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                                                            <div class="card-body">
+
+                                                                <h5 class="card-title">{{ $doc->file_name }}</h5>
+                                                                <input type="checkbox" name="location[]" value='{{ $doc->location }}'>
+                                                            </div>
+
+                                                        </div>
                                                     </div>
 
                                                 </div>
-                                            </div>
+                                            @endforeach
+                                        @endif
+                                    </div>
+                                    <input type="submit" class="nav-link">
 
-                                        </div>
-                                    @endforeach
-                                @endif
-                            </div>
-                            <input type="submit" class="nav-link">
+                            </form>
+                    </div>
 
-                    </form>
-            </div>
-
-        </div>
+                </div> --}}
     @endcan
 
 @endsection
