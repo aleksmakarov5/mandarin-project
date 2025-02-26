@@ -1910,6 +1910,9 @@ class ApplicationController extends Controller
             // echo $to;
 
             $attachments = attachment::where('id_application', '=', $id)->get()->all();
+            foreach ($attachments as $attachment) {
+                $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
+            }
         } catch (\Exception $e) {
             $message_id = 0;
             $subject = '';

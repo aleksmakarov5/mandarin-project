@@ -48,6 +48,35 @@
 <div class="new_message" contenteditable>
 
 </div>
+<div class="row">
+                                        <template v-for="(doc,key) in attach">
+
+                                                <div class="card" style="width: 20rem;">
+                                                    <div class="row g-0">
+                                                        <div class="col-md-4">
+
+
+                                                                 <img :src="'/storage/img/'+doc.ext+'.png'"
+                                                                    class="card-img-top"
+                                                                   >
+
+                                                        </div>
+
+                                                        <div class="col-md-8">
+
+                                                            <div class="card-body">
+
+                                                                <h5 class="card-title">{{ doc.file_name }}</h5>
+                                                                <input type="checkbox" name="location[]" :value='doc.location'>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+
+                                        </template>
+                                    </div>
 <div class="send-button" @click.prevent="sendMessage()" title="Отправить сообщение">
        <img src="/storage/img/send_mess.png" width="30px">
         </div>
