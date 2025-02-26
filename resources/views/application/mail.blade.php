@@ -116,7 +116,7 @@
                 :subject="{{json_encode(isset($subject)?$subject:'---')}}"
                 :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
                 :status="22" />
-                {{-- <div class="row">
+                <div class="row">
 
                     <div class="col">
 
@@ -176,7 +176,7 @@
                             </form>
                     </div>
 
-                </div> --}}
+                </div>
     @endcan
 
 @endsection
