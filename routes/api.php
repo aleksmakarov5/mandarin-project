@@ -10,6 +10,7 @@ use App\Http\Controllers\api\FactWorkController;
 use App\Http\Controllers\api\WorkController;
 use App\Http\Controllers\api\SparePartController;
 use App\Http\Controllers\api\ChatController;
+use App\Http\Controllers\api\MailController;
 use App\Http\Controllers\api\ApplicationController;
 
 
@@ -83,6 +84,13 @@ Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
     Route::post('/delete_work_groups', [ChatController::class, 'delete_work_groups'])->name('chat.delete_work_groups');
     Route::post('/unreaded', [ChatController::class, 'unreaded'])->name('chat.unreaded');
     Route::delete('/{id}', [ChatController::class, 'destroy']);
+    // Route::post('/', 'StoreController');
+    // Route::put('/{id}', 'UpdateController');
+});
+Route::group(['namespace' => 'Mail', 'prefix' => 'mail'], function () {
+
+    Route::post('/send', [MailController::class, 'mail_sent'])->name('mail.send');
+
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });

@@ -31,7 +31,7 @@
 
 
 <div class="content">
-    <div>
+
 <label for="to">Получатель</label> <img class="remove" src="/storage/img/add.png" title="Добавить получателя" width="30" alt="" @click.prevent="addTo()">
             <br>
         <template v-for="(t,i) in to">
@@ -39,13 +39,13 @@
               <img v-if="i>0" class="remove" src="/storage/img/delete.png" title="Удалить получателя" width="20" alt="" @click.prevent="removeTo(i)">
               <br>
          </template>
-    </div>
+
 
 <label for="to">Тема письма</label><br>
      <input type="text" v-model="subject" size="100"></input>
      <br>
-         <label for="text">Текст сообщения</label>
-<div class="new_message" contenteditable>
+<label for="text">Текст сообщения</label>
+<div id="message_new" contenteditable class="new_message"  @keyup="editMessage()">
 
 </div>
 <div class="row">
@@ -107,7 +107,7 @@ export default{
             attach: this.in_attach,
             app_id: this.in_app_id,
             status: this.in_status,
-
+            message: '',
       }
     },
 
@@ -119,6 +119,53 @@ export default{
         addTo() {
         this.to.push(' ');
         },
+        editMessage()
+        {
+            let mess = document.getElementById('message_new');
+            this.message = mess.innerText;
+
+        },
+        sendMessage() {
+            let mess = document.getElementById('message_new');
+            console.log(mess.innerText);
+            this.message = mess.innerText;
+
+            // mess.innerHTML = ''
+            let to = []
+            for (let i = 0; i < this.to.length; i++) {
+                to.push(this.to[i])
+            }
+            if (this.message.trim == '')
+                return
+            else {
+                let formData = new FormData();
+                for (let i = 0; i < to.length; i++) {
+                    formData.append('to[' + i + ']', to[i])
+                }
+
+                formData.append('message', this.message)
+                formData.append('id_application', this.app_id)
+                formData.append('user_id', this.from)
+                formData.append('subject', this.subject)
+                axios.post(`/api/mail/send`, formData,
+                    {
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                        }
+                    }
+                )
+
+                    .then(res => {
+                        //console.log(this.to)
+                        console.log(res.data);
+                        mess.innerHTML = '';
+                        location.reload()
+                    })
+            }
+
+        },
+
+
     removeTo(index) {
         this.to.splice(index, 1);
         },
