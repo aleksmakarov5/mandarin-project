@@ -31,17 +31,17 @@ class MailController extends Controller
                 $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
             }
 
-        // Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
-        //     foreach ($data["email"] as $email) {
-        //         $message->to($email, $data["name"]);
-        //     }
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
+            foreach ($data["email"] as $email) {
+                $message->to($email, $data["name"]);
+            }
 
-        //     $message->from($data['from'], $data['name'])
-        //         ->subject($data["title"]);
-        //     foreach ($files as $file) {
-        //         $message->attach($file);
-        //     }
-        // });
+            $message->from($data['from'], $data['name'])
+                ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
         // $application->id_status = 25;
         $messages = new message();
         $messages->mailbox_id = $application->our_company;
