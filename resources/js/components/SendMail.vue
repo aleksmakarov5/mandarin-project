@@ -51,7 +51,7 @@
 <div class="row">
                                         <template v-for="(doc,key) in attach">
 
-                                                <div class="card" style="width: 20rem;">
+                                                <div class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id)" :style="docSelected(doc.location)">
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
 
@@ -67,7 +67,6 @@
                                                             <div class="card-body">
 
                                                                 <h5 class="card-title">{{ doc.file_name }}</h5>
-                                                                <input type="checkbox" name="location[]" :value='doc.location'>
                                                             </div>
 
                                                         </div>
@@ -108,6 +107,8 @@ export default{
             app_id: this.in_app_id,
             status: this.in_status,
             message: '',
+            location: [],
+            doc_id:[],
       }
     },
 
@@ -127,8 +128,7 @@ export default{
         },
         sendMessage() {
             let mess = document.getElementById('message_new');
-            console.log(mess.innerText);
-            this.message = mess.innerText;
+             this.message = mess.innerText;
 
             // mess.innerHTML = ''
             let to = []
@@ -142,6 +142,11 @@ export default{
                 for (let i = 0; i < to.length; i++) {
                     formData.append('to[' + i + ']', to[i])
                 }
+                 for (let i = 0; i < this.location.length; i++) {
+                    formData.append('location[' + i + ']', this.location[i])
+                    formData.append('doc_id[' + i + ']', this.doc_id[i])
+                 }
+
 
                 formData.append('message', this.message)
                 formData.append('id_application', this.app_id)
@@ -161,6 +166,39 @@ export default{
                         mess.innerHTML = '';
                         location.reload()
                     })
+            }
+
+        },
+
+        editAttach(location,id)
+        {
+            if(this.location.includes(location))
+            {
+                this.location.splice(this.location.indexOf(location), 1);
+            }
+            else
+            {
+                this.location.push(location);
+            }
+            if(this.doc_id.includes(id))
+            {
+                this.doc_id.splice(this.doc_id.indexOf(id), 1);
+            }
+            else
+            {
+                this.doc_id.push(id);
+            }
+
+        },
+        docSelected(location)
+        {
+            if(this.location.includes(location))
+            {
+                return "background: lightblue;"
+            }
+            else
+            {
+                return ""
             }
 
         },

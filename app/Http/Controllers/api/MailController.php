@@ -30,35 +30,47 @@ class MailController extends Controller
             for ($i = 0; $i < count($request->location); $i++) {
                 $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
             }
+
+        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
+            foreach ($data["email"] as $email) {
+                $message->to($email, $data["name"]);
+            }
+
+            $message->from($data['from'], $data['name'])
+                ->subject($data["title"]);
+            foreach ($files as $file) {
+                $message->attach($file);
+            }
+        });
+        // $application->id_status = 25;
         $messages = new message();
         $messages->mailbox_id = $application->our_company;
         $messages->type = 1;
         $messages->application_id = $request->id_application;
         $messages->body_html = $request->message;
         $messages->message_date = date('Y-m-d H:i:s');
-
-
         $messages->save();
-        Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files, $messages) {
-            foreach ($data["email"] as $email) {
-                $message->to($email, $data["name"]);
-                $address = new address;
-                $address->message_id = $messages->id;
-                $address->type = 'to';
-                $address->email = $email;
-                $address->save();
-            }
+        foreach ($data["email"] as $email) {
 
-            $message->from($data['from'], $data['name'])
-                ->subject($data["title"]);
-            foreach ($files as $file) {
-                // $attach = new attachment;
-                // $attach->message_id = $message->id;
-                // $attach->location = basename($file);
-                $message->attach($file);
-            }
-        });
-        // $application->id_status = 25;
+            $address = new address;
+            $address->message_id = $messages->id;
+            $address->type = 'to';
+            $address->email = $email;
+            $address->save();
+        }
+
+
+        foreach ($request->doc_id as $id) {
+            $attach_new = new attachment;
+            $attach_new->message_id = $messages->id;
+            $attach_old = attachment::where('id', '=', $id)->first();
+            $attach_new->sended = 1;
+            $attach_new->location = $attach_old->location;
+            $attach_new->mime_type = $attach_old->mime_type;
+            $attach_new->file_size = $attach_old->file_size;
+            $attach_new->file_name = $attach_old->file_name;
+            $attach_new->save();
+        }
         $history = new history;
         $address = new address;
         $address->message_id = $messages->id;

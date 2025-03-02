@@ -53,6 +53,7 @@ Route::get('/mail_send',  [ImapController::class, 'send'])->name('mail_send');
 
 Route::middleware("can:administrator")->group(
     function () {
+        Route::get('/test',  [MainController::class, 'test'])->name('test');
         Route::get('/admin',  [AdminController::class, 'index'])->name('admin');
         Route::get('/users',  [AdminController::class, 'users_index'])->name('users');
         Route::get('users/create', [AdminController::class, 'create_user'])

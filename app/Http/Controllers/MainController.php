@@ -229,6 +229,7 @@ class MainController extends Controller
         $hide_menu = $request->get('hide_menu');
         $document = DB::table('attachments')
             ->where('id_application', '=', $id)
+            ->where('sended', '=', null)
             ->get();
         $doc_statuses = new doc_status();
         $def = DB::table('applications')
@@ -699,9 +700,27 @@ class MainController extends Controller
         $application->save();
         return redirect()->route('document', ['id' => $id]);
     }
-    public function test(request $request)
+    public function test()
     {
-        dd($request);
+
+
+        $ch = curl_init();
+        curl_setopt_array($ch, array(
+            CURLOPT_URL => "https://emex.ru/products/5757A750",
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => "",
+            CURLOPT_TIMEOUT => 30000,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => "GET",
+            CURLOPT_HTTPHEADER => array(
+                'Content-Type: application/json',
+            ),
+        ));
+
+        $res = curl_exec($ch);
+        // $res = json_encode($res);
+        dd($res);
+        curl_close($ch);
     }
     public function gallery(request $request, $id, $location, $name)
     {
