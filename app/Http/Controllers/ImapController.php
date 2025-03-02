@@ -99,6 +99,8 @@ class ImapController extends Controller
                     'id_status' => 1,
                     'vin' => $vin,
                     'ub_type' => true,
+                    'ic_answer_date' => null,
+
                 ]
             );
             try {
@@ -313,7 +315,8 @@ class ImapController extends Controller
                     'id_insuranceCompany' => 1,
                     'CarModel' => $model,
                     'gnz' => $gnz,
-                    'id_status' => 1
+                    'id_status' => 1,
+                    'ic_answer_date' => null,
                 ]
             );
             try {
@@ -566,7 +569,8 @@ class ImapController extends Controller
                 'id_status' => 1,
                 'vin' => " ",
                 'ub_type' => false,
-                'our_company' => $our_company
+                'our_company' => $our_company,
+                'ic_answer_date' => null,
             ]
         );
         try {
@@ -775,7 +779,8 @@ class ImapController extends Controller
                 'id_status' => 1,
                 'vin' => " ",
                 'ub_type' => false,
-                'our_company' => $our_company
+                'our_company' => $our_company,
+                'ic_answer_date' => null,
             ]
         );
         try {

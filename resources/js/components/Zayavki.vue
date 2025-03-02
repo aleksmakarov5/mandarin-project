@@ -208,7 +208,7 @@ z-index: 2;
                                     </span>
 
                                 </div>
-                                <template v-if="application.id_status < 5">
+                                <template v-if="application.id_status < 5&&application.count_five<10">
 
                                     <div :class="'progressbar '+(application.count_five > 0 ? '' : 'red' )">
                                         <span
