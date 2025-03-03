@@ -6,7 +6,7 @@
     {{--
 <div class="alert" role="alert" style="width: 100%; background: rgb(116, 116, 255);">
    <div class="card-body">
-    <h5 class="card-title"> 
+    <h5 class="card-title">
    От: {{ $chat->from}}
 </h5>
 <h5 class="card-title">
@@ -51,7 +51,7 @@
 
                             <div class="form-outline">
                                 <textarea class="form-cont" id="textAreaExample2" rows="15" name="message">
-Добрый день! 
+Добрый день!
 Направляем акт скрытых повреждений по заявке {{ $application->numberInsuranceCompanyApplication }}
               </textarea>
 

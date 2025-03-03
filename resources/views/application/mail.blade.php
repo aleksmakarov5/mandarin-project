@@ -115,6 +115,7 @@
             <new-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
                 :subject="{{json_encode(isset($subject)?$subject:'---')}}"
                 :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
                 :status="22" />
                 <div class="row">
 

@@ -47,6 +47,7 @@ background-color: #6b696987;
         :in_attach="attach"
         :in_app_id="app_id"
         :in_status="status"
+        :text="'Партнеры, добрый день!<br><br><br><br>'+sign"
         />
  </div>
 </template>
@@ -65,6 +66,7 @@ export default {
         'attach',
         'app_id',
         'status',
+        'sign'
     ],
 
     data()

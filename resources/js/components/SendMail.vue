@@ -46,7 +46,7 @@
      <br>
 <label for="text">Текст сообщения</label>
 <div id="message_new" contenteditable class="new_message"  @keyup="editMessage()">
-
+<span v-html="text"></span>
 </div>
 <div class="row">
                                         <template v-for="(doc,key) in attach">
@@ -95,6 +95,7 @@ export default{
         'in_attach',
         'in_app_id',
         'in_status',
+        'text'
     ],
 
     data()
@@ -123,12 +124,12 @@ export default{
         editMessage()
         {
             let mess = document.getElementById('message_new');
-            this.message = mess.innerText;
+            this.message = mess.innerHTML;
 
         },
         sendMessage() {
             let mess = document.getElementById('message_new');
-             this.message = mess.innerText;
+             this.message = mess.innerHTML;
 
             // mess.innerHTML = ''
             let to = []

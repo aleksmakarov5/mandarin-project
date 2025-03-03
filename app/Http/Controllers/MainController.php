@@ -226,6 +226,7 @@ class MainController extends Controller
 
     public function document(request $request, $id)
     {
+
         $hide_menu = $request->get('hide_menu');
         $document = DB::table('attachments')
             ->where('id_application', '=', $id)
@@ -237,10 +238,44 @@ class MainController extends Controller
             ->select('def')
             ->first();
         $application = application::where('id', '=', $id)->first();
+        $sign = OurCompany::where('id', '=', $application->our_company)->first()->sign;
+        try {
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $subject =
+                message::where('application_id', '=', $id)->first()->subject;
+            $to_email = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first()
+                ->email;
+            // echo $to;
 
+            $attachments = attachment::where('id_application', '=', $id)
+                ->where('sended', '=', null)
+                ->get()->all();
+            foreach ($attachments as $attachment) {
+                $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
+            }
+        } catch (\Exception $e) {
+            $message_id = 0;
+            $subject = '';
+            $to_email = '';
+            $attachments = [];
+        }
 
         // dd($doc_statuses->all());
-        return view('document', ['document' => $document, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'hide_menu' => $hide_menu, 'application' => $application], ['id' => $id]);
+        return view('document', [
+            'document' => $document,
+            'doc_statuses' => $doc_statuses->all(),
+            'def' => $def->def,
+            'hide_menu' => $hide_menu,
+            'application' => $application,
+            'sign' => $sign,
+            'subject' => $subject,
+            'to_email' => $to_email,
+            'attach' => $attachments,
+
+        ], ['id' => $id]);
     }
     public function showdoc($id, $locations)
     {

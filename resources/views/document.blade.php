@@ -6,12 +6,12 @@
 @section('main')
     @if (!isset($hide_menu))
                     @php
-        $all = true;
-        foreach ($document as $doc) {
-            if ($doc->id_status != 0) {
-                $all = false;
-            }
+    $all = true;
+    foreach ($document as $doc) {
+        if ($doc->id_status != 0) {
+            $all = false;
         }
+    }
                     @endphp
 
                     <form action="/documents/{{ $id }}/doc_add" method="post" enctype="multipart/form-data">
@@ -40,23 +40,25 @@
                                                                                                             <div class="row g-0">
                                                                                                                 <div class="col-md-4">
                                                                                                                     <a @if (
-                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
-                                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
-                                    pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
-                                ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
+                pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                pathinfo($doc->location, PATHINFO_EXTENSION) == '7z'
+            ) href='/gallery/{{ $id }}/{{ $doc->location }}/{{ $doc->file_name }}' target="_blank"
                                                                                                                     @else
 
-                                                                                                                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' ||
-                                                                                                                        pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc' )
+                                                                                                                        @if (
+                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' ||
+                    pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc'
+                )
 
                                                                                                                                                                                                             @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
                                                                                                                                                                                                             href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
                                                                                                                                                                                                             @else
                                                                                                                                                                                                                 @php
-                                                                                                                                                                                                                    $pathToSave = 'storage/files/' . $id . '/' . $doc->location;
-                                                                                                                                                                                                                 $dir = 'storage/files/' . $id;
-                                                                                                                            exec('chmod 755 "' . $pathToSave . '"');
-                                                                                                                            exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+                        $pathToSave = 'storage/files/' . $id . '/' . $doc->location;
+                        $dir = 'storage/files/' . $id;
+                        exec('chmod 755 "' . $pathToSave . '"');
+                        exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
                                                                                                                                                                                                                 @endphp
                                                                                                                                                                                                                 href="/storage/files/{{ $id }}/{{ pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf' }}"
                                                                                                                                                                                                             {{-- href="/storage/files/{{ $id }}/{{ $doc->location }}"  --}}
@@ -117,12 +119,12 @@
 
 
 
-    <table class='editable'>
+    <table class='table table-bordered table-hover'>
         <thead>
             <tr>
                 <th scope="col">Тип документа</th>
                 <th scope="col">Печатная форма</th>
-                <th scope="col">Скан документа</th>
+                <th scope="col">Скан документа</th><th scope="col"></th>
             </tr>
         </thead>
         <tbody>
@@ -147,6 +149,7 @@
                 'load_location' => 'Заявление_о_страховом_возмещении',
             ])
                         </th>
+                        <th></th>
                     </tr>
                 @endif
             @endif
@@ -156,6 +159,7 @@
                 <th scope="col" colspan=2>
                     @include('document.form_scan', ['status_id' => 20])
                 </th>
+                <th></th>
             </tr>
             <tr>
                 <th scope="col">Фото первичного осмотра автомобиля</th>
@@ -167,6 +171,7 @@
         'load_location' => 'Фото_первичного_осмотра_автомобиля',
     ])
                 </th>
+                <th></th>
             </tr>
             <tr>
                 <th scope="col">Смета</th>
@@ -174,6 +179,7 @@
                 <th scope="col" colspan=2>
                     @include('document.form_scan', ['status_id' => 22])
                 </th>
+                <th></th>
             </tr>
             <tr>
                 <th scope="col">Направление</th>
@@ -182,6 +188,7 @@
                 <th scope="col" colspan=2>
                     @include('document.form_scan', ['status_id' => 1])
                 </th>
+                <th></th>
             </tr>
             <tr>
                 <th scope="col">Калькуляция</th>
@@ -189,6 +196,7 @@
                 <th scope="col" colspan=2>
                     @include('document.form_scan', ['status_id' => '23'])
                 </th>
+                <th></th>
             </tr>
              @if (isset($application->id_insuranceCompany))
                 @if ($application->id_insuranceCompany == 1)
@@ -204,6 +212,7 @@
                 'load_location' => 'Информационный_акт',
             ])
                         </th>
+                        <th></th>
                     </tr>
                 @endif
             @endif
@@ -226,6 +235,7 @@
                 'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
             ])
                         </th>
+                        <th></th>
                     </tr>
                 @endif
             @endif
@@ -235,6 +245,7 @@
                 <th scope="col">
                     @include('document.form_print', ['status_id' => 16, 'template' => 'export_pzn'])
                 </th>
+
                 <th scope="col">
                     @include('document.form_scan', [
         'status_id' => 17,
@@ -242,6 +253,31 @@
         'load_location' => 'Заказ_наряд',
     ])
                 </th>
+ <td>
+    <div>
+        @php
+            $to=[];
+             if (isset($application->id_insuranceCompany)){
+                if ($application->id_insuranceCompany == 3)
+                    {$to[0]= "drs-sto@ingos.ru";
+                    $to[1]= "sergei.vtorov@ingos.ru";
+           }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+                    }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+        @endphp
+<special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode("Направляем предварительный заказ-наряд и таблицу запчастей по убытку №".$application->numberInsuranceCompanyApplication)}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
             </tr>
             @endcan
             <tr>
@@ -313,6 +349,31 @@
         'load_location' => 'Акт_скрытых_повреждений',
     ])
                     </th>
+                    <td>
+    <div>
+        @php
+            $to=[];
+           if (isset($application->id_insuranceCompany)){
+                if ($application->id_insuranceCompany == 3)
+                    {$to[0]= "drs-soglas@ingos.ru";
+                    $to[1]= "sergei.vtorov@ingos.ru";
+           }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+                    }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+        @endphp
+<special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode("Направляем акт скрытых повреждений и фото дефектовки по убытку №".$application->numberInsuranceCompanyApplication)}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
                 </tr>
                 <tr>
                     <th scope="col">Фото деффектовки</th>
@@ -378,6 +439,32 @@
         'load_location' => 'Счет',
     ])
                             </th>
+                            <td>
+    <div>
+        @php
+            $to=[];
+           if (isset($application->id_insuranceCompany)){
+                if ($application->id_insuranceCompany == 3)
+                    {$to[0]= "drs-sto@ingos.ru";
+                    $to[1]= "sergei.vtorov@ingos.ru";
+           }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+                    }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+
+        @endphp
+<special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode("Направляем комплект документов по факту выполненных работ по убытку №".$application->numberInsuranceCompanyApplication)}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
                         </tr>
 @endcan
                     </tbody>

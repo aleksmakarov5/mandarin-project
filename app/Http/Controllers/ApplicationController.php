@@ -1869,6 +1869,10 @@ class ApplicationController extends Controller
 
     public function message($id)
     {
+        $application = application::find($id);
+
+        $sign = OurCompany::where('id', '=', $application->our_company)->first()->sign;
+
         $notify = notify::where('id_application', '=', $id)
             ->where('id_user', '=', Auth::user()->id)
             ->where('id_text', '=', 1)
@@ -1923,7 +1927,9 @@ class ApplicationController extends Controller
                 ->email;
             // echo $to;
 
-            $attachments = attachment::where('id_application', '=', $id)->get()->all();
+            $attachments = attachment::where('id_application', '=', $id)
+                ->where('sended', '=', null)
+                ->get()->all();
             foreach ($attachments as $attachment) {
                 $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
             }
@@ -1983,7 +1989,14 @@ class ApplicationController extends Controller
         if ($application->id_status == 27)
             session(['rout' => 'temp']);
 
-        return view('application.mail', ['messages' => $messages->all(), 'id' => $id, 'to_email' => $to_email, 'attach' => $attachments, 'subject' => $subject]);
+        return view('application.mail', [
+            'messages' => $messages->all(),
+            'id' => $id,
+            'to_email' => $to_email,
+            'attach' => $attachments,
+            'subject' => $subject,
+            'sign' => $sign
+        ]);
     }
     public function chat(Request $request, $id)
     {

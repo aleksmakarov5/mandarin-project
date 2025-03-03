@@ -21,7 +21,7 @@ import SparePartService from './components/SparePartService.vue';
 import SparePartKm from './components/SparePartKm.vue';
 import SendMail from './components/SendMail.vue';
 import NewMail from './components/NewMail.vue';
-
+import SpecialMail from './components/SpecialMail.vue';
 import DatePay from './components/DatePay.vue';
 
 
@@ -58,7 +58,8 @@ const app = createApp({
     NextStep,
         DatePay,
     SendMail,
-        NewMail
+        NewMail,
+        SpecialMail
   },
 })
 app.mount('#app')
