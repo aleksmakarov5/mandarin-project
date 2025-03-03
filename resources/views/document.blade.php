@@ -119,7 +119,7 @@
 
 
 
-    <table class='table table-bordered table-hover'>
+    <table class='table table-bordered table-hover  table-striped'>
         <thead>
             <tr>
                 <th scope="col">Тип документа</th>
