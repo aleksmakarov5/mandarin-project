@@ -314,7 +314,7 @@
         },
         parseF(n)
         {
-            return parseFloat(n.toString().split(" ").join(""))
+            return parseFloat(n)
         },
 
         classDanger(n) {

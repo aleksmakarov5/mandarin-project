@@ -317,7 +317,7 @@
         },
         parseF(n)
         {
-            return parseFloat(n.toString().split(" ").join(""))
+            return parseFloat()
         },
         classDanger(n) {
             if (n < 0) return 'alert alert-success';
