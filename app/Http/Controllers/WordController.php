@@ -130,7 +130,7 @@ class WordController extends Controller
         }
         $number = date('Hi');
         $sch_number = $application->numberInsuranceCompanyApplication . '/' . substr($application->city, 0, 1);
-
+        dd($sch_number);
         $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
         $templateProcessor->setValue('sch_number', $sch_number);
         $templateProcessor->setValue('number', $number);
