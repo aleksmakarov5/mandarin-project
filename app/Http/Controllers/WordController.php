@@ -129,8 +129,8 @@ class WordController extends Controller
             $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
         }
         $number = date('Hi');
-        $sch_number = $application->numberInsuranceCompanyApplication . '/' . substr($application->city, 0, 1);
-        dd($sch_number);
+        $sch_number = $application->numberInsuranceCompanyApplication . '/' . mb_substr($application->city, 0, 1);
+        // dd($sch_number);
         $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
         $templateProcessor->setValue('sch_number', $sch_number);
         $templateProcessor->setValue('number', $number);
