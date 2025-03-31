@@ -262,7 +262,11 @@
                     {$to[0]= "drs-sto@ingos.ru";
                     $to[1]= "sergei.vtorov@ingos.ru";
            }
-                    else {
+                    elseif ($application->id_insuranceCompany == 1) {
+                        $to[0]= "smeta_szfo@vsk.ru";
+                    }
+                    else
+                    {
                        $to[0]= isset($to_email)?$to_email:'';
                     }
                     }
@@ -271,7 +275,7 @@
                     }
         @endphp
 <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :subject="{{json_encode($application->numberInsuranceCompanyApplication.'_ПЗН')}}"
                 :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
 :text="{{json_encode("Направляем предварительный заказ-наряд и таблицу запчастей по убытку №".$application->numberInsuranceCompanyApplication)}}"
                 :sign="{{json_encode(isset($sign)?$sign:'')}}"
@@ -358,6 +362,9 @@
                     {$to[0]= "drs-soglas@ingos.ru";
                     $to[1]= "sergei.vtorov@ingos.ru";
            }
+                    elseif ($application->id_insuranceCompany == 1) {
+                        $to[0]= "smeta_szfo@vsk.ru";
+                    }
                     else {
                        $to[0]= isset($to_email)?$to_email:'';
                     }
@@ -367,7 +374,7 @@
                     }
         @endphp
 <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :subject="{{json_encode($application->numberInsuranceCompanyApplication.'_АктСП')}}"
                 :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
 :text="{{json_encode("Направляем акт скрытых повреждений и фото дефектовки по убытку №".$application->numberInsuranceCompanyApplication)}}"
                 :sign="{{json_encode(isset($sign)?$sign:'')}}"
@@ -448,6 +455,9 @@
                     {$to[0]= "drs-sto@ingos.ru";
                     $to[1]= "sergei.vtorov@ingos.ru";
            }
+                    elseif ($application->id_insuranceCompany == 1) {
+                        $to[0]= "pay.arhangelsk@vsk.ru";
+                    }
                     else {
                        $to[0]= isset($to_email)?$to_email:'';
                     }
@@ -458,7 +468,7 @@
 
         @endphp
 <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :subject="{{json_encode($application->numberInsuranceCompanyApplication.'_Счет')}}"
                 :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
 :text="{{json_encode("Направляем комплект документов по факту выполненных работ по убытку №".$application->numberInsuranceCompanyApplication)}}"
                 :sign="{{json_encode(isset($sign)?$sign:'')}}"
