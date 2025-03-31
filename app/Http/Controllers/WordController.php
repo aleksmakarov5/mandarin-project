@@ -260,7 +260,7 @@ class WordController extends Controller
             $estimate = estimate::where('id_application', '=', $id)->first();
 
             $templateProcessor->cloneRowAndSetValues('work_name', $array1);
-            if (isset($estimate->price_repair)) {
+            if (isset($estimate->price_repair_full)) {
                 $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
@@ -271,6 +271,7 @@ class WordController extends Controller
                 $estimate->save();
             }
         }
+
         if ($doc_type == 35) {
             $array = [];
             $SpareParts = DB::table('spare_parts')
@@ -387,6 +388,7 @@ class WordController extends Controller
             $document->save();
         }
 
+
         $pathToSave = $dir . '/' . $location;
         $templateProcessor->saveAs($pathToSave);
         $document = new Attachment();
@@ -400,6 +402,117 @@ class WordController extends Controller
         $document->save();
         exec('chmod 755 "' . $pathToSave . '"');
         exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        if ($doc_type == 18) {
+
+            $SpareParts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('price_ic_full', '<>', '0')
+                ->get();
+            $i = 1;
+            // dd($SpareParts);
+            $price_sp_full = 0;
+            foreach ($SpareParts as $sparepart) {
+
+                $price_sp_full
+                    += $sparepart->price_sto == 0
+                    ? str2number($sparepart->price_ic_full)
+                    : str2number($sparepart->price_sto);
+            }
+            $price_sp_full_md2 = $price_sp_full * 1.02;
+            // dd($array);
+
+            $Works = DB::table('works')
+                ->where('id_application', '=', $id)
+                ->where('summ', '<>', '0')
+                ->get();
+            $price_repair = 0;
+            foreach ($Works as $work) {
+
+                $price_repair += isset($work->count_hours_pzn) && str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
+            }
+            // dd($array1);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+
+            $price_repair_full_md2 = $price_sp_full_md2 +
+                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+                + $price_repair;
+
+            $price_repair_full = $price_sp_full +
+                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+                + $price_repair;
+            $location = "Счет_дефектовка" . date('d-m-y_hms') . ".docx";
+            $filename = "Счет_дефектовка";
+            $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/sch_def.docx');
+            //dd($application);
+            $fio = '';
+            if ($application->director) {
+                $fio = $application->director;
+                $fio = explode(' ', $fio);
+                $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
+            }
+            $number = date('Hi');
+            $sch_number = $application->numberInsuranceCompanyApplication . "-1/" . mb_substr($application->city, 0, 1);
+            // dd($sch_number);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+            if (isset($estimate->price_repair)) {
+                $templateProcessor->setValue('zn_num', $estimate->zn_number);
+                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full - $estimate->price_repair_full));
+                $templateProcessor->setValue('summ_str', $this->num2str($price_repair_full - $estimate->price_repair_full));
+            }
+            $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+            $templateProcessor->setValue('sch_number', $sch_number);
+            $templateProcessor->setValue('number', $number);
+            $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
+            $templateProcessor->setValue('CarModel', $application->CarModel);
+            $templateProcessor->setValue('gnz', $application->gnz);
+            $templateProcessor->setValue('vin', $application->vin);
+            $templateProcessor->setValue('city', $application->city);
+            $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+            $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+            $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+            $templateProcessor->setValue('ub_number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('mnf_year', $application->mnf_year);
+            $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('wait_sp', $application->wait_sp);
+            $templateProcessor->setValue('phone', $application->ClientPhone);
+            $templateProcessor->setValue('birthday',  $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+            $templateProcessor->setValue('DTPdate',  $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+            $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+            $templateProcessor->setValue('bank', $application->bank);
+            $templateProcessor->setValue('inn', $application->inn);
+            $templateProcessor->setValue('kpp', $application->kpp);
+            $templateProcessor->setValue('ogrn', $application->ogrn);
+            $templateProcessor->setValue('okpo', $application->okpo);
+            $templateProcessor->setValue('sch_korr', $application->sch_korr);
+            $templateProcessor->setValue('bik', $application->bik);
+            $templateProcessor->setValue('sch_numb', $application->sch_numb);
+            $templateProcessor->setValue('fullname', $application->fullname);
+            $templateProcessor->setValue('address', $application->address);
+            $templateProcessor->setValue('director', $application->director);
+            $templateProcessor->setValue('name', $application->name);
+            $templateProcessor->setValue('in_face', $application->in_face);
+            $templateProcessor->setValue('service_description', $application->service_description);
+            $templateProcessor->setValue('fio', $fio);
+            $templateProcessor->setValue('email', $application->our_email);
+            $pathToSave = $dir . '/' . $location;
+            $templateProcessor->saveAs($pathToSave);
+            $document = new Attachment();
+            $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
+            $document->message_id = 0;
+            $document->mime_type = mime_content_type($pathToSave);
+            $document->id_application = $id;
+            $document->file_size = filesize($pathToSave);
+            $document->location = $location;
+            $document->id_status = $doc_type;
+            $document->save();
+            exec('chmod 755 "' . $pathToSave . '"');
+            exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+        }
     }
 
     /**
