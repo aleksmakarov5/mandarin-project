@@ -1950,11 +1950,11 @@ class ApplicationController extends Controller
                 // $body = str_replace('color', '', $body);
 
                 // $body = str_replace('font-size:', '', $body);
-                $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
-                $body = str_replace('gif', 'gif"', $body);
-                $body = str_replace('png', 'png"', $body);
-                $body = str_replace('""', '"', $body);
-                $body = str_replace('=">', '="">', $body);
+                // $body = str_replace('cid:', '/storage/files/' . $message->application_id . '/', $body);
+                // $body = str_replace('gif', 'gif"', $body);
+                // $body = str_replace('png', 'png"', $body);
+                // $body = str_replace('""', '"', $body);
+                // $body = str_replace('=">', '="">', $body);
                 if (strpos($body, '<blockquote')) {
                     $body = preg_replace("~<blockquote(.*?)>(.*)</blockquote>~si", "", ' ' . $body . ' ');
                     // $body = substr($body, 0, strpos($body, '<blockquote'));
