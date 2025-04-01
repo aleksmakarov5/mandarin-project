@@ -350,13 +350,51 @@ class WordController extends Controller
                 $estimate->save();
             }
         }
+        $price_sp_full = 0;
+        $price_repair_full = 0;
         if ($doc_type == 18 || $doc_type == 37) {
+            $SpareParts = DB::table('spare_parts')
+                ->where('id_application', '=', $id)
+                ->where('price_ic_full', '<>', '0')
+                ->get();
+            $i = 1;
+            // dd($SpareParts);
+
+            foreach ($SpareParts as $sparepart) {
+
+                $price_sp_full
+                    +=
+                    str2number($sparepart->price_ic_full);
+            }
+            $price_sp_full_md2 = $price_sp_full * 1.02;
+            // dd($array);
+
+            $Works = DB::table('works')
+                ->where('id_application', '=', $id)
+                ->where('summ', '<>', '0')
+                ->get();
+            $price_repair = 0;
+            foreach ($Works as $work) {
+
+                $price_repair += str2number($work->summ);
+            }
+            // dd($array1);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+
+            $price_repair_full_md2 = $price_sp_full_md2 +
+                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+                + $price_repair;
+
+            $price_repair_full = $price_sp_full +
+                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
+                + $price_repair;
             $estimate = estimate::where('id_application', '=', $id)->first();
 
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-                $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
+                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
+                $templateProcessor->setValue('summ_str', $this->num2str($price_repair_full));
             }
         }
 
@@ -404,43 +442,7 @@ class WordController extends Controller
         exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
         if ($doc_type == 18) {
 
-            $SpareParts = DB::table('spare_parts')
-                ->where('id_application', '=', $id)
-                ->where('price_ic_full', '<>', '0')
-                ->get();
-            $i = 1;
-            // dd($SpareParts);
-            $price_sp_full = 0;
-            foreach ($SpareParts as $sparepart) {
 
-                $price_sp_full
-                    += $sparepart->price_sto == 0
-                    ? str2number($sparepart->price_ic_full)
-                    : str2number($sparepart->price_sto);
-            }
-            $price_sp_full_md2 = $price_sp_full * 1.02;
-            // dd($array);
-
-            $Works = DB::table('works')
-                ->where('id_application', '=', $id)
-                ->where('summ', '<>', '0')
-                ->get();
-            $price_repair = 0;
-            foreach ($Works as $work) {
-
-                $price_repair += isset($work->count_hours_pzn) && str2number($work->count_hours_pzn) != 0 ? str2number($work->count_hours_pzn) * str2number($work->price) : str2number($work->summ);
-            }
-            // dd($array1);
-            $estimate = estimate::where('id_application', '=', $id)->first();
-
-
-            $price_repair_full_md2 = $price_sp_full_md2 +
-                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
-                + $price_repair;
-
-            $price_repair_full = $price_sp_full +
-                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
-                + $price_repair;
             $location = "Счет_дефектовка" . date('d-m-y_hms') . ".docx";
             $filename = "Счет_дефектовка";
             $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/sch_def.docx');
@@ -458,8 +460,8 @@ class WordController extends Controller
 
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full - $estimate->price_repair_full));
-                $templateProcessor->setValue('summ_str', $this->num2str($price_repair_full - $estimate->price_repair_full));
+                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full - $price_repair_full));
+                $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full - $price_repair_full));
             }
             $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
             $templateProcessor->setValue('sch_number', $sch_number);
