@@ -1995,7 +1995,8 @@ class ApplicationController extends Controller
             'to_email' => $to_email,
             'attach' => $attachments,
             'subject' => $subject,
-            'sign' => $sign
+            'sign' => $sign,
+            'application' => $application
         ]);
     }
     public function chat(Request $request, $id)

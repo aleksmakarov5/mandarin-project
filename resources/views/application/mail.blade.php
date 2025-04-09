@@ -5,7 +5,150 @@
 @section('main')
 
 
+@can('admin')
 
+        @php
+            $to=[];
+           if (isset($application->id_insuranceCompany)){
+                if ($application->id_insuranceCompany == 3)
+                    {$to[0]= isset($to_email)?$to_email:'';
+           }
+                    elseif ($application->id_insuranceCompany == 1) {
+                        $to[0]= "service_offers@vsk.ru";
+                    }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+                    }
+                    else {
+                       $to[0]= isset($to_email)?$to_email:'';
+                    }
+
+        @endphp
+ <table class="table">
+        <tr>
+
+                <td>
+                    <h1>Акцепт</h1>
+
+                </td>
+                <td>
+    <div>
+<answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Акцепт на условиях СК')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+Ремонт автомобиля по заданным условиям акцептован.<br>
+Комментарий (при необходимости) :')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Акцепт (иная стоимость ремонта)')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+Ремонт автомобиля акцептован, но на иных условиях (иная сумма ремонта).<br>
+ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
+Комментарий (обязательно):')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Акцепт (иная скидка от ЕМР)')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+Ремонт автомобиля акцептован, но на иных условиях (иная скидка от ЕМР).<br>
+ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
+Комментарий (обязательно):')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Акцепт (б/у запчасти)')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+Ремонт автомобиля акцептован, но на иных условиях (только б/у запчасти).<br>
+Комментарий (обязательно):')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Акцепт (иные сроки ремонта)')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+Ремонт автомобиля акцептован, но нет невозможности уложиться в срок 30 р/д.<br>
+Комментарий (обязательно укажите в какой срок готовы осуществить ремонт):')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+        </tr>
+ </table>
+  <table class="table">
+        <tr>
+
+                <td>
+                    <h1>Отказ</h1>
+
+                </td>
+
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Отсутствие запасных частей')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+От ремонта отказываемся ввиду отсутствия запасных частей.<br>
+Комментарий (обязательно укажите, какие запасные части отсутствуют):')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Ремонт невозможен без доп работ (не относящихся к событию)')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+От ремонта отказываемся ввиду невозможности ремонта автомобиля по страховому случаю без проведения дополнительных работ, не относящихся к событию.')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+                  <td>
+            <div>
+                <answer-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+    :title="{{json_encode('Ремонт невозможен: наличие сквозной коррозии')}}"
+                :subject="{{json_encode(isset($subject)?$subject:'---')}}"
+                :attach="{{json_encode(isset($attach)?$attach:[])}}" :app_id="{{$id}}"
+:text="{{json_encode('Добрый день.<br>
+От ремонта отказываемся ввиду наличия сквозной коррозии.')}}"
+                :sign="{{json_encode(isset($sign)?$sign:'')}}"
+                :status="22" />
+                </div>
+                </td>
+        </tr>
+    </table>
+@endcan
 
 
     <div class="content-wrapper">
@@ -108,6 +251,7 @@
         </div>
     </div>
     @can('admin')
+
         @php
             $to=[];
             $to[0]= $to_email;
