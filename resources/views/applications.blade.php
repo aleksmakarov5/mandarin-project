@@ -5,6 +5,7 @@
 @section('main_content')
     <h1>
         Все заявки</h1>
+        {{$applications->links('vendor.pagination.bootstrap-4')}}
 @can('company')
 
 

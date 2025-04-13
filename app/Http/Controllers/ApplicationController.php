@@ -203,7 +203,7 @@ class ApplicationController extends Controller
 
                 )->orderBy('applications.id', 'desc')
 
-                ->get();
+                ->paginate(15);
         } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
