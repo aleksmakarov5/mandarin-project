@@ -154,6 +154,7 @@ class ApplicationController extends Controller
         // dd($array->result->message_id);
         $only_me = 0;
         $only_me = $request->get('only_me');
+
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
@@ -181,29 +182,37 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city',
 
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city',
 
-
-
-                )->orderBy('applications.id', 'desc')
-
-                ->paginate(25);
+            )->orderBy('applications.id', 'desc')->paginate(25);
         } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
@@ -243,7 +252,20 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications
 
 
 
@@ -300,25 +322,34 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
@@ -346,22 +377,34 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city',
-                )->orderBy('applications.id', 'desc')->paginate(25);
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city',
+            )->orderBy('applications.id', 'desc')->paginate(25);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -399,23 +442,34 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')->paginate(25);
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')->paginate(25);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -450,23 +504,34 @@ class ApplicationController extends Controller
                 ->with('status_messages', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
                         ->where('is_readed', '=', '0');
-                })
+                });
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')->paginate(25);
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')->paginate(25);
         }
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -532,24 +597,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } else {
             $applications = application::where('id_status', '=', '7')
@@ -585,22 +660,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
         }
         // dd($applications);
@@ -782,22 +869,34 @@ class ApplicationController extends Controller
             })
             ->with('spareparts')
             ->with('works')
-            ->with('estimate')
-            ->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->orderBy('applications.id', 'desc')
+            ->with('estimate');
+        $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+        if ($user_filters) {
+            $applications->where(function ($query) use ($user_filters) {
+                $query->where('id_city', '=', $user_filters[0]->id_city);
+                for ($i = 1; $i < $user_filters->count(); $i++) {
+                    $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                }
+                if ($user_filters->count() == (city::all()->count()))
+                    $query->orWhere('id_city', '=', 0);
+            });
+        }
+        $applications = $applications->select(
+            'applications.*',
+            'insurance_companies.name',
+            'insurance_companies.insurance_companies_theme',
+            'services.service_name',
+            'services.services_theme',
+            'lawyers.lawyer_name',
+            'lawyers.color as lawyers_color',
+            'application_statuses.StatusName',
+            'application_statuses.status_theme',
+            'application_statuses.current_group',
+            'our_companies.our_name',
+            'users.name as MRK_name',
+            'cities.name as city'
+        )->orderBy('applications.id', 'desc')
             ->paginate(25);
         // dd($applications);
 
@@ -844,22 +943,34 @@ class ApplicationController extends Controller
             })
             ->with('spareparts')
             ->with('works')
-            ->with('estimate')
-            ->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->orderBy('applications.id', 'desc')
+            ->with('estimate');
+        $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+        if ($user_filters) {
+            $applications->where(function ($query) use ($user_filters) {
+                $query->where('id_city', '=', $user_filters[0]->id_city);
+                for ($i = 1; $i < $user_filters->count(); $i++) {
+                    $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                }
+                if ($user_filters->count() == (city::all()->count()))
+                    $query->orWhere('id_city', '=', 0);
+            });
+        }
+        $applications = $applications->select(
+            'applications.*',
+            'insurance_companies.name',
+            'insurance_companies.insurance_companies_theme',
+            'services.service_name',
+            'services.services_theme',
+            'lawyers.lawyer_name',
+            'lawyers.color as lawyers_color',
+            'application_statuses.StatusName',
+            'application_statuses.status_theme',
+            'application_statuses.current_group',
+            'our_companies.our_name',
+            'users.name as MRK_name',
+            'cities.name as city'
+        )->orderBy('applications.id', 'desc')
             ->get();
         // dd($applications);
 
@@ -905,22 +1016,34 @@ class ApplicationController extends Controller
             })
             ->with('spareparts')
             ->with('works')
-            ->with('estimate')
-            ->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->orderBy('applications.id', 'desc')
+            ->with('estimate');
+        $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+        if ($user_filters) {
+            $applications->where(function ($query) use ($user_filters) {
+                $query->where('id_city', '=', $user_filters[0]->id_city);
+                for ($i = 1; $i < $user_filters->count(); $i++) {
+                    $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                }
+                if ($user_filters->count() == (city::all()->count()))
+                    $query->orWhere('id_city', '=', 0);
+            });
+        }
+        $applications = $applications->select(
+            'applications.*',
+            'insurance_companies.name',
+            'insurance_companies.insurance_companies_theme',
+            'services.service_name',
+            'services.services_theme',
+            'lawyers.lawyer_name',
+            'lawyers.color as lawyers_color',
+            'application_statuses.StatusName',
+            'application_statuses.status_theme',
+            'application_statuses.current_group',
+            'our_companies.our_name',
+            'users.name as MRK_name',
+            'cities.name as city'
+        )->orderBy('applications.id', 'desc')
             ->paginate(25);
         // dd($applications);
 
@@ -975,24 +1098,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )
                 ->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
@@ -1095,24 +1228,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )
                 ->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } elseif (Gate::allows('service')) {
@@ -1144,22 +1287,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
@@ -1200,22 +1355,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
             // dd($applications);
         } else {
@@ -1250,22 +1417,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )->orderBy('applications.id', 'desc')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')
                 ->paginate(25);
         }
         $applications = $this->configure($applications);
