@@ -971,7 +971,7 @@ class ApplicationController extends Controller
             'users.name as MRK_name',
             'cities.name as city'
         )->orderBy('applications.id', 'desc')
-            ->get();
+            ->paginate(30);
         // dd($applications);
 
         session(['rout' => 'temp']);
