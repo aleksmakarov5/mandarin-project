@@ -22,6 +22,8 @@
                         <th scope="col">Аналог</th>
                         <th scope="col">Б/у</th>
                         <th scope="col">СТО</th>
+                        <th scope="col">Emex</th>
+                        <th scope="col">AP</th>
 
                         <th scope="col">Разница </th>
 
@@ -44,7 +46,7 @@
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
                         <th scope="col">{{ makeMoney(summ_sto) }}</th>
-                        <th scope="col" colspan="4"></th>
+                        <th scope="col" colspan="6"></th>
                         <th scope="col">
 
                                 <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
@@ -99,6 +101,12 @@
                     Б/У
                 </template>
             {{ makeCount(sparepart.price_service) }}</td>
+            <th>
+                <a :href="'https://emex.ru/products/' + sparepart.part_number" target="_blank">-></a>
+            </th>
+            <th>
+                <a :href="'https://autopiter.ru/goods/' + sparepart.part_number" target="_blank">-></a>
+            </th>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{

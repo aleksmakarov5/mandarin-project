@@ -19,6 +19,8 @@
                         <th scope="col">Оригинал</th>
                         <th scope="col">Аналог</th>
                         <th scope="col">Б/у</th>
+                        <th scope="col">Emex</th>
+                        <th scope="col">AP</th>
 
                         <th scope="col">Разница </th>
 
@@ -41,7 +43,7 @@
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
                         <th scope="col">{{ makeMoney(summ_sto) }}</th>
-                        <th scope="col" colspan="3"></th>
+                        <th scope="col" colspan="5"></th>
                         <th scope="col">
 
                                 <div :class="classDanger(delta_res_full)"> {{ makeMoney(delta_res_full) }}</div>
@@ -100,6 +102,12 @@
         {{ makeCount(sparepart.price_analogue) }}</td>
         <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)" @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name,index)" :id="'price_used_'+sparepart.id" contenteditable @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
         {{ makeCount(sparepart.price_used) }}</td>
+        <th>
+                <a :href="'https://emex.ru/products/' + sparepart.part_number" target="_blank">-></a>
+            </th>
+            <th>
+                <a :href="'https://autopiter.ru/goods/' + sparepart.part_number" target="_blank">-></a>
+            </th>
         <th >
             <div :class="classDanger(sparepart.delta)">
         {{

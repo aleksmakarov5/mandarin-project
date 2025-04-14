@@ -17,6 +17,8 @@
                         <th scope="col">Цена СК</th>
                         <th scope="col">Цена сервиса</th>
                         <th scope="col">Вид ЗЧ</th>
+                        <th scope="col">Emex</th>
+                        <th scope="col">AP</th>
 
 
 
@@ -70,7 +72,12 @@
             </td>
         </template>
 
-
+<th>
+                <a :href="'https://emex.ru/products/' + sparepart.part_number" target="_blank">-></a>
+            </th>
+            <th>
+                <a :href="'https://autopiter.ru/goods/' + sparepart.part_number" target="_blank">-></a>
+            </th>
         <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id)" @keydown.enter="editComment(sparepart.id)">
         {{ sparepart.comment }}</td>
 
