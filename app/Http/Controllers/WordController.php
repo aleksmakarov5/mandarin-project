@@ -215,7 +215,7 @@ class WordController extends Controller
             $templateProcessor->cloneRowAndSetValues('num', $array1);
         }
 
-        if ($doc_type == 16) {
+        if ($doc_type == 18) {
             $array = [];
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
@@ -266,9 +266,9 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
                 $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
-                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-                $estimate->zn_number = $number . ' от ' . Date::parse()->format('j F Y') . 'г.';
-                $estimate->save();
+                // $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                // $estimate->zn_number = $number . ' от ' . Date::parse()->format('j F Y') . 'г.';
+                // $estimate->save();
             }
         }
 
