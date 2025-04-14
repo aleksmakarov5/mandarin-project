@@ -1169,24 +1169,34 @@ class ApplicationController extends Controller
                 })
                 ->with('spareparts')
                 ->with('works')
-                ->with('estimate')
+                ->with('estimate');
+            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-
-                ->select(
-                    'applications.*',
-                    'insurance_companies.name',
-                    'insurance_companies.insurance_companies_theme',
-                    'services.service_name',
-                    'services.services_theme',
-                    'lawyers.lawyer_name',
-                    'lawyers.color as lawyers_color',
-                    'application_statuses.StatusName',
-                    'application_statuses.status_theme',
-                    'application_statuses.current_group',
-                    'our_companies.our_name',
-                    'users.name as MRK_name',
-                    'cities.name as city'
-                )
+            if ($user_filters) {
+                $applications->where(function ($query) use ($user_filters) {
+                    $query->where('id_city', '=', $user_filters[0]->id_city);
+                    for ($i = 1; $i < $user_filters->count(); $i++) {
+                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+                    }
+                    if ($user_filters->count() == (city::all()->count()))
+                        $query->orWhere('id_city', '=', 0);
+                });
+            }
+            $applications = $applications->select(
+                'applications.*',
+                'insurance_companies.name',
+                'insurance_companies.insurance_companies_theme',
+                'services.service_name',
+                'services.services_theme',
+                'lawyers.lawyer_name',
+                'lawyers.color as lawyers_color',
+                'application_statuses.StatusName',
+                'application_statuses.status_theme',
+                'application_statuses.current_group',
+                'our_companies.our_name',
+                'users.name as MRK_name',
+                'cities.name as city'
+            )
                 ->orderBy('applications.id', 'desc')
                 ->paginate(25);
         } elseif ($only_me) {
