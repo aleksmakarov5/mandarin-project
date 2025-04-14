@@ -3,6 +3,7 @@
     Все Ящики
 @endsection
 @section('main_content')
+{{$messages->links('vendor.pagination.bootstrap-4')}}
     </div>
     <div class="mailbox">
         <div class="message-list">
@@ -25,7 +26,7 @@
                                 onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}#{{ $message->id }}'; return false">
                                 <div id="{{ $message->id }}"
                                     class="@if ($message->id == $message_id) current @else
-                                    
+
                                     message-name @endif
                                     @if (!$message->is_ready) big-text @endif
                                     @if (isset($message->application_id)) green @endif">
@@ -91,7 +92,7 @@
             @endif
             <div>
                 @php
-                    echo $body;
+echo $body;
                 @endphp
             </div>
             @if (isset($mail->attachment))

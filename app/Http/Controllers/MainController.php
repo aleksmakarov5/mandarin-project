@@ -194,8 +194,8 @@ class MainController extends Controller
                 // dd($mail, $body);
             }
         }
-        $messages = DB::table('messages')->where('mailbox_id', '=', $id)
-            ->get()->sortDesc();
+        $messages = DB::table('messages')->where('mailbox_id', '=', $id)->orderBy('messages.id', 'desc')
+            ->paginate(45);
         // dd($messages);
         foreach ($messages as $message) {
             $message->attachment = DB::table('attachments')
@@ -214,7 +214,7 @@ class MainController extends Controller
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
         return view('mail.show', [
-            'messages' => $messages->all(),
+            'messages' => $messages,
             'type' => $type,
             'message_id' => $message_id,
             'body' => $body,
