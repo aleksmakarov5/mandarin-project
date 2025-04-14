@@ -421,7 +421,7 @@
                 </th>
             </tr>
             @can('company')
-                        <tr>
+                        {{-- <tr>
                             <th scope="col">Заказ наряд</th>
                             <th scope="col">
                                 @include('document.form_print', ['status_id' => 16, 'template' => 'export_zn'])
@@ -433,7 +433,7 @@
         'load_location' => 'Заказ_наряд',
     ])
                             </th>
-                        </tr>
+                        </tr> --}}
                         <tr>
                             <th scope="col">Счет</th>
                             <th scope="col">
