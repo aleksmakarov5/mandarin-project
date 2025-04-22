@@ -764,6 +764,259 @@ class ImapController extends Controller
             broadcast(new MessageSent($notification));
         }
     }
+    public function ugor_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
+    {
+        echo $subject . '<br>';
+
+        $array_subject = explode(' ', $subject);
+        $gnz = '';
+        $app_number = '';
+
+        // $trim = mb_strripos($subject, ' ');
+        // $subject = mb_substr($subject, 0, $trim);
+        // $start_pos_gnz = mb_strripos($subject, ' ');
+        // $gnz = mb_substr($subject, $start_pos_gnz + 1, iconv_strlen($subject) - $start_pos_gnz);
+        // echo $gnz . '<br>';
+        // $subject = mb_substr($subject, 0, $start_pos_gnz);
+        $subject = str_replace('Fwd:', '', $subject);
+        $subject = str_replace('Re:', '', $subject);
+
+        $subject = str_replace('FWD:', '', $subject);
+
+        $subject = str_replace('FW:', '', $subject);
+        $subject = str_replace('RE:', '', $subject);
+
+        $subject = str_replace('fwd:', '', $subject);
+        $subject = str_replace('re:', '', $subject);
+        $start_pos = mb_strpos($subject, '707-');
+        $subject = mb_substr($subject, $start_pos);
+        $subject = preg_replace("/\t/", ' ', $subject);
+        $subject = trim($subject);
+
+        // dd($start_pos);
+        // $app_number = mb_substr($subject, 0, $finish_pos);
+        // $app_number = trim($app_number);
+        // $find707 = mb_strpos($app_number, '-');
+        // if (!$find707) {
+        //     $app_number = "707-75-" . $app_number;
+        // }
+        // $find24 = mb_strpos($app_number, '/');
+        // if (!$find24) {
+        //     $app_number =  $app_number . "/25";
+        // }
+        $start_pos = mb_strpos($subject, '050');
+        $app_number = substr($subject, $start_pos, 16);
+        // dd($app_number);
+        // echo $app_number . '<br>';
+        // $start_pos = mb_strpos($subject, 'ремонт');
+        // $model = mb_substr($subject, $start_pos + 7, iconv_strlen($subject) - $start_pos);
+        // echo $model . '<br>';
+
+        $applications = application::firstorcreate(
+            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 7, 'our_company' => $our_company],
+            [
+                'numberInsuranceCompanyApplication' => $app_number,
+                'id_insuranceCompany' => 7,
+                'CarModel' => " ",
+                'gnz' => $gnz,
+                'id_status' => 1,
+                'vin' => " ",
+                'ub_type' => false,
+                'our_company' => $our_company,
+                'ic_answer_date' => null,
+            ]
+        );
+        try {
+            $estimate = estimate::findorfail('id_application', '=', $applications->id);
+        } catch (\Exception $e) {
+            $estimate = estimate::firstorcreate(
+                ['id_application' => $applications->id],
+                [
+                    'id_application' => $applications->id,
+                    'price_sp_full' => 0,
+                    'price_sp_half' => 0,
+                    'price_repair' => 0,
+                    'price_paint' => 0,
+                    'price_zip' => 0,
+                    'price_work' => 0,
+                    'price_repair_full' => 0,
+                    'price_repair_half' => 0
+                ]
+            );
+        }
+        // dd($applications);
+        $message = new Message();
+        $message->subject = $email->getSubject();
+        $message->uid = $uid;
+        $message->body_html = $email->getHTMLBody();
+        $message->body_text = $email->getTextBody();
+        $message->header = $email->getHeaders();
+        $message->message_date = $email->getdate();
+        $message->application_id = $applications->id;
+        $id = $applications->id;
+        if ($applications->id_status == 1) {
+            $history = new History;
+            $history->id_application = $applications->id;
+            $history->id_status = 1;
+            $history->id_user = 2;
+            $history->save();
+        }
+        $message->is_parsed = true;
+
+        $message->mailbox_id = $our_company;
+        $message->save();
+        $dir = 'storage/files/' . $applications->id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        $att = "\n <b><u>Вложения</u></b>\n\n";
+        $keyboard = [];
+        $i = 0;
+        foreach ($attachments as $attachment) {
+            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+            $attachment->save($path = $dir . '/', $filename);
+            $attach = new attachment();
+            $attach->message_id = $message->id;
+            $attach->id_application = $applications->id;
+            $attach->location = $filename;
+            $attach->mime_type = $attachment->getMimeType();
+            $attach->file_size = $attachment->getSize();
+            $attach->file_name = $attachment->getFilename();
+            $attach->save();
+            if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
+                $history = new history;
+                $history->id_user = 1;
+                $history->id_application = $applications->id;
+
+                $applications->id_status = 12;
+
+                $today = WorkCalendar::now();
+                $today->addWorkDays(30);
+                $applications->end_date = $today;
+
+                $applications->napr_date = carbon::now();
+                $history->id_status = 12;
+                $applications->save();
+                $history->save();
+
+                try {
+
+                    $user = user::findorfail($applications->id_MRK);
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 3;
+                    $notify->link = "/application/";
+
+                    $notify_id = $notify->id;
+                    $status_application = new status_application;
+                    $status_application->id_user = $user->id;
+                    $status_application->id_application = $id;
+                    $status_application->is_readed = false;
+                    $status_application->save();
+                    if ($user->telegram_notify) {
+                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                        $status = ApplicationStatus::findOrFail(
+                            $applications->id_status
+                        )->StatusName;
+                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                            )
+                            ->send();
+                        $notify->id_message = json_decode($ch)->result->message_id;
+                    }
+
+                    $notify->save();
+
+
+                    $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                        ->select('notifies.*', 'text_notifies.text')->first();
+                    broadcast(new MessageSent($notification));
+                } catch (\Exception $e) {
+                    // dd($e);
+                }
+            }
+
+            if (
+                pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+            )
+                $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
+            else
+                $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+
+            $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+            $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+            $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+        }
+        //echo $to;
+        foreach ($to as $mail) {
+            // dd($mail);
+            $address = new address;
+            $address->message_id = $message->id;
+            $address->email = $mail->mail;
+            $address->type = 'to';
+            $address->save();
+        }
+        //dd($from, $to, $address);
+        foreach ($from as $mail) {
+            $address = new address;
+            $address->message_id = $message->id;
+            $address->email = $mail->mail;
+            $address->type = 'from';
+            $address->save();
+        }
+        $user = User::find(2);
+        // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
+        $notify_id = 0;
+        if ($applications->id_status != 27) {
+            $users = user::join('user_roles', function ($join) {
+                $join->on('user_roles.id_user', '=', 'users.id')
+                    ->where('user_roles.id_group', '=', 2);
+            })
+                ->join('role_companies', function ($join) use ($our_company) {
+                    $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+                })
+
+                ->select('users.*')
+                ->get();
+            foreach ($users as $user) {
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $user->id;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+                $url = "https://mandarin-portal.ru/mail/" . $id;
+                if ($user->telegram_notify) {
+
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    // echo $att;
+                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons($keyboard)
+                        )
+                        ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
+                }
+                $notify->save();
+            }
+
+            $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                ->select('notifies.*', 'text_notifies.text')->first();
+            broadcast(new MessageSent($notification));
+        }
+    }
     public function reso_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
         echo $subject . '<br>';
@@ -972,6 +1225,8 @@ class ImapController extends Controller
                             $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         } elseif (mb_strpos($body_html, 'reso') !== false) {
                             $this->reso_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        } elseif (mb_strpos($body_html, 'Югория') !== false) {
+                            $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         } else {
                             $mess = new Message();
                             $mess->subject = $message->getSubject();
@@ -1070,6 +1325,8 @@ class ImapController extends Controller
                         echo "Ingos";
 
                         $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                    } elseif (mb_strpos($body_html, 'Югория') !== false) {
+                        $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
                         echo "Not info";
                         $mess = new Message();
@@ -1169,6 +1426,8 @@ class ImapController extends Controller
                         echo "Ingos";
 
                         $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                    } elseif (mb_strpos($body_html, 'Югория') !== false) {
+                        $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
                         echo "Not info";
                         $mess = new Message();
