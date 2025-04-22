@@ -159,6 +159,20 @@
                      @keydown.enter="updateEstimate(estimate.id)">
                         </td>
                     </tr>
+                    <tr :class="editAddPay?'d_none':''">
+                        <th>Доплата </th>
+                        <td  @click="editEstimateAddPay(estimate.add_pay)">
+                            {{ makeMoney(estimate.add_pay) }}
+
+                        </td>
+                    </tr>
+                     <tr :class="editAddPay?'':'d_none'">
+                        <th>Доплата </th>
+                        <td>
+                            <input type="text" id="add_pay" v-model="add_pay" class="w-100" @blur="updateEstimate(estimate.id)"
+                     @keydown.enter="updateEstimate(estimate.id)">
+                        </td>
+                    </tr>
 
                     <tr :class="editRepairFullMD2?'d_none':''">
                         <th>Cтоимость восстановительного ремонта с учетом мелких деталей </th>
@@ -215,6 +229,7 @@
                 editPaint: false,
                 editZip: false,
                 editWork: false,
+                editAddPay: false,
                 editRepairFull: false,
                 editRepairFullMD2: false,
                 editSert: false,
@@ -227,7 +242,8 @@
                 price_zip: this.in_estimate.price_zip,
                 price_work: this.in_estimate.price_work,
                 price_repair_full: this.in_estimate.price_repair_full,
-                emr10:this.in_estimate.emr10,
+                emr10: this.in_estimate.emr10,
+                add_pay:this.in_estimate.add_pay,
 
                 show: true,
             }
@@ -262,6 +278,9 @@
             if (!this.estimate.sert) {
                 this.estimate.sert=0
             }
+             if (!this.estimate.add_pay) {
+                this.estimate.add_pay=0
+            }
 
 
         },
@@ -276,7 +295,8 @@
                 this.price_paint = this.estimate.price_paint
                 this.price_zip = this.estimate.price_zip
                 this.price_work = this.estimate.price_work
-            this.price_repair_full = this.estimate.price_repair_full
+                this.add_pay = this.estimate.add_pay
+                this.price_repair_full = this.estimate.price_repair_full
                 this.price_repair_full_md2 = this.estimate.price_repair_full_md2
                 this.sert = this.estimate.sert
                 console.log(this.estimate)
@@ -318,6 +338,10 @@
             this.price_repair_full = RepairFull
             this.editRepairFull=true
         },
+        editEstimateAddPay(AddPay) {
+            this.add_pay = AddPay
+            this.editAddPay=true
+        },
         editEstimateRepairFullMD2(RepairFullMD2) {
             this.price_repair_full_md2 = RepairFullMD2
             this.editRepairFullMD2=true
@@ -344,6 +368,7 @@
                 price_repair_full: this.price_repair_full,
                 price_zip: this.price_zip,
                 sert: this.sert,
+                add_pay: this.add_pay,
                 price_repair_full_md2: this.price_repair_full_md2,
             })
            .then(res => {
@@ -357,6 +382,7 @@
                this.editWork = false
                this.editRepairFull = false
                this.editSert = false
+               this.editAddPay = false
                this.editRepairFullMD2 = false
 
            })

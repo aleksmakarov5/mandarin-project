@@ -22,7 +22,8 @@ class estimate extends Model
         'dog_number',
         'zn_number',
         'hda_number',
-        'emr10'
+        'emr10',
+        'add_pay'
 
     ];
 }
