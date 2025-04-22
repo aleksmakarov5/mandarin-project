@@ -805,7 +805,7 @@ class ImapController extends Controller
         //     $app_number =  $app_number . "/25";
         // }
         $start_pos = mb_strpos($subject, '050');
-        $app_number = substr($subject, $start_pos, 16);
+        $app_number = mb_substr($subject, $start_pos, 16);
         // dd($app_number);
         // echo $app_number . '<br>';
         // $start_pos = mb_strpos($subject, 'ремонт');
