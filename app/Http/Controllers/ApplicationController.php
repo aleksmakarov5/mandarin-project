@@ -185,7 +185,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -255,7 +255,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -325,7 +325,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -380,7 +380,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -445,7 +445,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -507,7 +507,7 @@ class ApplicationController extends Controller
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -600,7 +600,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -663,7 +663,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -873,7 +873,7 @@ class ApplicationController extends Controller
             ->with('estimate');
         $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-        if ($user_filters) {
+        if ($user_filters[0]->id_city) {
             $applications->where(function ($query) use ($user_filters) {
                 $query->where('id_city', '=', $user_filters[0]->id_city);
                 for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -947,7 +947,7 @@ class ApplicationController extends Controller
             ->with('estimate');
         $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-        if ($user_filters) {
+        if ($user_filters[0]->id_city) {
             $applications->where(function ($query) use ($user_filters) {
                 $query->where('id_city', '=', $user_filters[0]->id_city);
                 for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1020,7 +1020,7 @@ class ApplicationController extends Controller
             ->with('estimate');
         $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-        if ($user_filters) {
+        if ($user_filters[0]->id_city) {
             $applications->where(function ($query) use ($user_filters) {
                 $query->where('id_city', '=', $user_filters[0]->id_city);
                 for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1102,7 +1102,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1173,7 +1173,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1242,7 +1242,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1301,7 +1301,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1369,7 +1369,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
@@ -1431,7 +1431,7 @@ class ApplicationController extends Controller
                 ->with('estimate');
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if ($user_filters) {
+            if ($user_filters[0]->id_city) {
                 $applications->where(function ($query) use ($user_filters) {
                     $query->where('id_city', '=', $user_filters[0]->id_city);
                     for ($i = 1; $i < $user_filters->count(); $i++) {
