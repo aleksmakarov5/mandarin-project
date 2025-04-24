@@ -2,15 +2,15 @@
   <thead>
 
     <tr>
-        <th scope="col" valign=middle style="
-        width: 130px;
+        <th rowspan=2 scope="col" valign=middle style="
+        width: 190px;
 border: 1px solid black;
 font-size: 11pt;
 text-align: left;
 font-weight: normal;
 font-family: Calibri;
 ">Каталожный номер <br>детали</th>
-      <th scope="col" valign=middle
+      <th rowspan=2 scope="col" valign=middle
       style="
         width: 230px;
 border: 1px solid black;
@@ -21,7 +21,7 @@ font-family: Calibri;
 ">
 Название детали</th>
 
-      <th scope="col" valign=middle style="
+      <th rowspan=2 scope="col" valign=middle style="
         width: 150px;
 border: 1px solid black;
 text-align: left;
@@ -30,8 +30,8 @@ text-align: left;
 font-weight: normal;
 font-family: Calibri;
 ">Прайс РСА <br> (актуальный на дату ДТП)</th>
-      <th style="
-        width: 150px;
+      <th rowspan=2 valign=middle style="
+        width: 180px;
 border: 1px solid black;
 font-size: 11pt;
 font-weight: bold;
@@ -39,7 +39,7 @@ font-family: Calibri;
 text-align: center;
 background-color: orange;
 ">Среднерыночная <br> стоимость детали</th>
-      <th valign=middle style="
+      <th rowspan=2 valign=middle style="
         width: 150px;
 border: 1px solid black;
 font-size: 11pt;
@@ -47,7 +47,7 @@ font-weight: bold;
 font-family: Calibri;
 text-align: center;
 background-color: green;
-">Цена СТОА</th>
+">Цена СТОА <br>Нов. оригинал</th>
       <th valign=middle style="
         width: 150px;
 border: 1px solid black;
@@ -55,37 +55,146 @@ font-size: 11pt;
 font-weight: bold;
 font-family: Calibri;
 text-align: center;
-background-color: lightblue;
-">Цена СТОА (аналог) <br> При условии не <br> предъявления регрессных требований</th>
-    <th valign=middle scope="col" style="
+background-color: blue;
+">Цена СТОА (аналог) <br> Комбинир</th>
+<th valign=middle style="
+        width: 180px;
+border: 1px solid black;
+font-size: 11pt;
+font-weight: bold;
+font-family: Calibri;
+text-align: center;
+background-color: white;
+"></th>
+<th valign=middle style="
+        width: 180px;
+border: 1px solid black;
+font-size: 11pt;
+font-weight: bold;
+font-family: Calibri;
+text-align: center;
+background-color: green;
+">
+Нов. Оригинал <br> (Выделить цветом)
+</th>
+<th rowspan=3 valign=middle style="
+        width: 350px;
+border: 1px solid black;
+font-size: 11pt;
+font-weight: bold;
+font-family: Calibri;
+text-align: center;
+background-color: yellow;
+">
+    Образец заполнения для СТОА <br> При комбинированном ремонте заполняется <br> столбец согласно цветц применяемых З/Ч
+</th>
+</tr>
+<tr>
+    <th valign=middle style="
         width: 150px;
 border: 1px solid black;
 font-size: 11pt;
 font-weight: bold;
-word-wrap: break-word;
 font-family: Calibri;
-">https://parts.major-auto.ru/SearchNew</th>
-    <th valign=middle  style="
+text-align: center;
+background-color: purple;
+">Б/У</th>
+<th valign=middle style="
         width: 150px;
 border: 1px solid black;
 font-size: 11pt;
 font-weight: bold;
-word-wrap: break-word;
 font-family: Calibri;
-">https://autopiter.ru/</th>
-    <th valign=middle  style="
+text-align: center;
+background-color: white;
+"></th>
+<th valign=middle style="
         width: 150px;
 border: 1px solid black;
 font-size: 11pt;
 font-weight: bold;
-word-wrap: break-word;
 font-family: Calibri;
-">https://emex.ru/</th>
+text-align: center;
+background-color: blue;
+">Аналог <br> (Выделить цветом)</th>
+</tr>
+<tr>
+    <th scope="col" valign=middle style="
+            width: 190px;
+    border: 1px solid black;
+    font-size: 11pt;
+    text-align: left;
+    font-weight: normal;
+    font-family: Calibri;
+    ">Заполняется СТОА</th>
+    <th scope="col" valign=middle style="
+            width: 230px;
+    border: 1px solid black;
+    font-size: 11pt;
+    text-align: left;
+    font-weight: normal;
+    font-family: Calibri;
+    ">
+        Заполняется СТОА</th>
 
+    <th scope="col" valign=middle style="
+            width: 150px;
+    border: 1px solid black;
+    text-align: left;
+    font-size: 11pt;
+    text-align: left;
+    font-weight: normal;
+    font-family: Calibri;
+    ">Заполняется СТОА</th>
+    <th  valign=middle style="
+            width: 180px;
+    border: 1px solid black;
+    font-size: 11pt;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+    background-color: orange;
+    ">автоматический расчет</th>
+    <th valign=middle style="
+            width: 150px;
+    border: 1px solid black;
+    font-size: 11pt;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+    background-color: green;
+    ">Заполняется СТОА</th>
+    <th valign=middle style="
+            width: 150px;
+    border: 1px solid black;
+    font-size: 11pt;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+    background-color: blue;
+    ">Заполняется СТОА</th>
+    <th valign=middle style="
+            width: 180px;
+    border: 1px solid black;
+    font-size: 11pt;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+    background-color: white;
+    "></th>
+    <th valign=middle style="
+            width: 180px;
+    border: 1px solid black;
+    font-size: 11pt;
+    font-weight: bold;
+    font-family: Calibri;
+    text-align: center;
+    background-color: purple;
+    ">
+        Б/У <br> (Выделить цветом)
+    </th>
 
-
-
-    </tr>
+</tr>
   </thead>
   <tbody>
 
@@ -95,17 +204,12 @@ $i = 1;
 @endphp
 @foreach ($spareparts as $sparepart)
     @if (($sparepart->price_sto != 0) && ((int) $sparepart->price_sto != (int) $sparepart->price_ic_full))
-
+@php
+        $i++;
+@endphp
 
             <tr>
-            @php
-                $i++;
-                $major = !$sparepart->price_sto ? 0 : $sparepart->price_sto*1.05 + (int)($sparepart->price_sto * rand(-3, 6) / 100);
-                $piter = !$sparepart->price_sto ? 0 : $sparepart->price_sto * 1.05 + (int)($sparepart->price_sto * rand(-2, 4) / 100);
-                $emex = !$sparepart->price_sto ? 0 : $sparepart->price_sto * 1.05 + (int)($sparepart->price_sto * rand(-4, 8) / 100);
-                $sred = (int)( ($major + $piter + $emex) / 3);
 
-            @endphp
                   <td  style="
         border: 1px solid black;
         font-size: 11pt;
@@ -126,34 +230,38 @@ $i = 1;
         border: 1px solid black;
         font-size: 11pt;
         font-family: Calibri;
-        " data-format  bgcolor="orange">{{$sred}}</td>
+        " data-format  bgcolor="orange">0</td>
                   <td style="
         border: 1px solid black;
         font-size: 11pt;
         font-family: Calibri;
         " bgcolor="green"
 
-        >{{$sparepart->price_sto}}</td>
+        >{{$sparepart->price_original}}</td>
                   <td style="
         border: 1px solid black;
         font-size: 11pt;
         font-family: Calibri;
-        "  bgcolor="lightblue">{{$sparepart->price_analogue}}</td>
-                  <td style="
-        border: 1px solid black;
-        font-size: 11pt;
-        font-family: Calibri;
-        ">{{$major}}</td>
-                  <td style="
-        border: 1px solid black;
-        font-size: 11pt;
-        font-family: Calibri;
-        ">{{$piter}}</td>
-                  <td style="
-        border: 1px solid black;
-        font-size: 11pt;
-        font-family: Calibri;
-        ">{{$emex}}</td>
+        "  bgcolor=
+        @php
+        if ($sparepart->selected_mrk == 2)
+            echo "blue";
+        elseif ($sparepart->selected_mrk == 3)
+            echo "purple";
+        else
+            echo "green";
+        @endphp
+        >
+        @php
+        if ($sparepart->selected_mrk == 2)
+            echo $sparepart->price_analogue;
+        elseif ($sparepart->selected_mrk == 3)
+            echo $sparepart->price_used;
+        else
+            echo $sparepart->price_original;
+        @endphp
+        </td>
+
 
 
 
@@ -178,8 +286,8 @@ $i = 1;
     font-weight: bold;
     text-align: center;
     ">@php
-echo "=C2";
-for ($j = 3; $j <= $i; $j++)
+echo "=C4";
+for ($j = 5; $j <= $i + 2; $j++)
     echo "+C" . $j;
     @endphp</td>
     <td style="
@@ -190,8 +298,8 @@ for ($j = 3; $j <= $i; $j++)
         text-align: center;
     background-color: orange;
         ">@php
-echo "=D2";
-for ($j = 3; $j <= $i; $j++)
+echo "=D4";
+for ($j = 5; $j <= $i + 2; $j++)
     echo "+D" . $j;
         @endphp</td>
         <td style="
@@ -202,8 +310,8 @@ for ($j = 3; $j <= $i; $j++)
             text-align: center;
     background-color: green;
             ">@php
-echo "=E2";
-for ($j = 3; $j <= $i; $j++)
+echo "=E4";
+for ($j = 5; $j <= $i + 2; $j++)
     echo "+E" . $j;
             @endphp</td>
             <td style="
@@ -212,131 +320,190 @@ for ($j = 3; $j <= $i; $j++)
                 font-family: Calibri;
                 font-weight: bold;
                 text-align: center;
-    background-color: lightblue;
+    background-color: blue;
                 ">@php
-echo "=F2";
-for ($j = 3; $j <= $i; $j++)
+echo "=F4";
+for ($j = 5; $j <= $i + 2; $j++)
     echo "+F" . $j;
                 @endphp</td>
-                <td style="
-                    border: 3px solid black;
-                    font-size: 11pt;
-                    font-family: Calibri;
-                    font-weight: bold;
-                    text-align: center;
-                    ">@php
-echo "=G2";
-for ($j = 3; $j <= $i; $j++)
-    echo "+G" . $j;
-                    @endphp</td>
-                    <td style="
-                        border: 3px solid black;
-                        font-size: 11pt;
-                        font-family: Calibri;
-                        font-weight: bold;
-                        text-align: center;
-                        ">@php
-echo "=H2";
-for ($j = 3; $j <= $i; $j++)
-    echo "+H" . $j;
-                        @endphp</td>
-                        <td style="
-                            border: 3px solid black;
-                            font-size: 11pt;
-                            font-family: Calibri;
-                            font-weight: bold;
-                            text-align: center;
-                            ">@php
-echo "=I2";
-for ($j = 3; $j <= $i; $j++)
-    echo "+I" . $j;
-                            @endphp</td>
+
 </tr>
 <tr></tr>
 <tr>
-    <td colspan="2"
-    style="
-    border: 1px solid black;
-    font-size: 14pt;
-    text-align: right;
-    background-color: orange;
-    height: 60px;
-    "
-    >Необходимая доплата относительно прайса РСА <br>по среднему рынку:</td>
+    <td colspan="2" valign=middle  style="
+                border: 3px solid black;
+                font-size: 15pt;
+                font-family: Calibri;
+                font-weight: bold;
+                text-align: center;
+    background-color: white;
+        height: 120px;
+                ">
+Необходимая доплата относительно <br> прайса РСА <br> (автоматический расчет)
+    </td>
     <td valign=middle style="
-    border: 1px solid black;
-    font-size: 11pt;
-    font-family: Calibri;
-    font-weight: bold;
-    background-color: orange;
-    text-align: center;
-    ">
-=D{{$i+1}}-C{{$i+1}}
-</td>
-<td></td>
-<td colspan="2" rowspan="2" style="
-    border: 3px solid black;
-    font-size: 14pt;
-    font-family: Calibri;
-    font-weight: bold;
-    text-align: left;
-    ">
-    Стоимость деталей по прайсу РСА не соответствует среднерыночной стоимости З/Ч<br>
+                    border: 3px solid black;
+                    font-size: 15pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: center;
+        background-color: white;
+                    ">
+                    Руб
+    </td>
+    <td valign=middle style="
+                        border: 3px solid black;
+                        font-size: 15pt;
+                        font-family: Calibri;
+                        font-weight: bold;
+                        text-align: center;
+            background-color: white;
+                        ">
+        %
+    </td>
+
+</tr>
+<tr>
+    <td colspan="2" valign=middle style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+                    text-decoration: underline;
+        background-color: orange;
+        height: 70px;
+                    ">
+        По среднему рынку:
+    </td>
+    <td valign=middle style="
+                        border: 3px solid black;
+                        font-size: 15pt;
+                        font-family: Calibri;
+                        font-weight: bold;
+                        text-align: center;
+            background-color: orange;
+                        ">
+        =D{{$i + 3}}-C{{$i + 3}}
+    </td>
+    <td valign=middle style="
+                            border: 3px solid black;
+                            font-size: 15pt;
+                            font-family: Calibri;
+                            font-weight: bold;
+                            text-align: center;
+                background-color: orange;
+                            ">
+=D{{$i + 3}}/C{{$i + 3}}*100
+    </td>
+</tr>
+<tr>
+    <td colspan="2" valign=middle style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+                    text-decoration: underline;
+        background-color: blue;
+        height: 70px;
+                    ">
+        При ремонте новыми аналоговыми деталями или <br> комбинированным способом:
+    </td>
+    <td valign=middle style="
+                        border: 3px solid black;
+                        font-size: 15pt;
+                        font-family: Calibri;
+                        font-weight: bold;
+                        text-align: center;
+            background-color: blue;
+                        ">
+        =F{{$i + 3}}-C{{$i + 3}}
+    </td>
+    <td valign=middle style="
+                            border: 3px solid black;
+                            font-size: 15pt;
+                            font-family: Calibri;
+                            font-weight: bold;
+                            text-align: center;
+                background-color: blue;
+                            ">
+=F{{$i + 3}}/C{{$i + 3}}*100
+    </td>
+</tr>
+<tr>
+    <td colspan="2" valign=middle style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+                    text-decoration: underline;
+        background-color: green;
+        height: 70px;
+                    ">
+        При ремонте новыми оригинальными деталями или <br> по прайсу СТОА:
+    </td>
+    <td valign=middle style="
+                        border: 3px solid black;
+                        font-size: 15pt;
+                        font-family: Calibri;
+                        font-weight: bold;
+                        text-align: center;
+            background-color: green;
+                        ">
+        =E{{$i + 3}}-C{{$i + 3}}
+    </td>
+    <td valign=middle style="
+                            border: 3px solid black;
+                            font-size: 15pt;
+                            font-family: Calibri;
+                            font-weight: bold;
+                            text-align: center;
+                background-color: green;
+                            ">
+=E{{$i + 3}}/C{{$i + 3}}*100
+    </td>
+</tr>
+<tr>
+    <td colspan=2 rowspan=2 valign=top style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+height: 500px;
+        background-color: white;
+                    ">Примечание СТОА:</td>
+        <td colspan=2 valign=top style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+height: 150px;
+        background-color: white;
+                    ">Заключение куратора СТОА:<br>
+        Стоимость деталей по прайсу РСА<br>
+        не соответствует среднерыночной стоимости З/Ч<br>
+        СПАО "Ингосстрах"<br>
+        УВТ ОРРСТОА:<br>
+        ФИО</td>
+</tr>
+<tr>
+    <td colspan=2 valign=top style="
+                    border: 3px solid black;
+                    font-size: 12pt;
+                    font-family: Calibri;
+                    font-weight: bold;
+                    text-align: right;
+height: 150px;
+        background-color: white;
+                    ">Заключение куратора убытка:<br>
+    Согласована доплата относительно Среднего рынка/Нового аналога/Прайса СТОА (указать сумму доплаты)<br>
     СПАО "Ингосстрах"<br>
-    УВТ ОРРСТОА: <br>
-    Раджабов Ф.М.
-</td><td></td>
-<td colspan="2" rowspan="2" style="
-    border: 3px solid black;
-    font-size: 14pt;
-    font-family: Calibri;
-    font-weight: bold;
-    text-align: left;
-    ">
-    Согласована доплата оносительно Среднего рынка/Нового аналога/Прайса СТОА <br>
-    СПАО "Ингосстрах" <br>
-    УУ ОСАГО и ДГО ОРСП: <br>
-    ФИО
-</td>
-</tr>
-<tr>
-    <td colspan="2" style="
-    border: 1px solid black;
-    font-size: 14pt;
-    text-align: right;
-    background-color: lightblue;
-    height: 100px;
-    ">Необходимая доплата относительно прайса РСА при ремонте <br>новыми аналоговыми деталями (при условии не <br>предъявления
-    регрессных требований):</td>
-    <td valign=middle style="
-    border: 1px solid black;
-    font-size: 11pt;
-    font-family: Calibri;
-    font-weight: bold;
-    background-color: lightblue;
-    text-align: center;
-    ">
-        =F{{$i+1}}-C{{$i+1}}
-    </td>
-</tr>
-<tr>
-    <td colspan="2" style="
-    border: 1px solid black;
-    font-size: 14pt;
-    text-align: right;
-    background-color: green;
-    height: 100px;
-    ">Необходимая доплата относительно прайса РСА при <br>ремонте новыми оригинальными деталями по прайсу <br>СТОА:</td>
-    <td valign=middle style="
-    border: 1px solid black;
-    font-size: 11pt;
-    font-family: Calibri;
-    font-weight: bold;
-    background-color: green;
-    text-align: center;
-    ">
-        =E{{$i+1}}-C{{$i+1}}
-    </td>
+    УУ ОСАГО и ДГО ОРСП:<br>
+    ФИО</td>
 </tr>
  </tbody>
 </table>

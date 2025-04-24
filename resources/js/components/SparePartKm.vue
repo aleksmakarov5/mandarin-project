@@ -84,11 +84,11 @@
         {{ makeCount(sparepart.price_ic_full) }}</td>
         <td  class="ic_price"  :id="'price_sto_'+sparepart.id" contenteditable @blur="editPriceSto(sparepart.id,index)" @keydown.enter="editPriceSto(sparepart.id,index)">
         {{makeCount(sparepart.price_sto&&sparepart.price_sto!=0?sparepart.price_sto:sparepart.price_ic_full) }}</td>
-        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name,index)" :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id)" @keydown.enter="editPriceOriginal(sparepart.id)">
+        <td :class="classSelect(1,sparepart.selected_mrk,sparepart.selected_price)"  @contextmenu.prevent="updateSparePartZap(sparepart.id,1,sparepart.name,index)" :id="'price_original_'+sparepart.id" contenteditable @blur="editPriceOriginal(sparepart.id,index)" @keydown.enter="editPriceOriginal(sparepart.id,index)">
         {{ makeCount(sparepart.price_original) }}</td>
-<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)"  @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name,index)"  :id="'price_analogue_'+sparepart.id" contenteditable @blur="editPriceAnalogue(sparepart.id)" @keydown.enter="editPriceAnalogue(sparepart.id)">
+<td  :class="classSelect(2,sparepart.selected_mrk,sparepart.selected_price)"  @contextmenu.prevent="updateSparePartZap(sparepart.id,2,sparepart.name,index)"  :id="'price_analogue_'+sparepart.id" contenteditable @blur="editPriceAnalogue(sparepart.id,index)" @keydown.enter="editPriceAnalogue(sparepart.id,index)">
         {{ makeCount(sparepart.price_analogue) }}</td>
-        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)":id="'price_used_'+sparepart.id" contenteditable @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name,index)" @blur="editPriceUsed(sparepart.id)" @keydown.enter="editPriceUsed(sparepart.id)" >
+        <td  :class="classSelect(3,sparepart.selected_mrk,sparepart.selected_price)":id="'price_used_'+sparepart.id" contenteditable @contextmenu.prevent="updateSparePartZap(sparepart.id,3,sparepart.name,index)" @blur="editPriceUsed(sparepart.id,index)" @keydown.enter="editPriceUsed(sparepart.id,index)" >
         {{ makeCount(sparepart.price_used) }}</td>
         <td  :class="classSelect(4,sparepart.selected_mrk,sparepart.selected_price)" :id="'price_service_'+sparepart.id" @contextmenu.prevent="updateSparePartZap(sparepart.id,4,sparepart.name,index)">
         <template v-if="sparepart.selected_service==1">
@@ -389,8 +389,10 @@
         },
         editPriceAnalogue(id,index)
         {
-            let price_analogue = document.getElementById('price_analogue_'+id);
-            this.spareparts[index].price_analogue = price_analogue.innerText.split(" ").join("");
+
+            let price = document.getElementById('price_analogue_' + id);
+            console.log(index,id,price.innerText.split(" ").join(""))
+            this.spareparts[index].price_analogue = price.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceOriginal(id,index)

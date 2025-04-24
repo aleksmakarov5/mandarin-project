@@ -388,8 +388,8 @@
         },
         editPriceAnalogue(id,index)
         {
-            let price_analogue = document.getElementById('price_analogue_'+id);
-            this.spareparts[index].price_analogue = price_analogue.innerText.split(" ").join("");
+            let price = document.getElementById('price_analogue_'+id);
+            this.spareparts[index].price_analogue = price.innerText.split(" ").join("");
             this.updateSparePart(id,index)
         },
         editPriceOriginal(id,index)
