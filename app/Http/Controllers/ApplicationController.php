@@ -721,7 +721,7 @@ class ApplicationController extends Controller
             ->orwhere('ClientName', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('CarModel', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('ClientPhone', 'LIKE', '%' . $data['find'] . '%')
-            ->orwhere('id', 'LIKE', '%' . $data['find'] . '%')
+            ->orwhere('applications.id', 'LIKE', '%' . $data['find'] . '%')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
