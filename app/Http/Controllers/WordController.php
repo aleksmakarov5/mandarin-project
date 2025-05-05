@@ -418,7 +418,7 @@ class WordController extends Controller
             $document = new Attachment();
             $document->file_name = 'таблица_запчастей_' . $number . ' от ' . Date::parse()->format('j F Y') . ".xlsx";
             $document->message_id = 0;
-            $document->mime_type = mime_content_type($file_save);
+            $document->mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             $document->id_application = $id;
             $document->file_size = filesize($file_save);
             $document->location = 'таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
