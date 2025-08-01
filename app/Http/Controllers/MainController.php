@@ -251,7 +251,7 @@ class MainController extends Controller
             // echo $to;
 
             $attachments = attachment::where('id_application', '=', $id)
-                ->where('sended', '=', null)
+                // ->where('sended', '=', null)
                 ->get()->all();
             foreach ($attachments as $attachment) {
                 $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
