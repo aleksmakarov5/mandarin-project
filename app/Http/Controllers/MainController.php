@@ -239,6 +239,13 @@ class MainController extends Controller
             ->first();
         $application = application::where('id', '=', $id)->first();
         $sign = OurCompany::where('id', '=', $application->our_company)->first()->sign;
+        $attachments = attachment::where('id_application', '=', $id)
+            ->where('sended', '=', null)
+            ->get()->all();
+        foreach ($attachments as $attachment) {
+            $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
+        }
+        // dd($attachments);
         try {
             $message_id = message::where('application_id', '=', $id)->first()->id;
             $subject =
@@ -250,17 +257,11 @@ class MainController extends Controller
                 ->email;
             // echo $to;
 
-            $attachments = attachment::where('id_application', '=', $id)
-                // ->where('sended', '=', null)
-                ->get()->all();
-            foreach ($attachments as $attachment) {
-                $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
-            }
+
         } catch (\Exception $e) {
             $message_id = 0;
             $subject = '';
             $to_email = '';
-            $attachments = [];
         }
 
         // dd($doc_statuses->all());
