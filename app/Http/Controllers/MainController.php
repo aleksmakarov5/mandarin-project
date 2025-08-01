@@ -435,6 +435,8 @@ class MainController extends Controller
 
     public function doc_edit(Request $request, $id, $doc_id)
     {
+
+        $application = application::where('id', '=', $id)->first();
         $document = DB::table('attachments')
             ->where('id_application', '=', $id)
             ->get();
@@ -453,7 +455,7 @@ class MainController extends Controller
         $filename = $document_edit->file_name;
         $doc_ext = mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
         $doc_name = mb_substr($filename, 0, mb_strlen($filename) - mb_strlen($doc_ext) - 1);
-        return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def], ['id' => $id]);
+        return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'application' => $application], ['id' => $id]);
     }
     public function doc_update(Request $request, $id, $doc_id)
     {
