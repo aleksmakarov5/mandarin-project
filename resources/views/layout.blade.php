@@ -154,7 +154,7 @@
                     <post-notify :user="{{ Auth::user()->id }}" :notification_in="{{ json_encode($notifications) }}" />
                 </div>
                 <div class="d1">
-                    <form action="/find" method="POST">
+                    <form action="/find" method="get">
                         @csrf
                         <input type="text" placeholder="Поиск" name="find">
                         <button type="submit"></button>

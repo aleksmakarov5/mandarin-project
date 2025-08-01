@@ -760,7 +760,7 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
-            )->paginate(30);
+            )->paginate(200);
         // dd($applications);
         $current = carbon::now();
         foreach ($applications as $application) {

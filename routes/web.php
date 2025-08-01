@@ -163,7 +163,7 @@ Route::middleware("auth:web")->group(
         Route::get('/temp',  [ApplicationController::class, 'temp'])->name('temp');
         Route::get('/priem',  [ApplicationController::class, 'priem'])->name('priem');
         Route::get('/failures',  [ApplicationController::class, 'failures'])->name('failures');
-        Route::post('/find',  [ApplicationController::class, 'find'])->name('find');
+        Route::get('/find',  [ApplicationController::class, 'find'])->name('find');
 
         Route::get('/applications',  [ApplicationController::class, 'applications'])->name('applications');
         Route::get('/directions',  [ApplicationController::class, 'directions'])->name('directions');
