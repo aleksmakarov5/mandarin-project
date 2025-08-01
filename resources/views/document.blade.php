@@ -256,25 +256,29 @@
                      <td>
                         <div>
                             @php
-                                    $to=[];
-                                     if (isset($application->id_insuranceCompany)){
-                                        if ($application->id_insuranceCompany == 3)
-                                            {$to[0]= "drs-sto@ingos.ru";
-                                            $to[1]= "sergei.vtorov@ingos.ru";
-                                    $to[2] = "sergey.sivkov@ingos.ru";
-                                    $to[3] = "andrey.gretchukhin@ingos.ru";
-                                   }
-                                            elseif ($application->id_insuranceCompany == 1) {
-                                                $to[0]= "smeta_szfo@vsk.ru";
-                                            }
-                                            else
-                                            {
-                                               $to[0]= isset($to_email)?$to_email:'';
-                                            }
-                                            }
-                                            else {
-                                               $to[0]= isset($to_email)?$to_email:'';
-                                            }
+                                                                                                                                                                                        $to=[];
+                                                                                                                                                                                         if (isset($application->id_insuranceCompany)){
+                                                                                                                                                                                            if ($application->id_insuranceCompany == 3)
+                                                                                                                                                                                                {$to[0]= "drs-sto@ingos.ru";
+                                                                                                                                                                                                $to[1]= "sergei.vtorov@ingos.ru";
+                                                                                                                                                                                        $to[2] = "sergey.sivkov@ingos.ru";
+                                                                                                                                                                                        $to[3] = "andrey.gretchukhin@ingos.ru";
+                                                                                                                                                                                       }
+                                                                                                                                                                                                elseif ($application->id_insuranceCompany == 1) {
+                                                                                                                                                                                                    $to[0]= "smeta_szfo@vsk.ru";
+                                                                                                                                                                                                } elseif ($application->id_insuranceCompany == 5) {
+                                                                                                                                                                    $to[0] = "akt.rem4@sogaz.ru";
+                                                                                                                                                                     $to[1] = "kuznetsov.vitaly@sogaz.ru";
+                                                                                                                                                                     $to[2] = "malygin.leonid@sogaz.ru";
+                                                                                                                                                                }
+                                                                                                                                                                                                else
+                                                                                                                                                                                                {
+                                                                                                                                                                                                   $to[0]= isset($to_email)?$to_email:'';
+                                                                                                                                                                                                }
+                                                                                                                                                                                                }
+                                                                                                                                                                                                else {
+                                                                                                                                                                                                   $to[0]= isset($to_email)?$to_email:'';
+                                                                                                                                                                                                }
                             @endphp
                     <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
                                     :subject="{{json_encode($application->numberInsuranceCompanyApplication.'_ПЗН')}}"
@@ -366,7 +370,11 @@
                }
                         elseif ($application->id_insuranceCompany == 1) {
                             $to[0]= "smeta_szfo@vsk.ru";
-                        }
+                        }elseif ($application->id_insuranceCompany == 5) {
+                         $to[0] = "akt.rem4@sogaz.ru";
+                          $to[1] = "kuznetsov.vitaly@sogaz.ru";
+                           $to[2] = "malygin.leonid@sogaz.ru";
+                       }
                         else {
                            $to[0]= isset($to_email)?$to_email:'';
                         }
@@ -460,6 +468,11 @@
                                                             elseif ($application->id_insuranceCompany == 1) {
                                                                 $to[0]= "pay.arhangelsk@vsk.ru";
                                                             }
+                                                            elseif ($application->id_insuranceCompany == 5) {
+                         $to[0] = "akt.rem4@sogaz.ru";
+                          $to[1] = "kuznetsov.vitaly@sogaz.ru";
+                           $to[2] = "malygin.leonid@sogaz.ru";
+                       }
                                                             else {
                                                                $to[0]= isset($to_email)?$to_email:'';
                                                             }
