@@ -214,7 +214,7 @@
                                         :count_in="{{ json_encode($count_archive) }}"></notify-buttons>
                                 </li>
                                 <li class="nav-item"><a href="\temp"
-                                        class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Временные</a>
+                                        class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Корзина</a>
 
                                 </li>
                                 <li class="nav-item"><a href="\message"

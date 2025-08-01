@@ -36,7 +36,7 @@ use Tochka\Calendar\WorkCalendar;
 
 class ImapController extends Controller
 {
-    public function vsk_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
+    public function vsk_parse($subject, $email, $from, $to, $attachments, $our_company, $uid, $id_status)
     {
         $app_number = ' ';
         $model =  ' ';
@@ -96,7 +96,7 @@ class ImapController extends Controller
                     'id_insuranceCompany' => 1,
                     'CarModel' => $model,
                     'gnz' => $gnz,
-                    'id_status' => 1,
+                    'id_status' => $id_status,
                     'vin' => $vin,
                     'ub_type' => true,
                     'ic_answer_date' => null,
@@ -315,7 +315,7 @@ class ImapController extends Controller
                     'id_insuranceCompany' => 1,
                     'CarModel' => $model,
                     'gnz' => $gnz,
-                    'id_status' => 1,
+                    'id_status' => $id_status,
                     'ic_answer_date' => null,
                 ]
             );
@@ -512,7 +512,7 @@ class ImapController extends Controller
             }
         }
     }
-    public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
+    public function ingos_parse($subject, $email, $from, $to, $attachments, $our_company, $uid, $id_status)
     {
         echo $subject . '<br>';
 
@@ -566,7 +566,7 @@ class ImapController extends Controller
                 'id_insuranceCompany' => 3,
                 'CarModel' => " ",
                 'gnz' => $gnz,
-                'id_status' => 1,
+                'id_status' => $id_status,
                 'vin' => " ",
                 'ub_type' => false,
                 'our_company' => $our_company,
@@ -1218,11 +1218,11 @@ class ImapController extends Controller
                         $our_company = 1;
 
                         if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                            $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                            $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
                         } elseif (mb_strpos($body_html, 'ingos') !== false) {
                             echo "Ingos";
 
-                            $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                            $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
                         } elseif (mb_strpos($body_html, 'reso') !== false) {
                             $this->reso_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         } elseif (mb_strpos($body_html, 'Югория') !== false) {
@@ -1320,11 +1320,11 @@ class ImapController extends Controller
 
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'Югория') !== false) {
                         $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
@@ -1421,11 +1421,11 @@ class ImapController extends Controller
 
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'Югория') !== false) {
                         $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
