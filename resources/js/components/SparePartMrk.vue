@@ -276,7 +276,7 @@
               if (!n) return '';
             if((n=='-')) return 'нет';
             let text = parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")
-            text=text.substring(0, text.indexOf("."))
+            // text=text.substring(0, text.indexOf("."))
             if (text == '0')
                 return ''
             else
