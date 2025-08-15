@@ -71,6 +71,7 @@ class WorkController extends Controller
                 2
             );
 
+        $data['summ'] = $data['price'] * $data['count_hours'];
         foreach ($data as $key => $value) {
             $work->$key = $value;
         }

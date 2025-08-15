@@ -169,10 +169,10 @@ axios.delete(`/api/work/${id}`)
             this.count_hours_Cr = ''
         },
          makeMoney(n) {
-            return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ")+' р.';
+            return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.\,)/g, "$1 ")+' р.';
          },
         makeCount(n) {
-            return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
+            return parseFloat(n).toFixed(2).replace(/(\d)(?=(\d{3})+\.\,)/g, "$1 ");
         },
         editName(id)
         {
