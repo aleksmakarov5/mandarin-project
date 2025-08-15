@@ -66,7 +66,10 @@ class WorkController extends Controller
         if (isset($data['price_service']))
             $data['price_service'] = str2number($data['price_service']);
         if (isset($data['summ']))
-            $data['summ'] = round($data['summ'], 2);
+            $data['summ'] = round(
+                str2number($data['summ']),
+                2
+            );
 
         foreach ($data as $key => $value) {
             $work->$key = $value;
