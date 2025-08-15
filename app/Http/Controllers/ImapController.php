@@ -1421,11 +1421,11 @@ class ImapController extends Controller
 
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
                     } elseif (mb_strpos($body_html, 'Югория') !== false) {
                         $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
