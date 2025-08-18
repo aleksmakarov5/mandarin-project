@@ -30,6 +30,8 @@ use App\Models\ApplicationStatus;
 use App\Models\estimate;
 use Carbon\Carbon;
 use Tochka\Calendar\WorkCalendar;
+use \ZanySoft\Zip\Facades\Zip;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -38,6 +40,8 @@ class ImapController extends Controller
 {
     public function vsk_parse($subject, $email, $from, $to, $attachments, $our_company, $uid, $id_status)
     {
+
+        $text = $email->getHTMLBody();
         $app_number = ' ';
         $model =  ' ';
         $vin =  ' ';
@@ -87,7 +91,10 @@ class ImapController extends Controller
             $model = $model ? $model : ' ';
             $vin = $vin ? $vin : ' ';
             $gnz = $gnz ? $gnz : ' ';
-
+            $start_pos = mb_strpos($text, '29.%20%');
+            $final_post = mb_strpos($text, '%2311');
+            $number = mb_substr($text, $start_pos + 9, $final_post - $start_pos - 9);
+            echo $number . '<br>';
             //dd($start_pos_app_number, $subject, $start_pos_gnz, $app_number, $model, $vin, $gnz);
             $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1, 'our_company' => $our_company],
@@ -100,6 +107,7 @@ class ImapController extends Controller
                     'vin' => $vin,
                     'ub_type' => true,
                     'ic_answer_date' => null,
+                    'ub_number' => (int)$number
 
                 ]
             );
@@ -121,7 +129,10 @@ class ImapController extends Controller
                     ]
                 );
             }
-            // dd($applications);
+            // echo $text;
+            $pattern = '~[a-z]+://\S+~';
+
+            $str = $text;
             $message = new Message();
             $message->subject = $email->getSubject();
             $message->uid = $uid;
@@ -130,6 +141,54 @@ class ImapController extends Controller
             $message->header = $email->getHeaders();
             $message->message_date = $email->getdate();
             $message->application_id = $applications->id;
+            $message->is_parsed = true;
+            $message->mailbox_id = $our_company;
+            $message->save();
+            if ($num_found = preg_match_all($pattern, $str, $out)) {
+                echo "FOUND " . $num_found . " LINKS:\n";
+                // dd($out[0][0]);
+            }
+            $fin_pos = 0;
+            if (isset($out[0][0])) {
+                $fin_pos = mb_strpos($out[0][0], '>');
+                if ($fin_pos > 0)
+                    $link = mb_substr($out[0][0], 0, $fin_pos);
+                else
+                    $link = $out[0][0];
+                print_r($link);
+
+                $dir = 'storage/files/' . $applications->id;
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                if ($link) {
+                    file_put_contents($dir . "/Tmpfile.zip", fopen($link, 'r'));
+                }
+                $zip = Zip::open($dir . '/Tmpfile.zip');
+                $zip->extract($dir . '/tmp');
+                $zip->close();
+                Storage::delete("public/files/'.$applications->id.'/Tmpfile.zip");
+                $id = $applications->id;
+                $att = scandir('storage/files/' . $id . '/tmp');
+                foreach ($att as $file) {
+                    if ($file != '.' && $file != '..') {
+                        $filename = pathinfo($file, PATHINFO_FILENAME);
+                        $attach = new attachment();
+                        $attach->message_id = $message->id;
+                        $attach->id_application = $applications->id;
+                        $attach->location = $file;
+                        $attach->mime_type = pathinfo($file, PATHINFO_EXTENSION);
+                        $attach->file_size = filesize('storage/files/' . $id . "/tmp/" . $file);
+                        $attach->file_name = $filename;
+                        $attach->save();
+                        copy('storage/files/' . $id . "/tmp/" . $file, 'storage/files/' . $id . "/" . $file);
+                        unlink('storage/files/' . $id . "/tmp/" . $file);
+                    }
+                }
+                rmdir('storage/files/' . $id . '/tmp');
+            }
+            // dd($applications);
+
             $id = $applications->id;
             if ($applications->id_status == 1) {
                 $history = new History;
@@ -138,9 +197,7 @@ class ImapController extends Controller
                 $history->id_user = 2;
                 $history->save();
             }
-            $message->is_parsed = true;
-            $message->mailbox_id = $our_company;
-            $message->save();
+
             $text = strip_tags($email->getHTMLBody());
             // dd($text);
             $dir = 'storage/files/' . $applications->id;
@@ -1230,6 +1287,7 @@ class ImapController extends Controller
     }
     public function recieve()
     {
+
         $cm = new ClientManager('config/imap.php');
 
         /** @var \Webklex\PHPIMAP\Client $client */ {
@@ -1433,107 +1491,107 @@ class ImapController extends Controller
                 }
             }
         }
-        $client2 = $cm->account('ananin');
-        //   dd($client);
-        //Connect to the IMAP Server
-        $client2->connect();
+        // $client2 = $cm->account('ananin');
+        // //   dd($client);
+        // //Connect to the IMAP Server
+        // $client2->connect();
 
-        //Get all Mailboxes
-        /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
-        $folders = $client2->getFolders(true, "INBOX");
+        // //Get all Mailboxes
+        // /** @var \Webklex\PHPIMAP\Support\FolderCollection $folders */
+        // $folders = $client2->getFolders(true, "INBOX");
 
-        foreach ($folders as $folder) {
-
-
-            //Get all Messages of the current Mailbox $folder
-            /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
-            $mailbox = DB::table('mailboxes')->where('mailboxes.id', '=', 3)->first();
-            $start_uid = $mailbox->last_message_uid + 1;
-            $emailes = $folder->overview($sequence = "$start_uid:*");
-            /** @var \Webklex\PHPIMAP\Message $message */
-            $last_uid = -1;
-            foreach ($emailes as $uid => $email) {
-                // dd($email);
-                echo "<br />" . $uid . "<br />";
-                $last_uid = $uid;
-                $mailbox = mailbox::where('id', '=', 3)->first();
-                $mailbox->last_message_uid = $last_uid;
-                $mailbox->save();
-                $messages = $folder->messages()->where(['uid' => $uid])->get();
-                // dd($messages, $uid);
-                foreach ($messages as $message) {
-                    $subject = $message->getSubject();
-                    echo $subject . "<br/>";
+        // foreach ($folders as $folder) {
 
 
-                    $attachments = $message->getAttachments();
+        //     //Get all Messages of the current Mailbox $folder
+        //     /** @var \Webklex\PHPIMAP\Support\MessageCollection $messages */
+        //     $mailbox = DB::table('mailboxes')->where('mailboxes.id', '=', 3)->first();
+        //     $start_uid = $mailbox->last_message_uid + 1;
+        //     $emailes = $folder->overview($sequence = "$start_uid:*");
+        //     /** @var \Webklex\PHPIMAP\Message $message */
+        //     $last_uid = -1;
+        //     foreach ($emailes as $uid => $email) {
+        //         // dd($email);
+        //         echo "<br />" . $uid . "<br />";
+        //         $last_uid = $uid;
+        //         $mailbox = mailbox::where('id', '=', 3)->first();
+        //         $mailbox->last_message_uid = $last_uid;
+        //         $mailbox->save();
+        //         $messages = $folder->messages()->where(['uid' => $uid])->get();
+        //         // dd($messages, $uid);
+        //         foreach ($messages as $message) {
+        //             $subject = $message->getSubject();
+        //             echo $subject . "<br/>";
 
-                    $from = $message->getFrom()->toarray();
-                    $to = $message->getTo()->toArray();
-                    $subject = $message->getSubject();
-                    $subject = trim($subject);
-                    $body_html = $message->getHTMLBody();
-                    $our_company = 3;
-                    // dd($message);
+
+        //             $attachments = $message->getAttachments();
+
+        //             $from = $message->getFrom()->toarray();
+        //             $to = $message->getTo()->toArray();
+        //             $subject = $message->getSubject();
+        //             $subject = trim($subject);
+        //             $body_html = $message->getHTMLBody();
+        //             $our_company = 3;
+        //             // dd($message);
 
 
-                    if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
-                    } elseif (mb_strpos($body_html, 'ingos') !== false) {
-                        echo "Ingos";
+        //             if (mb_strpos($body_html, 'vsk.ru') !== false) {
+        //                 $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+        //             } elseif (mb_strpos($body_html, 'ingos') !== false) {
+        //                 echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
-                    } elseif (mb_strpos($body_html, 'Югория') !== false) {
-                        $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
-                    } else {
-                        echo "Not info";
-                        $mess = new Message();
-                        $mess->subject = $message->getSubject();
-                        $mess->uid = $uid;
-                        $mess->body_html = $message->getHTMLBody();
-                        $mess->body_text = $message->getTextBody();
-                        $mess->header = $message->getHeaders();
-                        $mess->message_date = $message->getdate();
-                        $mess->mailbox_id = 3;
-                        // dd($mess);
-                        $mess->save();
-                        foreach ($to as $mail) {
-                            // dd($mail);
-                            $address = new address;
-                            $address->message_id = $mess->id;
-                            $address->email = $mail->mail;
-                            $address->type = 'to';
-                            $address->save();
-                        }
-                        //dd($from, $to, $address);
-                        foreach ($from as $mail) {
-                            $address = new address;
-                            $address->message_id = $mess->id;
-                            $address->email = $mail->mail;
-                            $address->type = 'from';
-                            $address->save();
-                        }
-                        $dir = 'storage/files/temp';
-                        if (!is_dir($dir)) {
-                            mkdir($dir, 0777, true);
-                        }
+        //                 $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+        //             } elseif (mb_strpos($body_html, 'Югория') !== false) {
+        //                 $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+        //             } else {
+        //                 echo "Not info";
+        //                 $mess = new Message();
+        //                 $mess->subject = $message->getSubject();
+        //                 $mess->uid = $uid;
+        //                 $mess->body_html = $message->getHTMLBody();
+        //                 $mess->body_text = $message->getTextBody();
+        //                 $mess->header = $message->getHeaders();
+        //                 $mess->message_date = $message->getdate();
+        //                 $mess->mailbox_id = 3;
+        //                 // dd($mess);
+        //                 $mess->save();
+        //                 foreach ($to as $mail) {
+        //                     // dd($mail);
+        //                     $address = new address;
+        //                     $address->message_id = $mess->id;
+        //                     $address->email = $mail->mail;
+        //                     $address->type = 'to';
+        //                     $address->save();
+        //                 }
+        //                 //dd($from, $to, $address);
+        //                 foreach ($from as $mail) {
+        //                     $address = new address;
+        //                     $address->message_id = $mess->id;
+        //                     $address->email = $mail->mail;
+        //                     $address->type = 'from';
+        //                     $address->save();
+        //                 }
+        //                 $dir = 'storage/files/temp';
+        //                 if (!is_dir($dir)) {
+        //                     mkdir($dir, 0777, true);
+        //                 }
 
-                        foreach ($attachments as $attachment) {
-                            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-                            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
-                            $attachment->save($path = $dir . '/', $filename);
-                            $attach = new attachment();
-                            $attach->message_id = $mess->id;
-                            $attach->location = $filename;
-                            $attach->mime_type = $attachment->getMimeType();
-                            $attach->file_size = $attachment->getSize();
-                            $attach->file_name = $attachment->getFilename();
-                            $attach->save();
-                        }
-                    }
-                }
-            }
-        }
+        //                 foreach ($attachments as $attachment) {
+        //                     $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+        //                     $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+        //                     $attachment->save($path = $dir . '/', $filename);
+        //                     $attach = new attachment();
+        //                     $attach->message_id = $mess->id;
+        //                     $attach->location = $filename;
+        //                     $attach->mime_type = $attachment->getMimeType();
+        //                     $attach->file_size = $attachment->getSize();
+        //                     $attach->file_name = $attachment->getFilename();
+        //                     $attach->save();
+        //                 }
+        //             }
+        //         }
+        //     }
+        // }
         // $client3 = $cm->account('sharoiko');
         //   dd($client);
         //Connect to the IMAP Server

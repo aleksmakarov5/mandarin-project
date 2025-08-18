@@ -3288,6 +3288,11 @@ class ApplicationController extends Controller
                 $estimate = preg_replace("(\u{A0})", ' ', $estimate);
                 $estimate = explode('<br/>', $estimate);
                 $price[4] = $estimate[1];
+                $estimate_start = mb_strpos($file, 'учетом износа (восстановительные расходы) составляет:');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[7] = $estimate[1];
                 $estimate_start = mb_strpos($file, 'восстановительного ремонта составляет:');
                 $estimate = mb_substr($file, $estimate_start);
                 $estimate = preg_replace("(\u{A0})", ' ', $estimate);
