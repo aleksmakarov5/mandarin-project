@@ -129,181 +129,183 @@
                 </thead>
                 <tbody>
                     @can('company')
-                                                    @if (isset($application->id_insuranceCompany))
+                                                                            @if (isset($application->id_insuranceCompany))
 
 
-                                                        @if (($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6) && $application->id_status == 28)
+                                                                                @if (($application->id_insuranceCompany == 3 || $application->id_insuranceCompany == 6) && $application->id_status == 28)
 
-                                                            <tr>
-                                                                <th scope="col">Заявление о страховом возмещении</th>
-                                                                <th scope="col">
-                                                                    @include('document.form_print', [
-                                    'status_id' => 11,
-                                    'template' => 'export_zayav',
-                                ])
-                                                                </th>
-                                                                <th scope="col">
-                                                                    @include('document.form_scan', [
-                                    'status_id' => 12,
-                                    'load_name' => 'Заявление о страховом возмещении',
-                                    'load_location' => 'Заявление_о_страховом_возмещении',
-                                ])
-                                                                </th>
-                                                                <th></th>
-                                                            </tr>
-                                                        @endif
-                                                    @endif
-                                                    <tr>
-                                                        <th scope="col">Акт первичного осмотра</th>
+                                                                                    <tr>
+                                                                                        <th scope="col">Заявление о страховом возмещении</th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_print', [
+                                                            'status_id' => 11,
+                                                            'template' => 'export_zayav',
+                                                        ])
+                                                                                        </th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_scan', [
+                                                            'status_id' => 12,
+                                                            'load_name' => 'Заявление о страховом возмещении',
+                                                            'load_location' => 'Заявление_о_страховом_возмещении',
+                                                        ])
+                                                                                        </th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                @endif
+                                                                            @endif
+                                                                            <tr>
+                                                                                <th scope="col">Акт первичного осмотра</th>
 
-                                                        <th scope="col" colspan=2>
-                                                            @include('document.form_scan', ['status_id' => 20])
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="col">Фото первичного осмотра автомобиля</th>
+                                                                                <th scope="col" colspan=2>
+                                                                                    @include('document.form_scan', ['status_id' => 20])
+                                                                                </th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="col">Фото первичного осмотра автомобиля</th>
 
-                                                        <th scope="col" colspan="2">
-                                                            @include('document.form_scan', [
-                            'status_id' => 21,
-                            'load_name' => 'Фото первичного осмотра автомобиля',
-                            'load_location' => 'Фото_первичного_осмотра_автомобиля',
-                        ])
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="col">Смета</th>
+                                                                                <th scope="col" colspan="2">
+                                                                                    @include('document.form_scan', [
+                                                    'status_id' => 21,
+                                                    'load_name' => 'Фото первичного осмотра автомобиля',
+                                                    'load_location' => 'Фото_первичного_осмотра_автомобиля',
+                                                ])
+                                                                                </th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="col">Смета</th>
 
-                                                        <th scope="col" colspan=2>
-                                                            @include('document.form_scan', ['status_id' => 22])
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="col">Направление</th>
-
-
-                                                        <th scope="col" colspan=2>
-                                                            @include('document.form_scan', ['status_id' => 1])
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                    <tr>
-                                                        <th scope="col">Калькуляция</th>
-
-                                                        <th scope="col" colspan=2>
-                                                            @include('document.form_scan', ['status_id' => '23'])
-                                                        </th>
-                                                        <th></th>
-                                                    </tr>
-                                                     @if (isset($application->id_insuranceCompany))
-                                                        @if ($application->id_insuranceCompany == 1)
-                                                            <tr>
-                                                                <th scope="col">Информационный акт</th>
-                                                                <th scope="col">
-                                                                    @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
-                                                                </th>
-                                                                <th scope="col">
-                                                                    @include('document.form_scan', [
-                                    'status_id' => 7,
-                                    'load_name' => 'Информационный акт',
-                                    'load_location' => 'Информационный_акт',
-                                ])
-                                                                </th>
-                                                                <th></th>
-                                                            </tr>
-                                                        @endif
-                                                    @endif
-                                                    @if (isset($application->id_insuranceCompany))
-                                                        @if ($application->id_insuranceCompany == 6)
+                                                                                <th scope="col" colspan=2>
+                                                                                    @include('document.form_scan', ['status_id' => 22])
+                                                                                </th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="col">Направление</th>
 
 
-                                                            <tr>
-                                                                <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
-                                                                <th scope="col">
-                                                                    @include('document.form_print', [
-                                    'status_id' => 39,
-                                    'template' => 'export_sogl',
-                                ])
-                                                                </th>
-                                                                <th scope="col">
-                                                                    @include('document.form_scan', [
-                                    'status_id' => 7,
-                                    'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
-                                    'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
-                                ])
-                                                                </th>
-                                                                <th></th>
-                                                            </tr>
-                                                        @endif
-                                                    @endif
+                                                                                <th scope="col" colspan=2>
+                                                                                    @include('document.form_scan', ['status_id' => 1])
+                                                                                </th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                            <tr>
+                                                                                <th scope="col">Калькуляция</th>
 
-                                                    <tr>
-                                                        <th scope="col">Предварительный заказ наряд
-                                                        </th>
-                                                        <th scope="col">
-                                                            @include('document.form_print', ['status_id' => 16, 'template' => 'export_pzn'])
-                                                        </th>
+                                                                                <th scope="col" colspan=2>
+                                                                                    @include('document.form_scan', ['status_id' => '23'])
+                                                                                </th>
+                                                                                <th></th>
+                                                                            </tr>
+                                                                             @if (isset($application->id_insuranceCompany))
+                                                                                @if ($application->id_insuranceCompany == 1)
+                                                                                    <tr>
+                                                                                        <th scope="col">Информационный акт</th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_print', ['status_id' => 6, 'template' => 'export_if'])
+                                                                                        </th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_scan', [
+                                                            'status_id' => 7,
+                                                            'load_name' => 'Информационный акт',
+                                                            'load_location' => 'Информационный_акт',
+                                                        ])
+                                                                                        </th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                @endif
+                                                                            @endif
+                                                                            @if (isset($application->id_insuranceCompany))
+                                                                                @if ($application->id_insuranceCompany == 6)
 
-                                                        <th scope="col">
-                                                            @include('document.form_scan', [
-                            'status_id' => 17,
-                            'load_name' => 'Заказ наряд',
-                            'load_location' => 'Заказ_наряд',
-                        ])
-                                                        </th>
-                                         <td>
-                                            <div>
-                                                @php
-                        $to = [];
-                        if (isset($application->id_insuranceCompany)) {
-                            if ($application->id_insuranceCompany == 3) {
-                                $to[0] = "drs-sto@ingos.ru";
-                                $to[1] = "sergei.vtorov@ingos.ru";
-                                $to[2] = "sergey.sivkov@ingos.ru";
-                                $to[3] = "andrey.gretchukhin@ingos.ru";
-                            } elseif ($application->id_insuranceCompany == 1) {
-                                $to[0] = "smeta_szfo@vsk.ru";
-                            } elseif ($application->id_insuranceCompany == 5) {
-                                $to[0] = "akt.rem4@sogaz.ru";
-                                $to[1] = "kuznetsov.vitaly@sogaz.ru";
-                                $to[2] = "malygin.leonid@sogaz.ru";
-                            } elseif ($application->id_insuranceCompany == 4) {
-                                $to[0] = "arhangelsk_oup@email.reso.ru";
-                            } elseif ($application->id_insuranceCompany == 7) {
-                                $to[0] = "stoarcuu@ugsk.ru";
-                            } else {
-                                $to[0] = isset($to_email) ? $to_email : '';
-                            }
-                        } else {
-                            $to[0] = isset($to_email) ? $to_email : '';
-                        }
-                                                @endphp
-                                        <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                                                        :subject="{{json_encode($application->numberInsuranceCompanyApplication . '_ПЗН')}}"
-                                                        :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
-                                        :text="{{json_encode("Направляем предварительный заказ-наряд по убытку №" . $application->numberInsuranceCompanyApplication)}}"
-                                                        :sign="{{json_encode(isset($sign) ? $sign : '')}}"
-                                                        :status="22" />
-                                                        </div>
-                                         </td><td>
-                                                        <div>
-                                                            @php
-                        $to = [];
-                        $to[0] = "alekseiexpert29@yandex.ru";
-                        $to[1] = "дмитрий@ru";
-                                                            @endphp
-                                                            <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                                                        :subject="{{json_encode('zn-' . $application->id . '! ПЗН ' . $application->CarModel . ' ' . $application->gnz)}}"
-                                                        :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
-                                        :text="{{json_encode("Прошу сделать предварительный заказ-наряд по убытку №" . $application->numberInsuranceCompanyApplication . "<br>Просьба не изменять тему письма")}}"
-                                                        :sign="{{json_encode(isset($sign) ? $sign : '')}}"
-                                                        :status="22" />
-                                                            </div>
-                                                        </td>
-                                                    </tr>
+
+                                                                                    <tr>
+                                                                                        <th scope="col">СОГЛАШЕНИЕ О РЕМОНТЕ </th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_print', [
+                                                            'status_id' => 39,
+                                                            'template' => 'export_sogl',
+                                                        ])
+                                                                                        </th>
+                                                                                        <th scope="col">
+                                                                                            @include('document.form_scan', [
+                                                            'status_id' => 7,
+                                                            'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
+                                                            'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
+                                                        ])
+                                                                                        </th>
+                                                                                        <th></th>
+                                                                                    </tr>
+                                                                                @endif
+                                                                            @endif
+
+                                                                            <tr>
+                                                                                <th scope="col">Предварительный заказ наряд
+                                                                                </th>
+                                                                                <th scope="col">
+                                                                                    @include('document.form_print', ['status_id' => 16, 'template' => 'export_pzn'])
+                                                                                </th>
+
+                                                                                <th scope="col">
+                                                                                    @include('document.form_scan', [
+                                                    'status_id' => 17,
+                                                    'load_name' => 'Заказ наряд',
+                                                    'load_location' => 'Заказ_наряд',
+                                                ])
+                                                                                </th>
+                                                                 <td>
+                                                                    <div>
+                                                                        @php
+                                                $to = [];
+                                                if (isset($application->id_insuranceCompany)) {
+                                                    if ($application->id_insuranceCompany == 3) {
+                                                        $to[0] = "drs-sto@ingos.ru";
+                                                        $to[1] = "sergei.vtorov@ingos.ru";
+                                                        $to[2] = "sergey.sivkov@ingos.ru";
+                                                        $to[3] = "andrey.gretchukhin@ingos.ru";
+                                                    } elseif ($application->id_insuranceCompany == 1) {
+                                                        $to[0] = "smeta_szfo@vsk.ru";
+                                                    } elseif ($application->id_insuranceCompany == 5) {
+                                                        $to[0] = "akt.rem4@sogaz.ru";
+                                                        $to[1] = "kuznetsov.vitaly@sogaz.ru";
+                                                        $to[2] = "malygin.leonid@sogaz.ru";
+                                                    } elseif ($application->id_insuranceCompany == 4) {
+                                                        $to[0] = "arhangelsk_oup@email.reso.ru";
+                                                    } elseif ($application->id_insuranceCompany == 7) {
+                                                        $to[0] = "stoarcuu@ugsk.ru";
+                                                    } else {
+                                                        $to[0] = isset($to_email) ? $to_email : '';
+                                                    }
+                                                } else {
+                                                    $to[0] = isset($to_email) ? $to_email : '';
+                                                }
+                                                                        @endphp
+                                                                <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                                                                                :subject="{{json_encode($application->numberInsuranceCompanyApplication . '_ПЗН')}}"
+                                                                                :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
+                                                                :text="{{json_encode("Направляем предварительный заказ-наряд по убытку №" . $application->numberInsuranceCompanyApplication)}}"
+                                                                                :sign="{{json_encode(isset($sign) ? $sign : '')}}"
+                                                                                :status="22" />
+                                                                                </div>
+                                                                 </td><td>
+                                                                                <div>
+                                                                                    @php
+                                                                                        $to = [];
+                                                                                        $to[0] = "alekseiexpert29@yandex.ru";
+                                                                                        $to[1] = "pdimon55@mail.ru";
+                                                                                    @endphp
+                                                                                    <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
+                                                                                :subject="{{json_encode('zn-' . $application->id . '! ПЗН ' . $application->CarModel . ' ' . $application->gnz)}}"
+                                                                                :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
+                                                                :text="{{json_encode("Добрый день!<br><br>
+
+                        Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>")}}"
+                                                                                :sign="{{json_encode(isset($sign) ? $sign : '')}}"
+                                                                                :status="22" />
+                                                                                    </div>
+                                                                                </td>
+                                                                            </tr>
                     @endcan
                     <tr>
                         <th scope="col">Договор с клиентом</th>
