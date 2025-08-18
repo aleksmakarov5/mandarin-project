@@ -99,7 +99,7 @@ class ImapController extends Controller
             if ($our_company == 2)
                 $city = 3;
             //dd($start_pos_app_number, $subject, $start_pos_gnz, $app_number, $model, $vin, $gnz);
-            $applications = application::firstorcreate(
+            $applications = application::updateorcreate(
                 ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1, 'our_company' => $our_company],
                 [
                     'numberInsuranceCompanyApplication' => $app_number,
