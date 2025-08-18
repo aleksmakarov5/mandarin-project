@@ -168,7 +168,7 @@ class WorkController extends Controller
 
     public function data_load(Request $request, $id)
     {
-
+        session(['works' => ""]);
         //dd($request['iskl']);
         rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
         exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
