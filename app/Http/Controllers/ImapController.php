@@ -804,8 +804,8 @@ class ImapController extends Controller
         // if (!$find24) {
         //     $app_number =  $app_number . "/25";
         // }
-        $start_pos = mb_strpos($subject, '050');
-        $app_number = mb_substr($subject, $start_pos, 16);
+        $start_pos = mb_strpos($subject, '№ ');
+        $app_number = mb_substr($subject, $start_pos + 2, 22);
         // dd($app_number);
         // echo $app_number . '<br>';
         // $start_pos = mb_strpos($subject, 'ремонт');
@@ -818,7 +818,7 @@ class ImapController extends Controller
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 7,
                 'CarModel' => " ",
-                'gnz' => $gnz,
+                'gnz' => " ",
                 'id_status' => 1,
                 'vin' => " ",
                 'ub_type' => false,
@@ -844,7 +844,58 @@ class ImapController extends Controller
                 ]
             );
         }
-        // dd($applications);
+        $pattern = '~[a-z]+://\S+~';
+
+        $str = $email->getHTMLBody();
+
+        if ($num_found = preg_match_all($pattern, $str, $out)) {
+            echo "FOUND " . $num_found . " LINKS:\n";
+            // dd($out[0][0]);
+        }
+
+        $fin_pos = mb_strpos($out[0][0], '"');
+        if ($fin_pos)
+            $link = mb_substr($out[0][0], 0, $fin_pos);
+        else
+            $link = $out[0][0];
+        print_r($link);
+        $dir = 'storage/files/' . $applications->id;
+        if (!is_dir($dir)) {
+            mkdir($dir, 0777, true);
+        }
+        if ($link) {
+            $base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?';
+            $final_url = $base_url . 'public_key=' . $link;
+            /**
+             * Получение данных ответа
+             */
+            $ch = curl_init($final_url);
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_exec($ch);
+
+            $http_code = curl_getinfo($ch, CURLINFO_RESPONSE_CODE);
+            curl_close($ch);
+
+            /**
+             * Проверка HTTP кода
+             */
+            if ($http_code === 200) {
+                $json = json_decode(file_get_contents($final_url));
+                $linkFile = $json->href;
+
+                /**
+                 * Путь куда сохранять файл
+                 */
+
+                $filename = 'foto';
+                $filename .= "_" . date('d-m-y_hms') . ".zip";
+                $path = $dir . '/' . $filename;
+                file_put_contents($path, file_get_contents($linkFile));
+            } else {
+                // throw new RuntimeException('Ошибка 404. Страница файла указана неверно.');
+            }
+        }
+        // dd($email->getTextBody());
         $message = new Message();
         $message->subject = $email->getSubject();
         $message->uid = $uid;
@@ -865,10 +916,14 @@ class ImapController extends Controller
 
         $message->mailbox_id = $our_company;
         $message->save();
-        $dir = 'storage/files/' . $applications->id;
-        if (!is_dir($dir)) {
-            mkdir($dir, 0777, true);
-        }
+        $attach = new attachment();
+        $attach->message_id = $message->id;
+        $attach->id_application = $applications->id;
+        $attach->location = $filename;
+        $attach->mime_type = 'zip';
+        $attach->file_size = 0;
+        $attach->file_name = 'foto';
+        $attach->save();
         $att = "\n <b><u>Вложения</u></b>\n\n";
         $keyboard = [];
         $i = 0;
