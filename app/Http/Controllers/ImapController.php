@@ -112,7 +112,6 @@ class ImapController extends Controller
                     'ic_answer_date' => null,
                     'ub_number' => (int)$number,
                     'id_city' => $city,
-                    'ic_answer_date' => null
                 ]
             );
             try {
@@ -147,6 +146,7 @@ class ImapController extends Controller
             $message->application_id = $applications->id;
             $message->is_parsed = true;
             $message->mailbox_id = $our_company;
+            $applications->ic_answer_date = NULL;
             $message->save();
             if ($num_found = preg_match_all($pattern, $str, $out)) {
                 echo "FOUND " . $num_found . " LINKS:\n";
