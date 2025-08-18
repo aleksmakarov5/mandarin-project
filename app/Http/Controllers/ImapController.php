@@ -111,8 +111,8 @@ class ImapController extends Controller
                     'ub_type' => false,
                     'ic_answer_date' => null,
                     'ub_number' => (int)$number,
-                    'id_city' => $city
-
+                    'id_city' => $city,
+                    'ic_answer_date' => null
                 ]
             );
             try {
