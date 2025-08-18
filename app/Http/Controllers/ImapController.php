@@ -109,7 +109,7 @@ class ImapController extends Controller
                     'id_status' => $id_status,
                     'vin' => $vin,
                     'ub_type' => false,
-                    'ic_answer_date' => null,
+                    'ic_answer_date' => 'null',
                     'ub_number' => (int)$number,
                     'id_city' => $city,
                 ]
