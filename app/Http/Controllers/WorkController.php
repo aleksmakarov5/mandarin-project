@@ -217,7 +217,7 @@ class WorkController extends Controller
             }
             // dd($works);
             session(['works' => $works]);
-        } else if ($app->id_insuranceCompany == 3) {
+        } else if (($app->id_insuranceCompany == 3) || ($app->id_insuranceCompany == 7)) {
             $work_start = mb_strpos($file, 'н-час');
             if ($work_start) {
                 // echo $work_start . 'Раб_Старт<br /><br />';

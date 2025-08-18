@@ -441,7 +441,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
             }
             // dd($SpareParts);
-        } else if ($app->id_insuranceCompany == 3) { {
+        } else if (($app->id_insuranceCompany == 7) || ($app->id_insuranceCompany == 3)) { {
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
                 if ($SparePart_start) {
                     // echo $SparePart_start . 'Раб_Старт<br /><br />';
@@ -690,6 +690,8 @@ class SparePartController extends Controller
             }
             // dd($SpareParts);
         }
+
+
 
 
 

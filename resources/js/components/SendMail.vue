@@ -36,7 +36,7 @@
             <br>
         <template v-for="(t,i) in to">
               <input type="text" v-model="to[i]" size="100">
-              <img v-if="i>0" class="remove" src="/storage/img/delete.png" title="Удалить получателя" width="20" alt="" @click.prevent="removeTo(i)">
+              <img class="remove" src="/storage/img/delete.png" title="Удалить получателя" width="20" alt="" @click.prevent="removeTo(i)">
               <br>
          </template>
 
