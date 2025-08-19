@@ -257,32 +257,38 @@
                                                                  <td>
                                                                     <div>
                                                                         @php
-                                                $to = [];
-                                                if (isset($application->id_insuranceCompany)) {
-                                                    if ($application->id_insuranceCompany == 3) {
-                                                        $to[0] = "drs-sto@ingos.ru";
-                                                        $to[1] = "sergei.vtorov@ingos.ru";
-                                                        $to[2] = "sergey.sivkov@ingos.ru";
-                                                        $to[3] = "andrey.gretchukhin@ingos.ru";
-                                                    } elseif ($application->id_insuranceCompany == 1) {
-                                                        $to[0] = "smeta_szfo@vsk.ru";
-                                                    } elseif ($application->id_insuranceCompany == 5) {
-                                                        $to[0] = "akt.rem4@sogaz.ru";
-                                                        $to[1] = "kuznetsov.vitaly@sogaz.ru";
-                                                        $to[2] = "malygin.leonid@sogaz.ru";
-                                                    } elseif ($application->id_insuranceCompany == 4) {
-                                                        $to[0] = "arhangelsk_oup@email.reso.ru";
-                                                    } elseif ($application->id_insuranceCompany == 7) {
-                                                        $to[0] = "stoarcuu@ugsk.ru";
-                                                    } else {
-                                                        $to[0] = isset($to_email) ? $to_email : '';
-                                                    }
-                                                } else {
-                                                    $to[0] = isset($to_email) ? $to_email : '';
-                                                }
+                                                                            $to = [];
+                                                                            $subj = $application->numberInsuranceCompanyApplication . '_ПЗН';
+                                                                            if (isset($application->id_insuranceCompany)) {
+                                                                                if ($application->id_insuranceCompany == 3) {
+
+                                                                                    $to[0] = "drs-sto@ingos.ru";
+                                                                                    $to[1] = "sergei.vtorov@ingos.ru";
+                                                                                    $to[2] = "sergey.sivkov@ingos.ru";
+                                                                                    $to[3] = "andrey.gretchukhin@ingos.ru";
+                                                                                } elseif ($application->id_insuranceCompany == 1) {
+                                                                                    $to[0] = "smeta_szfo@vsk.ru";
+                                                                                } elseif ($application->id_insuranceCompany == 5) {
+                                                                                    $to[0] = "akt.rem4@sogaz.ru";
+                                                                                    $to[1] = "kuznetsov.vitaly@sogaz.ru";
+                                                                                    $to[2] = "malygin.leonid@sogaz.ru";
+                                                                                } elseif ($application->id_insuranceCompany == 4) {
+                                                                                    $to[0] = "arhangelsk_oup@email.reso.ru";
+                                                                                } elseif ($application->id_insuranceCompany == 7) {
+                                                                                    $to[0] = "stoarcuu@ugsk.ru";
+                                                                                     $to[1] = "petrunyasv@ugsk.ru";
+                                                                                     $to[2] = "menshakoves@ugsk.ru";
+                                                                                     $subj.=' '.$application->CarModel . ' ' . $application->gnz;
+
+                                                                                } else {
+                                                                                    $to[0] = isset($to_email) ? $to_email : '';
+                                                                                }
+                                                                            } else {
+                                                                                $to[0] = isset($to_email) ? $to_email : '';
+                                                                            }
                                                                         @endphp
                                                                 <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                                                                                :subject="{{json_encode($application->numberInsuranceCompanyApplication . '_ПЗН')}}"
+                                                                                :subject="{{json_encode($subj)}}"
                                                                                 :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
                                                                 :text="{{json_encode("Направляем предварительный заказ-наряд по убытку №" . $application->numberInsuranceCompanyApplication)}}"
                                                                                 :sign="{{json_encode(isset($sign) ? $sign : '')}}"
