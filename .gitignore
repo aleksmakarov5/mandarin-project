@@ -22,3 +22,5 @@ storage/logs/laravel.log
 vendor
 *.DS_Store
 vendor/*
+bootstrap/cache/packages.php
+bootstrap/cache/services.php
