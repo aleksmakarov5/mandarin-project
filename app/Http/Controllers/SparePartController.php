@@ -388,24 +388,26 @@ class SparePartController extends Controller
     {
         $type = 0;
         if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx') {
-            if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.pdf')) {
-                $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
+            if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
+                $pathToSave = 'storage/files/' . $id . '/works.html';
                 $dir = 'storage/files/' . $id;
                 exec('chmod 755 "' . $pathToSave . '"');
-                exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+                exec('libreoffice --headless --convert-to "html:XHTML Writer File:UTF8" "' . $pathToSave . '" --outdir ' . $dir);
             }
             $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.pdf';
         }
         //dd($request['iskl']);
-        rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-        exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
-        rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-
+        else {
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+            exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+        }
         $html = 'works.html';
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         // dd($file);
         $file = html_entity_decode($file);
+        // dd($file);
         $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
