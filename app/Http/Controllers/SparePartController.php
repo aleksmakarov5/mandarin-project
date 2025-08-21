@@ -475,7 +475,7 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
                 // dd($SpareParts);
-                dd($SparePart_array);
+                // dd($SparePart_array);
             }
         } else if (mb_strpos($file, 'одометр') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);

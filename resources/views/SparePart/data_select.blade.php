@@ -5,7 +5,7 @@
         <form action="data_save" method="post">
             @csrf
             <input type="hidden" name="id_application" value="{{ $id }}">
-            @if ($type ==2)
+            @if ($type =!0)
                 @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                     <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i] }}">
                     <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
@@ -76,7 +76,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if ($type == 2)
+                    @if ($type =!0)
 
                         @for ($i = 0; $i < count($SpareParts) - 7; $i += 7)
                             <tr>
