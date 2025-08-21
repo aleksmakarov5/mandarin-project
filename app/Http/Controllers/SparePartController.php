@@ -448,7 +448,8 @@ class SparePartController extends Controller
             // dd($file);
             $type = 2;
             $SparePart_start = mb_strpos($file, 'по каталогу');
-
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
             if ($request['reset']) {
