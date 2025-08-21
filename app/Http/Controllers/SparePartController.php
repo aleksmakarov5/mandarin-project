@@ -445,9 +445,9 @@ class SparePartController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            dd($file);
+            // dd($file);
             $type = 2;
-            $SparePart_start = mb_strpos($file, 'износом');
+            $SparePart_start = mb_strpos($file, 'по каталогу');
 
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
@@ -455,7 +455,7 @@ class SparePartController extends Controller
                 $iskl = [];
             }
 
-            $SparePart_end = mb_strpos($file, 'ИТОГО');
+            $SparePart_end = mb_strpos($file, 'Стоимость запчастей');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
             $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 18);
             $SparePart_array = explode('<br/>', $SparePart);
@@ -463,6 +463,7 @@ class SparePartController extends Controller
             $reset = 0;
             $SpareParts = [];
             for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
                 if ($request['iskl']) {
                     foreach ($iskl as $key => $value) {
                         if ($i == $value) {
@@ -474,6 +475,7 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
                 // dd($SpareParts);
+                dd($SparePart_array);
             }
         } else if (mb_strpos($file, 'одометр') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
