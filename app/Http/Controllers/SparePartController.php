@@ -439,7 +439,7 @@ class SparePartController extends Controller
         // dd($file);
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
-        if (mb_strpos($file, 'Ананьин Михаил') != 0) {
+        if ((mb_strpos($file, 'Ананьин Михаил') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
