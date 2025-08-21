@@ -438,7 +438,7 @@ class SparePartController extends Controller
 
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
-        if (mb_strpos($file, 'Ананьин Михаил Юрьевич')) {
+        if (mb_strpos($file, 'Ананьин Михаил Юрьевич') != 0) {
             $SparePart_start = mb_strpos($file, 'износом');
 
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
@@ -467,7 +467,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
                 // dd($SpareParts);
             }
-        } else if (mb_strpos($file, 'одометр')) {
+        } else if (mb_strpos($file, 'одометр') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
