@@ -421,7 +421,7 @@ class SparePartController extends Controller
 
         // dd($items);
 
-        $file = html_entity_decode($file);
+        // $file = html_entity_decode($file);
 
         $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
