@@ -65,7 +65,7 @@
 
                         @for ($i = 0; $i < count($SpareParts) - 7; $i += 7)
                             <tr>
-                                <td> {{ $i }} <input type="checkbox" name='iskl[{{ $i }}]' value={{ $i }}> </td>
+                                <td> {{ $i/7 }} <input type="checkbox" name='iskl[{{ $i }}]' value={{ $i }}> </td>
                                 <td> {{ $SpareParts[$i + 6] }}<input type="checkbox" name='iskl[{{ $i + 1 }}]' value={{ $i + 1 }}> </td>
                                 <td> {{ $SpareParts[$i ] }}<input type="checkbox" name='iskl[{{ $i + 2 }}]' value={{ $i + 2 }}> </td>
                                 <td> {{ $SpareParts[$i + 3] }}<input type="checkbox" name='iskl[{{ $i + 3 }}]' value={{ $i + 3 }}> </td>
