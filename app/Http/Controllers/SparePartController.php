@@ -410,7 +410,11 @@ class SparePartController extends Controller
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         // dd($file);
         $file = html_entity_decode($file);
-        dd($file);
+        $DOM = new \DOMDocument();
+        $DOM->loadHTML($file);
+        $items = $DOM->getElementsByTagName('tr');
+
+        dd($items);
         $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
