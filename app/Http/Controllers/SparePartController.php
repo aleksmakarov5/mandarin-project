@@ -392,7 +392,9 @@ class SparePartController extends Controller
                 $pathToSave = 'storage/files/' . $id . '/works.html';
                 $dir = 'storage/files/' . $id;
                 exec('chmod 755 "' . $pathToSave . '"');
-                exec('libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir);
+                $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
+                exec($comand);
+                dd($comand);
             }
             $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
         }
@@ -450,7 +452,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
-                dd($SpareParts);
+                // dd($SpareParts);
             }
         } else if (mb_strpos($file, 'одометр')) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
@@ -484,7 +486,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
 
             }
-            dd($SparePart);
+            // dd($SparePart);
         } else {
             $file = str_replace("\u{A0}", ' ', $file);
             if ($app->id_insuranceCompany == 1) {
