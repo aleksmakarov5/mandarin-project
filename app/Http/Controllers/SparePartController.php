@@ -409,13 +409,17 @@ class SparePartController extends Controller
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         // dd($file);
-        $DOM = new \DOMDocument();
-        libxml_use_internal_errors(true);
-        $DOM->loadHTML($file);
-        libxml_use_internal_errors(false);
-        $items = $DOM->getElementsByTagName('tr');
+        // $DOM = new \DOMDocument();
+        // $table_start = strpos($file, '<table');
+        // $table_end = strpos($file, '</table>');
+        // $table=
+        // libxml_use_internal_errors(true);
+        // $DOM->loadHTML($file);
+        // libxml_use_internal_errors(false);
+        // $items = $DOM->getElementsByTagName('tr');
 
-        dd($items);
+
+        // dd($items);
 
         $file = html_entity_decode($file);
 
@@ -425,7 +429,7 @@ class SparePartController extends Controller
         // $file = preg_replace("/&#160/", '<br/>', $file);
 
         // $file = preg_replace("/\u{A0}/", '<br/>', $file);
-        // dd($file);
+        dd($file);
 
         // $file = str_replace('&#160', '</br>', $file);
 
