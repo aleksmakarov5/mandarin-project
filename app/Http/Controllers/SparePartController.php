@@ -477,9 +477,9 @@ class SparePartController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            dd($file);
+            // dd($file);
             $type = 2;
-            $SparePart_start = mb_strpos($file, 'износом');
+            $SparePart_start = mb_strpos($file, '№ каталога');
 
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
@@ -487,7 +487,7 @@ class SparePartController extends Controller
                 $iskl = [];
             }
 
-            $SparePart_end = mb_strpos($file, 'ИТОГО');
+            $SparePart_end = mb_strpos($file, 'Итого стоимость запчастей');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
             $SparePart = mb_substr($file, $SparePart_start + 13, $SparePart_end - $SparePart_start - 18);
             $SparePart_array = explode('<br/>', $SparePart);
