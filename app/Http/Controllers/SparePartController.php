@@ -507,7 +507,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
 
             }
-            // dd($SparePart);
+            dd($SparePart);
         } else {
 
             $file = html_entity_decode(strip_tags($file, ['br']));
