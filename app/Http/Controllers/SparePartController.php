@@ -475,7 +475,7 @@ class SparePartController extends Controller
             $file = str_replace("</td>", '</br>', $file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
-            $file = str_replace("\u{A0}", ' ', $file);
+            $file = str_replace("\t", ' ', $file);
             dd($file);
             $type = 2;
             $SparePart_start = mb_strpos($file, 'износом');
