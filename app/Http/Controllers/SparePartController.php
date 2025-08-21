@@ -489,12 +489,14 @@ class SparePartController extends Controller
 
             $SparePart_end = mb_strpos($file, 'Итого');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
-            $SparePart = mb_substr($file, $SparePart_start + 16, $SparePart_end - $SparePart_start - 18);
+            $SparePart = mb_substr($file, $SparePart_start + 16, $SparePart_end - $SparePart_start - 25);
             $SparePart_array = explode('<br/>', $SparePart);
             $j = 0;
             $reset = 0;
             $SpareParts = [];
+
             for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
                 if ($request['iskl']) {
                     foreach ($iskl as $key => $value) {
                         if ($i == $value) {
