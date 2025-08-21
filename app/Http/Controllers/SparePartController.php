@@ -422,6 +422,7 @@ class SparePartController extends Controller
         // dd($items);
 
         // $file = html_entity_decode($file);
+        $file = str_replace("</td>", '</br>', $file);
 
         $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
@@ -436,6 +437,7 @@ class SparePartController extends Controller
         // dd($file);
         // $file = str_replace("<br/><br/>", '<br/>', $file);
         $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
+
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if (mb_strpos($file, 'Ананьин Михаил Юрьевич')) {
