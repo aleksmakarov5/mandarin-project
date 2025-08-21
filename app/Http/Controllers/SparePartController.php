@@ -392,9 +392,9 @@ class SparePartController extends Controller
                 $pathToSave = 'storage/files/' . $id . '/works.html';
                 $dir = 'storage/files/' . $id;
                 exec('chmod 755 "' . $pathToSave . '"');
-                exec('libreoffice --headless --convert-to "html:XHTML Writer File:UTF8" "' . $pathToSave . '" --outdir ' . $dir);
+                exec('libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir);
             }
-            $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.pdf';
+            $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
         }
         //dd($request['iskl']);
         else {
