@@ -432,9 +432,9 @@ class SparePartController extends Controller
 
         // $file = str_replace('&#160', '</br>', $file);
 
-        // dd($file);
         // $file = str_replace("<br/><br/>", '<br/>', $file);
-        // $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
+        $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
+        dd($file);
 
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
