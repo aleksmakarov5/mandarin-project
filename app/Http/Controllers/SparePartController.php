@@ -434,7 +434,7 @@ class SparePartController extends Controller
 
         // $file = str_replace("<br/><br/>", '<br/>', $file);
         $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
-        $check = mb_strpos($file, 'одометр');
+        $check = mb_strpos($file, 'XW8EH15J5CK559627');
         dd($check);
 
         $app = Application::findorfail($id);
