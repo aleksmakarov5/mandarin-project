@@ -394,9 +394,10 @@ class SparePartController extends Controller
                 exec('chmod 755 "' . $pathToSave . '"');
                 $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
                 exec($comand);
-                dd($comand);
+                // dd($comand);
             }
             $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
         }
         //dd($request['iskl']);
         else {
