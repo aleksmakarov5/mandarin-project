@@ -422,9 +422,7 @@ class SparePartController extends Controller
         // dd($items);
 
         // $file = html_entity_decode($file);
-        $file = str_replace("</td>", '</br>', $file);
 
-        $file = html_entity_decode(strip_tags($file, ['br']));
         // $file = preg_replace('/\xc2\xa0/', '<br/>', $file);
 
         // $file = preg_replace("/&#160/", '<br/>', $file);
@@ -472,6 +470,11 @@ class SparePartController extends Controller
         } else if (mb_strpos($file, 'одометр')) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
+
+            $file = str_replace("</td>", '</br>', $file);
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\u{A0}", ' ', $file);
             $type = 2;
             $SparePart_start = mb_strpos($file, 'износом');
 
@@ -503,6 +506,8 @@ class SparePartController extends Controller
             }
             // dd($SparePart);
         } else {
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\u{A0}", ' ', $file);
             if ($app->id_insuranceCompany == 1) {
 
