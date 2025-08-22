@@ -1485,6 +1485,27 @@ class ImapController extends Controller
     public function recieve()
     {
 
+        $ms = message::join('addresses', 'addresses.message_id', '=', 'messages.id')
+            ->where('addresses.email', '=', 'vsk_info@vsk.ru')
+            ->where('addresses.type', '=', 'from')
+            ->get();
+        foreach ($ms as $m) {
+            $text = $m->body_html;
+            $start_pos = mb_strpos($text, '29.%20%');
+            if ($start_pos) {
+                $final_post = mb_strpos($text, '%2311');
+                $number = mb_substr($text, $start_pos + 9, $final_post - $start_pos - 9);
+
+                $a = application::find((int)$m->application_id);
+                // dd($a, $m->application_id);
+                if ($a) {
+                    $a->ub_number = (int) $number;
+                    $a->save();
+                    echo $number . '<br>';
+                }
+            }
+        }
+        dd($ms);
         $cm = new ClientManager('config/imap.php');
 
         /** @var \Webklex\PHPIMAP\Client $client */ {
