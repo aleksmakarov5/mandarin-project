@@ -254,11 +254,11 @@ class WorkController extends Controller
 
             // dd($works, $work_array);
             session(['works' => $works]);
-            $work_start = mb_strpos($file, 'Окрасочные работы');
+            $work_start = mb_strpos($file, 'Окрасочные');
             // echo $work_start . 'Раб_Старт<br /><br />';
             $work = '';
             if ($work_start) {
-                $work_end = mb_strpos($file, 'окрасочных работ');
+                $work_end = mb_strpos($file, 'окрасочных');
 
                 $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 140);
             }
