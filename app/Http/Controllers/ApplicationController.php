@@ -1877,10 +1877,12 @@ class ApplicationController extends Controller
     {
         $InsuranceCompany = new InsuranceCompany;
 
-        $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
-        $OurCompany = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
-            ->where('role_companies.id_role', '=', $user_role->id)->select('our_companies.*')
-            ->get();
+        $OurCompany = new OurCompany;
+
+        // $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
+        // $OurCompany = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
+        //     ->where('role_companies.id_role', '=', $user_role->id)->select('our_companies.*')
+        //     ->get();
 
 
         return view('application.create', ['InsuranceCompany' => $InsuranceCompany->all(), 'OurCompany' => $OurCompany->all()]);
