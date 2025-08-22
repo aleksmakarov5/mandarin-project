@@ -1501,7 +1501,7 @@ class ImapController extends Controller
                 if ($a) {
                     $a->ub_number = (int) $number;
                     $a->save();
-                    echo $number . '<br>';
+                    echo $number . ' ' . $m->application_id . '<br>';
                 }
             }
         }
