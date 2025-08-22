@@ -181,7 +181,7 @@ class WorkController extends Controller
                 // dd($comand);
             }
             $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
-            // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
         }
         //dd($request['iskl']);
         else {
