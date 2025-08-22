@@ -1493,7 +1493,7 @@ class ImapController extends Controller
             $text = $m->body_html;
             $start_pos = mb_strpos($text, '29.%20%');
             if ($start_pos) {
-                $final_post = mb_strpos($text, '%2311');
+                $final_post = mb_strpos($text, '%23');
                 $number = mb_substr($text, $start_pos + 9, $final_post - $start_pos - 9);
 
                 $a = application::find((int)$m->application_id);
