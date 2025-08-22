@@ -1804,11 +1804,11 @@ class ApplicationController extends Controller
             $data = $this->validate($request, [
                 'id_insuranceCompany' => 'required',
                 'numberInsuranceCompanyApplication' => 'required',
-                'CarModel' => 'required|string',
+                'CarModel' => 'nullable|string',
                 'gnz' => 'nullable|string',
                 'vin' => 'nullable|string',
                 'ClientName' => 'nullable|string',
-                'ClientPhone' => 'required|string',
+                'ClientPhone' => 'nullable|string',
                 'id_MRK' => 'nullable|integer',
                 'id_spm' => 'nullable|integer',
                 'id_service' => 'nullable|integer',
@@ -1830,7 +1830,8 @@ class ApplicationController extends Controller
                 'ClientPasport_date' => 'nullable|date',
                 'id_city' => 'nullable|integer',
                 'pred' => 'nullable|string',
-                'pred_phone' => 'nullable|string'
+                'pred_phone' => 'nullable|string',
+                'ub_type' => 'nullable'
 
             ]);
             if (isset($data['start_date'])) {
@@ -1838,13 +1839,14 @@ class ApplicationController extends Controller
                 $end_date->addWorkDays(30);
                 $data['end_date'] = $end_date;
             }
-
-            $phone = $data['ClientPhone'];
-            $phone = preg_replace('/[^0-9]/', '', $phone);
-            $start = mb_strpos($phone, '9');
-            $phone = mb_substr($phone, $start);
-            $phone = '+7 (' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
-            $data['ClientPhone'] = $phone;
+            if (isset($data['ClientPhone'])) {
+                $phone = $data['ClientPhone'];
+                $phone = preg_replace('/[^0-9]/', '', $phone);
+                $start = mb_strpos($phone, '9');
+                $phone = mb_substr($phone, $start);
+                $phone = '+7 (' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
+                $data['ClientPhone'] = $phone;
+            }
             if (isset($data['pred_phone'])) {
                 $pred_phone = $data['pred_phone'];
                 $pred_phone = preg_replace('/[^0-9]/', '', $pred_phone);
@@ -1859,7 +1861,8 @@ class ApplicationController extends Controller
             $vehicle_passport = substr($vehicle_passport, 0, 4) . ' ' . substr($vehicle_passport, 4);
             $data['vehicle_passport'] = $vehicle_passport;
 
-
+            if (!isset($data['CarModel']))
+                $data['CarModel'] = '--';
             // dd($data);
             foreach ($data as $key => $value) {
                 $application->$key = $value;

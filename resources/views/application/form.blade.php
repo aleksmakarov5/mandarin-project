@@ -38,7 +38,24 @@
     </select>
 
 </div>
+<div class='lbl'>
+    <label for="id_spm">Тип убытка</label>
+</div>
+<div class="form-float">
 
+    <select class="form-cont" id="ub_type" name="ub_type">
+
+            <option value="0" @if (0 === $application->ub_type) selected @endif>
+                Осаго
+            </option>
+            <option value="1" @if (1 === $application->ub_type) selected @endif>
+                Каско
+            </option>
+
+
+    </select>
+
+</div>
 <div class="form-float">
     <input type="text" name="numberInsuranceCompanyApplication" id="numberInsuranceCompanyApplication"
         class="form-cont" value="{{ $application->numberInsuranceCompanyApplication }}">

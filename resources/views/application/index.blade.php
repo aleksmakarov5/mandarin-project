@@ -45,6 +45,16 @@
             </th>
         </tr>
         <tr>
+            <th>Тип убытка</th>
+            <th>
+                @if ($application->ub_type == 0)
+                    Осаго
+                @else
+                    Каско
+                @endif
+            </th>
+        </tr>
+        <tr>
             <th>№ заявки страховой компании</th>
             <th>
                 {{ $application->numberInsuranceCompanyApplication }}
