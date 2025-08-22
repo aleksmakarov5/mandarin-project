@@ -121,14 +121,9 @@ class MainController extends Controller
         //         ->where('type', '=', 'to')
         //         ->get();
         // }
-        if (Gate::allows('administrator'))
-            $our_companies = new OurCompany;
-        else {
-            $user_role = user_role::where('id_user', '=', Auth::user()->id)->first();
-            $our_companies = OurCompany::join('role_companies', 'role_companies.id_company', '=', 'our_companies.id')
-                ->where('role_companies.id_role', '=', $user_role->id)->select('our_companies.*')
-                ->get();
-        }
+
+        $our_companies = new OurCompany;
+
 
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
