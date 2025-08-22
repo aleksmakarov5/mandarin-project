@@ -715,7 +715,7 @@ class ApplicationController extends Controller
         $data = $this->validate($request, [
             'find' => 'required',
         ]);
-
+        $data['find'] = str_replace(' ', '', $data['find']);
         $applications = application::where('gnz', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('numberInsuranceCompanyApplication', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('ClientName', 'LIKE', '%' . $data['find'] . '%')
