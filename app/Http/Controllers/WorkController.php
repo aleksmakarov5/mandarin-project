@@ -259,10 +259,10 @@ class WorkController extends Controller
             $work = '';
             if ($work_start) {
                 $work_end = mb_strpos($file, 'окрасочных');
-
+                dd($work_end);
                 $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 140);
             }
-            dd($work);
+
 
             $work_array = [];
             $works = [];
