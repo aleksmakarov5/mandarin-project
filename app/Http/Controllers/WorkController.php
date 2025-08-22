@@ -168,8 +168,8 @@ class WorkController extends Controller
 
     public function data_load(Request $request, $id)
     {
-        session(['works' => ""]);
-        session(['works_paint' => ""]);
+        session(['works' => []]);
+        session(['works_paint' => []]);
         $type = 0;
         if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx') {
             if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
