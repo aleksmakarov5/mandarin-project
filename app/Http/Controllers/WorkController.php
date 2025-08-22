@@ -204,6 +204,7 @@ class WorkController extends Controller
 
         if ((mb_strpos($file, 'Ананьин Михаил') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
+            dd($file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
@@ -218,7 +219,6 @@ class WorkController extends Controller
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 115, $work_end - $work_start - 67);
             // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
-            dd($file);
 
             $work_array = explode('<br/>', $work);
             // dd($work_array, $work_end);
