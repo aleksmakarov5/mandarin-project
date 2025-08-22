@@ -170,12 +170,30 @@ class WorkController extends Controller
     {
         session(['works' => ""]);
         session(['works_paint' => ""]);
+        $type = 0;
+        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx') {
+            if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
+                $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
+                $dir = 'storage/files/' . $id;
+                exec('chmod 755 "' . $pathToSave . '"');
+                $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
+                exec($comand);
+                // dd($comand);
+            }
+            $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
+            // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
+        }
         //dd($request['iskl']);
-        rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-        exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
-        rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+        else {
+            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+            exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+        }
+        //dd($request['iskl']);
+
 
         $html = 'works.html';
+        $app = Application::findorfail($id);
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         $file = html_entity_decode(strip_tags($file, ['br']));
@@ -185,19 +203,70 @@ class WorkController extends Controller
         $reset = 0;
         $works = [];
 
-        $app = Application::findorfail($id);
-        if ($app->id_insuranceCompany == 1) {
-            $work_start = mb_strpos($file, 'н-час');
+        if ((mb_strpos($file, 'Ананьин Михаил') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
+            $file = str_replace("</td>", '<br/>', $file);
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            // dd($file);
+            $type = 2;
+            $SparePart_start = mb_strpos($file, 'по каталогу');
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, 'Стоимость запчастей');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 18);
+            $SparePart_array = explode('<br/>', $SparePart);
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+                // echo $SparePart_array[$i] . '<br />';
+                // dd($SpareParts);
+                // dd($SparePart_array);
+            }
+        } else if (mb_strpos($file, 'одометр') != 0) {
+            // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
+            // $file = str_replace("\u{A0}", ' ', $file);
+            dd($file);
+            $file = str_replace("</td>", '<br/>', $file);
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+
+            $type = 2;
+            $work_start = mb_strpos($file, 'Ремонтные работы');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
 
-            $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+            $work_end = mb_strpos($file, 'ремонтных');
             // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
-            $work_array = explode('<br/>', $work);
-            // dd($work_array);
-            $j = 0;
+            $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
+            $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+            // dd($file);
 
+            $work_array = explode('<br/>', $work);
+            // dd($work_array, $work_end);
+
+            $j = 0;
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
                     trim($work_array[$i]) == "Наименование" ||
@@ -206,26 +275,79 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
                     trim($work_array[$i]) == "Цена ед., руб." ||
-                    trim($work_array[$i]) == "н-час"
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Цена" ||
+                    trim($work_array[$i]) == "Нормо-час" ||
+                    trim($work_array[$i]) == "Кол-во" ||
+                    trim($work_array[$i]) == "Сумма"
+
 
 
                 ) {
-                } else
+                } else {
+                    if (($i - 3) % 5 != 0)
+                        $works[$j++] = $work_array[$i];
+                }
 
 
-                    $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
-            // dd($works);
+
+
+            // dd($works, $work_array);
             session(['works' => $works]);
-        } else if (($app->id_insuranceCompany == 3) || ($app->id_insuranceCompany == 7)) {
-            $work_start = mb_strpos($file, 'н-час');
+            $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+            $work = '';
             if ($work_start) {
+                $work_end = mb_strpos($file, 'www.autoins.ru');
+
+                $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+            }
+
+            $work_array = [];
+            $works = [];
+            $work_array = explode('<br/>', $work);
+            // dd($work_array, $work_end);
+
+            $j = 0;
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Цена" ||
+                    trim($work_array[$i]) == "Нормо-час" ||
+                    trim($work_array[$i]) == "Кол-во" ||
+                    trim($work_array[$i]) == "Сумма"
+
+
+
+                ) {
+                } else {
+                    if (($i - 3) % 5 != 0)
+                        $works[$j++] = $work_array[$i];
+                }
+
+
+                // echo $work_array[$i] . '<br />';
+            }
+            session(['works_paint' => $works]);
+            // echo $SparePart_array[$i] . '<br />';
+
+
+            // dd($SparePart_array);
+        } else {
+            if ($app->id_insuranceCompany == 1) {
+                $work_start = mb_strpos($file, 'н-час');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
 
                 $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-
                 // echo $work_end . 'Раб_фин<br /><br />';
                 $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
                 $work_array = explode('<br/>', $work);
@@ -252,67 +374,317 @@ class WorkController extends Controller
                 }
                 // dd($works);
                 session(['works' => $works]);
-            } else if (mb_strpos($file, 'www.autoins.ru')) {
-                $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
-                // dd($file);
-                $work_start = mb_strpos($file, 'Ремонтные работы, рубли');
-                // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-                $work_end = mb_strpos($file, 'www.autoins.ru');
-                // echo $work_end . 'Раб_фин<br /><br />';
-                $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
-                $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
-                // dd($file);
-
-                $work_array = explode('<br/>', $work);
-                // dd($work_array, $work_end);
-
-                $j = 0;
-                for ($i = 0; $i < count($work_array) - 1; $i++) {
-                    if (
-                        trim($work_array[$i]) == "Наименование" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
-                        trim($work_array[$i]) == "Норматив," ||
-                        trim($work_array[$i]) == "Сумма, руб."
-                        ||
-                        trim($work_array[$i]) == "Цена ед., руб." ||
-                        trim($work_array[$i]) == "н-час" ||
-                        trim($work_array[$i]) == "Цена" ||
-                        trim($work_array[$i]) == "Нормо-час" ||
-                        trim($work_array[$i]) == "Кол-во" ||
-                        trim($work_array[$i]) == "Сумма"
-
-
-
-                    ) {
-                    } else {
-                        if (($i - 3) % 5 != 0)
-                            $works[$j++] = $work_array[$i];
-                    }
-
-
-                    // echo $work_array[$i] . '<br />';
-                }
-
-
-                // dd($works, $work_array);
-                session(['works' => $works]);
-                $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
-                // echo $work_start . 'Раб_Старт<br /><br />';
-                $work = '';
+            } else if (($app->id_insuranceCompany == 3) || ($app->id_insuranceCompany == 7)) {
+                $work_start = mb_strpos($file, 'н-час');
                 if ($work_start) {
+                    // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                    $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+
+                    // echo $work_end . 'Раб_фин<br /><br />';
+                    $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+                    $work_array = explode('<br/>', $work);
+                    // dd($work_array);
+                    $j = 0;
+
+                    for ($i = 0; $i < count($work_array) - 1; $i++) {
+                        if (
+                            trim($work_array[$i]) == "Наименование" ||
+                            trim($work_array[$i + 1]) == "Наименование" ||
+                            trim($work_array[$i]) == "Норматив," ||
+                            trim($work_array[$i]) == "Сумма, руб."
+                            ||
+                            trim($work_array[$i]) == "Цена ед., руб." ||
+                            trim($work_array[$i]) == "н-час"
+
+
+                        ) {
+                        } else
+
+
+                            $works[$j++] = $work_array[$i];
+                        // echo $work_array[$i] . '<br />';
+                    }
+                    // dd($works);
+                    session(['works' => $works]);
+                } else if (mb_strpos($file, 'www.autoins.ru')) {
+                    $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+                    // dd($file);
+                    $work_start = mb_strpos($file, 'Ремонтные работы, рубли');
+                    // echo $work_start . 'Раб_Старт<br /><br />';
+
+
                     $work_end = mb_strpos($file, 'www.autoins.ru');
+                    // echo $work_end . 'Раб_фин<br /><br />';
+                    $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
+                    $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+                    // dd($file);
 
-                    $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+                    $work_array = explode('<br/>', $work);
+                    // dd($work_array, $work_end);
+
+                    $j = 0;
+                    for ($i = 0; $i < count($work_array) - 1; $i++) {
+                        if (
+                            trim($work_array[$i]) == "Наименование" ||
+                            trim($work_array[$i + 1]) == "Наименование" ||
+                            trim($work_array[$i]) == "Норматив," ||
+                            trim($work_array[$i]) == "Сумма, руб."
+                            ||
+                            trim($work_array[$i]) == "Цена ед., руб." ||
+                            trim($work_array[$i]) == "н-час" ||
+                            trim($work_array[$i]) == "Цена" ||
+                            trim($work_array[$i]) == "Нормо-час" ||
+                            trim($work_array[$i]) == "Кол-во" ||
+                            trim($work_array[$i]) == "Сумма"
+
+
+
+                        ) {
+                        } else {
+                            if (($i - 3) % 5 != 0)
+                                $works[$j++] = $work_array[$i];
+                        }
+
+
+                        // echo $work_array[$i] . '<br />';
+                    }
+
+
+                    // dd($works, $work_array);
+                    session(['works' => $works]);
+                    $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
+                    // echo $work_start . 'Раб_Старт<br /><br />';
+                    $work = '';
+                    if ($work_start) {
+                        $work_end = mb_strpos($file, 'www.autoins.ru');
+
+                        $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+                    }
+
+                    $work_array = [];
+                    $works = [];
+                    $work_array = explode('<br/>', $work);
+                    // dd($work_array, $work_end);
+
+                    $j = 0;
+                    for ($i = 0; $i < count($work_array) - 1; $i++) {
+                        if (
+                            trim($work_array[$i]) == "Наименование" ||
+                            trim($work_array[$i + 1]) == "Наименование" ||
+                            trim($work_array[$i]) == "Норматив," ||
+                            trim($work_array[$i]) == "Сумма, руб."
+                            ||
+                            trim($work_array[$i]) == "Цена ед., руб." ||
+                            trim($work_array[$i]) == "н-час" ||
+                            trim($work_array[$i]) == "Цена" ||
+                            trim($work_array[$i]) == "Нормо-час" ||
+                            trim($work_array[$i]) == "Кол-во" ||
+                            trim($work_array[$i]) == "Сумма"
+
+
+
+                        ) {
+                        } else {
+                            if (($i - 3) % 5 != 0)
+                                $works[$j++] = $work_array[$i];
+                        }
+
+
+                        // echo $work_array[$i] . '<br />';
+                    }
+                    session(['works_paint' => $works]);
+                } else {
+                    if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
+                        // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                        // exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
+                        // rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+                        // $output = file_get_contents('storage/files/' . $id . '/output.txt');
+                        // $data = array(
+                        //     "mimeType" => "application/pdf",
+                        //     "languageCodes" => ["*"],
+                        //     "model" => "table",
+                        //     "content" => $output
+                        // );
+                        // $header = array(
+                        //     "Content-Type" => "application/json",
+                        //     "Accept" => "application/json",
+                        //     "Authorization" => "Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2",
+                        //     "x-folder-id" => "b1gcnqkpepfcp6fulsah",
+                        //     "x-data-logging-enabled" => "true"
+                        // );
+
+                        // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_HTTPHEADER,
+                        //     array(
+                        //         'Content-Type:application/json',
+                        //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        //         'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        //         'x-data-logging-enabled: true'
+                        //     )
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_POST,
+                        //     1
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_POSTFIELDS,
+                        //     json_encode($data, JSON_UNESCAPED_UNICODE)
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_RETURNTRANSFER,
+                        //     true
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_SSL_VERIFYPEER,
+                        //     false
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_HEADER,
+                        //     false
+                        // );
+                        // $res = curl_exec($ch);
+                        // curl_close($ch);
+
+                        // $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+
+                        // // echo $res['id'];
+
+                        // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_RETURNTRANSFER,
+                        //     true
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_HTTPHEADER,
+                        //     array(
+                        //         'Content-Type:application/json',
+                        //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
+                        //         'x-folder-id: b1gcnqkpepfcp6fulsah',
+                        //         'x-data-logging-enabled: true'
+                        //     )
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_SSL_VERIFYPEER,
+                        //     false
+                        // );
+                        // curl_setopt(
+                        //     $ch,
+                        //     CURLOPT_HEADER,
+                        //     false
+                        // );
+                        // $html = curl_exec($ch);
+                        // $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                        // if (isset($html['error']['httpCode']))
+                        //     while (isset($html['error'])) {
+                        //         // echo ($html['error']['httpCode'] . '<br>');
+                        //         $html = curl_exec($ch);
+                        //         $html = json_decode($html, JSON_UNESCAPED_UNICODE);
+                        //     }
+                        // $html = curl_exec($ch);
+                        // $html = explode("}}", $html);
+                        // curl_close($ch);
+                        // $file = [];
+                        // $i = 0;
+                        // foreach ($html as $result) {
+                        //     $result .= '}}';
+                        //     $result = json_decode($result, JSON_UNESCAPED_UNICODE);
+                        //     $j = 0;
+                        //     if (isset($result['result']['textAnnotation']['tables'])) {
+                        //         foreach ($result['result']['textAnnotation']['tables'] as $table) {
+                        //             $k = 0;
+                        //             foreach ($table['cells'] as $cell) {
+                        //                 $file[$i][$j][$cell['rowIndex']][$cell['columnIndex']] = $cell['text'];
+                        //                 $k++;
+                        //             }
+                        //             $j++;
+                        //         }
+                        //     }
+                        //     $i++;
+                        //     $file[$i++] = $result['result']['textAnnotation']['tables'];
+                        // }
+                        // $file = json_encode($file);
+                        // $works = $file;
+
+                        // return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+                        // file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
+                        // foreach ($file as $page)
+                        //     foreach ($page as $table) {
+                        //         echo '<table border =1>';
+                        //         echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
+                        //         foreach ($table as $row) {
+                        //             echo '<tr>';
+                        //             foreach ($row as $cell) {
+                        //                 echo '<td>' . $cell . '</td>';
+                        //             }
+                        //             echo '<td>Удалить строку</td></tr>';
+                        //         }
+                        //         echo '</table>';
+                        //     }
+                        // dd($file);
+                    }
+                    $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
+                    $file = json_decode($file, JSON_UNESCAPED_UNICODE);
+                    session(['works' => $file]);
+                    $works = $file;
+
+                    return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
+                    // $work_start = mb_strpos($file, 'н-час');
+                    // // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                    // $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+                    // // echo $work_end . 'Раб_фин<br /><br />';
+                    // $work = mb_substr($file, $work_start + 6, $work_end - $work_start - 2);
+                    // $work_array = explode("\n", $work);
+                    // // dd($work_array);
+                    // $j = 0;
+
+                    // for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    //     if (
+                    //         trim($work_array[$i]) == "Наименование" ||
+                    //         trim($work_array[$i + 1]) == "Наименование" ||
+                    //         trim($work_array[$i]) == "Норматив," ||
+                    //         trim($work_array[$i]) == "Сумма, руб."
+                    //         ||
+                    //         trim($work_array[$i]) == "Цена ед., руб." ||
+                    //         trim($work_array[$i]) == "н-час"
+
+
+                    //     ) {
+                    //     } else
+
+
+                    //         $works[$j++] = $work_array[$i];
+                    //     // echo $work_array[$i] . '<br />';
+                    // }
+                    // // dd($works);
+
                 }
+            } else if ($app->id_insuranceCompany == 4) {
+                // dd($file);
+                $work_start = mb_strpos($file, 'Норматив, н-');
+                // echo $work_start . 'Раб_Старт<br /><br />';
 
-                $work_array = [];
-                $works = [];
+
+                $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
                 $work_array = explode('<br/>', $work);
-                // dd($work_array, $work_end);
-
+                // dd($work_array);
                 $j = 0;
+
                 for ($i = 0; $i < count($work_array) - 1; $i++) {
                     if (
                         trim($work_array[$i]) == "Наименование" ||
@@ -322,278 +694,63 @@ class WorkController extends Controller
                         ||
                         trim($work_array[$i]) == "Цена ед., руб." ||
                         trim($work_array[$i]) == "н-час" ||
-                        trim($work_array[$i]) == "Цена" ||
-                        trim($work_array[$i]) == "Нормо-час" ||
-                        trim($work_array[$i]) == "Кол-во" ||
-                        trim($work_array[$i]) == "Сумма"
-
+                        trim($work_array[$i]) == "Коэфф." ||
+                        trim($work_array[$i]) == "Сумма," ||
+                        trim($work_array[$i]) == "-"
+                        ||
+                        trim($work_array[$i]) == "руб." ||
+                        trim($work_array[$i]) == "час"
 
 
                     ) {
-                    } else {
-                        if (($i - 3) % 5 != 0)
-                            $works[$j++] = $work_array[$i];
-                    }
+                    } else
 
 
+                        $works[$j++] = $work_array[$i];
                     // echo $work_array[$i] . '<br />';
                 }
-                session(['works_paint' => $works]);
-            } else {
-                if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
-                    // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-                    // exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
-                    // rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-                    // $output = file_get_contents('storage/files/' . $id . '/output.txt');
-                    // $data = array(
-                    //     "mimeType" => "application/pdf",
-                    //     "languageCodes" => ["*"],
-                    //     "model" => "table",
-                    //     "content" => $output
-                    // );
-                    // $header = array(
-                    //     "Content-Type" => "application/json",
-                    //     "Accept" => "application/json",
-                    //     "Authorization" => "Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2",
-                    //     "x-folder-id" => "b1gcnqkpepfcp6fulsah",
-                    //     "x-data-logging-enabled" => "true"
-                    // );
+                $work_start = mb_strpos($file, 'Окраска');
+                // echo $work_start . 'Раб_Старт<br /><br />';
 
-                    // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_HTTPHEADER,
-                    //     array(
-                    //         'Content-Type:application/json',
-                    //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                    //         'x-folder-id: b1gcnqkpepfcp6fulsah',
-                    //         'x-data-logging-enabled: true'
-                    //     )
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_POST,
-                    //     1
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_POSTFIELDS,
-                    //     json_encode($data, JSON_UNESCAPED_UNICODE)
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_RETURNTRANSFER,
-                    //     true
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_SSL_VERIFYPEER,
-                    //     false
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_HEADER,
-                    //     false
-                    // );
-                    // $res = curl_exec($ch);
-                    // curl_close($ch);
 
-                    // $res = json_decode($res, JSON_UNESCAPED_UNICODE);
+                $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+                $work_array = explode('<br/>', $work);
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "> Наименование" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час" ||
+                        trim($work_array[$i]) == "Коэфф." ||
+                        trim($work_array[$i]) == "Сумма," ||
+                        trim($work_array[$i]) == "-"
+                        ||
+                        trim($work_array[$i]) == "руб." ||
+                        trim($work_array[$i]) == "час" ||
+                        trim($work_array[$i]) == "Цена ед.," ||
+                        trim($work_array[$i]) == "Норматив, н-"
 
-                    // // echo $res['id'];
 
-                    // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_RETURNTRANSFER,
-                    //     true
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_HTTPHEADER,
-                    //     array(
-                    //         'Content-Type:application/json',
-                    //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                    //         'x-folder-id: b1gcnqkpepfcp6fulsah',
-                    //         'x-data-logging-enabled: true'
-                    //     )
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_SSL_VERIFYPEER,
-                    //     false
-                    // );
-                    // curl_setopt(
-                    //     $ch,
-                    //     CURLOPT_HEADER,
-                    //     false
-                    // );
-                    // $html = curl_exec($ch);
-                    // $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                    // if (isset($html['error']['httpCode']))
-                    //     while (isset($html['error'])) {
-                    //         // echo ($html['error']['httpCode'] . '<br>');
-                    //         $html = curl_exec($ch);
-                    //         $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                    //     }
-                    // $html = curl_exec($ch);
-                    // $html = explode("}}", $html);
-                    // curl_close($ch);
-                    // $file = [];
-                    // $i = 0;
-                    // foreach ($html as $result) {
-                    //     $result .= '}}';
-                    //     $result = json_decode($result, JSON_UNESCAPED_UNICODE);
-                    //     $j = 0;
-                    //     if (isset($result['result']['textAnnotation']['tables'])) {
-                    //         foreach ($result['result']['textAnnotation']['tables'] as $table) {
-                    //             $k = 0;
-                    //             foreach ($table['cells'] as $cell) {
-                    //                 $file[$i][$j][$cell['rowIndex']][$cell['columnIndex']] = $cell['text'];
-                    //                 $k++;
-                    //             }
-                    //             $j++;
-                    //         }
-                    //     }
-                    //     $i++;
-                    //     $file[$i++] = $result['result']['textAnnotation']['tables'];
-                    // }
-                    // $file = json_encode($file);
-                    // $works = $file;
+                    ) {
+                    } else
 
-                    // return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
-                    // file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
-                    // foreach ($file as $page)
-                    //     foreach ($page as $table) {
-                    //         echo '<table border =1>';
-                    //         echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
-                    //         foreach ($table as $row) {
-                    //             echo '<tr>';
-                    //             foreach ($row as $cell) {
-                    //                 echo '<td>' . $cell . '</td>';
-                    //             }
-                    //             echo '<td>Удалить строку</td></tr>';
-                    //         }
-                    //         echo '</table>';
-                    //     }
-                    // dd($file);
+
+                        $works[$j++] = $work_array[$i];
+                    // echo $work_array[$i] . '<br />';
                 }
-                $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
-                $file = json_decode($file, JSON_UNESCAPED_UNICODE);
-                session(['works' => $file]);
-                $works = $file;
-
-                return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
-                // $work_start = mb_strpos($file, 'н-час');
-                // // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-                // $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-                // // echo $work_end . 'Раб_фин<br /><br />';
-                // $work = mb_substr($file, $work_start + 6, $work_end - $work_start - 2);
-                // $work_array = explode("\n", $work);
-                // // dd($work_array);
-                // $j = 0;
-
-                // for ($i = 0; $i < count($work_array) - 1; $i++) {
-                //     if (
-                //         trim($work_array[$i]) == "Наименование" ||
-                //         trim($work_array[$i + 1]) == "Наименование" ||
-                //         trim($work_array[$i]) == "Норматив," ||
-                //         trim($work_array[$i]) == "Сумма, руб."
-                //         ||
-                //         trim($work_array[$i]) == "Цена ед., руб." ||
-                //         trim($work_array[$i]) == "н-час"
-
-
-                //     ) {
-                //     } else
-
-
-                //         $works[$j++] = $work_array[$i];
-                //     // echo $work_array[$i] . '<br />';
-                // }
-                // // dd($works);
-
+                // dd($works);
+                session(['works' => $works]);
             }
-        } else if ($app->id_insuranceCompany == 4) {
-            // dd($file);
-            $work_start = mb_strpos($file, 'Норматив, н-');
-            // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-            $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
-            // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
-            $work_array = explode('<br/>', $work);
-            // dd($work_array);
-            $j = 0;
-
-            for ($i = 0; $i < count($work_array) - 1; $i++) {
-                if (
-                    trim($work_array[$i]) == "Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
-                    trim($work_array[$i]) == "Норматив," ||
-                    trim($work_array[$i]) == "Сумма, руб."
-                    ||
-                    trim($work_array[$i]) == "Цена ед., руб." ||
-                    trim($work_array[$i]) == "н-час" ||
-                    trim($work_array[$i]) == "Коэфф." ||
-                    trim($work_array[$i]) == "Сумма," ||
-                    trim($work_array[$i]) == "-"
-                    ||
-                    trim($work_array[$i]) == "руб." ||
-                    trim($work_array[$i]) == "час"
-
-
-                ) {
-                } else
-
-
-                    $works[$j++] = $work_array[$i];
-                // echo $work_array[$i] . '<br />';
-            }
-            $work_start = mb_strpos($file, 'Окраска');
-            // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-            $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
-            // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
-            $work_array = explode('<br/>', $work);
-            for ($i = 0; $i < count($work_array) - 1; $i++) {
-                if (
-                    trim($work_array[$i]) == "> Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
-                    trim($work_array[$i]) == "Норматив," ||
-                    trim($work_array[$i]) == "Сумма, руб."
-                    ||
-                    trim($work_array[$i]) == "Цена ед., руб." ||
-                    trim($work_array[$i]) == "н-час" ||
-                    trim($work_array[$i]) == "Коэфф." ||
-                    trim($work_array[$i]) == "Сумма," ||
-                    trim($work_array[$i]) == "-"
-                    ||
-                    trim($work_array[$i]) == "руб." ||
-                    trim($work_array[$i]) == "час" ||
-                    trim($work_array[$i]) == "Цена ед.," ||
-                    trim($work_array[$i]) == "Норматив, н-"
-
-
-                ) {
-                } else
-
-
-                    $works[$j++] = $work_array[$i];
-                // echo $work_array[$i] . '<br />';
-            }
-            // dd($works);
-            session(['works' => $works]);
         }
 
 
         // dd($work_array);
-        return view('Work.data_select', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $app->id_insuranceCompany]);
+        return view('Work.data_select', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $app->id_insuranceCompany, 't' => $type]);
     }
     public function work_edit($id, $id_work, $count)
     {
