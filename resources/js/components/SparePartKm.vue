@@ -70,7 +70,21 @@
         </thead>
         <tbody>
 <template v-for="(sparepart,index) in spareparts">
-<tr :class="isAuthor(sparepart.author)">
+<tr :class="isAuthor(sparepart.author)"  tabindex="index"
+@click="changeEditSparePartId(
+    sparepart.id,
+    sparepart.name,
+    sparepart.part_number,
+    sparepart.order_number,
+    sparepart.price_ic_full,
+    sparepart.price_sto,
+    sparepart.price_original,
+    sparepart.price_analogue,
+    sparepart.price_used,
+    sparepart.comment,
+    sparepart.status_id,
+    sparepart.date_price,
+    sparepart.date_wait)">
     <td scope="col">
         {{ index+1 }}
     </td>
@@ -115,8 +129,8 @@
         <td  :id="'comment_'+sparepart.id" contenteditable @blur="editComment(sparepart.id,index)" @keydown.enter="editComment(sparepart.id,index)">
         {{ sparepart.comment }}</td>
 
-                    <template v-if="rout_it=='directions'">
-                        <template v-if="isEdit(sparepart.id)">
+<template v-if="rout_it=='directions'">
+    <template v-if="isEdit(sparepart.id)">
 
 
         <td :class="sparePartStatus(sparepart.status_id)">

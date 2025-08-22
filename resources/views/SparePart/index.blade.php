@@ -4,13 +4,13 @@
 @endsection
 @section('main')
     {{-- {{ session('GroupId') }} --}}
-    @if (Gate::allows('km') || Gate::allows('km') || (Gate::allows('mrk') && Gate::allows('spm')))
+    @if (Gate::allows('km') || (Gate::allows('mrk') && Gate::allows('spm')))
         <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
             :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
             :in_statuses="{{ json_encode($statuses) }}" :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
     @else
         @if (Gate::allows('mrk'))
-            <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
+            <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
                 :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
                 :in_statuses="{{ json_encode($statuses) }}"
                 :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-mrk>
@@ -25,7 +25,8 @@
                 <spare-part-service :app_id={{ $id }}
                     :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-service>
             @else
-                <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
+
+                <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}`
                     :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
                     :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
                     :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-all>
