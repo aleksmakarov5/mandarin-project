@@ -277,7 +277,8 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "Цена" ||
                     trim($work_array[$i]) == "Нормо-час" ||
                     trim($work_array[$i]) == "Кол-во" ||
-                    trim($work_array[$i]) == "Сумма"
+                    trim($work_array[$i]) == "Сумма" ||
+                    mb_strpos($work_array[$i], "Сумма")
 
 
 
