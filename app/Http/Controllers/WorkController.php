@@ -257,7 +257,7 @@ class WorkController extends Controller
 
             $work_end = mb_strpos($file, 'ремонтных');
             // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 120, $work_end - $work_start - 167);
+            $work = mb_substr($file, $work_start + 115, $work_end - $work_start - 167);
             $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
             // dd($file);
 
