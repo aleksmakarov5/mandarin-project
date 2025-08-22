@@ -525,7 +525,7 @@ class SparePartController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\u{A0}", ' ', $file);
             if ($app->id_insuranceCompany == 1) {
-
+                // dd($file);
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
                 // echo $SparePart_start . 'Раб_Старт<br /><br />';
@@ -553,7 +553,8 @@ class SparePartController extends Controller
                     $SpareParts[$j++] = $SparePart_array[$i];
                     // echo $SparePart_array[$i] . '<br />';
                 }
-                // dd($SpareParts);
+                // dd($SparePart_array);
+                $id_ic = $app->id_insuranceCompany;
             } else if (($app->id_insuranceCompany == 7) || ($app->id_insuranceCompany == 3)) { {
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
                     if ($SparePart_start) {
@@ -582,7 +583,7 @@ class SparePartController extends Controller
                             $SpareParts[$j++] = $SparePart_array[$i];
                             // echo $SparePart_array[$i] . '<br />';
                         }
-                        $id_ic = 1;
+                        $id_ic = $app->id_insuranceCompany;
                     } else {
                         $SparePart_start = mb_strpos($file, 'износом');
                         if ($SparePart_start) {
@@ -809,8 +810,8 @@ class SparePartController extends Controller
 
 
 
-        // dd($SparePart_array);
-        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 'type' => $type]);
+        // dd($type);
+        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type]);
     }
     public function data_save(Request $request, $id)
     {
