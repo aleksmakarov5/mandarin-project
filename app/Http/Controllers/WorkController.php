@@ -198,13 +198,14 @@ class WorkController extends Controller
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
 
         $file = html_entity_decode($file);
+        $file = str_replace('<50%', 'менее 50%', $file);
+
         // dd($file);
         $reset = 0;
         $works = [];
 
         if ((mb_strpos($file, 'Ананьин Михаил') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
-            $file = str_replace('<50%', 'менее 50%', $file);
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
