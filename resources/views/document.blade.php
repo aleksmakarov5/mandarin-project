@@ -302,7 +302,7 @@
                                                                                         $to[1] = "pdimon55@mail.ru";
                                                                                     @endphp
                                                                                     <special-mail :to="{{json_encode($to)}}" :from="{{ Auth::user()->id }}"
-                                                                                :subject="{{json_encode('zn-' . $application->id . '! ПЗН ' . $application->CarModel . ' ' . $application->gnz)}}"
+                                                                                :subject="{{json_encode( $application->CarModel . ' ' . $application->gnz.' '.$application->ub_type?"Каско":"Осаго".' zn-' . $application->id . '! ПЗН ')}}"
                                                                                 :attach="{{json_encode(isset($attach) ? $attach : [])}}" :app_id="{{$id}}"
                                                                 :text="{{json_encode("Добрый день!<br><br>
 
