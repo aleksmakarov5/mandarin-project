@@ -244,7 +244,6 @@ class WorkController extends Controller
         } else if (mb_strpos($file, 'одометр') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
-            dd($file);
             $file = str_replace("</td>", '<br/>', $file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
@@ -258,7 +257,7 @@ class WorkController extends Controller
 
             $work_end = mb_strpos($file, 'ремонтных');
             // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 100, $work_end - $work_start - 157);
+            $work = mb_substr($file, $work_start + 129, $work_end - $work_start - 167);
             $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
             // dd($file);
 
@@ -295,13 +294,13 @@ class WorkController extends Controller
 
             // dd($works, $work_array);
             session(['works' => $works]);
-            $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
+            $work_start = mb_strpos($file, 'Окрасочные работы');
             // echo $work_start . 'Раб_Старт<br /><br />';
             $work = '';
             if ($work_start) {
-                $work_end = mb_strpos($file, 'www.autoins.ru');
+                $work_end = mb_strpos($file, 'окрасочных работ');
 
-                $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+                $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 140);
             }
 
             $work_array = [];
@@ -328,13 +327,14 @@ class WorkController extends Controller
 
                 ) {
                 } else {
-                    if (($i - 3) % 5 != 0)
+                    if (($i - 4) % 5 != 0)
                         $works[$j++] = $work_array[$i];
                 }
 
 
                 // echo $work_array[$i] . '<br />';
             }
+            // dd($works);
             session(['works_paint' => $works]);
             // echo $SparePart_array[$i] . '<br />';
 
