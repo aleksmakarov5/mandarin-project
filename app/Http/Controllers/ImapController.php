@@ -915,18 +915,20 @@ class ImapController extends Controller
             echo "FOUND " . $num_found . " LINKS:\n";
             // dd($out[0][0]);
         }
+        if (isset($out[0][0])) {
+            $fin_pos = mb_strpos($out[0][0], '"');
+            if (isset($fin_pos))
+                $link = mb_substr($out[0][0], 0, $fin_pos);
+            else
+                $link = $out[0][0];
+            print_r($link);
+        }
 
-        $fin_pos = mb_strpos($out[0][0], '"');
-        if ($fin_pos)
-            $link = mb_substr($out[0][0], 0, $fin_pos);
-        else
-            $link = $out[0][0];
-        print_r($link);
         $dir = 'storage/files/' . $applications->id;
         if (!is_dir($dir)) {
             mkdir($dir, 0777, true);
         }
-        if ($link) {
+        if (isset($link)) {
             $base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?';
             $final_url = $base_url . 'public_key=' . $link;
             /**
@@ -980,7 +982,7 @@ class ImapController extends Controller
 
         $message->mailbox_id = $our_company;
         $message->save();
-        if ($filename) {
+        if (isset($filename)) {
             $attach = new attachment();
             $attach->message_id = $message->id;
             $attach->id_application = $applications->id;
@@ -1551,6 +1553,7 @@ class ImapController extends Controller
                         $our_company = 1;
                         // $subject = "ПЗН LEXUS RX 300 М801ТР29 Каско zn-234!";
                         if (mb_strpos($subject, 'zn-')) {
+                            echo "ZN ZN ZN <br>";
                             $app_id_start = mb_strpos($subject, 'zn-');
 
                             $app_id_end = mb_strpos($subject, '!');
