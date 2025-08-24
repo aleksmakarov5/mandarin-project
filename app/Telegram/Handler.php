@@ -210,34 +210,34 @@ class Handler extends WebhookHandler
                                 // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                                 $this->chat->deleteMessage($this->message->id())->send();
                             } else {
-                                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
-
-                                $message = $this->chat->message("Неверный формат! Отправьте изображения без сжатия или нажмите ГОТОВО для отмены")
-                                    ->keyboard(
-                                        Keyboard::make()
-                                            ->buttons($keyboard)
-                                    )
-                                    ->send();
-                                $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-
                                 $this->chat->deleteMessage($this->message->id())->send();
                             }
-                        } else {
-                            $this->chat->deleteMessage($this->message->id())->send();
+                            $zip->close();
+                            $document = attachment::updateOrCreate(
+                                ['id_application' => $telegram_action->id_application, 'file_name' => $name],
+                                [
+                                    'id_application' => $telegram_action->id_application,
+                                    'id_status' => $telegram_action->number,
+                                    'file_name' => $name,
+                                    'message_id' => 0,
+                                    'mime_type' => 'application/zip-compressed',
+                                    'file_size' => filesize($zip_path),
+                                    'location' => $zip_name,
+                                ]
+                            );
                         }
-                        $zip->close();
-                        $document = attachment::updateOrCreate(
-                            ['id_application' => $telegram_action->id_application, 'file_name' => $name],
-                            [
-                                'id_application' => $telegram_action->id_application,
-                                'id_status' => $telegram_action->number,
-                                'file_name' => $name,
-                                'message_id' => 0,
-                                'mime_type' => 'application/zip-compressed',
-                                'file_size' => filesize($zip_path),
-                                'location' => $zip_name,
-                            ]
-                        );
+                    } else {
+                        $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                        $message = $this->chat->message("Неверный формат! Отправьте изображения без сжатия или нажмите ГОТОВО для отмены")
+                            ->keyboard(
+                                Keyboard::make()
+                                    ->buttons($keyboard)
+                            )
+                            ->send();
+                        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+
+                        $this->chat->deleteMessage($this->message->id())->send();
                     }
                 } else {
                     $location = '';
