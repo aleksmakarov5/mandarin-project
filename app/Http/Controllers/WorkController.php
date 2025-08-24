@@ -425,6 +425,7 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "Наименование" ||
                     mb_strpos("Наименование", $work_array[$i])  ||
                     mb_strpos("наименование", $work_array[$i])  ||
+                    mb_strpos("час", $work_array[$i])  ||
                     trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
