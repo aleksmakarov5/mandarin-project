@@ -12,6 +12,16 @@
                 <input type="hidden" name="count_hours[{{ $j }}]" value="{{ session('works')[$i + 2] }}">
                 <input type="hidden" name="summ[{{ $j }}]" value="{{ session('works')[$i + 4] }}">
             @endfor
+            @if (session('works_paint'))
+
+
+                @for ($i = 0, $j = 1; $i < count(session('works_paint')) - 4; $i += 5, $j++)
+                    <input type="hidden" name="name_paint[{{ $j }}]" value="{{ session('works_paint')[$i] }}">
+                    <input type="hidden" name="price_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 1] }}">
+                    <input type="hidden" name="count_hours_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 2] }}">
+                    <input type="hidden" name="summ_paint[{{ $j }}]" value="{{ session('works_paint')[$i + 4] }}">
+                @endfor
+            @endif
         @else
             @for ($i = 0, $j = 1; $i < count(session('works')) - 3; $i += 4, $j++)
                 <input type="hidden" name="name[{{ $j }}]" value="{{ session('works')[$i] }}">
