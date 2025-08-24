@@ -169,6 +169,16 @@ class Handler extends WebhookHandler
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
                         $filename = $img_name;
+                        $degrees = 90;
+                        // Загрузка изображения
+                        $source = imagecreatefromjpeg($filename);
+                        // Поворот
+                        $rotate = imagerotate($source, $degrees, 0);
+                        // Вывод
+                        imagejpeg($rotate);
+                        // Высвобождение памяти
+                        imagedestroy($source);
+                        imagedestroy($rotate);
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
