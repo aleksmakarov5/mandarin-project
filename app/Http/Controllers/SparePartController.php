@@ -529,7 +529,7 @@ class SparePartController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            // dd($file);
+            dd($file);
 
             $SparePart_start = mb_strpos($file, 'износом, руб');
 
