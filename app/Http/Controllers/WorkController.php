@@ -461,7 +461,7 @@ class WorkController extends Controller
             $works = [];
             $j = 0;
             // echo $work_end . 'Раб_фин<br /><br />';
-            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 20);
             $work_array = explode('<br/>', $work);
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
