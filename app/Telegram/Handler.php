@@ -42,175 +42,223 @@ class Handler extends WebhookHandler
     }
     public function handleChatMessage(Stringable $text): void
     {
+        try {
+            $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
+            // $this->chat->message("{$telegram_action->action}")->send();
+            $path = '';
+            if ($telegram_action->action == 1) {
 
-        $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
-        // $this->chat->message("{$telegram_action->action}")->send();
-        $path = '';
-        if ($telegram_action->action == 1) {
+                $path = "storage/files/" . $telegram_action->id_application . '/';
+                $name = '';
+                $zip_name = '';
+                $load = true;
+                if ($telegram_action->number < 31) {
+                    switch ($telegram_action->number) {
+                        case 0:
+                            $load = false;
+                            break;
+                        case 21:
+                            $path = $path . "Фото_первичного_осмотра";
+                            $name = "Фото первичного осмотра";
+                            $zip_name = "Фото_первичного_осмотра";
+                            break;
+                        case 3:
+                            $path = $path . "Договор_с_клиентом";
+                            $name = "Договор с клиентом";
+                            $zip_name = "Договор_с_клиентом";
+                            break;
+                        case 5:
+                            $path = $path . "Доп_соглашение";
+                            $name = "Доп соглашение";
+                            $zip_name = "Доп_соглашение";
+                            break;
+                        case 7:
+                            $path = $path . "Информационный_акт";
+                            $name = "Информационный акт";
+                            $zip_name = "Информационный_акт";
+                            break;
+                        case 9:
+                            $path = $path . "Акт_приема_автомобиля_на_ремонт";
+                            $name = "Акт приема автомобиля на ремонт";
+                            $zip_name = "Акт_приема_автомобиля_на_ремонт";
 
-            $path = "storage/files/" . $telegram_action->id_application . '/';
-            $name = '';
-            $zip_name = '';
-            $load = true;
-            if ($telegram_action->number < 31) {
-                switch ($telegram_action->number) {
-                    case 0:
-                        $load = false;
-                        break;
-                    case 21:
-                        $path = $path . "Фото_первичного_осмотра";
-                        $name = "Фото первичного осмотра";
-                        $zip_name = "Фото_первичного_осмотра";
-                        break;
-                    case 3:
-                        $path = $path . "Договор_с_клиентом";
-                        $name = "Договор с клиентом";
-                        $zip_name = "Договор_с_клиентом";
-                        break;
-                    case 5:
-                        $path = $path . "Доп_соглашение";
-                        $name = "Доп соглашение";
-                        $zip_name = "Доп_соглашение";
-                        break;
-                    case 7:
-                        $path = $path . "Информационный_акт";
-                        $name = "Информационный акт";
-                        $zip_name = "Информационный_акт";
-                        break;
-                    case 9:
-                        $path = $path . "Акт_приема_автомобиля_на_ремонт";
-                        $name = "Акт приема автомобиля на ремонт";
-                        $zip_name = "Акт_приема_автомобиля_на_ремонт";
+                            break;
+                        case 10:
+                            $path = $path . "Фото_приема_автомобиля";
+                            $name = "Фото приема автомобиля";
+                            $zip_name = "Фото_приема_автомобиля";
 
-                        break;
-                    case 10:
-                        $path = $path . "Фото_приема_автомобиля";
-                        $name = "Фото приема автомобиля";
-                        $zip_name = "Фото_приема_автомобиля";
+                            break;
+                        case 12:
+                            $path = $path . "Акт_скрытых_повреждений";
+                            $name = "Акт скрытых повреждений";
+                            $zip_name = "Акт_скрытых_повреждений";
+                            break;
+                        case 30:
+                            $path = $path . "Фото_дефектовки";
+                            $name = "Фото дефектовки";
+                            $zip_name = "Фото_дефектовки";
+                            break;
+                        case 14:
+                            $path = $path . "Акт_сдачи_автомобиля";
+                            $name = "Акт сдачи автомобиля";
+                            $zip_name = "Акт_сдачи_автомобиля";
 
-                        break;
-                    case 12:
-                        $path = $path . "Акт_скрытых_повреждений";
-                        $name = "Акт скрытых повреждений";
-                        $zip_name = "Акт_скрытых_повреждений";
-                        break;
-                    case 30:
-                        $path = $path . "Фото_дефектовки";
-                        $name = "Фото дефектовки";
-                        $zip_name = "Фото_дефектовки";
-                        break;
-                    case 14:
-                        $path = $path . "Акт_сдачи_автомобиля";
-                        $name = "Акт сдачи автомобиля";
-                        $zip_name = "Акт_сдачи_автомобиля";
-
-                        break;
-                    case 15:
-                        $path = $path . "Фото_сдачи_автомобиля";
-                        $name = "Фото сдачи автомобиля";
-                        $zip_name = "Фото_сдачи_автомобиля";
-                        break;
-                }
-                if ($load) {
-                    $path = $path . "_" . date('d-m-y');
-                    $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
-                    $name = $name . " " . date('d-m-y');
-                    if (!is_dir($path)) {
-                        mkdir($path, 0777, true);
+                            break;
+                        case 15:
+                            $path = $path . "Фото_сдачи_автомобиля";
+                            $name = "Фото сдачи автомобиля";
+                            $zip_name = "Фото_сдачи_автомобиля";
+                            break;
                     }
-                    $zip_path = $path . '.zip';
-                    $zip_bool = true;
-                    if (file_exists($zip_path)) {
-                        $zip = Zip::open($zip_path);
-                        $zip_bool = false;
-                    } else {
-                        $zip = Zip::create($zip_path);
-                    }
-
-                    $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
-                    $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
-                    // $filename = $path . $this->request->message['document']['file_name'];
-                    $filenameWithExt = $this->request->message['document']['file_name'];
-                    // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
-                    $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-                    // $exif = exif_read_data($filename);
-                    if ($size) {
-                        // Optimize::path($filename);
-
-                        // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
-                        $width = 800;
-                        $height = 800;
-
-                        // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
-                        header("Content-type: {$size['mime']}");
-                        $exif = exif_read_data($filename);
-                        // file_put_contents('data.txt', json_encode($exif['Orientation']));
-
-                        // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
-                        list($width_orig, $height_orig) = getimagesize($filename);
-
-                        if ($width && ($width_orig < $height_orig)) {
-
-                            $width = ($height / $height_orig) * $width_orig;
+                    if ($load) {
+                        $path = $path . "_" . date('d-m-y');
+                        $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
+                        $name = $name . " " . date('d-m-y');
+                        if (!is_dir($path)) {
+                            mkdir($path, 0777, true);
+                        }
+                        $zip_path = $path . '.zip';
+                        $zip_bool = true;
+                        if (file_exists($zip_path)) {
+                            $zip = Zip::open($zip_path);
+                            $zip_bool = false;
                         } else {
-                            $height = ($width / $width_orig) * $height_orig;
+                            $zip = Zip::create($zip_path);
                         }
 
-                        // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
-                        $image_p = imagecreatetruecolor($width, $height);
-                        $image = imagecreatefromjpeg($filename);
-                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+                        $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+                        $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
+                        // $filename = $path . $this->request->message['document']['file_name'];
+                        $filenameWithExt = $this->request->message['document']['file_name'];
+                        // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
+                        $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                        // $exif = exif_read_data($filename);
+                        if ($size) {
+                            // Optimize::path($filename);
 
-                        // СОЗДАЁМ
-                        $img_name =  $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        imagejpeg($image_p, $img_name, 60);
+                            // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
+                            $width = 800;
+                            $height = 800;
 
-                        // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                        unlink($filename);
-                        $filename = $img_name;
-                        if (isset($exif['Orientation'])) {
-                            $degrees = 0;
-                            if ($exif['Orientation'] == 6) {
-                                $degrees = 270;
+                            // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                            header("Content-type: {$size['mime']}");
+                            $exif = exif_read_data($filename);
+                            // file_put_contents('data.txt', json_encode($exif['Orientation']));
+
+                            // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                            list($width_orig, $height_orig) = getimagesize($filename);
+
+                            if ($width && ($width_orig < $height_orig)) {
+
+                                $width = ($height / $height_orig) * $width_orig;
+                            } else {
+                                $height = ($width / $width_orig) * $height_orig;
                             }
-                            if ($exif['Orientation'] == 3) {
-                                $degrees = 180;
+
+                            // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                            $image_p = imagecreatetruecolor($width, $height);
+                            $image = imagecreatefromjpeg($filename);
+                            imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+                            // СОЗДАЁМ
+                            $img_name = $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                            imagejpeg($image_p, $img_name, 60);
+
+                            // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                            unlink($filename);
+                            $filename = $img_name;
+                            if (isset($exif['Orientation'])) {
+                                $degrees = 0;
+                                if ($exif['Orientation'] == 6) {
+                                    $degrees = 270;
+                                }
+                                if ($exif['Orientation'] == 3) {
+                                    $degrees = 180;
+                                }
+                                if ($exif['Orientation'] == 8) {
+                                    $degrees = 90;
+                                }
+                                // Загрузка изображения
+                                $source = imagecreatefromjpeg($filename);
+                                // Поворот
+                                $rotate = imagerotate($source, $degrees, 0);
+                                // Вывод
+                                imagejpeg($rotate, $img_name, 100);
+                                // Высвобождение памяти
+                                imagedestroy($source);
+                                imagedestroy($rotate);
                             }
-                            if ($exif['Orientation'] == 8) {
-                                $degrees = 90;
-                            }
-                            // Загрузка изображения
-                            $source = imagecreatefromjpeg($filename);
-                            // Поворот
-                            $rotate = imagerotate($source, $degrees, 0);
-                            // Вывод
-                            imagejpeg($rotate, $img_name, 100);
-                            // Высвобождение памяти
-                            imagedestroy($source);
-                            imagedestroy($rotate);
+                            $telegram_action->count = $telegram_action->count + 1;
+                            $telegram_action->save();
+                            $keyboard = [];
+                            $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                            $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                                ->keyboard(
+                                    Keyboard::make()
+                                        ->buttons($keyboard)
+                                )
+                                ->send();
+                            $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+                            // $file = "storage/files/405/test.txt";
+                            // file_put_contents($file, json_decode($message)->result->message_id);
+                            // // Optimize::path($filename);
+                            $zip->setpath($path)->add($filename);
+                            // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                            $this->chat->deleteMessage($this->message->id())->send();
+                        } else {
+                            $this->chat->deleteMessage($this->message->id())->send();
                         }
-                        $telegram_action->count = $telegram_action->count + 1;
-                        $telegram_action->save();
-                        $keyboard = [];
-                        $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
-
-                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
-                            ->keyboard(
-                                Keyboard::make()
-                                    ->buttons($keyboard)
-                            )
-                            ->send();
-                        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-                        // $file = "storage/files/405/test.txt";
-                        // file_put_contents($file, json_decode($message)->result->message_id);
-                        // // Optimize::path($filename);
-                        $zip->setpath($path)->add($filename);
-                        // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                        $this->chat->deleteMessage($this->message->id())->send();
-                    } else {
-                        $this->chat->deleteMessage($this->message->id())->send();
+                        $zip->close();
+                        $document = attachment::updateOrCreate(
+                            ['id_application' => $telegram_action->id_application, 'file_name' => $name],
+                            [
+                                'id_application' => $telegram_action->id_application,
+                                'id_status' => $telegram_action->number,
+                                'file_name' => $name,
+                                'message_id' => 0,
+                                'mime_type' => 'application/zip-compressed',
+                                'file_size' => filesize($zip_path),
+                                'location' => $zip_name,
+                            ]
+                        );
                     }
-                    $zip->close();
+                } else {
+                    $location = '';
+                    switch ($telegram_action->number) {
+                        case 31:
+                            $name = "Паспорт (стр 2-3)";
+                            $location = "Паспорт_(стр_2-3)";
+                            break;
+                        case 32:
+                            $name = "СТС (лицевая сторона)";
+                            $location = "СТС_(лицевая_сторона)";
+                            break;
+                        case 33:
+                            $name = "СТС (обратная сторона)";
+                            $location = "СТС_(обратная_сторона)";
+                            break;
+                        case 34:
+                            $name = "В/У (лицевая сторона)";
+                            $location = "В/У_(лицевая_сторона)";
+                            break;
+                    }
+                    $location = $location . ".jpg";
+                    $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
+                    $telegram_action->count = $telegram_action->count + 1;
+                    $telegram_action->save();
+                    $keyboard = [];
+                    $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+                    $message = $this->chat->message("Получено изображений: {$telegram_action->count} \nНажмите ГОТОВО или отправьте изображение заново")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons($keyboard)
+                        )
+                        ->send();
+                    $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+
+                    $this->chat->deleteMessage($this->message->id())->send();
                     $document = attachment::updateOrCreate(
                         ['id_application' => $telegram_action->id_application, 'file_name' => $name],
                         [
@@ -219,59 +267,19 @@ class Handler extends WebhookHandler
                             'file_name' => $name,
                             'message_id' => 0,
                             'mime_type' => 'application/zip-compressed',
-                            'file_size' => filesize($zip_path),
-                            'location' => $zip_name,
+                            'file_size' => filesize($path . '/' . $location),
+                            'location' => $location,
                         ]
                     );
                 }
-            } else {
-                $location = '';
-                switch ($telegram_action->number) {
-                    case 31:
-                        $name = "Паспорт (стр 2-3)";
-                        $location = "Паспорт_(стр_2-3)";
-                        break;
-                    case 32:
-                        $name = "СТС (лицевая сторона)";
-                        $location = "СТС_(лицевая_сторона)";
-                        break;
-                    case 33:
-                        $name = "СТС (обратная сторона)";
-                        $location = "СТС_(обратная_сторона)";
-                        break;
-                    case 34:
-                        $name = "В/У (лицевая сторона)";
-                        $location = "В/У_(лицевая_сторона)";
-                        break;
-                }
-                $location = $location . ".jpg";
-                $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
-                $telegram_action->count = $telegram_action->count + 1;
-                $telegram_action->save();
-                $keyboard = [];
-                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
-                $message = $this->chat->message("Получено изображений: {$telegram_action->count} \nНажмите ГОТОВО или отправьте изображение заново")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons($keyboard)
-                    )
-                    ->send();
-                $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-
-                $this->chat->deleteMessage($this->message->id())->send();
-                $document = attachment::updateOrCreate(
-                    ['id_application' => $telegram_action->id_application, 'file_name' => $name],
-                    [
-                        'id_application' => $telegram_action->id_application,
-                        'id_status' => $telegram_action->number,
-                        'file_name' => $name,
-                        'message_id' => 0,
-                        'mime_type' => 'application/zip-compressed',
-                        'file_size' => filesize($path . '/' . $location),
-                        'location' => $location,
-                    ]
-                );
             }
+        } catch (Exception $e) {
+            $message = $this->chat->message("Неверный формат")
+
+                ->send();
+            $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+
+            $this->chat->deleteMessage($this->message->id())->send();
         }
     }
     public function hello(string $name): void
