@@ -129,7 +129,7 @@ class Handler extends WebhookHandler
                     }
 
                     $filename = $this->message->date() . ".jpg";
-                    // $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
+                    $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
 
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
