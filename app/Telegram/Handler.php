@@ -166,7 +166,7 @@ class Handler extends WebhookHandler
                         imagejpeg($image_p, $img_name, 60);
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                        // unlink($filename);
+                        unlink($filename);
                         $filename = $img_name;
                         $degrees = 270;
                         // Загрузка изображения
