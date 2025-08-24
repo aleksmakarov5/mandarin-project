@@ -42,7 +42,7 @@ class Handler extends WebhookHandler
     }
     public function handleChatMessage(Stringable $text): void
     {
-        file_put_contents('data.txt', json_encode($this->files));
+        file_put_contents('data.txt', json_encode($this->request->files));
 
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
         // $this->chat->message("{$telegram_action->action}")->send();
