@@ -497,7 +497,8 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
-            dd($works);
+            $works[$j++] = '';
+            // dd($works);
             session(['works_paint' => $works]);
         } else {
             $file = html_entity_decode(strip_tags($file, ['br']));
