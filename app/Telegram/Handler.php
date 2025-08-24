@@ -138,35 +138,37 @@ class Handler extends WebhookHandler
                         Optimize::path($filename);
 
                         // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
-                        // $width = 500;
-                        // $height = 500;
+                        $width = 900;
+                        $height = 900;
 
-                        // // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
-                        // header("Content-type: {$size['mime']}");
+                        // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                        header("Content-type: {$size['mime']}");
 
-                        // // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
-                        // list($width_orig, $height_orig) = getimagesize($filename);
+                        // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                        list($width_orig, $height_orig) = getimagesize($filename);
 
-                        // if (
-                        //     $width && ($width_orig < $height_orig)
-                        // ) {
-                        //     $width = ($height / $height_orig) * $width_orig;
-                        // } else {
-                        //     $height = ($width / $width_orig) * $height_orig;
-                        // }
+                        if (
+                            ($width_orig < $height_orig)
+                        ) {
+                            $width = ($height / $height_orig) * $width_orig;
+                            $height = ($height / $height_orig) * $height_orig;
+                        } else {
+                            $height = ($width / $width_orig) * $height_orig;
+                            $width = ($width / $width_orig) * $width_orig;
+                        }
 
-                        // // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
-                        // $image_p = imagecreatetruecolor($width, $height);
-                        // $image = imagecreatefromjpeg($filename);
-                        // imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+                        // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                        $image_p = imagecreatetruecolor($width, $height);
+                        $image = imagecreatefromjpeg($filename);
+                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
-                        // // СОЗДАЁМ
-                        // $img_name =  $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        // imagejpeg($image_p, $img_name, 100);
+                        // СОЗДАЁМ
+                        $img_name =  $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                        imagejpeg($image_p, $img_name, 100);
 
-                        // // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                        // unlink($filename);
-                        // $filename = $img_name;
+                        // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                        unlink($filename);
+                        $filename = $img_name;
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
