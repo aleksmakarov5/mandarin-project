@@ -129,7 +129,7 @@ class Handler extends WebhookHandler
                     }
 
                     $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
-                    $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
+                    $filename = $this->bot->find(1)->store($this->message->document(), $path . '/temp/', $this->request->message['document']['file_name']);
                     // $filename = $path . $this->request->message['document']['file_name'];
                     $filenameWithExt = $this->request->message['document']['file_name'];
                     // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
@@ -165,7 +165,7 @@ class Handler extends WebhookHandler
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
-
+                        $filename = $img_name;
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
