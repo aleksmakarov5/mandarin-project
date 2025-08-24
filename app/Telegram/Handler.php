@@ -130,9 +130,42 @@ class Handler extends WebhookHandler
 
                     $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
                     $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
-
+                    $filename = $path  . $this->request->message['document']['file_name'];
+                    $filenameWithExt = $this->request->message['document']['file_name'];
+                    // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
+
+                        // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
+                        $width = 500;
+                        $height = 500;
+
+                        // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                        header("Content-type: {$size['mime']}");
+
+                        // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                        list($width_orig, $height_orig) = getimagesize($filename);
+
+                        if (
+                            $width && ($width_orig < $height_orig)
+                        ) {
+                            $width = ($height / $height_orig) * $width_orig;
+                        } else {
+                            $height = ($width / $width_orig) * $height_orig;
+                        }
+
+                        // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                        $image_p = imagecreatetruecolor($width, $height);
+                        $image = imagecreatefromjpeg($filename);
+                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+                        // СОЗДАЁМ
+                        $img_name =  $path . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                        imagejpeg($image_p, $img_name, 100);
+
+                        // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                        unlink($filename);
+
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
