@@ -451,15 +451,15 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
-            session(['works' => $works]);
+            // session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окраска');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
 
             $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
-            $work_array = [];
-            $works = [];
-            $j = 0;
+            // $work_array = [];
+            // $works = [];
+            // $j = 0;
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 20);
             $work_array = explode('<br/>', $work);
@@ -497,9 +497,9 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
-            $works[$j++] = '';
+            // $works[$j++] = '';
             // dd($works);
-            session(['works_paint' => $works]);
+            session(['works' => $works]);
         } else {
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = preg_replace("/\u{A0}/", ' ', $file);
