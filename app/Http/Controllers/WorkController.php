@@ -844,39 +844,9 @@ class WorkController extends Controller
 
                 for ($i = 0; $i < count($work_array) - 1; $i++) {
                     if (
-                        trim($work_array[$i]) == "Наименование" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
-                        trim($work_array[$i]) == "Норматив," ||
-                        trim($work_array[$i]) == "Сумма, руб."
-                        ||
-                        trim($work_array[$i]) == "Цена ед., руб." ||
-                        trim($work_array[$i]) == "н-час" ||
-                        trim($work_array[$i]) == "Коэфф." ||
-                        trim($work_array[$i]) == "Сумма," ||
-                        trim($work_array[$i]) == "-"
-                        ||
-                        trim($work_array[$i]) == "руб." ||
-                        trim($work_array[$i]) == "час"
-
-
-                    ) {
-                    } else
-
-
-                        $works[$j++] = $work_array[$i];
-                    // echo $work_array[$i] . '<br />';
-                }
-                $work_start = mb_strpos($file, 'Окраска');
-                // echo $work_start . 'Раб_Старт<br /><br />';
-
-
-                $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
-                // echo $work_end . 'Раб_фин<br /><br />';
-                $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
-                $work_array = explode('<br/>', $work);
-                for ($i = 0; $i < count($work_array) - 1; $i++) {
-                    if (
                         trim($work_array[$i]) == "> Наименование" ||
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив, н-час" ||
                         trim($work_array[$i + 1]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив," ||
                         trim($work_array[$i]) == "Сумма, руб."
@@ -890,7 +860,61 @@ class WorkController extends Controller
                         trim($work_array[$i]) == "руб." ||
                         trim($work_array[$i]) == "час" ||
                         trim($work_array[$i]) == "Цена ед.," ||
-                        trim($work_array[$i]) == "Норматив, н-"
+                        trim($work_array[$i]) == "Норматив, н-" ||
+                        mb_strpos("Наименование", $work_array[$i])  ||
+                        mb_strpos("наименование", $work_array[$i])  ||
+                        trim($work_array[$i]) == "Коэфф." ||
+                        trim($work_array[$i]) == "Сумма, руб." ||
+                        trim($work_array[$i]) == ""
+
+
+                    ) {
+                    } else
+
+
+                        $works[$j++] = $work_array[$i];
+                    // echo $work_array[$i] . '<br />';
+                }
+
+                session(['works' => $works]);
+
+                $work_start = mb_strpos($file, 'Окраска');
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+                $work_array = [];
+                $works = [];
+                $work_array = explode('<br/>', $work);
+                // dd($work_array, $work_end);
+
+                $j = 0;
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "> Наименование" ||
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив, н-час" ||
+                        trim($work_array[$i + 1]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час" ||
+                        trim($work_array[$i]) == "Коэфф." ||
+                        trim($work_array[$i]) == "Сумма," ||
+                        trim($work_array[$i]) == "-"
+                        ||
+                        trim($work_array[$i]) == "руб." ||
+                        trim($work_array[$i]) == "час" ||
+                        trim($work_array[$i]) == "Цена ед.," ||
+                        trim($work_array[$i]) == "Норматив, н-" ||
+                        mb_strpos("Наименование", $work_array[$i])  ||
+                        mb_strpos("наименование", $work_array[$i])  ||
+                        trim($work_array[$i]) == "Коэфф." ||
+                        trim($work_array[$i]) == "Сумма, руб." ||
+                        trim($work_array[$i]) == ""
 
 
                     ) {
@@ -901,7 +925,7 @@ class WorkController extends Controller
                     // echo $work_array[$i] . '<br />';
                 }
                 // dd($works);
-                session(['works' => $works]);
+                session(['works_paint' => $works]);
             }
         }
 

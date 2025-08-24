@@ -174,7 +174,7 @@
             </thead>
             <tbody>
                 @if (isset($id_ic) && $id_ic == 4)
-                    @for ($i = 0; $i < count(session('works')) - 4; $i += 5)
+                    @for ($i = 0; $i < count(session('works_paint')) - 4; $i += 5)
                         <tr>
                             <td> {{ session('works_paint')[$i] }}
                                 @if (!is_numeric(str_replace(' ', '', session('works_paint')[$i])))
