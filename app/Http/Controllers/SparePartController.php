@@ -387,7 +387,7 @@ class SparePartController extends Controller
     public function data_load(Request $request, $id)
     {
         $type = 0;
-        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx') {
+        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
             if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
                 $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
                 $dir = 'storage/files/' . $id;

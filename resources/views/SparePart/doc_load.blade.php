@@ -2,7 +2,7 @@
 @section('main')
     <div class="row">
         @foreach ($documents as $key => $doc)
-            @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'pdf' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'PDF' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx')
+            @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'pdf' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'PDF' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' || pathinfo($doc->location, PATHINFO_EXTENSION) == 'rtf')
                 <div class="card" style="width: 20rem;" onclick="document.forms['form{{ $key }}'].submit()"
                     style='cursor: pointer;'>
                     <div class="row g-0">
