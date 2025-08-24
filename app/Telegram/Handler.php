@@ -173,6 +173,12 @@ class Handler extends WebhookHandler
                             if ($exif['Orientation'] == 6) {
                                 $degrees = 270;
                             }
+                            if ($exif['Orientation'] == 3) {
+                                $degrees = 180;
+                            }
+                            if ($exif['Orientation'] == 8) {
+                                $degrees = 90;
+                            }
                             // Загрузка изображения
                             $source = imagecreatefromjpeg($filename);
                             // Поворот
@@ -188,7 +194,7 @@ class Handler extends WebhookHandler
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}\n{$exif['Orientation']}")
+                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
                             ->keyboard(
                                 Keyboard::make()
                                     ->buttons($keyboard)
@@ -553,7 +559,7 @@ class Handler extends WebhookHandler
                 break;
         }
 
-        $message = $this->chat->message($message . ".\n По окончанию загрузки нажмите кнопку ГОТОВО")
+        $message = $this->chat->message($message . ".\n По окончанию загрузки нажмите кнопку ГОТОВО\nОтправляйте изображения в виде файла или без сжатия в формате JPEG")
             ->keyboard(
                 Keyboard::make()
                     ->buttons($keyboard)
