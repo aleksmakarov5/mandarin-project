@@ -128,6 +128,7 @@ class Handler extends WebhookHandler
                         }
 
                         $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+
                         $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
                         // $filename = $path . $this->request->message['document']['file_name'];
                         $filenameWithExt = $this->request->message['document']['file_name'];
