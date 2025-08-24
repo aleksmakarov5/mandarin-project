@@ -125,7 +125,7 @@ class Handler extends WebhookHandler
                     } else {
                         $zip = Zip::create($zip_path);
                     }
-                    file_put_contents('data.txt', json_encode($this->message));
+                    file_put_contents('data.txt', json_encode($this->message->date()));
 
                     $filename = $this->message->photos()->get(2)->id() . ".jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
