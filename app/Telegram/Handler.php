@@ -144,7 +144,7 @@ class Handler extends WebhookHandler
                         // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
                         header("Content-type: {$size['mime']}");
                         $exif = exif_read_data($filename);
-                        file_put_contents('data.txt', json_encode($exif['Orientation']));
+                        // file_put_contents('data.txt', json_encode($exif['Orientation']));
 
                         // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
                         list($width_orig, $height_orig) = getimagesize($filename);
@@ -168,16 +168,19 @@ class Handler extends WebhookHandler
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
                         $filename = $img_name;
-                        $degrees = 270;
-                        // Загрузка изображения
-                        $source = imagecreatefromjpeg($filename);
-                        // Поворот
-                        $rotate = imagerotate($source, $degrees, 0);
-                        // Вывод
-                        imagejpeg($rotate, $img_name, 100);
-                        // Высвобождение памяти
-                        imagedestroy($source);
-                        imagedestroy($rotate);
+                        if (isset($exif['Orientation']))
+                            if ($exif['Orientation'] == 6) {
+                                $degrees = 270;
+                                // Загрузка изображения
+                                $source = imagecreatefromjpeg($filename);
+                                // Поворот
+                                $rotate = imagerotate($source, $degrees, 0);
+                                // Вывод
+                                imagejpeg($rotate, $img_name, 100);
+                                // Высвобождение памяти
+                                imagedestroy($source);
+                                imagedestroy($rotate);
+                            }
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
