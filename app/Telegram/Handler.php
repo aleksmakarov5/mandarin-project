@@ -188,7 +188,7 @@ class Handler extends WebhookHandler
                         break;
                 }
                 $location = $location . ".jpg";
-                $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path);
+                $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
                 $telegram_action->count = $telegram_action->count + 1;
                 $telegram_action->save();
                 $keyboard = [];
