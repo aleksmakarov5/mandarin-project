@@ -127,7 +127,7 @@ class Handler extends WebhookHandler
                     }
                     file_put_contents('data.txt', json_encode($this->message->photos()));
 
-                    $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+                    $filename = $this->message->photos()->get(2)->id() . ".jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
 
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
