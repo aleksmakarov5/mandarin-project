@@ -138,8 +138,8 @@ class Handler extends WebhookHandler
                         Optimize::path($filename);
 
                         // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
-                        $width = 900;
-                        $height = 900;
+                        $width = 800;
+                        $height = 800;
 
                         // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
                         header("Content-type: {$size['mime']}");
@@ -160,12 +160,12 @@ class Handler extends WebhookHandler
 
                         // СОЗДАЁМ
                         $img_name =  $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        imagejpeg($image_p, $img_name, 80);
+                        imagejpeg($image_p, $img_name, 60);
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
                         $filename = $img_name;
-                        $degrees = 90;
+                        $degrees = 270;
                         // Загрузка изображения
                         $source = imagecreatefromjpeg($filename);
                         // Поворот
