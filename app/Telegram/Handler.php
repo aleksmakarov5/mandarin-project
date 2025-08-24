@@ -42,7 +42,6 @@ class Handler extends WebhookHandler
     }
     public function handleChatMessage(Stringable $text): void
     {
-        file_put_contents('data.txt', json_encode($this->request->message));
 
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
         // $this->chat->message("{$telegram_action->action}")->send();
@@ -144,16 +143,17 @@ class Handler extends WebhookHandler
 
                         // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
                         header("Content-type: {$size['mime']}");
-                        $exif = "";
+                        $exif = exif_read_data($filename);
+                        file_put_contents('data.txt', json_encode($exif));
+
                         // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
                         list($width_orig, $height_orig) = getimagesize($filename);
 
                         if ($width && ($width_orig < $height_orig)) {
-                            $exif = 1;
+
                             $width = ($height / $height_orig) * $width_orig;
                         } else {
                             $height = ($width / $width_orig) * $height_orig;
-                            $exif = 2;
                         }
 
                         // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
@@ -183,7 +183,7 @@ class Handler extends WebhookHandler
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}\n{$exif}")
+                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
                             ->keyboard(
                                 Keyboard::make()
                                     ->buttons($keyboard)
