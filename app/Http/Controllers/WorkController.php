@@ -395,7 +395,7 @@ class WorkController extends Controller
 
                 // echo $work_array[$i] . '<br />';
             }
-            // dd($works);
+            dd($works);
             session(['works_paint' => $works]);
             // echo $SparePart_array[$i] . '<br />';
 
