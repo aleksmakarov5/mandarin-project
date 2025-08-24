@@ -171,7 +171,7 @@ class WorkController extends Controller
         session(['works' => []]);
         session(['works_paint' => []]);
         $type = 0;
-        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx') {
+        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
             if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
                 $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
                 $dir = 'storage/files/' . $id;
@@ -401,6 +401,85 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
+        } else if (mb_strpos($file, 'до сотен') != 0) {
+            // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
+            // $file = str_replace("\u{A0}", ' ', $file);
+            $file = str_replace("</td>", '<br/>', $file);
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            $work_start = mb_strpos($file, 'Норматив, н-');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+            $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+            $work_array = explode('<br/>', $work);
+            // dd($work_array);
+            $j = 0;
+
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Коэфф." ||
+                    trim($work_array[$i]) == "Сумма," ||
+                    trim($work_array[$i]) == "-"
+                    ||
+                    trim($work_array[$i]) == "руб." ||
+                    trim($work_array[$i]) == "час"
+
+
+                ) {
+                } else
+
+
+                    $works[$j++] = $work_array[$i];
+                // echo $work_array[$i] . '<br />';
+            }
+            $work_start = mb_strpos($file, 'Окраска');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+            $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
+            $work_array = explode('<br/>', $work);
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "> Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Коэфф." ||
+                    trim($work_array[$i]) == "Сумма," ||
+                    trim($work_array[$i]) == "-"
+                    ||
+                    trim($work_array[$i]) == "руб." ||
+                    trim($work_array[$i]) == "час" ||
+                    trim($work_array[$i]) == "Цена ед.," ||
+                    trim($work_array[$i]) == "Норматив, н-"
+
+
+                ) {
+                } else
+
+
+                    $works[$j++] = $work_array[$i];
+                // echo $work_array[$i] . '<br />';
+            }
+            // dd($works);
+            session(['works' => $works]);
         } else {
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = preg_replace("/\u{A0}/", ' ', $file);
