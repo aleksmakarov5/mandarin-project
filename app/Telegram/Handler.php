@@ -42,8 +42,6 @@ class Handler extends WebhookHandler
     }
     public function handleChatMessage(Stringable $text): void
     {
-        // file_put_contents('data.txt', json_encode($this->message->document()->filename()));
-
         $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
         // $this->chat->message("{$telegram_action->action}")->send();
         $path = '';
@@ -127,8 +125,9 @@ class Handler extends WebhookHandler
                     } else {
                         $zip = Zip::create($zip_path);
                     }
+                    file_put_contents('data.txt', json_encode($this->message->document()));
 
-                    $filename = $this->message->date() . ".jpg";
+                    $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->get(2), $path, $filename);
 
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
