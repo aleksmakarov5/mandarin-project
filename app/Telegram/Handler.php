@@ -134,6 +134,7 @@ class Handler extends WebhookHandler
                     $filenameWithExt = $this->request->message['document']['file_name'];
                     // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                    $exif = exif_read_data($filename);
                     if ($size) {
                         Optimize::path($filename);
 
@@ -180,7 +181,7 @@ class Handler extends WebhookHandler
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}\n{$exif} \n")
                             ->keyboard(
                                 Keyboard::make()
                                     ->buttons($keyboard)
