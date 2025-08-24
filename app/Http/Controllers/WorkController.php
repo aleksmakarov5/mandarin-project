@@ -451,11 +451,13 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
+            session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окраска');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
 
             $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
+            $j = 0;
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
             $work_array = explode('<br/>', $work);
@@ -477,7 +479,13 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "руб." ||
                     trim($work_array[$i]) == "час" ||
                     trim($work_array[$i]) == "Цена ед.," ||
-                    trim($work_array[$i]) == "Норматив, н-"
+                    trim($work_array[$i]) == "Норматив, н-" ||
+                    mb_strpos("Наименование", $work_array[$i])  ||
+                    mb_strpos("наименование", $work_array[$i])  ||
+                    trim($work_array[$i]) == "Коэфф." ||
+                    trim($work_array[$i]) == "Сумма, руб." ||
+                    trim($work_array[$i]) == ""
+
 
 
                 ) {
@@ -487,8 +495,8 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
-            dd($works);
-            session(['works' => $works]);
+            // dd($works);
+            session(['works_paint' => $works]);
         } else {
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = preg_replace("/\u{A0}/", ' ', $file);
