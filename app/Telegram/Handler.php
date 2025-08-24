@@ -169,6 +169,7 @@ class Handler extends WebhookHandler
                         unlink($filename);
                         $filename = $img_name;
                         if (isset($exif['Orientation'])) {
+                            $degrees = 0;
                             if ($exif['Orientation'] == 6) {
                                 $degrees = 270;
                             }
