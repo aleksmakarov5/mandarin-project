@@ -134,9 +134,9 @@ class Handler extends WebhookHandler
                     $filenameWithExt = $this->request->message['document']['file_name'];
                     // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-                    $exif = exif_read_data($filename);
+                    // $exif = exif_read_data($filename);
                     if ($size) {
-                        Optimize::path($filename);
+                        // Optimize::path($filename);
 
                         // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
                         $width = 800;
@@ -164,7 +164,7 @@ class Handler extends WebhookHandler
                         imagejpeg($image_p, $img_name, 60);
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                        unlink($filename);
+                        // unlink($filename);
                         $filename = $img_name;
                         $degrees = 270;
                         // Загрузка изображения
