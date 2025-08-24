@@ -417,7 +417,7 @@ class WorkController extends Controller
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
             $work_array = explode('<br/>', $work);
-            dd($work_array);
+            // dd($work_array);
             $j = 0;
 
             for ($i = 0; $i < count($work_array) - 1; $i++) {
@@ -437,7 +437,11 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "-"
                     ||
                     trim($work_array[$i]) == "руб." ||
-                    trim($work_array[$i]) == "час"
+                    trim($work_array[$i]) == "час" ||
+                    trim($work_array[$i]) == "-час" ||
+                    trim($work_array[$i]) == "Коэфф." ||
+                    trim($work_array[$i]) == "Сумма, руб." ||
+                    trim($work_array[$i]) == ""
 
 
                 ) {
