@@ -225,19 +225,19 @@ class Handler extends WebhookHandler
                                     'location' => $zip_name,
                                 ]
                             );
+                        } else {
+                            $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                            $message = $this->chat->message("Неверный формат! Отправьте изображения без сжатия или нажмите ГОТОВО для отмены")
+                                ->keyboard(
+                                    Keyboard::make()
+                                        ->buttons($keyboard)
+                                )
+                                ->send();
+                            $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+
+                            $this->chat->deleteMessage($this->message->id())->send();
                         }
-                    } else {
-                        $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
-
-                        $message = $this->chat->message("Неверный формат! Отправьте изображения без сжатия или нажмите ГОТОВО для отмены")
-                            ->keyboard(
-                                Keyboard::make()
-                                    ->buttons($keyboard)
-                            )
-                            ->send();
-                        $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-
-                        $this->chat->deleteMessage($this->message->id())->send();
                     }
                 } else {
                     $location = '';
