@@ -147,14 +147,10 @@ class Handler extends WebhookHandler
                         // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
                         list($width_orig, $height_orig) = getimagesize($filename);
 
-                        if (
-                            ($width_orig < $height_orig)
-                        ) {
+                        if ($width && ($width_orig < $height_orig)) {
                             $width = ($height / $height_orig) * $width_orig;
-                            $height = ($height / $height_orig) * $height_orig;
                         } else {
                             $height = ($width / $width_orig) * $height_orig;
-                            $width = ($width / $width_orig) * $width_orig;
                         }
 
                         // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
@@ -164,7 +160,7 @@ class Handler extends WebhookHandler
 
                         // СОЗДАЁМ
                         $img_name =  $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        imagejpeg($image_p, $img_name, 100);
+                        imagejpeg($image_p, $img_name, 80);
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
@@ -175,7 +171,7 @@ class Handler extends WebhookHandler
                         // Поворот
                         $rotate = imagerotate($source, $degrees, 0);
                         // Вывод
-                        imagejpeg($rotate);
+                        imagejpeg($rotate, $img_name, 100);
                         // Высвобождение памяти
                         imagedestroy($source);
                         imagedestroy($rotate);
