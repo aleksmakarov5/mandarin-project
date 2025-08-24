@@ -436,7 +436,7 @@ class SparePartController extends Controller
         $file = str_replace("износом,<br/>Рубли", 'износом, Рубли', $file);
 
         $file = html_entity_decode($file);
-        dd($file);
+        // dd($file);
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if ((mb_strpos($file, 'Ананьин Михаил') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
@@ -520,7 +520,7 @@ class SparePartController extends Controller
 
             }
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'округленно до сотен') != 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
