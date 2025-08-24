@@ -144,7 +144,7 @@ class Handler extends WebhookHandler
                         // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
                         header("Content-type: {$size['mime']}");
                         $exif = exif_read_data($filename);
-                        file_put_contents('data.txt', json_encode($exif));
+                        file_put_contents('data.txt', json_encode($exif['Orientation']));
 
                         // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
                         list($width_orig, $height_orig) = getimagesize($filename);
