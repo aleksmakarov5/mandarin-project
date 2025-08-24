@@ -168,25 +168,26 @@ class Handler extends WebhookHandler
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
                         $filename = $img_name;
-                        if (isset($exif['Orientation']))
+                        if (isset($exif['Orientation'])) {
                             if ($exif['Orientation'] == 6) {
                                 $degrees = 270;
-                                // Загрузка изображения
-                                $source = imagecreatefromjpeg($filename);
-                                // Поворот
-                                $rotate = imagerotate($source, $degrees, 0);
-                                // Вывод
-                                imagejpeg($rotate, $img_name, 100);
-                                // Высвобождение памяти
-                                imagedestroy($source);
-                                imagedestroy($rotate);
                             }
+                            // Загрузка изображения
+                            $source = imagecreatefromjpeg($filename);
+                            // Поворот
+                            $rotate = imagerotate($source, $degrees, 0);
+                            // Вывод
+                            imagejpeg($rotate, $img_name, 100);
+                            // Высвобождение памяти
+                            imagedestroy($source);
+                            imagedestroy($rotate);
+                        }
                         $telegram_action->count = $telegram_action->count + 1;
                         $telegram_action->save();
                         $keyboard = [];
                         $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                        $message = $this->chat->message("Получено изображений: {$telegram_action->count}\n{$exif['Orientation']}")
                             ->keyboard(
                                 Keyboard::make()
                                     ->buttons($keyboard)
