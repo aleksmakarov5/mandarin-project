@@ -457,6 +457,8 @@ class WorkController extends Controller
 
 
             $work_end = mb_strpos($file, 'стоимость окраски/контроля:');
+            $work_array = [];
+            $works = [];
             $j = 0;
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
