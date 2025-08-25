@@ -198,6 +198,7 @@ Route::middleware("auth:web")->group(
             ->name('combine_fin');
         Route::get('application/{id}/doc_load', [ApplicationController::class, 'doc_load'])->name('application.doc_load');
         Route::get('application/{id}/tg_load', [ApplicationController::class, 'tg_load'])->name('application.tg_load');
+        Route::get('application/{id}/sms_send', [ApplicationController::class, 'sms_send'])->name('application.sms_send');
         Route::post('application/{id}/data_load', [ApplicationController::class, 'data_load'])->name('application.data_load');
         Route::post('application/{id}/data_save', [ApplicationController::class, 'data_save'])->name('application.data_save');
 
