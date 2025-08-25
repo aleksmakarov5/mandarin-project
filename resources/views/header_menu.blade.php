@@ -216,8 +216,8 @@ foreach ($chats as $chat) {
                                 onclick="if (!confirm('Точно удалить заявку №{{ $app->id }}?')) return false"><img
                                     src="/storage/img/delete.png" width="30" alt="Удалить"></a>
                             <a href="/applications/{{ $app->id }}/move_temp" class="msg_but"
-                                title="Перенести во временные"
-                                onclick="if (!confirm('Переместить во временные заявку №{{ $app->id }}?')) return false"><img
+                                title="Перенести в корзину"
+                                onclick="if (!confirm('Переместить в корзину заявку №{{ $app->id }}?')) return false"><img
                                     src="/storage/img/temp.png" width="30" alt="Удалить">
                                     @endcan
                             </a>
