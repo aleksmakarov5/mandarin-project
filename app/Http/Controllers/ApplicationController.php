@@ -2460,7 +2460,7 @@ class ApplicationController extends Controller
             ->replyKeyboard(
                 ReplyKeyboard::make()->buttons([
                     ReplyButton::make('оформить заказ')->webApp(
-                        'https://ya.ru'
+                        'https://sms://+79855555555?body=привет%20мир'
                     ),
                 ])
                     ->resize()
