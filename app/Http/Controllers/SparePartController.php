@@ -593,7 +593,7 @@ class SparePartController extends Controller
                 }
                 // dd($SparePart_array);
                 $id_ic = $app->id_insuranceCompany;
-            } else if (($app->id_insuranceCompany == 7) || ($app->id_insuranceCompany == 3)) { {
+            } else if (($app->id_insuranceCompany == 3)) { {
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
                     if ($SparePart_start) {
                         // echo $SparePart_start . 'Раб_Старт<br /><br />';
@@ -810,6 +810,39 @@ class SparePartController extends Controller
                             }
                         }
                     }
+                }
+            } else if (($app->id_insuranceCompany == 7)) { {
+                    // dd($file);
+                    $SparePart_start = mb_strpos($file, 'износом, Рубли');
+                    if ($SparePart_start) {
+                        // echo $SparePart_start . 'Раб_Старт<br /><br />';
+                        $iskl = $request['iskl'];
+                        if ($request['reset']) {
+                            $iskl = [];
+                        }
+
+                        $SparePart_end = mb_strpos($file, 'ИТОГО');
+                        // echo $SparePart_end . 'Раб_фин<br /><br />';
+                        $SparePart = mb_substr($file, $SparePart_start + 14, $SparePart_end - $SparePart_start + 14);
+                        $SparePart_array = explode('<br/>', $SparePart);
+                        $j = 0;
+                        $reset = 0;
+                        $SpareParts = [];
+                        for ($i = 0; $i < count($SparePart_array); $i++) {
+                            if ($request['iskl']) {
+                                foreach ($iskl as $key => $value) {
+                                    if ($i == $value) {
+                                        $i++;
+                                        $reset++;
+                                    }
+                                }
+                            }
+                            $SpareParts[$j++] = $SparePart_array[$i];
+                            // echo $SparePart_array[$i] . '<br />';
+                        }
+                        $id_ic = $app->id_insuranceCompany;
+                    }
+                    // dd($SpareParts);
                 }
             } else if ($app->id_insuranceCompany == 4) {
                 // dd($file);
