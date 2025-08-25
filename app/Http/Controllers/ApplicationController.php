@@ -2452,17 +2452,12 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->message('--------------- ')
+        $message = $new_chat->html("<a href='https://mandarin-portal.ru/application/{$application->id}/sms_send_result'>Отправить сообщение</a>")
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
             // )
-            ->keyboard(Keyboard::make()
-                ->buttons([
-                    Button::make("Отправить сообщение")->webApp("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
 
-
-                ]))
             ->send();
         $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
         if ($user->message_id)
