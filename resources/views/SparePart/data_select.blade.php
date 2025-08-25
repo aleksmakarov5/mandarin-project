@@ -31,7 +31,19 @@
                     <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
                 @endfor
             @endif
-            @if ($id_ic == 3 || $id_ic == 7)
+            @if ($id_ic == 7)
+                @for ($i = 1, $j = 1; $i < count($SpareParts) - 8; $i += 8, $j++)
+                    <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
+                    <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
+                    <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
+                    <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
+                    <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
+                    <input type="hidden" name="part_number[{{ $j }}]"
+                        value="@php echo mb_strpos($SpareParts[$i + 1], 'БН') || mb_strpos($SpareParts[$i + 1], 'бн') || $SpareParts[$i + 1] == 'БН' ? $SpareParts[$i + 1] . " " . $j : $SpareParts[$i + 1] @endphp">
+                    <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
+                @endfor
+            @endif
+            @if ($id_ic == 3 )
                 @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                     <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i] }}">
                     <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
