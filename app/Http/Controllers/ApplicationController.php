@@ -2452,14 +2452,14 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->message('<a href="sms://+79855555555?body=привет%20мир">ОТправить SMS</a> ')
+        $message = $new_chat->message('--------------- ')
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
             // )
             ->keyboard(Keyboard::make()
                 ->buttons([
-                    Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
+                    Button::make("Отправить сообщение")->webApp("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
 
 
                 ]))

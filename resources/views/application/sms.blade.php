@@ -7,6 +7,6 @@
     <title>Document</title>
 </head>
 <body>
-<a href="sms://+79855555555?body=привет%20мир">ОТправить SMS</a>
+<a href="sms://+79815609072;?&body=привет%20мир">Отправить SMS</a>
 </body>
 </html>
