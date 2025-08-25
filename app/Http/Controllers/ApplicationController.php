@@ -2460,7 +2460,7 @@ class ApplicationController extends Controller
             ->replyKeyboard(
                 ReplyKeyboard::make()->buttons([
                     ReplyButton::make('оформить заказ')->webApp(
-                        'ya.ru'
+                        'https://ya.ru'
                     ),
                 ])
                     ->resize()
