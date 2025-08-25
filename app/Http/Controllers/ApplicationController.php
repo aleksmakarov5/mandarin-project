@@ -2460,7 +2460,7 @@ class ApplicationController extends Controller
 
             ->keyboard(Keyboard::make()
                 ->buttons([
-                    Button::make("Открыть заявку")->url("sms://+79815609071;?&body=привет%20мир"),
+                    Button::make("Открыть заявку")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
 
                 ]))
             ->send();
