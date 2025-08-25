@@ -46,6 +46,8 @@ use App\Models\telegram_action;
 use App\Models\city;
 use App\Models\user_filter;
 use Illuminate\Support\Number;
+use DefStudio\Telegraph\Keyboard\ReplyKeyboard;
+use DefStudio\Telegraph\Keyboard\ReplyButton;
 
 // use App\Exports\UsersExport;
 // use Maatwebsite\Excel\Facades\Excel;
@@ -2455,7 +2457,14 @@ class ApplicationController extends Controller
             //     Keyboard::make()
             //         ->buttons($keyboard)
             // )
-            ->send();
+            ->replyKeyboard(
+                ReplyKeyboard::make()->buttons([
+                    ReplyButton::make('оформить заказ')->webApp(
+                        'sms://+79855555555?body=привет%20мир'
+                    ),
+                ])
+                    ->resize()
+            )->send();
         $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
         if ($user->message_id)
             $new_chat->deleteMessage($user->message_id)->send();
