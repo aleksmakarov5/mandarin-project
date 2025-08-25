@@ -2450,7 +2450,7 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->html("<a href='tel:+78002220535'>Позвоните нам нам</a> \n ")
+        $message = $new_chat->html('<a href="sms://+79855555555?body=привет%20мир">ОТправить SMS</a> ')
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
