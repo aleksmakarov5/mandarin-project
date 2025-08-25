@@ -2423,7 +2423,7 @@ class ApplicationController extends Controller
 
         $phone = str_replace(' ', '', $phone);
         $href = "sms://" . $phone . ";?&body=" . $text;
-        $text = "<a href='" . $href . "'>Отправить собщение</a>";
+        $text = "<a href='" . $href . "'> Отправить собщение </a>";
         // dd($text);
 
 
