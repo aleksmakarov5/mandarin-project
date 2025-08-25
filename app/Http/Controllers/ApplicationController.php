@@ -2457,14 +2457,13 @@ class ApplicationController extends Controller
             //     Keyboard::make()
             //         ->buttons($keyboard)
             // )
-            ->replyKeyboard(
-                ReplyKeyboard::make()->buttons([
-                    ReplyButton::make('оформить заказ')->webApp(
-                        'sms://+79855555555?body=привет%20мир'
-                    ),
-                ])
-                    ->resize()
-            )->send();
+            ->keyboard(Keyboard::make()
+                ->buttons([
+                    Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
+
+
+                ]))
+            ->send();
         $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
         if ($user->message_id)
             $new_chat->deleteMessage($user->message_id)->send();
@@ -2473,6 +2472,14 @@ class ApplicationController extends Controller
 
 
         return redirect()->back();
+    }
+    public function sms_send_result($id)
+    {
+
+
+
+
+        return view('application.sms', ['id' => $id]);
     }
 
     public function data_load(Request $request, $id)
