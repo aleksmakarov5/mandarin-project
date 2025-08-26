@@ -2479,7 +2479,7 @@ class ApplicationController extends Controller
             $our_company->name . ' в СТОА расположенный по адресу: ' .
             $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
             $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . '.' . "\n" . ' Режим работы СТОА: ' . $service->mode . '.';
-        $text = htmlentities($text);
+        // $text = htmlentities($text);
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
         $phone = str_replace(')', '', $phone);
