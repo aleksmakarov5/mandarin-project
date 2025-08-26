@@ -2473,7 +2473,7 @@ class ApplicationController extends Controller
         else
             $text = 'Уважаемый ';
 
-        $text =  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' . $our_company->name . ' в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
+        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' . $our_company->name . ' в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
         $phone = str_replace(')', '', $phone);
