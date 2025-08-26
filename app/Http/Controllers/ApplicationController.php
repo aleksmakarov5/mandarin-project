@@ -2395,8 +2395,13 @@ class ApplicationController extends Controller
     }
     public function sms_send($id)
     {
+        $application = application::where('id', '=', $id)->first();
+        $service = service::where('id', '=', $application->id_service)->first();
+        $usr = User::where('id', '=', $service->id_tg)->first();
 
         $new_chat = TelegraphChat::where('chat_id', '=', Auth::user()->telegram_id)->first();
+        $new_chat1 = TelegraphChat::where('chat_id', '=', $usr->telegram_id)->first();
+
 
         $telegram_action = telegram_action::updateOrCreate(
             ['id_chat' => Auth::user()->telegram_id],
@@ -2416,12 +2421,10 @@ class ApplicationController extends Controller
         // $i = 0;
         $text = "";
         $keyboard = [];
-        $application = application::where('id', '=', $id)->first();
         $our_company = OurCompany::join('legal_entities', 'legal_entities.id', '=', 'our_companies.id_legal')
             ->where('our_companies.id', '=', $application->our_company)
             ->select('legal_entities.name')
             ->first();
-        $service = service::where('id', '=', $application->id_service)->first();
         $ic = InsuranceCompany::where('id', '=', $application->id_insuranceCompany)->first();
         if ($application->gender)
             $text = 'Уважаемая ';
@@ -2457,7 +2460,24 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
+        // $message = $new_chat->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
+        //     // ->keyboard(
+        //     //     Keyboard::make()
+        //     //         ->buttons($keyboard)
+        //     // )
+
+        //     ->keyboard(Keyboard::make()
+        //         ->buttons([
+        //             Button::make("Отправить сообщение")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
+
+        //         ]))
+        //     ->send();
+        // $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
+        // if ($user->message_id)
+        //     $new_chat->deleteMessage($user->message_id)->send();
+        // $user->message_id = json_decode($message)->result->message_id;
+        // $user->save();
+        $message = $new_chat1->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
@@ -2469,11 +2489,10 @@ class ApplicationController extends Controller
 
                 ]))
             ->send();
-        $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
-        if ($user->message_id)
-            $new_chat->deleteMessage($user->message_id)->send();
-        $user->message_id = json_decode($message)->result->message_id;
-        $user->save();
+        if ($usr->message_id)
+            $new_chat->deleteMessage($usr->message_id)->send();
+        $usr->message_id = json_decode($message)->result->message_id;
+        $usr->save();
 
 
         return redirect()->back();
