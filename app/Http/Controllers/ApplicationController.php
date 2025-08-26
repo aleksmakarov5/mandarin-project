@@ -2478,7 +2478,7 @@ class ApplicationController extends Controller
         $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
             $our_company->name . ' в СТОА расположенный по адресу: ' .
             $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
-            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . ', ' . $service->mode . '.';
+            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . '. Режим работы СТОА: ' . $service->mode . '.';
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
         $phone = str_replace(')', '', $phone);
