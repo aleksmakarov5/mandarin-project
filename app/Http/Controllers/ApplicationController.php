@@ -172,6 +172,7 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -2439,7 +2440,7 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->message("<a href='https://mandarin-portal.ru/application/{$application->id}/sms_send_result'>Открыть</a>")
+        $message = $new_chat->message("Нажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
@@ -2447,7 +2448,7 @@ class ApplicationController extends Controller
 
             ->keyboard(Keyboard::make()
                 ->buttons([
-                    Button::make("Открыть заявку")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
+                    Button::make("Отправить сообщение")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
 
                 ]))
             ->send();
@@ -2463,7 +2464,7 @@ class ApplicationController extends Controller
     public function sms_send_result($id)
     {
         $application = application::where('id', '=', $id)->first();
-        $our_company = our_company::join('legal_entities', 'legal_entities.id', '=', 'our_companies.id_legal')
+        $our_company = OurCompany::join('legal_entities', 'legal_entities.id', '=', 'our_companies.id_legal')
             ->where('our_companies.id', '=', $application->our_company)
             ->first();
         if ($application->gender)
