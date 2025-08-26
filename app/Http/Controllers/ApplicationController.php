@@ -2415,6 +2415,22 @@ class ApplicationController extends Controller
         // $i = 0;
         $text = "";
         $keyboard = [];
+        $application = application::where('id', '=', $id)->first();
+        $our_company = OurCompany::join('legal_entities', 'legal_entities.id', '=', 'our_companies.id_legal')
+            ->where('our_companies.id', '=', $application->our_company)
+            ->select('legal_entities.name')
+            ->first();
+        $service = service::where('id', '=', $application->id_service)->first();
+        $ic = InsuranceCompany::where('id', '=', $application->id_insuranceCompany)->first();
+        if ($application->gender)
+            $text = 'Уважаемая ';
+        else
+            $text = 'Уважаемый ';
+
+        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
+            $our_company->name . ' в СТОА расположенный по адресу: ' .
+            $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
+            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . '. Режим работы СТОА: ' . $service->mode . '.';
         // $dir = 'storage/files/' . $id;
         // dd($text);
 
@@ -2440,7 +2456,7 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        $message = $new_chat->message("Нажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
+        $message = $new_chat->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
             // ->keyboard(
             //     Keyboard::make()
             //         ->buttons($keyboard)
