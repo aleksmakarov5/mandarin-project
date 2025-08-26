@@ -46,7 +46,7 @@ class Handler extends WebhookHandler
             $telegram_action = telegram_action::where('id_chat', '=', $this->chat->chat_id)->first();
             // $this->chat->message("{$telegram_action->action}")->send();
             $path = '';
-            if ($telegram_action->action == 1 || $telegram_action->action == 35) {
+            if ($telegram_action->action == 1) {
 
                 $path = "storage/files/" . $telegram_action->id_application . '/';
                 $name = '';

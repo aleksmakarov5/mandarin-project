@@ -2408,13 +2408,14 @@ class ApplicationController extends Controller
             [
                 'id_chat' => $usr->telegram_id,
                 'id_application' => $id,
-                'action' => 35,
-                'number' => 0,
+                'action' => 1,
+                'number' => 35,
                 'id_message' => 0,
                 'count' => 0,
                 'message_id' => 0
             ]
         );
+        // dd($telegram_action);
         // $documents = DB::table('attachments')
         //     ->where('id_application', '=', $id)
         //     ->get()->all();
