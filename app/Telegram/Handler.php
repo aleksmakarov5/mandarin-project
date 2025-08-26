@@ -258,6 +258,10 @@ class Handler extends WebhookHandler
                             $name = "В/У (лицевая сторона)";
                             $location = "В/У_(лицевая_сторона)";
                             break;
+                        case 35:
+                            $name = "СМС-приглашение";
+                            $location = "СМС-приглашение";
+                            break;
                     }
                     $location = $location . ".jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);

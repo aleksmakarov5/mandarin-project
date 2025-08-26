@@ -2404,11 +2404,11 @@ class ApplicationController extends Controller
 
 
         $telegram_action = telegram_action::updateOrCreate(
-            ['id_chat' => Auth::user()->telegram_id],
+            ['id_chat' => $usr->telegram_id],
             [
-                'id_chat' => Auth::user()->telegram_id,
+                'id_chat' => $usr->telegram_id,
                 'id_application' => $id,
-                'action' => 1,
+                'action' => 35,
                 'number' => 0,
                 'id_message' => 0,
                 'count' => 0,
