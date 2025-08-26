@@ -2468,7 +2468,7 @@ class ApplicationController extends Controller
             ->where('our_companies.id', '=', $application->our_company)
             ->select('legal_entities.name')
             ->first();
-        $service = service::where('id', '=', $application->our_company)->first();
+        $service = service::where('id', '=', $application->id_service)->first();
         $ic = InsuranceCompany::where('id', '=', $application->id_insuranceCompany)->first();
         if ($application->gender)
             $text = 'Уважаемая ';
