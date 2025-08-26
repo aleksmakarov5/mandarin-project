@@ -1834,7 +1834,8 @@ class ApplicationController extends Controller
                 'id_city' => 'nullable|integer',
                 'pred' => 'nullable|string',
                 'pred_phone' => 'nullable|string',
-                'ub_type' => 'nullable'
+                'ub_type' => 'nullable',
+                'gender' => 'nullable'
 
             ]);
             if (isset($data['start_date'])) {

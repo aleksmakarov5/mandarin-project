@@ -103,7 +103,24 @@
     <input type="text" name="ClientName" id="ClientName" class="form-cont" value="{{ $application->ClientName }}">
     <div class='lbl'><label for="ClientName">ФИО клиента</label></div>
 </div>
+<div class='lbl'>
+    <label for="id_spm">Пол клиента</label>
+</div>
+<div class="form-float">
 
+    <select class="form-cont" id="gender" name="gender">
+
+        <option value="0" @if (0 === $application->gender) selected @endif>
+            Мужской
+        </option>
+        <option value="1" @if (1 === $application->gender) selected @endif>
+            Женскиий
+        </option>
+
+
+    </select>
+
+</div>
 <div class="form-float @error('ClientPhone')
     alert alert-danger
 @enderror">
