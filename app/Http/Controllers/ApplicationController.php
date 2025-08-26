@@ -2415,19 +2415,6 @@ class ApplicationController extends Controller
         $text = "";
         $keyboard = [];
         // $dir = 'storage/files/' . $id;
-        $application = application::where('id', '=', $id)->first();
-        $text = 'Уважаемая ' . $application->ClientName . ' приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ООО Мандарин Групп в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
-        $phone = $application->ClientPhone;
-        $phone = str_replace('(', '', $phone);
-        $phone = str_replace(')', '', $phone);
-
-        $phone = str_replace('-', '', $phone);
-
-        $phone = str_replace(' ', '', $phone);
-        // $href = "sms://" . $phone . ";?&body=" . $text;
-        $href = "tel:+79815609071";
-        // $href = "ya.ru";
-        $text = "<a href='" . $href . "'> Отправить собщение </a>";
         // dd($text);
 
 
@@ -2475,11 +2462,24 @@ class ApplicationController extends Controller
     }
     public function sms_send_result($id)
     {
+        $application = application::where('id', '=', $id)->first();
+        $text = 'Уважаемая ' . $application->ClientName . ' приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ООО Мандарин Групп в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
+        $phone = $application->ClientPhone;
+        $phone = str_replace('(', '', $phone);
+        $phone = str_replace(')', '', $phone);
+
+        $phone = str_replace('-', '', $phone);
+
+        $phone = str_replace(' ', '', $phone);
+        $href = "sms://" . $phone . ";?&body=" . $text;
+        // $href = "tel:+79815609071";
+        // $href = "ya.ru";
+        // $text = "<a href='" . $href . "'> Отправить собщение </a>";
 
 
 
 
-        return view('application.sms', ['id' => $id]);
+        return view('application.sms', ['id' => $id, 'href' => $href]);
     }
 
     public function data_load(Request $request, $id)
