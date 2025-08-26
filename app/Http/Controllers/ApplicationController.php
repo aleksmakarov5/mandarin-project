@@ -2113,6 +2113,12 @@ class ApplicationController extends Controller
         }
         // dd($messages);
         // $application = application::findOrFail($id);
+        $attachments = attachment::where('id_application', '=', $id)
+            ->where('sended', '=', null)
+            ->get()->all();
+        foreach ($attachments as $attachment) {
+            $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
+        }
         try {
             $message_id = message::where('application_id', '=', $id)->first()->id;
             $subject =
@@ -2124,17 +2130,12 @@ class ApplicationController extends Controller
                 ->email;
             // echo $to;
 
-            $attachments = attachment::where('id_application', '=', $id)
-                ->where('sended', '=', null)
-                ->get()->all();
-            foreach ($attachments as $attachment) {
-                $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
-            }
+
         } catch (\Exception $e) {
             $message_id = 0;
             $subject = '';
             $to_email = '';
-            $attachments = [];
+            // $attachments = [];
         }
         foreach ($messages as $message) {
             if (isset($message->application_id)) {
