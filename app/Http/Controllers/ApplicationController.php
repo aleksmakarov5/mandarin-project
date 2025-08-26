@@ -2461,23 +2461,23 @@ class ApplicationController extends Controller
         // $keyboard[$i++] = Button::make("Распознать данные")->action("doc_ocr")->param('id', "{$id}");
 
 
-        // $message = $new_chat->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
-        //     // ->keyboard(
-        //     //     Keyboard::make()
-        //     //         ->buttons($keyboard)
-        //     // )
+        $message = $new_chat->message("{$text} ")
+            // ->keyboard(
+            //     Keyboard::make()
+            //         ->buttons($keyboard)
+            // )
 
-        //     ->keyboard(Keyboard::make()
-        //         ->buttons([
-        //             Button::make("Отправить сообщение")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
+            // ->keyboard(Keyboard::make()
+            //     ->buttons([
+            //         Button::make("Отправить сообщение")->url("https://mandarin-portal.ru/application/{$application->id}/sms_send_result"),
 
-        //         ]))
-        //     ->send();
-        // $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
-        // if ($user->message_id)
-        //     $new_chat->deleteMessage($user->message_id)->send();
-        // $user->message_id = json_decode($message)->result->message_id;
-        // $user->save();
+            //     ]))
+            ->send();
+        $user = User::where('telegram_id', '=', Auth::user()->telegram_id)->first();
+        if ($user->message_id)
+            $new_chat->deleteMessage($user->message_id)->send();
+        $user->message_id = json_decode($message)->result->message_id;
+        $user->save();
         $message = $new_chat1->message("{$text} \n\n\nНажмите на кнопку для отправки сообщения. После отправки сделайте скриншот экрана и отправьте ответным сообщением в этот чат.")
             // ->keyboard(
             //     Keyboard::make()
