@@ -7,7 +7,7 @@
     <title>Отправка СМС</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 </head>
-<body>
-<a class = "nav-link" href="{{$href}}">---Отправить SMS---</a>
+<body><center><a class="nav-link" href="{{$href}}">---Отправить SMS---</a></center>
+
 </body>
 </html>
