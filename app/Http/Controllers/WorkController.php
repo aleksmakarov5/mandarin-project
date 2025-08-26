@@ -301,7 +301,7 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'одометр') != 0) {
+        } else if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
             $file = str_replace("</td>", '<br/>', $file);
@@ -594,14 +594,15 @@ class WorkController extends Controller
                             trim($work_array[$i]) == "Цена" ||
                             trim($work_array[$i]) == "Нормо-час" ||
                             trim($work_array[$i]) == "Кол-во" ||
-                            trim($work_array[$i]) == "Сумма"
+                            trim($work_array[$i]) == "Сумма" ||
+                            trim($work_array[$i]) == ""
 
 
 
                         ) {
                         } else {
                             if (($i - 3) % 5 != 0)
-                                $works[$j++] = $work_array[$i];
+                                $works[$j++] = trim($work_array[$i]);
                         }
 
 
@@ -609,15 +610,15 @@ class WorkController extends Controller
                     }
 
 
-                    // dd($works, $work_array);
+
                     session(['works' => $works]);
                     $work_start = mb_strpos($file, 'Окрасочные работы, рубли');
                     // echo $work_start . 'Раб_Старт<br /><br />';
                     $work = '';
                     if ($work_start) {
-                        $work_end = mb_strpos($file, 'www.autoins.ru');
+                        $work_end = mb_strpos($file, 'окрасочных');
 
-                        $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 157);
+                        $work = mb_substr($file, $work_start + 101, $work_end - $work_start - 137);
                     }
 
                     $work_array = [];
@@ -638,14 +639,15 @@ class WorkController extends Controller
                             trim($work_array[$i]) == "Цена" ||
                             trim($work_array[$i]) == "Нормо-час" ||
                             trim($work_array[$i]) == "Кол-во" ||
-                            trim($work_array[$i]) == "Сумма"
+                            trim($work_array[$i]) == "Сумма" ||
+                            trim($work_array[$i]) == ""
 
 
 
                         ) {
                         } else {
                             if (($i - 3) % 5 != 0)
-                                $works[$j++] = $work_array[$i];
+                                $works[$j++] = trim($work_array[$i]);
                         }
 
 

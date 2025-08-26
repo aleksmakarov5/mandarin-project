@@ -478,7 +478,7 @@ class SparePartController extends Controller
                 // dd($SpareParts);
                 // dd($SparePart_array);
             }
-        } else if (mb_strpos($file, 'одометр') != 0) {
+        } else if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -596,6 +596,7 @@ class SparePartController extends Controller
             } else if (($app->id_insuranceCompany == 3)) { {
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
                     if ($SparePart_start) {
+
                         // echo $SparePart_start . 'Раб_Старт<br /><br />';
                         $iskl = $request['iskl'];
                         if ($request['reset']) {
@@ -625,6 +626,7 @@ class SparePartController extends Controller
                     } else {
                         $SparePart_start = mb_strpos($file, 'износом');
                         if ($SparePart_start) {
+                            // dd($SparePart_start);
                             // echo $SparePart_start . 'Раб_Старт<br /><br />';
                             $iskl = $request['iskl'];
                             if ($request['reset']) {
@@ -639,6 +641,7 @@ class SparePartController extends Controller
                             $reset = 0;
                             $SpareParts = [];
                             for ($i = 0; $i < count($SparePart_array); $i++) {
+
                                 if ($request['iskl']) {
                                     foreach ($iskl as $key => $value) {
                                         if ($i == $value) {
@@ -647,7 +650,8 @@ class SparePartController extends Controller
                                         }
                                     }
                                 }
-                                $SpareParts[$j++] = $SparePart_array[$i];
+                                if (trim($SparePart_array[$i]) != "")
+                                    $SpareParts[$j++] = $SparePart_array[$i];
                                 // echo $SparePart_array[$i] . '<br />';
                             }
 
