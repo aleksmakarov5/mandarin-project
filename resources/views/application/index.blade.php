@@ -109,6 +109,16 @@
             </th>
         </tr>
         <tr>
+            <th>Пол</th>
+            <th>
+                @if ($application->gender == 0)
+                    Мужской
+                @else
+                    Женский
+                @endif
+            </th>
+        </tr>
+        <tr>
             <th>Номер телефона клиента</th>
             <th>
                 {{ $application->ClientPhone }}
