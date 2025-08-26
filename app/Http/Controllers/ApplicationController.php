@@ -2463,7 +2463,15 @@ class ApplicationController extends Controller
     public function sms_send_result($id)
     {
         $application = application::where('id', '=', $id)->first();
-        $text = 'Уважаемая ' . $application->ClientName . ' приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ООО Мандарин Групп в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
+        $our_company = our_company::join('legal_entities', 'legal_entities.id', '=', 'our_companies.id_legal')
+            ->where('our_companies.id', '=', $application->our_company)
+            ->first();
+        if ($application->gender)
+            $text = 'Уважаемая ';
+        else
+            $text = 'Уважаемый ';
+
+        $text .=  $application->ClientName != "" ? $application->ClientName : 'клиент' . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' . $our_company->name . ' в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
         $phone = str_replace(')', '', $phone);
