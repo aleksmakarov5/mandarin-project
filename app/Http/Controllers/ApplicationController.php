@@ -2171,6 +2171,9 @@ class ApplicationController extends Controller
                     $location = isset($loc->location) ? $loc->location : '';
                     $body = str_replace('image00' . $i . '.gif', $location, $body);
                     $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                    $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                    $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
+                    $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
                 }
                 $message->body = $body;
             }
