@@ -450,8 +450,8 @@ class MainController extends Controller
         // dd($document);
         //return view('doc_edit', ['document' => $document,'id' => $id, 'doc_id' => $doc_id]);
         $filename = $document_edit->file_name;
-        $doc_ext = mb_substr($filename, mb_strripos($filename, '.') + 1, mb_strlen($filename) - mb_strripos($filename, '.'));
-        $doc_name = mb_substr($filename, 0, mb_strlen($filename) - mb_strlen($doc_ext) - 1);
+        $doc_ext = pathinfo($filename, PATHINFO_EXTENSION);
+        $doc_name = pathinfo($filename, PATHINFO_FILENAME);
         return view('document', ['document' => $document, 'doc_name' => $doc_name, 'doc_ext' => $doc_ext, 'document_edit' => $document_edit, 'doc_statuses' => $doc_statuses->all(), 'def' => $def->def, 'application' => $application], ['id' => $id]);
     }
     public function doc_update(Request $request, $id, $doc_id)
