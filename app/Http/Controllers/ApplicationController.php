@@ -2468,12 +2468,16 @@ class ApplicationController extends Controller
             ->where('our_companies.id', '=', $application->our_company)
             ->select('legal_entities.name')
             ->first();
+        $service = service::where('id', '=', $application->our_company)->first();
         if ($application->gender)
             $text = 'Уважаемая ';
         else
             $text = 'Уважаемый ';
 
-        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' . $our_company->name . ' в СТОА расположенный по адресу: Котлас, Ленина ул, д. 180, флигель 1, для проведения восстановительного ремонта по направлению ' . $application->numberInsuranceCompanyApplication . ' выданному 24 декабря 2024 САО ВСК, режим работы СТОА понедельник-пятница с 10-18, обед 13 -14.';
+        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
+            $our_company->name . ' в СТОА расположенный по адресу: ' .
+            $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
+            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ', ' . $service->mode . '.';
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
         $phone = str_replace(')', '', $phone);
