@@ -2475,10 +2475,10 @@ class ApplicationController extends Controller
         else
             $text = 'Уважаемый ';
 
-        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '!<br> Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
+        $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '!' . "\n" . ' Приглашаем вас на ремонт вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
             $our_company->name . ' в СТОА расположенный по адресу: ' .
             $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
-            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . '.<br> Режим работы СТОА: ' . $service->mode . '.';
+            $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? $application->napr_date : '') . ' ' . $ic->address . '.' . "\n" . ' Режим работы СТОА: ' . $service->mode . '.';
         $text = htmlentities($text);
         $phone = $application->ClientPhone;
         $phone = str_replace('(', '', $phone);
@@ -2488,7 +2488,7 @@ class ApplicationController extends Controller
 
         $phone = str_replace(' ', '', $phone);
         $href = "sms://" . $phone . ";?&body=" . $text;
-        // dd($href);
+        dd($href);
         // $href = "tel:+79815609071";
         // $href = "ya.ru";
         // $text = "<a href='" . $href . "'> Отправить собщение </a>";
