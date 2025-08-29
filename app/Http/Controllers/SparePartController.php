@@ -518,13 +518,13 @@ class SparePartController extends Controller
                         }
                     }
                 }
-                if (
-                    mb_strpos($SparePart_array[$i], '%')
-                    || mb_strpos($SparePart_array[$i], 'скидки')
-                    || $SparePart_array[$i] == ""
-                ) {
-                } else
-                    $SpareParts[$j++] = $SparePart_array[$i];
+                // if (
+                //     mb_strpos($SparePart_array[$i], '%')
+                //     || mb_strpos($SparePart_array[$i], 'скидки')
+                //     || $SparePart_array[$i] == ""
+                // ) {
+                // } else
+                $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
 
             }
