@@ -104,6 +104,7 @@ class SparePartController extends Controller
         $delta_full = [];
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
+            $sparepart->price_ic_full = $sparepart->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
             if (str2number($sparepart->price_sto) == 0)
                 $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
@@ -483,13 +484,15 @@ class SparePartController extends Controller
             // $file = str_replace("\u{A0}", ' ', $file);
 
             $file = str_replace("</td>", '<br/>', $file);
+            // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
+
 
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
             // dd($file);
             $type = 2;
-            $SparePart_start = mb_strpos($file, '№ каталога');
+            $SparePart_start = mb_strpos($file, 'каталога');
 
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
             $iskl = $request['iskl'];
@@ -499,7 +502,7 @@ class SparePartController extends Controller
 
             $SparePart_end = mb_strpos($file, 'Итого');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
-            $SparePart = mb_substr($file, $SparePart_start + 16, $SparePart_end - $SparePart_start - 25);
+            $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 25);
             $SparePart_array = explode('<br/>', $SparePart);
             $j = 0;
             $reset = 0;
@@ -515,11 +518,17 @@ class SparePartController extends Controller
                         }
                     }
                 }
-                $SpareParts[$j++] = $SparePart_array[$i];
+                if (
+                    mb_strpos($SparePart_array[$i], '%')
+                    || mb_strpos($SparePart_array[$i], 'скидки')
+                    || $SparePart_array[$i] == ""
+                ) {
+                } else
+                    $SpareParts[$j++] = $SparePart_array[$i];
                 // echo $SparePart_array[$i] . '<br />';
 
             }
-            // dd($SparePart_array);
+            // dd($SpareParts);
         } else if (mb_strpos($file, 'до сотен') != 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
