@@ -84,7 +84,7 @@ class SparePartController extends Controller
             )
             ->select('spare_parts.*', 'sparepart_statuses.StatusName')
             ->get();
-
+        $app = application::where('id', '=', $spareparts[0]->id_application)->first();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         // dd($estimates);
 
@@ -104,7 +104,7 @@ class SparePartController extends Controller
         $delta_full = [];
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
-            $sparepart->price_ic_full = $sparepart->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
+            $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
             if (str2number($sparepart->price_sto) == 0)
                 $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
