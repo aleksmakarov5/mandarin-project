@@ -84,7 +84,7 @@ class SparePartController extends Controller
             )
             ->select('spare_parts.*', 'sparepart_statuses.StatusName')
             ->get();
-        $app = application::where('id', '=', $spareparts[0]->id_application)->first();
+        $app = application::where('id', '=', $id)->first();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         // dd($estimates);
 
