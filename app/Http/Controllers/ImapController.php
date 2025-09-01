@@ -910,18 +910,19 @@ class ImapController extends Controller
         $pattern = '~[a-z]+://\S+~';
 
         $str = $email->getHTMLBody();
+        $link = '';
 
         if ($num_found = preg_match_all($pattern, $str, $out)) {
             echo "FOUND " . $num_found . " LINKS:\n";
-            // dd($out[0][0]);
         }
         if (isset($out[0][0])) {
             $fin_pos = mb_strpos($out[0][0], '"');
-            if (isset($fin_pos))
+            if ($fin_pos)
                 $link = mb_substr($out[0][0], 0, $fin_pos);
             else
                 $link = $out[0][0];
             print_r($link);
+            echo $out[0][0] . '<br>';
         }
 
         $dir = 'storage/files/' . $applications->id;
@@ -931,6 +932,7 @@ class ImapController extends Controller
         if (isset($link)) {
             $base_url = 'https://cloud-api.yandex.net/v1/disk/public/resources/download?';
             $final_url = $base_url . 'public_key=' . $link;
+            echo $final_url . '<br>';
             /**
              * Получение данных ответа
              */
