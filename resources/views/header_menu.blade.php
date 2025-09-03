@@ -299,7 +299,8 @@
                                                                                     @else
                                                                                     alert alert-danger @endif
                                                                                     ">
-                                                    {{ in_money($eco_delta_full) }} руб; ({{ $proc }}%)
+                                                    {{ in_money($app->ub_type ? $eco_delta_half : $eco_delta_full) }} руб;
+                                                    ({{ $proc }}%)
                                                 </div>
                                             </td>
                                             <td>
