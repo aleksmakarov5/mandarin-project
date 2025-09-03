@@ -501,6 +501,7 @@ class Handler extends WebhookHandler
         $keyboard[$i++] = Button::make("СТС (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "32");
         $keyboard[$i++] = Button::make("СТС (обратная сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "33");
         $keyboard[$i++] = Button::make("В/У (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "34");
+        $keyboard[$i++] = Button::make("Скриншот СМС")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "35");
         $keyboard[$i++] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
         if ($app->id_status < 25) {
             $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
@@ -583,6 +584,9 @@ class Handler extends WebhookHandler
                 break;
             case 34:
                 $message = "Отправить В/У (лицевая сторона)";
+                break;
+            case 35:
+                $message = "Отправить Скриншот СМС";
                 break;
         }
 
