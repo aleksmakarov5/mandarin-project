@@ -2,6 +2,9 @@
 @section('main')
     <a href="/SparePart/{{ $id }}/doc_load" class="nav-link">Назад</a>
     <h1>Проверьте данные</h1>
+    @if ($$SpareParts==[])
+<h1>Возможно в смете нет ЗЧ или данный тип сметы не поддерживается системой. Проверьте исходный документ и при необходимости обратитесь к администратору</h1>
+    @endif
     <form action="data_save" method="post">
         @csrf
         <input type="hidden" name="id_application" value="{{ $id }}">
