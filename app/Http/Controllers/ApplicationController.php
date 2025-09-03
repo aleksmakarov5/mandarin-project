@@ -2536,7 +2536,7 @@ class ApplicationController extends Controller
             $phone1 = str_replace('-', '', $phone1);
 
             $phone1 = str_replace(' ', '', $phone1);
-            $phone .= ', ' . $phone1;
+            $phone = 'open?addresses=' . $phone . ',' . $phone1;
         }
 
         $href = "sms://" . $phone . ";?&body=" . $text;
