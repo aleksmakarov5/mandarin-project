@@ -4,6 +4,7 @@ namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
 use App\Models\sparepart_status;
+use App\Models\application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\SparePart;
@@ -12,6 +13,7 @@ class SparePartController extends Controller
 {
     public function show($id)
     {
+        $app = application::where('id', '=', $id)->first();
         $spareparts = DB::table('spare_parts')
             ->where('id_application', '=', $id)
             ->leftJoin(
@@ -29,6 +31,8 @@ class SparePartController extends Controller
         $summ_order = 0;
 
         foreach ($spareparts as $i => $sparepart) {
+            $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
+
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
             if (str2number($sparepart->price_sto) == 0)
                 $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
