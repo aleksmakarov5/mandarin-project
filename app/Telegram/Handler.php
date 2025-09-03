@@ -259,8 +259,8 @@ class Handler extends WebhookHandler
                             $location = "В/У_(лицевая_сторона)";
                             break;
                         case 35:
-                            $name = "СМС-приглашение_" . date('d-m-y');
-                            $location = "СМС-приглашение_" . date('d-m-y');
+                            $name = "СМС-приглашение_" . date('d-m-y_h:m:s');
+                            $location = "СМС-приглашение_" . date('d-m-y_h:m:s');
                             break;
                     }
                     $location = $location . ".jpg";

@@ -2528,6 +2528,9 @@ class ApplicationController extends Controller
         $phone = str_replace('-', '', $phone);
 
         $phone = str_replace(' ', '', $phone);
+        if (isset($application->pred_phone)) {
+        }
+
         $href = "sms://" . $phone . ";?&body=" . $text;
         // dd($href);
         // $href = "tel:+79815609071";
