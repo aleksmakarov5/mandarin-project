@@ -633,7 +633,8 @@ class SparePartController extends Controller
                             $SpareParts[$j++] = $SparePart_array[$i];
                             // echo $SparePart_array[$i] . '<br />';
                         }
-                        $id_ic = $app->id_insuranceCompany;
+                        // dd($SpareParts);
+                        $id_ic = 1;
                     } else {
                         $SparePart_start = mb_strpos($file, 'износом');
                         if ($SparePart_start) {
