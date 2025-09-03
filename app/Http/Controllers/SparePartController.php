@@ -387,6 +387,8 @@ class SparePartController extends Controller
 
     public function data_load(Request $request, $id)
     {
+        $SP = sparepart::where('id_application', '=', $id)->get()->all();
+        // dd($SP, $id);
         $type = 0;
         $SpareParts = [];
         $reset = 0;
@@ -898,7 +900,7 @@ class SparePartController extends Controller
 
 
         // dd($type);
-        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type]);
+        return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type, 'SP' => $SP]);
     }
     public function data_save(Request $request, $id)
     {
