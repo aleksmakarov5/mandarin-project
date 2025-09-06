@@ -143,9 +143,9 @@ class WordController extends Controller
         $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
         $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
         $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-        $templateProcessor->setValue('ub_number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+        $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('mnf_year', $application->mnf_year);
-        $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+        $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
         $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
         $templateProcessor->setValue('wait_sp', $application->wait_sp);
@@ -475,9 +475,9 @@ class WordController extends Controller
             $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
             $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
             $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-            $templateProcessor->setValue('ub_number', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
             $templateProcessor->setValue('mnf_year', $application->mnf_year);
-            $templateProcessor->setValue('id_insuranceCompany', isset($application->ub_number) ? $application->numberInsuranceCompanyApplication . '/' . $application->ub_number : $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
             $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
             $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
             $templateProcessor->setValue('wait_sp', $application->wait_sp);
