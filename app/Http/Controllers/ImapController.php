@@ -1403,7 +1403,7 @@ class ImapController extends Controller
 
 
         $applications = application::firstorcreate(
-            ['numberInsuranceCompanyApplication' => date('dmY_hms'), 'id_insuranceCompany' => 4, 'our_company' => $our_company],
+            ['numberInsuranceCompanyApplication' => date('dmY_hms'), 'id_insuranceCompany' => 4, 'our_company' => 6],
             [
                 'numberInsuranceCompanyApplication' => date('dmY_hms'),
                 'id_insuranceCompany' => 4,
@@ -1412,7 +1412,7 @@ class ImapController extends Controller
                 'id_status' => 1,
                 'vin' => " ",
                 'ub_type' => false,
-                'our_company' => $our_company,
+                'our_company' => 6,
                 'ic_answer_date' => null,
             ]
         );
