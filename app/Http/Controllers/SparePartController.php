@@ -575,7 +575,7 @@ class SparePartController extends Controller
 
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\u{A0}", ' ', $file);
-            if ($app->id_insuranceCompany == 1) {
+            if ($app->id_insuranceCompany == 1 || $app->id_insuranceCompany == 5) {
                 // dd($file);
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
@@ -605,7 +605,7 @@ class SparePartController extends Controller
                     // echo $SparePart_array[$i] . '<br />';
                 }
                 // dd($SparePart_array);
-                $id_ic = $app->id_insuranceCompany;
+                $id_ic = 1;
             } else if (($app->id_insuranceCompany == 3)) { {
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
                     if ($SparePart_start) {

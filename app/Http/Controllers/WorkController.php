@@ -499,7 +499,7 @@ class WorkController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = preg_replace("/\u{A0}/", ' ', $file);
             $file = preg_replace("/\n/", ' ', $file);
-            if ($app->id_insuranceCompany == 1) {
+            if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
                 $work_start = mb_strpos($file, 'н-час');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 

@@ -2963,7 +2963,7 @@ class ApplicationController extends Controller
 
 
             $app = Application::findorfail($id);
-            if ($app->id_insuranceCompany == 1) {
+            if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
                 $application_start = mb_strpos($file, 'Марка, модель');
                 $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
                 $estimate_end = mb_strlen($file);
