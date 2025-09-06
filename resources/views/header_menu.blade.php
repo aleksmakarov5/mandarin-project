@@ -304,7 +304,7 @@
                                             <td>
                                                 <div class="alert alert-success">
                                                     {{ in_money($sum_teor) }}
-                                                    руб;
+                                                    р.
                                                 </div>
                                             </td>
                                             <td>
@@ -314,7 +314,7 @@
                                                                                     @else
                                                                                     alert alert-danger @endif
                                                                                     ">
-                                                    {{ in_money($teor) }} руб; <br>({{ $proc_t }}%)
+                                                    {{ in_money($teor) }} р. <br>({{ $proc_t }}%)
                                                 </div>
                                             </td>
                                             <th></th>
@@ -332,33 +332,33 @@
                                                                                     @else
                                                                                     alert alert-danger @endif
                                                                                     ">
-                                                    {{ in_money($app->ub_type ? $eco_delta_half : $eco_delta_full) }} руб;
+                                                    {{ in_money($app->ub_type ? $eco_delta_half : $eco_delta_full) }} р.
                                                     <br> ({{ $proc }}%)
                                                 </div>
                                             </td>
                                             <th></th>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ in_money($summ_ic_full) }}
-                                                    руб;
+                                                    0
+                                                    р.
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ in_money($summ_ic_full) }}
-                                                    руб;
+                                                    0
+                                                    р.
                                                 </div>
                                             </td>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ in_money($summ_ic_full) }}
-                                                    руб;
+                                                    0
+                                                    р.
                                                 </div>
                                             </td>
                                             <th></th>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ in_money($summ_order) }} руб;
+                                                    {{ in_money($summ_order) }} р.
                                                 </div>
                                             </td>
                                             <td>
@@ -368,7 +368,7 @@
                                                                                         @else
                                                                                         alert alert-danger @endif
                                                                                         ">
-                                                    {{ in_money($summ_service) }} руб;
+                                                    {{ in_money($summ_service) }} р.
                                                 </div>
 
                                             </td>
@@ -380,9 +380,9 @@
                                                                                     alert alert-danger @endif
                                                                                     ">
                                                     @if ($app->our_company == 2)
-                                                        {{ in_money(($eco_delta_full * 13) / 100) }} руб;
+                                                        {{ in_money(($eco_delta_full * 13) / 100) }} р.
                                                     @else
-                                                        {{ in_money(($eco_delta_full * 20) / 100) }} руб;
+                                                        {{ in_money(($eco_delta_full * 20) / 100) }} р.
                                                     @endif
                                                 </div>
                                             </td>
