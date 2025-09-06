@@ -37,8 +37,8 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#11' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            Ремонт автомобиля по заданным условиям акцептован.<br>
-                                                                                            Комментарий (при необходимости) :') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Ремонт автомобиля по заданным условиям акцептован.<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (при необходимости) :') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -49,9 +49,9 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#12' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            Ремонт автомобиля акцептован, но на иных условиях (иная сумма ремонта).<br>
-                                                                                            ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
-                                                                                            Комментарий (обязательно):') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Ремонт автомобиля акцептован, но на иных условиях (иная сумма ремонта).<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (обязательно):') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -62,9 +62,9 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#13' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            Ремонт автомобиля акцептован, но на иных условиях (иная скидка от ЕМР).<br>
-                                                                                            ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
-                                                                                            Комментарий (обязательно):') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Ремонт автомобиля акцептован, но на иных условиях (иная скидка от ЕМР).<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                ВАЖНО!Ответ должен содержать точную сумму ремонта или условия ЕМР, с учетом изменений по скидке/наценке в %).<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (обязательно):') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -75,8 +75,8 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#14' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            Ремонт автомобиля акцептован, но на иных условиях (только б/у запчасти).<br>
-                                                                                            Комментарий (обязательно):') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Ремонт автомобиля акцептован, но на иных условиях (только б/у запчасти).<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (обязательно):') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -87,8 +87,8 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#15' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            Ремонт автомобиля акцептован, но нет невозможности уложиться в срок 30 р/д.<br>
-                                                                                            Комментарий (обязательно укажите в какой срок готовы осуществить ремонт):') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Ремонт автомобиля акцептован, но нет невозможности уложиться в срок 30 р/д.<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (обязательно укажите в какой срок готовы осуществить ремонт):') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -109,8 +109,8 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#21' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                            От ремонта отказываемся ввиду отсутствия запасных частей.<br>
-                                                                                            Комментарий (обязательно укажите, какие запасные части отсутствуют):') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                От ремонта отказываемся ввиду отсутствия запасных частей.<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Комментарий (обязательно укажите, какие запасные части отсутствуют):') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -121,7 +121,7 @@
                             :subject="{{ json_encode(isset($subject) ? 'RE: ' . $subject . ". $" . $application->ub_number . '#22' : '---') }}"
                             :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                             :text="{{ json_encode('Добрый день.<br>
-                                                                                             От ремонта отказываемся ввиду невозможности ремонта автомобиля по страховому случаю без проведения дополнительных работ, не относящихся к событию.') }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 От ремонта отказываемся ввиду невозможности ремонта автомобиля по страховому случаю без проведения дополнительных работ, не относящихся к событию.') }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                     </div>
                 </td>
@@ -169,6 +169,186 @@
                 </tr>
             </table>
         @else
+            @if ($application->id_insuranceCompany == 5)
+                @php
+                    $to = [];
+                    $to[0] = 'RepairRequestResponse@sogaz.ru';
+                @endphp
+                <table class="table">
+                    <tr>
+                        <th>
+                            <div>
+                                <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                    :title="{{ json_encode('Ремонт возможен') }}"
+                                    :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/+/// /r/+/r/') }}"
+                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                    :app_id="{{ $id }}"
+                                    :text="{{ json_encode(
+                                        'Ремонт транспортного средства:<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   Заявление - ' .
+                                            $application->numberInsuranceCompanyApplication .
+                                            '<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   VIN - ' .
+                                            $application->vin .
+                                            '<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   Кузов (коляска) номер - ОТСУТСТВУЕТ<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  Модель ТС - ' .
+                                            $application->CarModel .
+                                            '<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  ГРН - ' .
+                                            $application->gnz .
+                                            '<br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  <br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  "Ананьин Михаил Юрьевич" ИП
+                                                                                                                                                                                                                                                                                                                                                                                                                                                   <br>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                  Готовы произвести<br>',
+                                    ) }}"
+                                    :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                            </div>
+                        </th>
+                        @if (!$application->ub_type)
+                            <th>
+                                <div>
+                                    <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :title="{{ json_encode(
+                                            'Ремонт ТС по заявлению ' .
+                                                $application->ub_number .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                                                    Невозможен - По договорным условиям<br>
+                                                                                                                                                                                                                                                                                                                                                                    "Ананьин Михаил Юрьевич" ИП<br>
+                                                                                                                                                                                                                                                                                                                                                                    Настоящим сообщаем, что произвести ремонт ТС ' .
+                                                $application->CarModel .
+                                                ' ' .
+                                                $application->gnz .
+                                                ' в установленный Законом об ОСАГО<br>
+                                                                                                                                                                                                                                                                                                                                                                    срок невозможно из-за отсутствия на СТОА з/ч на указанную модель ТС и длительным сроком поставки.',
+                                        ) }}"
+                                        :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/-/// /r/-/r/') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode('Уважаемые партнеры! <br>   Наша компания не готова взять в ремонт ТС') }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                                </div>
+                            </th>
+                        @else
+                            <th>
+                                <div>
+                                    <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :title="{{ json_encode('Ремонт невозможен – Несоблюдение договорных условий;') }}"
+                                        :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/-/// /r/-/r/') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode(
+                                            'Ремонт транспортного средства:<br>
+                                                                                                                                                                                                                                                                                                                               Заявление - ' .
+                                                $application->numberInsuranceCompanyApplication .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                               VIN - ' .
+                                                $application->vin .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                  Кузов (коляска) номер - ОТСУТСТВУЕТ<br>
+                                                                                                                                                                                                                                                                                                                                 Модель ТС - ' .
+                                                $application->CarModel .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                              ГРН - ' .
+                                                $application->gnz .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                 <br>
+                                                                                                                                                                                                                                                                                                                              Не возможен - Несоблюдение договорных условий<br>',
+                                        ) }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :title="{{ json_encode('Ремонт невозможен – Срок ремонта;') }}"
+                                        :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/-/// /r/-/r/') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode(
+                                            'Ремонт транспортного средства:<br>
+                                                                                                                                                                                                                                                                                                                               Заявление - ' .
+                                                $application->numberInsuranceCompanyApplication .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                               VIN - ' .
+                                                $application->vin .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                  Кузов (коляска) номер - ОТСУТСТВУЕТ<br>
+                                                                                                                                                                                                                                                                                                                                 Модель ТС - ' .
+                                                $application->CarModel .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                              ГРН - ' .
+                                                $application->gnz .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                 <br>
+                                                                                                                                                                                                                                                                                                                              Не возможен - Срок ремонта<br>',
+                                        ) }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :title="{{ json_encode('Ремонт невозможен – Отсутствие запасных частей;') }}"
+                                        :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/-/// /r/-/r/') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode(
+                                            'Ремонт транспортного средства:<br>
+                                                                                                                                                                                                                                                                                                                               Заявление - ' .
+                                                $application->numberInsuranceCompanyApplication .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                               VIN - ' .
+                                                $application->vin .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                  Кузов (коляска) номер - ОТСУТСТВУЕТ<br>
+                                                                                                                                                                                                                                                                                                                                 Модель ТС - ' .
+                                                $application->CarModel .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                              ГРН - ' .
+                                                $application->gnz .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                 <br>
+                                                                                                                                                                                                                                                                                                                              Не возможен - Отсутствие запасных частей<br>',
+                                        ) }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                                </div>
+                            </th>
+                            <th>
+                                <div>
+                                    <answer-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :title="{{ json_encode('Не возможен - Иное;') }}"
+                                        :subject="{{ json_encode('/t/Запрос на ремонт/t/ /ID/' . $application->ub_number . '/ID/-/// /r/-/r/') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode(
+                                            'Ремонт транспортного средства:<br>
+                                                                                                                                                                                                                                                                                                                               Заявление - ' .
+                                                $application->numberInsuranceCompanyApplication .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                               VIN - ' .
+                                                $application->vin .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                  Кузов (коляска) номер - ОТСУТСТВУЕТ<br>
+                                                                                                                                                                                                                                                                                                                                 Модель ТС - ' .
+                                                $application->CarModel .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                              ГРН - ' .
+                                                $application->gnz .
+                                                '<br>
+                                                                                                                                                                                                                                                                                                                                 <br>
+                                                                                                                                                                                                                                                                                                                              Не возможен - Иное<br>',
+                                        ) }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
+                                </div>
+                            </th>
+                        @endif
+
+                    </tr>
+                </table>
+            @else
+            @endif
         @endif
     @endif
 
