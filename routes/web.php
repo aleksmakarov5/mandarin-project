@@ -268,12 +268,14 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+        Route::get('/document_delete/{id}', [MainController::class, 'document_delete'])->name('document_delete');
 
         Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');
         Route::post('documents/{id}/doc_add', [MainController::class, 'doc_add'])->name('doc_add');
         Route::post('documents/{id}/priemka_add', [MainController::class, 'priemka_add'])->name('priemka_add');
         Route::get('document/{id}/doc_edit/{doc_id}', [MainController::class, 'doc_edit'])->name('doc_edit');
         Route::get('document/{id}/doc_delete/{doc_id}', [MainController::class, 'doc_delete'])->name('doc_delete');
+        Route::post('document_deliting/{id}', [MainController::class, 'document_deliting'])->name('document_deliting');
         Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
         Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
         Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');

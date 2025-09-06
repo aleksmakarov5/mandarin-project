@@ -274,6 +274,60 @@ class MainController extends Controller
 
         ], ['id' => $id]);
     }
+    public function document_delete(request $request, $id)
+    {
+
+        $hide_menu = $request->get('hide_menu');
+        $document = DB::table('attachments')
+            ->where('id_application', '=', $id)
+            ->where('sended', '=', null)
+            ->get();
+        $doc_statuses = new doc_status();
+        $def = DB::table('applications')
+            ->where('id', '=', $id)
+            ->select('def')
+            ->first();
+        $application = application::where('id', '=', $id)->first();
+        $sign = OurCompany::where('id', '=', $application->our_company)->first()->sign;
+        $attachments = attachment::where('id_application', '=', $id)
+            ->where('sended', '=', null)
+            ->get()->all();
+        foreach ($attachments as $attachment) {
+            $attachment->ext = pathinfo($attachment->location, PATHINFO_EXTENSION);
+        }
+        // dd($attachments);
+        try {
+            $message_id = message::where('application_id', '=', $id)->first()->id;
+            $subject =
+                message::where('application_id', '=', $id)->first()->subject;
+            $to_email = DB::table('addresses')
+                ->where('message_id', '=', $message_id)
+                ->where('type', '=', 'from')
+                ->first()
+                ->email;
+            // echo $to;
+
+
+        } catch (\Exception $e) {
+            $message_id = 0;
+            $subject = '';
+            $to_email = '';
+        }
+
+        // dd($doc_statuses->all());
+        return view('document_delete', [
+            'document' => $document,
+            'doc_statuses' => $doc_statuses->all(),
+            'def' => $def->def,
+            'hide_menu' => $hide_menu,
+            'application' => $application,
+            'sign' => $sign,
+            'subject' => $subject,
+            'to_email' => $to_email,
+            'attach' => $attachments,
+
+        ], ['id' => $id]);
+    }
     public function showdoc($id, $locations)
     {
 
@@ -479,6 +533,32 @@ class MainController extends Controller
         }
         Storage::delete('public/files/' . $id . '/' . $document->location);
         $document->delete();
+        return redirect()->route('document', ['id' => $id]);
+    }
+    public function document_deliting(Request $request, $id)
+    {
+
+        // dd($request['doc']);
+        foreach ($request['doc'] as $doc_id => $key) {
+            $document = Attachment::findOrFail($doc_id);
+            if (pathinfo($document->location, PATHINFO_EXTENSION) == 'zip' && is_dir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME))) {
+                // echo 'zip';
+                try {
+                    // dd(pathinfo($document->location, PATHINFO_EXTENSION));
+                    // Storage::delete('public/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+                    $att = scandir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+                    foreach ($att as $file) {
+                        if ($file != '.' && $file != '..') {
+                            unlink('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME) . '/' . $file);
+                        }
+                    }
+                    rmdir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+                } catch (Exception $e) {
+                }
+            }
+            Storage::delete('public/files/' . $id . '/' . $document->location);
+            $document->delete();
+        }
         return redirect()->route('document', ['id' => $id]);
     }
     public function doc_load($id)
