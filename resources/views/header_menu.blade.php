@@ -84,6 +84,12 @@
             }
         }
         if (isset($estimates->price_repair_full)) {
+            $summ_ic_full = $estimates->price_repair_full;
+            if (isset($estimates->add_pay)) {
+                $summ_ic_full += str2number($estimates->add_pay);
+            }
+            // dd($esimates->price_repair_full);
+
             if ($estimates->emr10) {
                 $eco_delta_full =
                     (float) str_replace(' ', '', $estimates->price_repair_full) * 1.1 -
@@ -96,15 +102,9 @@
                     );
                 }
             } else {
-                $eco_delta_full =
-                    (float) str_replace(' ', '', $estimates->price_repair_full) -
-                    $summ_order -
-                    $summ_service -
-                    $app->sertificat;
-                if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0) {
-                    $proc = round(
-                        ($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100,
-                    );
+                $eco_delta_full = $summ_ic_full - $summ_order - $summ_service - $app->sertificat;
+                if ($summ_ic_full != 0) {
+                    $proc = round(($eco_delta_full / $summ_ic_full) * 100);
                 }
             }
         } else {
@@ -201,7 +201,7 @@
 
 
             @if (!isset($hide_menu))
-                <table class="table">
+                <table>
                     <tr>
                         <td>
 
@@ -260,21 +260,46 @@
                         @can('company')
                             <td>
                                 @if (isset($eco_delta_full))
-                                    <table class="table-count">
-                                        <tr>
-                                            <td>
-                                                Ожидаемая сумма:
-                                            </td>
-                                            <td>
-                                                Теоретическая выгода:
-                                            </td>
-                                            <td>
-                                                Остаток от полной стоимости:
-                                            </td>
-                                            <td> Стоимость запчастей</td>
-                                            <td>Стоимость работ</td>
-                                            <td>ЗП</td>
-                                        </tr>
+                                    <table class="editable">
+                                        <thead>
+                                            <tr align=center>
+                                                <th colspan=2>Плановая</th>
+                                                <th></th>
+                                                <th colspan=2>Одобренная</th>
+                                                <th></th>
+                                                <th colspan=3>ДДС</th>
+                                                <th colspan=5></th>
+                                            </tr>
+                                            <tr align=center>
+                                                <th>
+                                                    сумма:
+                                                </th>
+                                                <th>
+                                                    выгода:
+                                                </th>
+                                                <th></th>
+                                                <th>
+                                                    сумма:
+                                                </th>
+                                                <th>
+                                                    Выгода:
+                                                </th>
+                                                <th></th>
+                                                <th>
+                                                    Расходы:
+                                                </th>
+                                                <th>
+                                                    Доходы:
+                                                </th>
+                                                <th>
+                                                    Остаток:
+                                                </th>
+                                                <th></th>
+                                                <th> Стоимость <br>запчастей</th>
+                                                <th>Стоимость <br>работ</th>
+                                                <th>ЗП</th>
+                                            </tr>
+                                        </thead>
                                         <tr>
                                             <td>
                                                 <div class="alert alert-success">
@@ -289,9 +314,17 @@
                                                                                     @else
                                                                                     alert alert-danger @endif
                                                                                     ">
-                                                    {{ in_money($teor) }} руб; ({{ $proc_t }}%)
+                                                    {{ in_money($teor) }} руб; <br>({{ $proc_t }}%)
                                                 </div>
                                             </td>
+                                            <th></th>
+                                            <td>
+                                                <div class="alert alert-success">
+                                                    {{ in_money($summ_ic_full) }}
+                                                    руб;
+                                                </div>
+                                            </td>
+
                                             <td>
                                                 <div
                                                     class="
@@ -300,9 +333,29 @@
                                                                                     alert alert-danger @endif
                                                                                     ">
                                                     {{ in_money($app->ub_type ? $eco_delta_half : $eco_delta_full) }} руб;
-                                                    ({{ $proc }}%)
+                                                    <br> ({{ $proc }}%)
                                                 </div>
                                             </td>
+                                            <th></th>
+                                            <td>
+                                                <div class="alert alert-success">
+                                                    {{ in_money($summ_ic_full) }}
+                                                    руб;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="alert alert-success">
+                                                    {{ in_money($summ_ic_full) }}
+                                                    руб;
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="alert alert-success">
+                                                    {{ in_money($summ_ic_full) }}
+                                                    руб;
+                                                </div>
+                                            </td>
+                                            <th></th>
                                             <td>
                                                 <div class="alert alert-success">
                                                     {{ in_money($summ_order) }} руб;

@@ -670,13 +670,29 @@ div.sticky {
     display: block;
 }
 
+.wr {
+    background-color: grey;
+}
+
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
     background-color: #eb6700;
 }
 
+.table-count {
+    border-style: solid;
+}
+
+.table-count th {
+    border-style: solid;
+    padding: 1px;
+    align-content: center;
+}
+
 .table-count td {
+    border-style: solid;
     padding: 4px;
+    align-content: center;
 }
 
 @import url(https://fonts.googleapis.com/css?family=Open+Sans:400,600&subset=latin,cyrillic);
@@ -1313,6 +1329,7 @@ form .nav-link {
     border: 2px;
     border-color: #000;
     border-radius: 7px;
+    margin: 15px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 
