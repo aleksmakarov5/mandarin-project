@@ -2170,11 +2170,15 @@ class ApplicationController extends Controller
                         ->first();
                     $location = isset($loc->location) ? $loc->location : '';
                     $body = str_replace('image00' . $i . '.gif', $location, $body);
-                    $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
-                    $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
-                    $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
-                    $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
+                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                    // $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
+                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
+
                 }
+                $body = preg_replace("~<base(.*?)>(.*)</base>~si", "",  $body);
+                $body = preg_replace("~<base(.*?)>~si", "",  $body);
+                $body = preg_replace("~<img(.*?)>~si", "",  $body);
                 $message->body = $body;
             }
         }
