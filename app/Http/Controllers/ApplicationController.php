@@ -3298,7 +3298,7 @@ class ApplicationController extends Controller
                     }
                 } else {
 
-                    $estimate_start = mb_strpos($file, 'стоимость восстановительного ремонта');
+                    $estimate_start = mb_strripos($file, 'стоимость восстановительного ремонта');
                     $estimate_end = mb_strlen($file);
                     $estimate = '';
 
