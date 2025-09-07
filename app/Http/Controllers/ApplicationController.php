@@ -2977,6 +2977,7 @@ class ApplicationController extends Controller
                 // $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);
                 $file = str_replace("\n\n", '<br/>', $file);
+                $file = str_replace("<br/><br/>", '<br/>', $file);
 
                 $file = str_replace("\n", ' ', $file);
                 $file = str_replace("  ", ' ', $file);
@@ -2986,7 +2987,7 @@ class ApplicationController extends Controller
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
                 $file = str_replace("/\u{A0}/", '', $file);
-                dd($file);
+                // dd($file);
 
 
                 // dd($applications['numberInsuranceCompanyApplication']);
