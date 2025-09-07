@@ -2979,7 +2979,7 @@ class ApplicationController extends Controller
                 $file = str_replace("\n", ' ', $file);
                 $file = str_replace("  ", ' ', $file);
                 // $file = str_replace("/\u{000D}", '<br/>', $file);
-                dd($file);
+                // dd($file);
 
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
