@@ -2946,15 +2946,25 @@ class ApplicationController extends Controller
 
             // dd($parse, $applications);
         } else {
-            if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'PDF') {
+            if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
+                if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
+                    $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
+                    $dir = 'storage/files/' . $id;
+                    exec('chmod 755 "' . $pathToSave . '"');
+                    $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
+                    exec($comand);
+                    // dd($comand);
+                }
+                $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
+            }
+            //dd($request['iskl']);
+            else {
                 rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
                 exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
                 rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-            } else {
-                $rtf = file_get_contents('storage/files/' . $id . '/' . $request['location']);
-                $file = new Document($rtf); // or use a string directly
-                dd($file);
             }
+
             $html = 'works.html';
             $file = file_get_contents('storage/files/' . $id . '/' . $html);
             $file = html_entity_decode(strip_tags($file, ['br']));
@@ -2963,385 +2973,7 @@ class ApplicationController extends Controller
 
 
             $app = Application::findorfail($id);
-            if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
-                $application_start = mb_strpos($file, 'Марка, модель');
-                $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
-                $estimate_end = mb_strlen($file);
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-
-
-                    $estimate = explode('<br/>', $estimate);
-
-                    if (is_numeric(str_replace(' ', '', $estimate[1])))
-                        $price[0] = str_replace(' ', '', $estimate[1]);
-                    else
-                        $price[0] = str_replace(' ', '', $estimate[2]);
-
-                    if (is_numeric(str_replace(' ', '', $estimate[3])))
-                        $price[1] = str_replace(' ', '', $estimate[3]);
-                    else
-                        $price[1] = str_replace(' ', '', $estimate[4]);
-                }
-                $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
-
-                    $estimate = explode('<br/>', $estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    // dd($estimate);
-                    if (is_numeric(str_replace(' ', '', $estimate[1])))
-                        $price[2] = str_replace(' ', '', $estimate[1]);
-                    else
-                        $price[2] = str_replace(' ', '', $estimate[2]);
-                    if (is_numeric(str_replace(' ', '', $estimate[3])))
-                        $price[3] = str_replace(' ', '', $estimate[3]);
-                    else
-                        $price[3] = str_replace(' ', '', $estimate[4]);
-                    if (is_numeric(str_replace(' ', '', $estimate[5])))
-                        $price[4] = str_replace(' ', '', $estimate[5]);
-                    else
-                        $price[4] = str_replace(' ', '', $estimate[6]);
-                    if (is_numeric(str_replace(' ', '', $estimate[7])))
-                        $price[5] = str_replace(' ', '', $estimate[7]);
-                    else
-                        $price[5] = str_replace(' ', '', $estimate[8]);
-                    if (trim($estimate[9]) == 'ВСЕГО:') {
-                        if (is_numeric(str_replace(' ', '', $estimate[10])))
-                            $price[6] = str_replace(' ', '', $estimate[10]);
-                        else
-                            $price[6] = str_replace(' ', '', $estimate[11]);
-                        if (is_numeric(str_replace(' ', '', $estimate[12])))
-                            $price[7] = str_replace(' ', '', $estimate[12]);
-                        else
-                            $price[7] = str_replace(' ', '', $estimate[13]);
-                    } else {
-                        if (is_numeric(str_replace(' ', '', $estimate[9])))
-                            $price[6] = str_replace(' ', '', $estimate[9]);
-                        else
-                            $price[6] = str_replace(' ', '', $estimate[10]);
-                        if (is_numeric(str_replace(' ', '', $estimate[11])))
-                            $price[7] = str_replace(' ', '', $estimate[11]);
-                        else
-                            $price[7] = str_replace(' ', '', $estimate[12]);
-                    }
-                }
-
-                // dd($price);
-                if ($application_start) {
-                    $smeta = true;
-                }
-
-                // echo $application_start;
-                // dd($file);
-                $file = preg_replace("/\u{A0}/", ' ', $file);
-                // dd($loc);
-                if (mb_strpos($loc, 'правле') != false) {
-                    $parse_start = mb_strpos($file, 'СТРАХОВАТЕЛЬ');
-                    if (!$parse_start)
-                        $parse_start = mb_strpos($file, 'ПОТЕРПЕВШИЙ');
-
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['ClientName'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Контактный тел.');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $phone = $parse[1];
-                    $phone = preg_replace('/[^0-9]/', '', $phone);
-                    $start = mb_strpos($phone, '9');
-                    $phone = mb_substr($phone, $start);
-                    $phone = '+7 (' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
-                    $applications['ClientPhone'] = $phone;
-                    $parse_start = mb_strpos($file, 'Убыток №:');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['ub_number'] = mb_substr($parse[0], mb_strpos($parse[0], '/') + 1);
-                    if (mb_strpos($parse[0], 'ДО')) {
-                        $applications['CarModel'] = $parse[8];
-                        $applications['gnz'] = $parse[9];
-                        $applications['mileage'] = (int)$parse[16];
-                        $applications['vin'] = $parse[10];
-                        $applications['mnf_year'] = $parse[15];
-                    } else {
-                        $applications['CarModel'] = $parse[6];
-                        $applications['gnz'] = $parse[7];
-                        $applications['mileage'] = (int)$parse[14];
-                        $applications['vin'] = $parse[8];
-                        $applications['mnf_year'] = $parse[13];
-                    }
-                    // dd($applications, $file, $parse);
-                } else {
-                    $parse_start = mb_strpos($file, 'Марка, модель');
-                    if (!$parse_start)
-                        $parse_start = mb_strpos($file, 'Марка, модель');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['CarModel'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'VIN/кузов');
-                    if (!$parse_start)
-                        $parse_start = mb_strpos($file, 'VIN / кузов');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['vin'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Регистр. знак');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['gnz'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Пробег, км');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['mileage'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Цвет, тип окраски');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['Color'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Год выпуска');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['mnf_year'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
-                    if (!$parse_start)
-                        $parse_start = mb_strpos($file, 'Дата ДТП');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['DTPdate'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Собственник');
-                    $parse = mb_substr($file, $parse_start);
-                    $parse = explode('<br/>', $parse);
-                    $applications['ClientName'] = $parse[1];
-                    $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
-                    if (!$parse_start)
-                        $parse_start = mb_strpos($file, 'ПТС/свид.о рег.');
-                    $parse = mb_substr($file, $parse_start);
-
-                    $parse = explode('<br/>', $parse);
-                    $applications['vehicle_passport'] = $parse[1];
-                }
-            } else if ($app->id_insuranceCompany == 3) {
-                $file = preg_replace("(\u{A0})", ' ', $file);
-
-                $file = str_replace("/\u{A0}/", '', $file);
-                // dd($file);
-                $application_start = mb_strpos($file, 'Марка, модель');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['CarModel'] = $application_array[1];
-                $application_start = mb_strpos($file, 'Дата выпуска');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['mnf_year'] = $application_array[1];
-                $application_start = mb_strpos($file, 'Регистр. знак');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['gnz'] = $application_array[1];
-                $application_start = mb_strpos($file, '№ кузова');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['vin'] = $application_array[1];
-                $application_start = mb_strpos($file, 'одометра');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['mileage'] = (int) $application_array[1];
-                $application_start = mb_strpos($file, 'Свид.о регистр.');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['vehicle_passport'] = $application_array[1];
-                $application_start = mb_strpos($file, 'Собственник');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['ClientName'] = $application_array[1];
-                $application_start = mb_strpos($file, 'Дата:');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['DTPdate'] = $application_array[1];
-
-                $file = preg_replace("(\u{A0})", ' ', $file);
-
-                $estimate_start = mb_strpos($file, 'использованных для ремонта');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'стоимость узлов и деталей:');
-                $estimate_end = mb_strlen($file);
-                // dd($file);
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-
-
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-
-                    if (is_numeric(str2number($estimate[1])))
-                        $price[0] = str2number($estimate[1]);
-                    else
-                        $price[0] = str2number($estimate[2]);
-
-                    if (is_numeric(str2number($estimate[3])))
-                        $price[1] = str2number($estimate[3]);
-                    else
-                        $price[1] = str2number($estimate[4]);
-                }
-                $estimate_start = mb_strpos($file, 'ремонтных работ');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'ремонта/замены');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-                // dd($file);
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    if (is_numeric(str2number($estimate[1])))
-                        $price[2] = str2number($estimate[1]);
-                    else
-                        $price[2] = str2number($estimate[2]);
-                }
-
-                $estimate_start = mb_strpos($file, 'окрасочных работ:');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'окраски контроля');
-                // dd($file, $estimate_start);
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    if (is_numeric(str2number($estimate[1])))
-                        $price[3] = str2number($estimate[1]);
-                    else
-                        $price[3] = str2number($estimate[2]);
-                }
-                $estimate_start = mb_strpos($file, 'стоимость расходных материалов для ремонта:');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'расходных материалов');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    if (is_numeric(str2number($estimate[1])))
-                        $price[4] = str2number($estimate[1]);
-                    else
-                        $price[4] = str2number($estimate[2]);
-                }
-                $estimate_start = mb_strpos($file, 'всех ремонтных работ:');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'работ и материалов');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    if (is_numeric(str2number($estimate[1])))
-                        $price[5] = str2number($estimate[1]);
-                    else
-                        $price[5] = str2number($estimate[2]);
-                }
-                if (!isset($price[5]) && isset($price[2]) && isset($price[3]))
-                    $price[5] = $price[2] + $price[3];
-                $estimate_start = mb_strpos($file, 'ремонта АТС');
-                if ($estimate_start) {
-                    $estimate_end = mb_strlen($file);
-                    $estimate = '';
-
-                    if ($estimate_start !== false && $estimate_end !== false) {
-                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                        $estimate = explode('<br/>', $estimate);
-                        // dd($estimate);
-                        for ($i = 0; $i < count($estimate) - 1; $i++) {
-                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                                for ($j = $i; $j < count($estimate) - 1; $j++)
-                                    $estimate[$j] = $estimate[$j + 1];
-                        }
-                        if (is_numeric(str2number($estimate[0])))
-                            $price[6] = str2number($estimate[1]);
-                        else
-                            $price[6] = str2number($estimate[2]);
-                    }
-                } else {
-
-                    $estimate_start = mb_strripos($file, 'стоимость восстановительного ремонта');
-                    $estimate_end = mb_strlen($file);
-                    $estimate = '';
-
-                    if ($estimate_start !== false && $estimate_end !== false) {
-                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                        $estimate = explode('<br/>', $estimate);
-                        // dd($estimate);
-                        for ($i = 0; $i < count($estimate) - 1; $i++) {
-                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                                for ($j = $i; $j < count($estimate) - 1; $j++)
-                                    $estimate[$j] = $estimate[$j + 1];
-                        }
-                        if (is_numeric(str2number($estimate[0])) && str2number($estimate[0]) != 0)
-                            $price[6] = str2number($estimate[0]);
-                        else
-                            $price[6] = str2number($estimate[1]);
-                    }
-                }
-                $estimate_start = mb_strpos($file, 'стоимость устранения дефектов');
-                if (!$estimate_start)
-                    $estimate_start = mb_strpos($file, 'затраты на восстановительный ремонт');
-                $estimate_end = mb_strlen($file);
-                $estimate = '';
-
-                if ($estimate_start !== false && $estimate_end !== false) {
-                    $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
-                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                    $estimate = explode('<br/>', $estimate);
-                    // dd($estimate);
-                    for ($i = 0; $i < count($estimate) - 1; $i++) {
-                        if ($estimate[$i] == '1' || $estimate[$i] == '2')
-                            for ($j = $i; $j < count($estimate) - 1; $j++)
-                                $estimate[$j] = $estimate[$j + 1];
-                    }
-                    if (is_numeric(str2number($estimate[1])) && str2number($estimate[0]) != 0)
-                        $price[7] = str2number($estimate[0]);
-                    else
-                        $price[7] = str2number($estimate[1]);
-                }
-
-                // dd($price);
-            } else if ($app->id_insuranceCompany == 4) {
+            if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
                 // $file = str_replace("/\u{000D}", '<br/>', $file);
                 // dd($file);
 
@@ -3349,87 +2981,7 @@ class ApplicationController extends Controller
 
                 $file = str_replace("/\u{A0}/", '', $file);
 
-                $application_start = mb_strpos($file, 'марка модель');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                // dd($application_array);
-                $applications['CarModel'] = $application_array[1];
-                $application_start = mb_strpos($file, 'дата выпуска');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['mnf_year'] = $application_array[1];
-                $application_start = mb_strpos($file, 'гос.номер');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['gnz'] = $application_array[1];
-                $application_start = mb_strpos($file, 'VIN');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['vin'] = $application_array[1];
-                $application_start = mb_strpos($file, 'пробег');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['mileage'] = (int) $application_array[1];
-                $application_start = mb_strpos($file, 'основании акта осмотра');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['numberInsuranceCompanyApplication'] = $application_array[1];
-                $estimate_start = mb_strpos($file, 'узлов и деталей с учетом мелких деталей:');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[0] = $estimate[1];
-                $estimate_start = mb_strpos($file, 'узлов и деталей с учетом износа:');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[1] = $estimate[1];
-                $estimate_start = mb_strpos($file, 'стоимость ремонтных работ:');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[2] = $estimate[1];
-                $estimate_start = mb_strpos($file, 'стоимость окраски/контроля:');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[3] = $estimate[1];
-                $estimate_start = mb_strpos($file, 'стоимость расходных материалов:');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[4] = $estimate[1];
-                $estimate_start = mb_strpos($file, 'устранения дефектов АМТС (без учета износа):');
-                $estimate = mb_substr($file, $estimate_start);
-                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
-                $estimate = explode('<br/>', $estimate);
-                $price[6] = $estimate[1];
-                // dd($applications);
-            } else if ($app->id_insuranceCompany == 7) {
-                // $file = str_replace("/\u{000D}", '<br/>', $file);
-                // dd($file);
 
-                $file = preg_replace("(\u{A0})", ' ', $file);
-
-                $file = str_replace("/\u{A0}/", '', $file);
-
-                $application_start = mb_strpos($file, 'транспортного средства');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                // dd($application_array);
-                $applications['CarModel'] = mb_substr($application_array[1], 0, mb_strpos($application_array[1], ','));
-                // dd($applications['CarModel']);
-                $application_start = mb_strpos($file, 'VIN');
-                $application = mb_substr($file, $application_start);
-                $application_array = explode('<br/>', $application);
-                $applications['vin'] = mb_substr($application_array[0], 4);
-                $application = mb_substr($file, 0);
-                $application_array = explode('<br/>', $application);
-                $start_pos = mb_strpos($application_array[0], '№ ');
-                if ($start_pos != 0)
-                    $start_pos += 3;
-                $app_number = mb_substr($application_array[0], $start_pos, 16);
-                $applications['numberInsuranceCompanyApplication'] = $app_number;
                 // dd($applications['numberInsuranceCompanyApplication']);
                 $estimate_start = mb_strpos($file, 'узлов и деталей:');
                 $estimate = mb_substr($file, $estimate_start);
@@ -3467,6 +3019,512 @@ class ApplicationController extends Controller
                 $estimate = explode('<br/>', $estimate);
                 $price[6] = $estimate[1];
                 // dd($applications);
+            } else {
+                if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
+                    $application_start = mb_strpos($file, 'Марка, модель');
+                    $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
+                    $estimate_end = mb_strlen($file);
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+
+
+                        $estimate = explode('<br/>', $estimate);
+
+                        if (is_numeric(str_replace(' ', '', $estimate[1])))
+                            $price[0] = str_replace(' ', '', $estimate[1]);
+                        else
+                            $price[0] = str_replace(' ', '', $estimate[2]);
+
+                        if (is_numeric(str_replace(' ', '', $estimate[3])))
+                            $price[1] = str_replace(' ', '', $estimate[3]);
+                        else
+                            $price[1] = str_replace(' ', '', $estimate[4]);
+                    }
+                    $estimate_start = mb_strpos($file, 'стоимость ремонта/замены');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", '<br/>', $estimate);
+
+                        $estimate = explode('<br/>', $estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        // dd($estimate);
+                        if (is_numeric(str_replace(' ', '', $estimate[1])))
+                            $price[2] = str_replace(' ', '', $estimate[1]);
+                        else
+                            $price[2] = str_replace(' ', '', $estimate[2]);
+                        if (is_numeric(str_replace(' ', '', $estimate[3])))
+                            $price[3] = str_replace(' ', '', $estimate[3]);
+                        else
+                            $price[3] = str_replace(' ', '', $estimate[4]);
+                        if (is_numeric(str_replace(' ', '', $estimate[5])))
+                            $price[4] = str_replace(' ', '', $estimate[5]);
+                        else
+                            $price[4] = str_replace(' ', '', $estimate[6]);
+                        if (is_numeric(str_replace(' ', '', $estimate[7])))
+                            $price[5] = str_replace(' ', '', $estimate[7]);
+                        else
+                            $price[5] = str_replace(' ', '', $estimate[8]);
+                        if (trim($estimate[9]) == 'ВСЕГО:') {
+                            if (is_numeric(str_replace(' ', '', $estimate[10])))
+                                $price[6] = str_replace(' ', '', $estimate[10]);
+                            else
+                                $price[6] = str_replace(' ', '', $estimate[11]);
+                            if (is_numeric(str_replace(' ', '', $estimate[12])))
+                                $price[7] = str_replace(' ', '', $estimate[12]);
+                            else
+                                $price[7] = str_replace(' ', '', $estimate[13]);
+                        } else {
+                            if (is_numeric(str_replace(' ', '', $estimate[9])))
+                                $price[6] = str_replace(' ', '', $estimate[9]);
+                            else
+                                $price[6] = str_replace(' ', '', $estimate[10]);
+                            if (is_numeric(str_replace(' ', '', $estimate[11])))
+                                $price[7] = str_replace(' ', '', $estimate[11]);
+                            else
+                                $price[7] = str_replace(' ', '', $estimate[12]);
+                        }
+                    }
+
+                    // dd($price);
+                    if ($application_start) {
+                        $smeta = true;
+                    }
+
+                    // echo $application_start;
+                    // dd($file);
+                    $file = preg_replace("/\u{A0}/", ' ', $file);
+                    // dd($loc);
+                    if (mb_strpos($loc, 'правле') != false) {
+                        $parse_start = mb_strpos($file, 'СТРАХОВАТЕЛЬ');
+                        if (!$parse_start)
+                            $parse_start = mb_strpos($file, 'ПОТЕРПЕВШИЙ');
+
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['ClientName'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Контактный тел.');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $phone = $parse[1];
+                        $phone = preg_replace('/[^0-9]/', '', $phone);
+                        $start = mb_strpos($phone, '9');
+                        $phone = mb_substr($phone, $start);
+                        $phone = '+7 (' . $phone[0] . $phone[1] . $phone[2] . ') ' . $phone[3] . $phone[4] . $phone[5] . '-' . $phone[6] . $phone[7] . '-' . $phone[8] . $phone[9];
+                        $applications['ClientPhone'] = $phone;
+                        $parse_start = mb_strpos($file, 'Убыток №:');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['ub_number'] = mb_substr($parse[0], mb_strpos($parse[0], '/') + 1);
+                        if (mb_strpos($parse[0], 'ДО')) {
+                            $applications['CarModel'] = $parse[8];
+                            $applications['gnz'] = $parse[9];
+                            $applications['mileage'] = (int) $parse[16];
+                            $applications['vin'] = $parse[10];
+                            $applications['mnf_year'] = $parse[15];
+                        } else {
+                            $applications['CarModel'] = $parse[6];
+                            $applications['gnz'] = $parse[7];
+                            $applications['mileage'] = (int) $parse[14];
+                            $applications['vin'] = $parse[8];
+                            $applications['mnf_year'] = $parse[13];
+                        }
+                        // dd($applications, $file, $parse);
+                    } else {
+                        $parse_start = mb_strpos($file, 'Марка, модель');
+                        if (!$parse_start)
+                            $parse_start = mb_strpos($file, 'Марка, модель');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['CarModel'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'VIN/кузов');
+                        if (!$parse_start)
+                            $parse_start = mb_strpos($file, 'VIN / кузов');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['vin'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Регистр. знак');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['gnz'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Пробег, км');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['mileage'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Цвет, тип окраски');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['Color'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Год выпуска');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['mnf_year'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
+                        if (!$parse_start)
+                            $parse_start = mb_strpos($file, 'Дата ДТП');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['DTPdate'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Собственник');
+                        $parse = mb_substr($file, $parse_start);
+                        $parse = explode('<br/>', $parse);
+                        $applications['ClientName'] = $parse[1];
+                        $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
+                        if (!$parse_start)
+                            $parse_start = mb_strpos($file, 'ПТС/свид.о рег.');
+                        $parse = mb_substr($file, $parse_start);
+
+                        $parse = explode('<br/>', $parse);
+                        $applications['vehicle_passport'] = $parse[1];
+                    }
+                } else if ($app->id_insuranceCompany == 3) {
+                    $file = preg_replace("(\u{A0})", ' ', $file);
+
+                    $file = str_replace("/\u{A0}/", '', $file);
+                    // dd($file);
+                    $application_start = mb_strpos($file, 'Марка, модель');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['CarModel'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'Дата выпуска');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['mnf_year'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'Регистр. знак');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['gnz'] = $application_array[1];
+                    $application_start = mb_strpos($file, '№ кузова');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['vin'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'одометра');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['mileage'] = (int) $application_array[1];
+                    $application_start = mb_strpos($file, 'Свид.о регистр.');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['vehicle_passport'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'Собственник');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['ClientName'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'Дата:');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['DTPdate'] = $application_array[1];
+
+                    $file = preg_replace("(\u{A0})", ' ', $file);
+
+                    $estimate_start = mb_strpos($file, 'использованных для ремонта');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'стоимость узлов и деталей:');
+                    $estimate_end = mb_strlen($file);
+                    // dd($file);
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+
+
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+
+                        if (is_numeric(str2number($estimate[1])))
+                            $price[0] = str2number($estimate[1]);
+                        else
+                            $price[0] = str2number($estimate[2]);
+
+                        if (is_numeric(str2number($estimate[3])))
+                            $price[1] = str2number($estimate[3]);
+                        else
+                            $price[1] = str2number($estimate[4]);
+                    }
+                    $estimate_start = mb_strpos($file, 'ремонтных работ');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'ремонта/замены');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+                    // dd($file);
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        if (is_numeric(str2number($estimate[1])))
+                            $price[2] = str2number($estimate[1]);
+                        else
+                            $price[2] = str2number($estimate[2]);
+                    }
+
+                    $estimate_start = mb_strpos($file, 'окрасочных работ:');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'окраски контроля');
+                    // dd($file, $estimate_start);
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        if (is_numeric(str2number($estimate[1])))
+                            $price[3] = str2number($estimate[1]);
+                        else
+                            $price[3] = str2number($estimate[2]);
+                    }
+                    $estimate_start = mb_strpos($file, 'стоимость расходных материалов для ремонта:');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'расходных материалов');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        if (is_numeric(str2number($estimate[1])))
+                            $price[4] = str2number($estimate[1]);
+                        else
+                            $price[4] = str2number($estimate[2]);
+                    }
+                    $estimate_start = mb_strpos($file, 'всех ремонтных работ:');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'работ и материалов');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        if (is_numeric(str2number($estimate[1])))
+                            $price[5] = str2number($estimate[1]);
+                        else
+                            $price[5] = str2number($estimate[2]);
+                    }
+                    if (!isset($price[5]) && isset($price[2]) && isset($price[3]))
+                        $price[5] = $price[2] + $price[3];
+                    $estimate_start = mb_strpos($file, 'ремонта АТС');
+                    if ($estimate_start) {
+                        $estimate_end = mb_strlen($file);
+                        $estimate = '';
+
+                        if ($estimate_start !== false && $estimate_end !== false) {
+                            $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                            $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                            $estimate = explode('<br/>', $estimate);
+                            // dd($estimate);
+                            for ($i = 0; $i < count($estimate) - 1; $i++) {
+                                if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                    for ($j = $i; $j < count($estimate) - 1; $j++)
+                                        $estimate[$j] = $estimate[$j + 1];
+                            }
+                            if (is_numeric(str2number($estimate[0])))
+                                $price[6] = str2number($estimate[1]);
+                            else
+                                $price[6] = str2number($estimate[2]);
+                        }
+                    } else {
+
+                        $estimate_start = mb_strripos($file, 'стоимость восстановительного ремонта');
+                        $estimate_end = mb_strlen($file);
+                        $estimate = '';
+
+                        if ($estimate_start !== false && $estimate_end !== false) {
+                            $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                            $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                            $estimate = explode('<br/>', $estimate);
+                            // dd($estimate);
+                            for ($i = 0; $i < count($estimate) - 1; $i++) {
+                                if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                    for ($j = $i; $j < count($estimate) - 1; $j++)
+                                        $estimate[$j] = $estimate[$j + 1];
+                            }
+                            if (is_numeric(str2number($estimate[0])) && str2number($estimate[0]) != 0)
+                                $price[6] = str2number($estimate[0]);
+                            else
+                                $price[6] = str2number($estimate[1]);
+                        }
+                    }
+                    $estimate_start = mb_strpos($file, 'стоимость устранения дефектов');
+                    if (!$estimate_start)
+                        $estimate_start = mb_strpos($file, 'затраты на восстановительный ремонт');
+                    $estimate_end = mb_strlen($file);
+                    $estimate = '';
+
+                    if ($estimate_start !== false && $estimate_end !== false) {
+                        $estimate = mb_substr($file, $estimate_start, $estimate_end - $estimate_start);
+                        $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                        $estimate = explode('<br/>', $estimate);
+                        // dd($estimate);
+                        for ($i = 0; $i < count($estimate) - 1; $i++) {
+                            if ($estimate[$i] == '1' || $estimate[$i] == '2')
+                                for ($j = $i; $j < count($estimate) - 1; $j++)
+                                    $estimate[$j] = $estimate[$j + 1];
+                        }
+                        if (is_numeric(str2number($estimate[1])) && str2number($estimate[0]) != 0)
+                            $price[7] = str2number($estimate[0]);
+                        else
+                            $price[7] = str2number($estimate[1]);
+                    }
+
+                    // dd($price);
+                } else if ($app->id_insuranceCompany == 4) {
+                    // $file = str_replace("/\u{000D}", '<br/>', $file);
+                    // dd($file);
+
+                    $file = preg_replace("(\u{A0})", ' ', $file);
+
+                    $file = str_replace("/\u{A0}/", '', $file);
+
+                    $application_start = mb_strpos($file, 'марка модель');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    // dd($application_array);
+                    $applications['CarModel'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'дата выпуска');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['mnf_year'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'гос.номер');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['gnz'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'VIN');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['vin'] = $application_array[1];
+                    $application_start = mb_strpos($file, 'пробег');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['mileage'] = (int) $application_array[1];
+                    $application_start = mb_strpos($file, 'основании акта осмотра');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['numberInsuranceCompanyApplication'] = $application_array[1];
+                    $estimate_start = mb_strpos($file, 'узлов и деталей с учетом мелких деталей:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[0] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'узлов и деталей с учетом износа:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[1] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'стоимость ремонтных работ:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[2] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'стоимость окраски/контроля:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[3] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'стоимость расходных материалов:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[4] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'устранения дефектов АМТС (без учета износа):');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[6] = $estimate[1];
+                    // dd($applications);
+                } else if ($app->id_insuranceCompany == 7) {
+                    // $file = str_replace("/\u{000D}", '<br/>', $file);
+                    // dd($file);
+
+                    $file = preg_replace("(\u{A0})", ' ', $file);
+
+                    $file = str_replace("/\u{A0}/", '', $file);
+
+                    $application_start = mb_strpos($file, 'транспортного средства');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    // dd($application_array);
+                    $applications['CarModel'] = mb_substr($application_array[1], 0, mb_strpos($application_array[1], ','));
+                    // dd($applications['CarModel']);
+                    $application_start = mb_strpos($file, 'VIN');
+                    $application = mb_substr($file, $application_start);
+                    $application_array = explode('<br/>', $application);
+                    $applications['vin'] = mb_substr($application_array[0], 4);
+                    $application = mb_substr($file, 0);
+                    $application_array = explode('<br/>', $application);
+                    $start_pos = mb_strpos($application_array[0], '№ ');
+                    if ($start_pos != 0)
+                        $start_pos += 3;
+                    $app_number = mb_substr($application_array[0], $start_pos, 16);
+                    $applications['numberInsuranceCompanyApplication'] = $app_number;
+                    // dd($applications['numberInsuranceCompanyApplication']);
+                    $estimate_start = mb_strpos($file, 'узлов и деталей:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[0] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'узлов и деталей с учетом износа:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[1] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'ремонта/замены:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[2] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'окраски контроля:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[3] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'стоимость расходных материалов:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[4] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'учетом износа (восстановительные расходы) составляет:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[7] = $estimate[1];
+                    $estimate_start = mb_strpos($file, 'восстановительного ремонта составляет:');
+                    $estimate = mb_substr($file, $estimate_start);
+                    $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                    $estimate = explode('<br/>', $estimate);
+                    $price[6] = $estimate[1];
+                    // dd($applications);
+                }
             }
         }
 
