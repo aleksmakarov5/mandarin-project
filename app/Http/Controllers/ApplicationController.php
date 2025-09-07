@@ -2975,7 +2975,7 @@ class ApplicationController extends Controller
             $app = Application::findorfail($id);
             if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
                 // $file = str_replace("/\u{000D}", '<br/>', $file);
-                // dd($file);
+                dd($file);
 
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
