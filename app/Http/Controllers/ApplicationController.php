@@ -2974,6 +2974,9 @@ class ApplicationController extends Controller
 
             $app = Application::findorfail($id);
             if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
+                $file = html_entity_decode(strip_tags($file, ['br']));
+                $file = str_replace("\t", '', $file);
+                $file = str_replace("\n", ' ', $file);
                 // $file = str_replace("/\u{000D}", '<br/>', $file);
                 dd($file);
 
