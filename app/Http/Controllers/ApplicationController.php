@@ -2986,7 +2986,7 @@ class ApplicationController extends Controller
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
                 $file = str_replace("/\u{A0}/", '', $file);
-                // dd($file);
+                dd($file);
 
 
                 // dd($applications['numberInsuranceCompanyApplication']);
@@ -3010,7 +3010,7 @@ class ApplicationController extends Controller
                 $estimate = preg_replace("(\u{A0})", ' ', $estimate);
                 $estimate = explode('<br/>', $estimate);
                 $price[3] = str2number($estimate[1]);
-                $estimate_start = mb_strpos($file, 'стоимость дополнительных материалов');
+                $estimate_start = mb_strpos($file, 'дополнительных материалов');
                 $estimate = mb_substr($file, $estimate_start);
                 $estimate = preg_replace("(\u{A0})", ' ', $estimate);
                 $estimate = explode('<br/>', $estimate);
