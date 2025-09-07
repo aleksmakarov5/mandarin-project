@@ -103,20 +103,24 @@
                 }
             } else {
                 $eco_delta_full = $summ_ic_full - $summ_order - $summ_service - $app->sertificat;
-                if ($summ_ic_full != 0) {
-                    $proc = round(($eco_delta_full / $summ_ic_full) * 100);
-                }
             }
         } else {
             $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
             if ($summ_ic_full + $summ_service_ic != 0) {
-                $proc = round(($eco_delta_full / ($summ_ic_full + $summ_service_ic)) * 100);
             }
         }
         if (isset($estimates->price_repair_half)) {
+            $summ_ic_half = str2number($estimates->price_repair_half);
             $eco_delta_half = (float) str_replace(' ', '', $estimates->price_repair_half) - $summ_order - $summ_service;
         } else {
             $eco_delta_half = $summ_ic_half + $summ_service_ic - $summ_order - $summ_service;
+        }
+        if ($app->ub_type) {
+            $summ_ic_full = $summ_ic_half;
+            $eco_delta_full = $eco_delta_half;
+        }
+        if ($summ_ic_full != 0) {
+            $proc = round(($eco_delta_full / $summ_ic_full) * 100);
         }
         $sum_teor +=
             $summ_pzn +
