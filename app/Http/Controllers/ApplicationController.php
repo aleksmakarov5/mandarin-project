@@ -2986,7 +2986,7 @@ class ApplicationController extends Controller
                 $file = preg_replace("(\u{A0})", ' ', $file);
 
                 $file = str_replace("/\u{A0}/", '', $file);
-                dd($file);
+                // dd($file);
 
 
                 // dd($applications['numberInsuranceCompanyApplication']);
