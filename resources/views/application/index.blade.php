@@ -108,7 +108,7 @@
             <h3>Клиент</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
-                    <th>ФИО клиента</th>
+                    <th>ФИО</th>
                     <th>
                         {{ $application->ClientName }}
                     </th>
@@ -131,7 +131,7 @@
                 </tr>
                 @if (isset($application->pred))
                     <tr>
-                        <th>ФИО представителя</th>
+                        <th>Представитель</th>
                         <th>
                             {{ $application->pred }}
                         </th>
@@ -140,43 +140,6 @@
                         <th>Номер телефона представителя</th>
                         <th>
                             {{ $application->pred_phone }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Дата рождения клиента</th>
-                        <th>
-                            {{ $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : '' }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan=2>
-                            <h1>Паспорт РФ</h1>
-                        </th>
-
-                    </tr>
-
-                    <tr>
-                        <th>Серия</th>
-                        <th>
-                            {{ $application->ClientPasport }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Номер</th>
-                        <th>
-                            {{ $application->ClientPasport_number }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Дата выдачи</th>
-                        <th>
-                            {{ $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : '' }}
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>Орган, выдавший паспорт</th>
-                        <th>
-                            {{ $application->ClientPasport_struct }}
                         </th>
                     </tr>
                 @endif
