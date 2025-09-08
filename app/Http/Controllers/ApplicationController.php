@@ -2176,9 +2176,9 @@ class ApplicationController extends Controller
                     // $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
 
                 }
-                $body = preg_replace("~<base(.*?)>(.*)</base>~si", "",  $body);
-                $body = preg_replace("~<base(.*?)>~si", "",  $body);
-                $body = preg_replace("~<img(.*?)>~si", "",  $body);
+                // $body = preg_replace("~<base(.*?)>(.*)</base>~si", "",  $body);
+                // $body = preg_replace("~<base(.*?)>~si", "",  $body);
+                // $body = preg_replace("~<img(.*?)>~si", "",  $body);
                 $message->body = $body;
             }
         }
