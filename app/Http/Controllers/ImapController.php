@@ -890,7 +890,20 @@ class ImapController extends Controller
         );
         // dd($applications);
         try {
-            $estimate = estimate::findorfail('id_application', '=', $applications->id);
+            $estimate = estimate::firstorcreate(
+                ['id_application' => $applications->id],
+                [
+                    'id_application' => $applications->id,
+                    'price_sp_full' => 0,
+                    'price_sp_half' => 0,
+                    'price_repair' => 0,
+                    'price_paint' => 0,
+                    'price_zip' => 0,
+                    'price_work' => 0,
+                    'price_repair_full' => 0,
+                    'price_repair_half' => 0
+                ]
+            );
         } catch (\Exception $e) {
             $estimate = estimate::firstorcreate(
                 ['id_application' => $applications->id],
