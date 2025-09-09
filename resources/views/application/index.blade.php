@@ -12,7 +12,7 @@
     @endcanany
 
     <div class="row">
-        <div class="col-4 col-sm-12 col-md-6 col-lg-4">
+        <div class="col col-sm-12 col-md-6 col-lg-4">
             <h3>Убыток</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
@@ -57,7 +57,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-4 col-sm-12 col-md-6 col-lg-4">
+        <div class="col col-sm-12 col-md-6 col-lg-4">
             <h3>Автомобиль</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
@@ -104,7 +104,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-4 col-sm-12 col-md-6 col-lg-4">
+        <div class="col col-sm-12 col-md-6 col-lg-4">
             <h3>Клиент</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
@@ -182,7 +182,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col-6 col-sm-12 col-md-6 col-lg-6">
+        <div class="col  col-sm-12 col-md-6 col-lg-6">
             <h3>Служебная информация</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
                 <tr>
@@ -225,7 +225,7 @@
 
             </table>
         </div>
-        <div class="col-6 col-sm-12 col-md-6 col-lg-6">
+        <div class="col  col-sm-12 col-md-6 col-lg-6">
             <h3>-</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
 
