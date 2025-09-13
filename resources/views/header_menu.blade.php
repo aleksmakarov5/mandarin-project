@@ -417,13 +417,13 @@
                     <li>
                         <nav>
                             <ul class="dropbtn">
-                                <li><a href="" class="active">Выбрать действие</a>
+                                <li><a href="" class="active">Статус</a>
                                     <ul class="submenu">
-                                        @can('service')
+                                        {{-- @can('service')
                                             <li><a href="#">Передать
                                                     МРК</a></li>
-                                        @endcan
-                                        @can('mrk')
+                                        @endcan --}}
+                                        {{-- @can('mrk')
                                             @if (isset($app->id_service))
                                                 <li><a href="#">Передать на СТО</a></li>
                                             @endif
@@ -453,8 +453,8 @@
                                                         повреждений</a>
                                                 </li>
                                             @endif
-                                        @endcan
-                                        @can('km')
+                                        @endcan --}}
+                                        {{-- @can('km')
                                             @if ($app->id_status == 6 || $app->id_status == 7)
                                                 <li><a href="/applications/{{ $id }}/change_status_km/1">Принять
                                                         в
@@ -463,15 +463,15 @@
                                                 <li><a href="/applications/{{ $id }}/change_status_km/2">Подготовить
                                                         отказ</a></li>
                                             @endif
-                                        @endcan
+                                        @endcan --}}
 
-                                        @can('spm')
+                                        {{-- @can('spm')
                                             @if ($app->id_status == 4)
                                                 <li><a href="/applications/{{ $id }}/send_mrk/{{ $app->id_MRK }}">Передать
                                                         МРК</a></li>
                                             @endif
-                                        @endcan
-                                        @can('admin')
+                                        @endcan --}}
+                                        {{-- @can('admin')
                                             @if ($app->id_status == 2 && $app->id_MRK)
                                                 <li><a href="/applications/{{ $app->id }}/send_mrk/{{ $app->id_MRK }}">Передать
                                                         МРК</a></li>
@@ -498,9 +498,9 @@
                                                 </li>
                                                 <br>
                                             @endif
-                                        @endcan
+                                        @endcan --}}
 
-                                        <li><a href="">Установить статус</a>
+                                        {{-- <li><a href="">Установить статус</a>
                                             @can('admin')
                                                 @if ($app->id_status == 3)
                                                     <ul class="submenu">
@@ -533,7 +533,28 @@
 
 
 
-                                        </li>
+                                        </li> --}}
+                                        @if ($app->id_status <= 12)
+                                            <li><a href="/applications/{{ $id }}/change_st/12">
+                                                    <div class="td_round  {{ $status[11]->status_theme }}">
+                                                        {{ $status[11]->StatusName }}</div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($app->id_status > 12 && $app->id_status < 26)
+                                            <ul class="submenu">
+                                                @foreach ($status as $stat)
+                                                    @if ($stat->id > 7 && $stat->id < 26)
+                                                        <li><a
+                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">
+                                                                <div class="td_round  {{ $stat->status_theme }}">
+                                                                    {{ $stat->StatusName }}</div>
+                                                            </a>
+                                                        </li>
+                                                    @endif
+                                                @endforeach
+                                            </ul>
+                                        @endif
                                     </ul>
                                 </li>
 
