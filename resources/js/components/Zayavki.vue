@@ -1,4 +1,3 @@
-
 <style type="text/css">
 .inp-cont {
     display: block;
@@ -14,26 +13,24 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
-.city-filter{
-position: absolute;
-background-color: #fff;
-color: #212529;
-padding: 15px;
-z-index: 2;
+.city-filter {
+    position: absolute;
+    background-color: #fff;
+    color: #212529;
+    padding: 15px;
+    z-index: 2;
 }
-.close{
+.close {
     position: absolute;
     top: 5px;
     right: 5px;
     cursor: pointer;
     width: 20px;
 }
-.filter{
-
+.filter {
     cursor: pointer;
-
 }
-.back-filter{
+.back-filter {
     position: fixed;
     top: 0;
     left: 0;
@@ -47,12 +44,15 @@ z-index: 2;
 }
 </style>
 <template>
-<div>
-              <div class="back-filter" v-if="city_filter_show" @click="city_filter_show=false"></div>
+    <div>
+        <div
+            class="back-filter"
+            v-if="city_filter_show"
+            @click="city_filter_show = false"
+        ></div>
 
-<table id="applications" class="editable">
+        <table id="applications" class="editable">
             <thead>
-
                 <tr>
                     <th scope="col">Дог</th>
                     <th scope="col">Статус</th>
@@ -68,312 +68,509 @@ z-index: 2;
                     <th scope="col">Клиент</th>
                     <th scope="col">Телефон</th>
                     <th scope="col">Авто</th>
-                    <th scope="col">ГРЗ </th>
+                    <th scope="col">ГРЗ</th>
                     <th scope="col">Дата</th>
                     <th scope="col">Тип убытка</th>
                     <th scope="col">СТОА</th>
-                    <template v-if="rout=='directions'">
-                            <th scope="col">Сумма СК</th>
-                            <th scope="col">Сумма З/Ч</th>
-                            <th scope="col">Сумма ремонта</th>
-                            <th scope="col">Затраты на ремонт</th>
-                            <th scope="col">Оплата CК</th>
-                            <th scope="col">Оплата СТО</th>
-                            <th scope="col">Остаток</th>
-                            <th scope="col"></th>
-                       </template>
-
-
-
+                    <template v-if="rout == 'directions'">
+                        <th scope="col">Сумма СК</th>
+                        <th scope="col">Сумма З/Ч</th>
+                        <th scope="col">Сумма ремонта</th>
+                        <th scope="col">Затраты на ремонт</th>
+                        <th scope="col">Оплата CК</th>
+                        <th scope="col">Оплата СТО</th>
+                        <th scope="col">Остаток</th>
+                        <th scope="col"></th>
+                    </template>
                 </tr>
-                <tr style="heigth: 15px;">
+                <tr style="heigth: 15px">
                     <th></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Статус" id="search-text2"
-                            @keyup="tableSearch(2,'applications')"></th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Статус"
+                            id="search-text2"
+                            @keyup="tableSearch(2, 'applications')"
+                        />
+                    </th>
 
                     <th scope="col"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="" id="search-text4"
-                            @keyup="tableSearch(4,'applications')">
-                    </th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="МРК" id="search-text5"
-                            @keyup="tableSearch(5,'applications')"></th>
                     <th scope="col">
-                        <div class="filter" @click="city_filter_show=!city_filter_show" >
-
-                                    <img  src="/storage/img/filter.png" width="15px">
-
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder=""
+                            id="search-text4"
+                            @keyup="tableSearch(4, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="МРК"
+                            id="search-text5"
+                            @keyup="tableSearch(5, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <div
+                            class="filter"
+                            @click="city_filter_show = !city_filter_show"
+                        >
+                            <img src="/storage/img/filter.png" width="15px" />
                         </div>
 
-                            <div class="city-filter" v-if="city_filter_show">
-                                    <table class="table">
-                                        <thead>
-                                            <th>
-                                                <input   type="checkbox" :checked="city_selected.length==city.length" id="all_city" @change="allCitySelect()">
-                                            </th>
-                                            <th>
-                                                Все
-                                            </th>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="c in city">
-                                                <td>
-                                                    <input  :checked="city_selected.includes(c.id)"  type="checkbox" :id="'city_'+c.id" @change="citySelectedChange(c.id)">
-                                                    </td>   <td>{{ c.name }}
-                                                </td>
-
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
+                        <div class="city-filter" v-if="city_filter_show">
+                            <table class="table">
+                                <thead>
+                                    <th>
+                                        <input
+                                            type="checkbox"
+                                            :checked="
+                                                city_selected.length ==
+                                                city.length
+                                            "
+                                            id="all_city"
+                                            @change="allCitySelect()"
+                                        />
+                                    </th>
+                                    <th>Все</th>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="c in city">
+                                        <td>
+                                            <input
+                                                :checked="
+                                                    city_selected.includes(c.id)
+                                                "
+                                                type="checkbox"
+                                                :id="'city_' + c.id"
+                                                @change="
+                                                    citySelectedChange(c.id)
+                                                "
+                                            />
+                                        </td>
+                                        <td>{{ c.name }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="СК" id="search-text7"
-                            @keyup="tableSearch(7,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="СТО" id="search-text8"
-                            @keyup="tableSearch(8,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Юрист" id="search-text9"
-                            @keyup="tableSearch(9,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="№ убытка " id="search-text10"
-                            @keyup="tableSearch(10,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="ФИО клиента"
-                            id="search-text11" @keyup="tableSearch(11,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Телефон" id="search-text12"
-                            @keyup="tableSearch(12,'applications')"></th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="СК"
+                            id="search-text7"
+                            @keyup="tableSearch(7, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="СТО"
+                            id="search-text8"
+                            @keyup="tableSearch(8, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Юрист"
+                            id="search-text9"
+                            @keyup="tableSearch(9, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="№ убытка "
+                            id="search-text10"
+                            @keyup="tableSearch(10, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="ФИО клиента"
+                            id="search-text11"
+                            @keyup="tableSearch(11, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Телефон"
+                            id="search-text12"
+                            @keyup="tableSearch(12, 'applications')"
+                        />
+                    </th>
 
-
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Авто " id="search-text13"
-                            @keyup="tableSearch(13,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="ГРЗ" id="search-text14"
-                            @keyup="tableSearch(14,'applications')"> </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Авто "
+                            id="search-text13"
+                            @keyup="tableSearch(13, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="ГРЗ"
+                            id="search-text14"
+                            @keyup="tableSearch(14, 'applications')"
+                        />
+                    </th>
                     <th scope="col"></th>
 
-
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="Тип убытка"
-                            id="search-text14" @keyup="tableSearch(16,'applications')"></th>
-                    <th scope="col"><input class="inp-cont" type="text" placeholder="СТОА" id="search-text17"
-                            @keyup="tableSearch(17,'applications')"></th>
-                            <template v-if="rout=='directions'">
-
-
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-                                    <th scope="col"></th>
-
-                            </template>
-
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Тип убытка"
+                            id="search-text14"
+                            @keyup="tableSearch(16, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="СТОА"
+                            id="search-text17"
+                            @keyup="tableSearch(17, 'applications')"
+                        />
+                    </th>
+                    <template v-if="rout == 'directions'">
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                        <th scope="col"></th>
+                    </template>
                 </tr>
             </thead>
             <tbody>
                 <template v-for="application in applications">
-                <tr :key="application.created_at" v-if="city_selected.includes(application.id_city)||city_selected.length==city.length">
-                    <td @click="openApplication(application.id)">
-                        <template v-if="application.doc">
-                            <div class="td_round  yes"> да
-                                </div>
-                        </template>
-                        <template v-else>
-                            <div class="td_round  no"> нет
-                                </div>
-                        </template>
-                    </td>
-                    <td @click="openApplication(application.id)">
-                        <div :class="'td_round '+application.status_theme">
+                    <tr
+                        :key="application.created_at"
+                        v-if="
+                            city_selected.includes(application.id_city) ||
+                            city_selected.length == city.length
+                        "
+                    >
+                        <td @click="openApplication(application.id)">
+                            <template v-if="application.doc">
+                                <div class="td_round yes">да</div>
+                            </template>
+                            <template v-else>
+                                <div class="td_round no">нет</div>
+                            </template>
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            <div
+                                :class="'td_round ' + application.status_theme"
+                            >
                                 {{ application.StatusName }}
-                        </div>
-                    </td>
-                    <template v-if="application.count_hour<=0">
-
-
-                            <td scope="col" class="alert alert-danger" @click="openApplication(application.id)">
+                            </div>
+                            <div
+                                :class="
+                                    'progressbar ' +
+                                    (application.count_hour > 0
+                                        ? 'blue'
+                                        : 'red')
+                                "
+                            >
+                                <span
+                                    :style="
+                                        'width: ' +
+                                        ((application.count_hour <
+                                        application.max_hour
+                                            ? application.count_hour
+                                            : application.max_hour) /
+                                            application.max_hour) *
+                                            100 +
+                                        '%'
+                                    "
+                                    >{{
+                                        application.count_hour > 0
+                                            ? application.count_hour
+                                            : "просрочено"
+                                    }}
+                                    <span>
+                                        <template v-if="application.day">
+                                            {{
+                                                showDays(application.count_hour)
+                                            }}
+                                        </template>
+                                        <template v-else>
+                                            {{
+                                                showHours(
+                                                    application.count_hour
+                                                )
+                                            }}
+                                        </template>
+                                    </span>
+                                </span>
+                            </div>
+                        </td>
+                        <!-- <template v-if="application.count_hour < 0">
+                            <td
+                                scope="col"
+                                class="alert alert-danger"
+                                @click="openApplication(application.id)"
+                            >
                                 Просрочено
                             </td>
                         </template>
-                        <template v-else>
-                            <td @click="openApplication(application.id)">
-                                <div :class="'progressbar '+ (application.count_hour > 0 ? 'blue' : 'red') ">
-                                    <span
-                                        :style="'width: '+((application.count_hour < application.max_hour ? application.count_hour : application.max_hour) / application.max_hour) * 100 +'%'">{{ application.count_hour > 0 ? application.count_hour : 'просрочено' }}
-                                        <span>
-                                            <template v-if="(application.id_status > 11 && application.id_status != 18)" >
-                                                {{ showDays(application.count_hour) }}
-                                            </template>
-                                            <template v-else>
-                                                {{ showHours(application.count_hour) }}
-                                            </template>
-                                        </span>
-                                    </span>
-
-                                </div>
-                                <template v-if="application.id_status < 5&&application.count_five<10">
-
-                                    <div :class="'progressbar '+(application.count_five > 0 ? '' : 'red' )">
+                        <template v-else> -->
+                        <td @click="openApplication(application.id)">
+                            <!-- <template
+                                    v-if="
+                                        application.id_status < 5 &&
+                                        application.count_five < 10
+                                    "
+                                >
+                                    <div
+                                        :class="
+                                            'progressbar ' +
+                                            (application.count_five > 0
+                                                ? ''
+                                                : 'red')
+                                        "
+                                    >
                                         <span
-                                            :style="'width: '+ ((application.count_five / 5) * 100 )+'%'">{{ (application.count_five > 0 ? application.count_five : 'просрочено') }}
-                                            <span>{{ showHours(application.count_five) }}</span></span>
+                                            :style="
+                                                'width: ' +
+                                                (application.count_five / 5) *
+                                                    100 +
+                                                '%'
+                                            "
+                                            >{{
+                                                application.count_five > 0
+                                                    ? application.count_five
+                                                    : "просрочено"
+                                            }}
+                                            <span>{{
+                                                showHours(
+                                                    application.count_five
+                                                )
+                                            }}</span></span
+                                        >
                                     </div>
-                                </template>
+                                </template> -->
+                        </td>
+                        <!-- </template> -->
+
+                        <td @click="openApplication(application.id)">
+                            {{ application.id }}
+                            <notify-counter
+                                :id_app="application.id"
+                                :user="user_id"
+                                :count_in="application.count"
+                            />
+                        </td>
+
+                        <td @click="openApplication(application.id)">
+                            {{ mrkFam(application.MRK_name) }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.city }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            <div
+                                :class="
+                                    'td_round ' +
+                                    application.insurance_companies_theme
+                                "
+                            >
+                                {{ application.name }}
+                            </div>
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            <div
+                                :class="
+                                    'td_round ' + application.services_theme
+                                "
+                            >
+                                {{ application.service_name }}
+                            </div>
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            <div
+                                :class="
+                                    'td_round ' +
+                                    lawyersColor(application.lawyers_color)
+                                "
+                            >
+                                {{ mrkFam(application.lawyer_name) }}
+                            </div>
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.numberInsuranceCompanyApplication }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.ClientName }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.ClientPhone }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.CarModel }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.gnz }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ formatDate(application.created_at) }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.ub_type ? "Каско" : "Осаго" }}
+                        </td>
+                        <td @click="openApplication(application.id)">
+                            {{ application.our_name }}
+                        </td>
+                        <template v-if="rout == 'directions'">
+                            <td @click="openApplication(application.id)">
+                                {{ application.summ_ic_full }}
+                            </td>
+                            <td @click="openApplication(application.id)">
+                                {{ application.summ_order }}
+                            </td>
+                            <td @click="openApplication(application.id)">
+                                {{ application.summ_service }}
+                            </td>
+                            <td @click="openApplication(application.id)">
+                                {{ application.summ_full }}
+                            </td>
+
+                            <td @click="openApplication(application.id)">
+                                {{ formatDate(application.ic_pay_date) }}
+                            </td>
+                            <td @click="openApplication(application.id)">
+                                {{ formatDate(application.sto_pay_date) }}
+                            </td>
+                            <td @click="openApplication(application.id)">
+                                <div
+                                    :class="
+                                        application.proc > 61
+                                            ? 'alert alert-success'
+                                            : 'alert alert-danger'
+                                    "
+                                >
+                                    {{ application.eco_delta_full }} ({{
+                                        application.proc
+                                    }}%)
+                                </div>
                             </td>
                         </template>
-
-
-                    <td @click="openApplication(application.id)">
-                        {{application.id}}
-                        <notify-counter :id_app="application.id" :user="user_id"
-                                :count_in="application.count" />
-                    </td>
-
-                    <td @click="openApplication(application.id)">{{ mrkFam(application.MRK_name) }}</td>
-                    <td @click="openApplication(application.id)">{{ application.city }}</td>
-                    <td @click="openApplication(application.id)"><div :class="'td_round '+application.insurance_companies_theme">{{ application.name }}</div></td>
-                    <td @click="openApplication(application.id)"><div :class="'td_round '+application.services_theme">{{ application.service_name }}</div></td>
-                    <td @click="openApplication(application.id)"><div :class="'td_round '+lawyersColor(application.lawyers_color)">{{ mrkFam(application.lawyer_name) }} </div></td>
-                    <td @click="openApplication(application.id)">{{ application.numberInsuranceCompanyApplication }}</td>
-                    <td @click="openApplication(application.id)">{{ application.ClientName }}</td>
-                    <td @click="openApplication(application.id)">{{ application.ClientPhone }}</td>
-                    <td @click="openApplication(application.id)">{{ application.CarModel }}</td>
-                    <td @click="openApplication(application.id)">{{ application.gnz }}</td>
-                    <td @click="openApplication(application.id)">{{ formatDate(application.created_at) }}</td>
-                    <td @click="openApplication(application.id)">{{ application.ub_type?'Каско':'Осаго' }}</td>
-                    <td @click="openApplication(application.id)">{{ application.our_name }}</td>
-                    <template v-if="rout=='directions'">
-                                <td @click="openApplication(application.id)">
-                                    {{ application.summ_ic_full }}</td>
-                                <td @click="openApplication(application.id)">
-                                    {{ application.summ_order }}</td>
-                                <td @click="openApplication(application.id)">
-                                    {{ application.summ_service }}</td>
-                                <td @click="openApplication(application.id)">
-                                    {{ application.summ_full }}</td>
-
-                                <td @click="openApplication(application.id)">
-                                    {{ formatDate(application.ic_pay_date) }}
-                                </td>
-                                <td @click="openApplication(application.id)">
-                                    {{ formatDate(application.sto_pay_date) }}
-                                </td>
-                                <td @click="openApplication(application.id)">
-                                    <div
-                                        :class="application.proc > 61?'alert alert-success':'alert alert-danger'">
-                                        {{ application.eco_delta_full }} ({{ application.proc }}%)</div>
-                                </td>
-                    </template>
-                    <td>
-                        <a class="nav-link" @click="deleteApplication(application.id)">
-                            <img
-                                    src="/storage/img/delete.png" width="20" alt="delete">
-                        </a>
-                    </td>
-                </tr>
+                        <td>
+                            <a
+                                class="nav-link"
+                                @click="deleteApplication(application.id)"
+                            >
+                                <img
+                                    src="/storage/img/delete.png"
+                                    width="20"
+                                    alt="delete"
+                                />
+                            </a>
+                        </td>
+                    </tr>
                 </template>
             </tbody>
-            </table>
-
-
-</div>
+        </table>
+    </div>
 </template>
 
 <script>
-
-import NotifyCounter from '../components/NotifyCounter.vue';
+import NotifyCounter from "../components/NotifyCounter.vue";
 export default {
-        components: {
-            NotifyCounter,
-        },
-        props:[
-            'user_id',
-            'in_applications',
-            'rout',
-            'city',
-        'filter'
-    ],
+    components: {
+        NotifyCounter,
+    },
+    props: ["user_id", "in_applications", "rout", "city", "filter"],
 
-         data(){
-
-            return{
-                applications: this.in_applications,
-                city_selected: [],
-                city_filter_show:false
-
-            }
+    data() {
+        return {
+            applications: this.in_applications,
+            city_selected: [],
+            city_filter_show: false,
+        };
     },
     mounted() {
-        for (let i = 0; i < this.filter.length; i++)
-        {
-            this.city_selected[i] = this.filter[i].id_city
+        for (let i = 0; i < this.filter.length; i++) {
+            this.city_selected[i] = this.filter[i].id_city;
         }
-        if (this.city_selected.length == 0)
-                this.citySelected()
-
+        if (this.city_selected.length == 0) this.citySelected();
     },
-
-
-
-
-
 
     methods: {
         citySelectedChange(id) {
-            if (this.city_selected.includes(id))
-
-            {
-                axios.post(`/api/application/delete_filter`, {
-                id_city: id,
-                id_user: this.user_id,
-              })
-                .then(res => {
-                this.city_selected.splice(this.city_selected.indexOf(id), 1);
-           })
-            }
-            else
-            {
-                 axios.post(`/api/application/add_filter`, {
-                id_city: id,
-                id_user: this.user_id,
-              })
-                .then(res => {
-                   this.city_selected.push(id);
-           })
-
+            if (this.city_selected.includes(id)) {
+                axios
+                    .post(`/api/application/delete_filter`, {
+                        id_city: id,
+                        id_user: this.user_id,
+                    })
+                    .then((res) => {
+                        this.city_selected.splice(
+                            this.city_selected.indexOf(id),
+                            1
+                        );
+                    });
+            } else {
+                axios
+                    .post(`/api/application/add_filter`, {
+                        id_city: id,
+                        id_user: this.user_id,
+                    })
+                    .then((res) => {
+                        this.city_selected.push(id);
+                    });
             }
         },
 
         allCitySelect() {
             if (this.city_selected.length == this.city.length) {
-
-                axios.post(`/api/application/delete_filters`, {
-
-                    id_user: this.user_id,
-                })
-                    .then(res => {
-                        this.city_selected = []
+                axios
+                    .post(`/api/application/delete_filters`, {
+                        id_user: this.user_id,
                     })
-            }
-            else {
-                this.citySelected()
+                    .then((res) => {
+                        this.city_selected = [];
+                    });
+            } else {
+                this.citySelected();
                 axios.post(`/api/application/add_filters`, {
                     id_city: this.city_selected,
                     id_user: this.user_id,
-                })
-
+                });
             }
-
         },
         citySelected() {
-            this.city_selected = []
-            for (let i = 0; i < this.city.length; i++)
-            {
-                this.city_selected[i] = this.city[i].id
+            this.city_selected = [];
+            for (let i = 0; i < this.city.length; i++) {
+                this.city_selected[i] = this.city[i].id;
             }
-
         },
-        tableSearch(k, table){
-            var phrase = document.getElementById('search-text' + k);
+        tableSearch(k, table) {
+            var phrase = document.getElementById("search-text" + k);
             var table = document.getElementById(table);
-            var regPhrase = new RegExp(phrase.value, 'i');
+            var regPhrase = new RegExp(phrase.value, "i");
             var flag = false;
             for (var i = 2; i < table.rows.length; i++) {
                 flag = false;
@@ -383,97 +580,89 @@ export default {
                 } else {
                     table.rows[i].style.display = "none";
                 }
-
             }
         },
         deleteApplication(id) {
-            if (confirm('Точно удалить заявку №' + id + '?')) {
-                axios.delete('/api/application/' + id) .then(res => {
-                    this.applications = this.applications.splice(this.applications.indexOf(id), 1);
-                })
-            }
-            else
-            return false
-
+            if (confirm("Точно удалить заявку №" + id + "?")) {
+                axios.delete("/api/application/" + id).then((res) => {
+                    this.applications = this.applications.splice(
+                        this.applications.indexOf(id),
+                        1
+                    );
+                });
+            } else return false;
         },
-        formatDate(date)
-        {
+        formatDate(date) {
             let options = {
-                year: 'numeric',
-                month: 'numeric',
-                day: 'numeric',
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
             };
-            if(date)
-                return new Date(date).toLocaleString('ru', options);
-        else return ''
+            if (date) return new Date(date).toLocaleString("ru", options);
+            else return "";
         },
-        lawyersColor(color)
-        {
-            if (color)
-                return 'no'
-            else
-                return 'yes'
-
+        lawyersColor(color) {
+            if (color) return "no";
+            else return "yes";
         },
         mrkFam(surname) {
-            let text=surname?surname:' '
-        return text.substring(0,text.indexOf(' '))
+            let text = surname ? surname : " ";
+            return text.substring(0, text.indexOf(" "));
         },
-        openApplication(id){
-            window.location.href = '/application/' + id
-            return false
+        openApplication(id) {
+            window.location.href = "/application/" + id;
+            return false;
         },
-        showDays(count_days)
-        {
+        showDays(count_days) {
             count_days = count_days % 100;
-        if (count_days > 10 && count_days < 20)
-            return ' дней';
-        count_days = count_days % 10;
-        if (count_days == 1) {
-            return ' день';
-        }
-        if (count_days >= 2 && count_days <= 4) {
-            return ' дня';
-        }
-        return ' дней';
+            if (count_days > 10 && count_days < 20) return " дней";
+            count_days = count_days % 10;
+            if (count_days == 1) {
+                return " день";
+            }
+            if (count_days >= 2 && count_days <= 4) {
+                return " дня";
+            }
+            if (count_days <= 0) {
+                return " ";
+            }
+            return " дней";
         },
         showHours(count_hours) {
-             count_hours = count_hours % 100;
-        if (count_hours > 10 && count_hours < 20)
-            return ' часов';
-        count_hours = count_hours % 10;
-        if (count_hours == 1) {
-            return ' час';
-        }
-        if (count_hours >= 2 && count_hours <= 4) {
-            return ' часа';
-        }
-        return ' часов';
-
+            count_hours = count_hours % 100;
+            if (count_hours > 10 && count_hours < 20) return " часов";
+            count_hours = count_hours % 10;
+            if (count_hours == 1) {
+                return " час";
+            }
+            if (count_hours >= 2 && count_hours <= 4) {
+                return " часа";
+            }
+            if (count_hours <= 0) {
+                return " ";
+            }
+            return " часов";
         },
 
         tableSearch(columnNumber, tableId) {
             let input, filter, table, tr, td, i, txtValue;
-            input = document.getElementById('search-text'+columnNumber);
+            input = document.getElementById("search-text" + columnNumber);
             filter = input.value.toUpperCase();
             table = document.getElementById(tableId);
-            tr = table.getElementsByTagName('tr');
+            tr = table.getElementsByTagName("tr");
 
             for (i = 1; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName('td')[columnNumber - 1];
+                td = tr[i].getElementsByTagName("td")[columnNumber - 1];
                 if (td) {
                     txtValue = td.textContent || td.innerText;
                     if (txtValue.toUpperCase().indexOf(filter) > -1) {
-                        tr[i].style.display = '';
+                        tr[i].style.display = "";
                     } else {
-                        tr[i].style.display = 'none';
+                        tr[i].style.display = "none";
                     }
                 }
             }
-        }
-
-    }
-
-	}
-
+        },
+    },
+};
 </script>

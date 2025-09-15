@@ -209,6 +209,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city',
@@ -283,6 +285,8 @@ class ApplicationController extends Controller
                     'application_statuses.StatusName',
                     'application_statuses.status_theme',
                     'application_statuses.current_group',
+                    'application_statuses.time',
+                    'application_statuses.day',
                     'our_companies.our_name',
                     'users.name as MRK_name',
                     'cities.name as city'
@@ -349,6 +353,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -404,6 +410,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city',
@@ -469,6 +477,9 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
+
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -531,6 +542,10 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -545,8 +560,8 @@ class ApplicationController extends Controller
             //     $application->count_five = 11;
             // } else
             {
-                $application->count_hour = 48 - $current->diffInHours($application->created_at);
-                $application->max_hour = 48;
+                $application->count_hour = $application->time - $current->diffInHours($application->created_at);
+                $application->max_hour = $application->time;
                 $application->created = $application->created_at->toFormattedDateString();
                 $application->count_five = 5 - $current->diffInHours($application->check_date);
             }
@@ -574,144 +589,144 @@ class ApplicationController extends Controller
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()]);
     }
 
-    public function failures()
-    {
-        if (Gate::allows('administrator')) {
-            $applications = application::where('id_status', '=', '7')
-                ->orwhere('id_status', '=', '6')
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+    // public function failures()
+    // {
+    //     if (Gate::allows('administrator')) {
+    //         $applications = application::where('id_status', '=', '7')
+    //             ->orwhere('id_status', '=', '6')
+    //             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+    //             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+    //             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+    //             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+    //             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+    //             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate');
-            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+    //             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+    //             ->with('status_chats', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('status_applications', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('status_messages', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('spareparts')
+    //             ->with('works')
+    //             ->with('estimate');
+    //         $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if (isset($user_filters[0]->id_city)) {
-                $applications->where(function ($query) use ($user_filters) {
-                    $query->where('id_city', '=', $user_filters[0]->id_city);
-                    for ($i = 1; $i < $user_filters->count(); $i++) {
-                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
-                    }
-                    if ($user_filters->count() == (city::all()->count()))
-                        $query->orWhere('id_city', '=', 0);
-                });
-            }
-            $applications = $applications->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->orderBy('applications.id', 'desc')
-                ->paginate(25);
-        } else {
-            $applications = application::where('id_status', '=', '7')
-                ->orwhere('id_status', '=', '6')
-                ->join('user_roles', function ($join) {
-                    $join
-                        ->where('user_roles.id_group', '=', 8)
-                        ->where('user_roles.id_user', '=', Auth::user()->id);
-                })
-                ->join('role_companies', function ($join) {
-                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-                })
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+    //         if (isset($user_filters[0]->id_city)) {
+    //             $applications->where(function ($query) use ($user_filters) {
+    //                 $query->where('id_city', '=', $user_filters[0]->id_city);
+    //                 for ($i = 1; $i < $user_filters->count(); $i++) {
+    //                     $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+    //                 }
+    //                 if ($user_filters->count() == (city::all()->count()))
+    //                     $query->orWhere('id_city', '=', 0);
+    //             });
+    //         }
+    //         $applications = $applications->select(
+    //             'applications.*',
+    //             'insurance_companies.name',
+    //             'insurance_companies.insurance_companies_theme',
+    //             'services.service_name',
+    //             'services.services_theme',
+    //             'lawyers.lawyer_name',
+    //             'lawyers.color as lawyers_color',
+    //             'application_statuses.StatusName',
+    //             'application_statuses.status_theme',
+    //             'application_statuses.current_group',
+    //             'our_companies.our_name',
+    //             'users.name as MRK_name',
+    //             'cities.name as city'
+    //         )->orderBy('applications.id', 'desc')
+    //             ->paginate(25);
+    //     } else {
+    //         $applications = application::where('id_status', '=', '7')
+    //             ->orwhere('id_status', '=', '6')
+    //             ->join('user_roles', function ($join) {
+    //                 $join
+    //                     ->where('user_roles.id_group', '=', 8)
+    //                     ->where('user_roles.id_user', '=', Auth::user()->id);
+    //             })
+    //             ->join('role_companies', function ($join) {
+    //                 $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+    //             })
+    //             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+    //             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+    //             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+    //             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+    //             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+    //             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate');
-            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+    //             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+    //             ->with('status_chats', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('status_applications', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('status_messages', function ($query) {
+    //                 $query->where('id_user', '=', auth::user()->id)
+    //                     ->where('is_readed', '=', '0');
+    //             })
+    //             ->with('spareparts')
+    //             ->with('works')
+    //             ->with('estimate');
+    //         $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if (isset($user_filters[0]->id_city)) {
-                $applications->where(function ($query) use ($user_filters) {
-                    $query->where('id_city', '=', $user_filters[0]->id_city);
-                    for ($i = 1; $i < $user_filters->count(); $i++) {
-                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
-                    }
-                    if ($user_filters->count() == (city::all()->count()))
-                        $query->orWhere('id_city', '=', 0);
-                });
-            }
-            $applications = $applications->select(
-                'applications.*',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city'
-            )->orderBy('applications.id', 'desc')
-                ->paginate(25);
-        }
-        // dd($applications);
-        $current = carbon::now();
-        foreach ($applications as $application) {
-            $application->count_hour = 48 - $current->diffInHours($application->created_at);
-            $application->max_hour = 48;
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
-            if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
-        }
-        $applications = $this->configure($applications);
-        $city = city::all();
-        session(['rout' => 'failures']);
+    //         if (isset($user_filters[0]->id_city)) {
+    //             $applications->where(function ($query) use ($user_filters) {
+    //                 $query->where('id_city', '=', $user_filters[0]->id_city);
+    //                 for ($i = 1; $i < $user_filters->count(); $i++) {
+    //                     $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+    //                 }
+    //                 if ($user_filters->count() == (city::all()->count()))
+    //                     $query->orWhere('id_city', '=', 0);
+    //             });
+    //         }
+    //         $applications = $applications->select(
+    //             'applications.*',
+    //             'insurance_companies.name',
+    //             'insurance_companies.insurance_companies_theme',
+    //             'services.service_name',
+    //             'services.services_theme',
+    //             'lawyers.lawyer_name',
+    //             'lawyers.color as lawyers_color',
+    //             'application_statuses.StatusName',
+    //             'application_statuses.status_theme',
+    //             'application_statuses.current_group',
+    //             'our_companies.our_name',
+    //             'users.name as MRK_name',
+    //             'cities.name as city'
+    //         )->orderBy('applications.id', 'desc')
+    //             ->paginate(25);
+    //     }
+    //     // dd($applications);
+    //     $current = carbon::now();
+    //     foreach ($applications as $application) {
+    //         $application->count_hour = 48 - $current->diffInHours($application->created_at);
+    //         $application->max_hour = 48;
+    //         $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+    //         if (isset($doc->id_status))
+    //             $application->doc = $doc->id_status;
+    //         else
+    //             $application->doc = 0;
+    //     }
+    //     $applications = $this->configure($applications);
+    //     $city = city::all();
+    //     session(['rout' => 'failures']);
 
 
-        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
-    }
+    //     return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
+    // }
 
     public function find(Request $request)
     {
@@ -761,6 +776,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1127,6 +1144,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1198,6 +1217,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1267,6 +1288,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1326,6 +1349,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1394,6 +1419,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1456,6 +1483,8 @@ class ApplicationController extends Controller
                 'application_statuses.StatusName',
                 'application_statuses.status_theme',
                 'application_statuses.current_group',
+                'application_statuses.time',
+                'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city'
@@ -1471,29 +1500,73 @@ class ApplicationController extends Controller
         $current = carbon::now();
         foreach ($applications as $application) { {
 
-                if ($application->id_status < 11) {
-                    $application->count_hour = 48 - $current->diffInHours($application->created_at);
-                    $application->max_hour = 48;
-                }
-                if ($application->id_status == 11) {
-                    $application->count_hour = 168 - $current->diffInHours($application->check_date);
-                    $application->max_hour = 168;
-                }
-                if ($application->id_status == 19) {
-                    $application->count_hour = 72 - $current->diffInHours($application->check_date);
-                    $application->max_hour = 72;
-                }
-                if ($application->id_status == 22) {
-                    $application->count_hour = 42 - $current->diffInDays($application->check_date);
-                    $application->max_hour = 42;
-                }
-                if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
-                    $application->count_hour = $current->diffInDays($application->end_date);
 
-                    $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+                if ($application->time != 0) {
+                    if (!$application->day) {
+                        $application->count_hour = $application->time - $current->diffInHours($application->check_date);
+                        $application->max_hour = $application->time;
+                    } else {
+                        $application->count_hour = $application->time - $current->diffInDays($application->check_date);
+                        $application->max_hour = $application->time;
+                    }
+                } else {
+                    if ($application->id_status == 17) {
+                        $application->count_hour = $current->diffInDays($application->end_date);
+                        $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
 
-                    $application->max_hour = $start->diffInDays($application->end_date);
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->end_date);
+                    }
+                    if ($application->id_status == 13) {
+                        if ($application->count_hour = $current->diffInHours($application->view_date) < 24) {
+                            $application->count_hour = $current->diffInHours($application->view_date);
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInHours($application->view_date);
+                            $application->day = 0;
+                        } else {
+                            $application->count_hour = $current->diffInDays($application->view_date);
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInDays($application->view_date);
+                        }
+                        // dd($application);
+                    }
+                    if ($application->id_status == 15) {
+                        $application->count_hour = $current->diffInDays($application->sp_date);
+                        $start = carbon::create($application->check_date);;
+
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->sp_date);
+                        // dd($start, $application);
+                    }
                 }
+
+                // if ($application->id_status < 11) {
+                //     $application->count_hour = 48 - $current->diffInHours($application->created_at);
+                //     $application->max_hour = 48;
+                // }
+                // if ($application->id_status == 11) {
+                //     $application->count_hour = 168 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 168;
+                // }
+                // if ($application->id_status == 19) {
+                //     $application->count_hour = 72 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 72;
+                // }
+                // if ($application->id_status == 22) {
+                //     $application->count_hour = 42 - $current->diffInDays($application->check_date);
+                //     $application->max_hour = 42;
+                // }
+                // if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
+                //     $application->count_hour = $current->diffInDays($application->end_date);
+
+                //     $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
+                //     $application->max_hour = $start->diffInDays($application->end_date);
+                // }
             }
             $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
@@ -1502,6 +1575,7 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $city = city::all();
+
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
     // public function waiting(Request $request)
@@ -4326,9 +4400,10 @@ class ApplicationController extends Controller
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-
         $application->id_status = $status_id;
+        $application->check_date = carbon::now();
         if ($status_id == 14) {
+
 
             $today = WorkCalendar::now();
             $today->addWorkDays(30);
