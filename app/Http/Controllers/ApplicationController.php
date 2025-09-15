@@ -538,12 +538,13 @@ class ApplicationController extends Controller
         }
         $current = carbon::now();
         foreach ($applications as $application) {
-            if (isset($application->ic_answer_date)) {
-                $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
-                $application->max_hour = 48;
-                $application->StatusName = "Ожидается ответ СК";
-                $application->count_five = 11;
-            } else {
+            // if (isset($application->ic_answer_date)) {
+            //     $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
+            //     $application->max_hour = 48;
+            //     $application->StatusName = "Ожидается ответ СК";
+            //     $application->count_five = 11;
+            // } else
+            {
                 $application->count_hour = 48 - $current->diffInHours($application->created_at);
                 $application->max_hour = 48;
                 $application->created = $application->created_at->toFormattedDateString();
