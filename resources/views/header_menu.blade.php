@@ -641,7 +641,20 @@
                                         </a>
                                     </li>
                                 @endif
-
+                                @if ($app->id_status == 18)
+                                    <li><a @if (!in_array(9, $attach_statuses)) onclick="alert('Отсутсвует скан акта приема автомобиля ')"
+                                                    @else
+                                                    @if (!in_array(10, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото приема автомобиля ')"
+                                                    @else
+                                                         onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/25" @endif
+                                            @endif>
+                                            <div class="td_round  {{ $status[24]->status_theme }}">
+                                                {{ $status[24]->StatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endif
 
 
 
