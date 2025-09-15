@@ -534,10 +534,10 @@ class WordController extends Controller
 
     public function export_dk($id)
     {
-        $app = application::findOrFail($id);
-        if ($app->id_status < 9)
-            $app->id_status = 9;
-        $app->save();
+        // $app = application::findOrFail($id);
+        // if ($app->id_status < 9)
+        //     $app->id_status = 9;
+        // $app->save();
         $template = 'dk.docx';
         $filename = "Договор о проведении восстановительного ремонта №";
         $doc_type = 2;
