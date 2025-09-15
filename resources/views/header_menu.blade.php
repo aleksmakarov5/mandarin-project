@@ -628,10 +628,10 @@
                                 @endif
                                 @endif
                                 @if ($app->id_status == 17)
-                                    <li><a @if (!in_array(9, $attach_statuses)) onclick="alert('Отсутсвует скан акта приема автомобиля ')"
+                                    <li><a @if (!in_array(14, $attach_statuses)) onclick="alert('Отсутсвует скан акта сдачи автомобиля ')"
                                                     @else
-                                                    @if (!in_array(10, $attach_statuses))
-                                                        onclick="alert('Отсутсвуют фото приема автомобиля ')"
+                                                    @if (!in_array(15, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото сдачи автомобиля ')"
                                                     @else
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/18" @endif
@@ -642,14 +642,12 @@
                                     </li>
                                 @endif
                                 @if ($app->id_status == 18)
-                                    <li><a @if (!in_array(9, $attach_statuses)) onclick="alert('Отсутсвует скан акта приема автомобиля ')"
+                                    <li><a
+                                            @if (!$app->ic_pay_date || !$app->sto_pay_date || !$app->zp_date) onclick="alert('Заполните таблицу с датами оплат!')"
                                                     @else
-                                                    @if (!in_array(10, $attach_statuses))
-                                                        onclick="alert('Отсутсвуют фото приема автомобиля ')"
-                                                    @else
+
                                                          onclick="if (!confirm('Изменить статус?')) return false"
-                                                    href="/applications/{{ $id }}/change_st/25" @endif
-                                            @endif>
+                                                    href="/applications/{{ $id }}/change_st/25" @endif>
                                             <div class="td_round  {{ $status[24]->status_theme }}">
                                                 {{ $status[24]->StatusName }}</div>
                                         </a>
