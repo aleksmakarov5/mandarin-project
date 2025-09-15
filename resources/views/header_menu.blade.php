@@ -24,6 +24,15 @@
                     ? str2number($work->summ)
                     : str2number($work->count_hours_pzn) * str2number($work->price);
         }
+        $attachments = DB::table('attachments')->where('id_application', '=', $id)->get();
+        $attach_statuses = [];
+        $i = 0;
+        foreach ($attachments as $attachment) {
+            if ($attachment->id_status) {
+                $attach_statuses[$i++] = $attachment->id_status;
+            }
+        }
+        // dd($attach_statuses);
 
         // dd($rewiew->all()) ;
         $summ_ic_full = 0;
@@ -199,13 +208,13 @@
             :in_users="{{ json_encode($users) }}" :count_in="{{ json_encode($count) }}"
             :in_groups="{{ json_encode($groups) }}" :in_work_groups="{{ json_encode($work_groups) }}"></chat>
     </div>
-    <div id="app">
 
+    <div id="app">
         <div class="table-content">
 
 
             @if (!isset($hide_menu))
-                <table>
+                <table width=100%>
                     <tr>
                         <td>
 
@@ -394,8 +403,8 @@
                                     </tr>
                                 </table>
                             @endif
-                            @canany(['buh', 'admin'])
-                                @if (session('rout') == 'directions')
+                            @canany(['buh', 'admin', 'administrator'])
+                                @if (session('rout') == 'directions' || session('rout') == 'archive')
                                     <date-pay :app_id={{ $id }}
                                         :in_ic_pay_date="{{ json_encode($app->ic_pay_date) }}"
                                         :in_sto_pay_date="{{ json_encode($app->sto_pay_date) }}"
@@ -410,6 +419,7 @@
 
 
         </div>
+
         <div class="menu-content">
 
             <header class="d-flex justify-content-center py-3">
@@ -534,76 +544,156 @@
 
 
                                         </li> --}}
-                                        @if ($app->id_status <= 12)
-                                            <li><a href="/applications/{{ $id }}/change_st/12">
+                                        @if ($app->id_status < 12)
+                                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/12">
                                                     <div class="td_round  {{ $status[11]->status_theme }}">
                                                         {{ $status[11]->StatusName }}</div>
                                                 </a>
                                             </li>
                                         @endif
-                                        @if ($app->id_status > 12 && $app->id_status < 26)
-                                            <ul class="submenu">
-                                                @foreach ($status as $stat)
-                                                    @if ($stat->id > 7 && $stat->id < 26)
-                                                        <li><a
-                                                                href="/applications/{{ $id }}/change_st/{{ $stat->id }}">
-                                                                <div class="td_round  {{ $stat->status_theme }}">
-                                                                    {{ $stat->StatusName }}</div>
-                                                            </a>
-                                                        </li>
-                                                    @endif
-                                                @endforeach
-                                            </ul>
+                                        @if ($app->id_status == 12 || $app->id_status == 14)
+                                            <li><a
+                                                    @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату осмотра ')"
+                                                    @else
+                                                 onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/13" @endif>
+                                                    <div class="td_round  {{ $status[12]->status_theme }}">
+                                                        {{ $status[12]->StatusName }}</div>
+                                                </a>
+                                            </li>
                                         @endif
-                                    </ul>
+                                        @if ($app->id_status == 13)
+                                            <li><a @if (!in_array(9, $attach_statuses)) onclick="alert('Отсутсвует актуальный скан акта приема автомобиля ')"
+                                                    @else
+                                                    @if (!in_array(10, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют актуальные фото приема автомобиля ')"
+                                                    @else
+                                                         onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/14" @endif
+                                                    @endif>
+                                                    <div class="td_round  {{ $status[13]->status_theme }}">
+                                                        {{ $status[13]->StatusName }}</div>
+                                                </a>
+                                            </li>
+                                        @endif
+                                        @if ($summ_order != 0)
+                                            @if ($app->id_status == 14)
+                                                <li><a @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                                    @else
+                                                    @if (!in_array(30, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото дефектовки')"
+                                                    @else
+                                                        @if (!$app->sp_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату поставки З/Ч ')"
+
+                                                    @else
+                                                         onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/15" @endif
+                                                        @endif
+                                            @endif>
+                                            <div class="td_round  {{ $status[14]->status_theme }}">
+                                                {{ $status[14]->StatusName }}</div>
+                                            </a>
                                 </li>
+                                @endif
+                                @if ($app->id_status == 15)
+                                    <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/16">
+                                            <div class="td_round  {{ $status[15]->status_theme }}">
+                                                {{ $status[15]->StatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endif
+                                @if ($app->id_status == 16)
+                                    <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/17">
+                                            <div class="td_round  {{ $status[16]->status_theme }}">
+                                                {{ $status[16]->StatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endif
+                            @else
+                                @if ($app->id_status == 14)
+                                    <li><a @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                                    @else
+                                                    @if (!in_array(30, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото дефектовки')"
+                                                    @else onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/17" @endif
+                                            @endif>
+                                            <div class="td_round  {{ $status[16]->status_theme }}">
+                                                {{ $status[16]->StatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endif
+                                @endif
+                                @if ($app->id_status == 17)
+                                    <li><a @if (!in_array(9, $attach_statuses)) onclick="alert('Отсутсвует скан акта приема автомобиля ')"
+                                                    @else
+                                                    @if (!in_array(10, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото приема автомобиля ')"
+                                                    @else
+                                                         onclick="if (!confirm('Изменить статус?')) return false"
+                                                    href="/applications/{{ $id }}/change_st/18" @endif
+                                            @endif>
+                                            <div class="td_round  {{ $status[17]->status_theme }}">
+                                                {{ $status[17]->StatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endif
+
+
+
 
                             </ul>
-                        </nav>
                     </li>
-                    <li class="nav-item"><a href="/application/{{ $id }}"
-                            class="nav-link {{ request()->routeIs('application') ? 'tn-active' : '' }}"
-                            aria-current="page">Основная
-                            информация</a>
-                        <notify-app :id_app={{ $id }} :user={{ Auth::user()->id }} :type_in=1
-                            :count_in="{{ json_encode($count) }}">
-                    </li>
-                    <li class="nav-item"><a href="/SparePart/{{ $id }}"
-                            class="nav-link  {{ request()->routeIs('SparePart') ? 'tn-active' : '' }}"
-                            aria-current="page">Смета</a></li>
-                    {{-- <li class="nav-item"><a href="/Work/{{ $id }}"
+
+                </ul>
+                </nav>
+                </li>
+                <li class="nav-item"><a href="/application/{{ $id }}"
+                        class="nav-link {{ request()->routeIs('application') ? 'tn-active' : '' }}"
+                        aria-current="page">Основная
+                        информация</a>
+                    <notify-app :id_app={{ $id }} :user={{ Auth::user()->id }} :type_in=1
+                        :count_in="{{ json_encode($count) }}">
+                </li>
+                <li class="nav-item"><a href="/SparePart/{{ $id }}"
+                        class="nav-link  {{ request()->routeIs('SparePart') ? 'tn-active' : '' }}"
+                        aria-current="page">Смета</a></li>
+                {{-- <li class="nav-item"><a href="/Work/{{ $id }}"
                             class="nav-link  {{ request()->routeIs('Work') ? 'tn-active' : '' }}"
                             aria-current="page">Работы</a>
                     </li> --}}
 
 
-                    <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
-                            class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
-                            aria-current="page">Дефектовка</a></li>
-                    @can('company')
-                        <li class="nav-item"><a href="/mail/{{ $id }}"
-                                class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}"
-                                aria-current="page">Переписка
-                                с СК</a>
-                            <notify-app :id_app={{ $id }} :user={{ Auth::user()->id }} :type_in=2
-                                :count_in="{{ json_encode($count) }}">
-                        </li>
-                    @endcan
-                    {{-- <li class="nav-item"><a href="/chat/{{ $id }}"
+                <li class="nav-item"><a href="/troubleshooting/{{ $id }}"
+                        class="nav-link  {{ request()->routeIs('troubleshooting') ? 'tn-active' : '' }}"
+                        aria-current="page">Дефектовка</a></li>
+                @can('company')
+                    <li class="nav-item"><a href="/mail/{{ $id }}"
+                            class="nav-link {{ request()->routeIs('mail_app') ? 'tn-active' : '' }}"
+                            aria-current="page">Переписка
+                            с СК</a>
+                        <notify-app :id_app={{ $id }} :user={{ Auth::user()->id }} :type_in=2
+                            :count_in="{{ json_encode($count) }}">
+                    </li>
+                @endcan
+                {{-- <li class="nav-item"><a href="/chat/{{ $id }}"
                             class="nav-link {{ request()->routeIs('chat') ? 'tn-active' : '' }}"
                             aria-current="page">Чат</a>
 
                     </li> --}}
-                    <li class="nav-item"><a href="/document/{{ $id }}"
-                            class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}"
-                            aria-current="page">Документы</a></li>
+                <li class="nav-item"><a href="/document/{{ $id }}"
+                        class="nav-link  {{ request()->routeIs('document') ? 'tn-active' : '' }}"
+                        aria-current="page">Документы</a></li>
 
-                    @can('company')
-                        <li class="nav-item"><a href="/history/{{ $id }}"
-                                class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a>
-                        </li>
-                    @endcan
-                    <li></li>
+                @can('company')
+                    <li class="nav-item"><a href="/history/{{ $id }}"
+                            class="nav-link {{ request()->routeIs('history') ? 'tn-active' : '' }}">История</a>
+                    </li>
+                @endcan
+                <li></li>
 
 
 

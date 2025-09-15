@@ -211,7 +211,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Куратор</th>
+                    <th>Наставник</th>
                     <th>
                         {{ $application->spm }}
                     </th>
@@ -242,13 +242,9 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Деффектовка во время ремонта</th>
+                    <th>Дата осмотра</th>
                     <th>
-                        @if ($application->def == 0)
-                            Да
-                        @else
-                            Нет
-                        @endif
+                        {{ $application->view_date ? Date::parse($application->view_date)->format('j F Yг. H:i') : '' }}
                     </th>
                 </tr>
                 <tr>
@@ -264,9 +260,9 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Срок поставки запчастей</th>
+                    <th>Дата поставки запчастей</th>
                     <th>
-                        {{ $application->wait_sp }}
+                        {{ $application->sp_date ? Date::parse($application->sp_date)->format('j F Yг.') : '' }}
                     </th>
                 </tr>
             </table>

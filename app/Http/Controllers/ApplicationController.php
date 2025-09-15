@@ -1468,12 +1468,7 @@ class ApplicationController extends Controller
 
 
         $current = carbon::now();
-        foreach ($applications as $application) {
-            if (isset($application->ic_answer_date)) {
-                $application->StatusName = "Ожидается ответ СК";
-                $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
-                $application->max_hour = 48;
-            } else {
+        foreach ($applications as $application) { {
 
                 if ($application->id_status < 11) {
                     $application->count_hour = 48 - $current->diffInHours($application->created_at);
@@ -1499,7 +1494,7 @@ class ApplicationController extends Controller
                     $application->max_hour = $start->diffInDays($application->end_date);
                 }
             }
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
                 $application->doc = $doc->id_status;
             else
@@ -1826,6 +1821,8 @@ class ApplicationController extends Controller
                 'dogovor' => 'nullable|string',
                 'def' => 'nullable|integer',
                 'start_date' => 'nullable|date',
+                'view_date' => 'nullable|date',
+                'sp_date' => 'nullable|date',
                 'end_date' => 'nullable|date',
                 'wait_sp' => 'nullable|string',
                 'ClientPasport_number' => 'nullable|string',
@@ -1838,6 +1835,7 @@ class ApplicationController extends Controller
                 'gender' => 'nullable'
 
             ]);
+            // dd($data);
             if (isset($data['start_date'])) {
                 $end_date = WorkCalendar::create($data['start_date']);
                 $end_date->addWorkDays(30);
@@ -1940,7 +1938,7 @@ class ApplicationController extends Controller
 
         $application->save();
         try {
-            $estimate = estimate::findorfail('id_application', '=', $application->id);
+            $estimate = estimate::find('id_application', '=', $application->id);
         } catch (\Exception $e) {
             $estimate = estimate::firstorcreate(
                 ['id_application' => $application->id],
@@ -2972,7 +2970,7 @@ class ApplicationController extends Controller
 
 
 
-            $app = Application::findorfail($id);
+            $app = Application::find($id);
             if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
                 // $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);
@@ -3623,7 +3621,7 @@ class ApplicationController extends Controller
         $history->id_status = 3;
         $history->id_application = $id;
         $history->save();
-        $user = user::findorfail($id_MRK);
+        $user = user::find($id_MRK);
         $notify = new notify;
         $notify->id_user = $user->id;
         $notify->id_application = $id;
@@ -3788,7 +3786,7 @@ class ApplicationController extends Controller
                 }
                 break;
             case 5:
-                $user = user::findorfail($application->id_MRK);
+                $user = user::find($application->id_MRK);
 
                 $notify = new notify;
                 $notify->id_user = $user->id;
@@ -3821,7 +3819,7 @@ class ApplicationController extends Controller
 
                 break;
             case 6:
-                $user = user::findorfail($application->id_spm);
+                $user = user::find($application->id_spm);
 
                 $notify = new notify;
                 $notify->id_user = $user->id;
@@ -3988,7 +3986,7 @@ class ApplicationController extends Controller
                 }
                 break;
             case 5:
-                $user = user::findorfail($application->id_MRK);
+                $user = user::find($application->id_MRK);
 
                 $notify = new notify;
                 $notify->id_user = $user->id;
@@ -4021,7 +4019,7 @@ class ApplicationController extends Controller
 
                 break;
             case 6:
-                $user = user::findorfail($application->id_spm);
+                $user = user::find($application->id_spm);
 
                 $notify = new notify;
                 $notify->id_user = $user->id;
@@ -4329,16 +4327,27 @@ class ApplicationController extends Controller
         $history->id_application = $id;
 
         $application->id_status = $status_id;
-        if ($status_id == 12) {
+        if ($status_id == 14) {
 
             $today = WorkCalendar::now();
             $today->addWorkDays(30);
             $application->end_date = $today;
+            $application->view_date = null;
 
-            $application->napr_date = carbon::now();
+            $application->start_date = carbon::now();
             // dd($application);
             // dd($today, $application->end_date);
         }
+        if ($status_id == 13) {
+            $attachments = attachment::where('id_application', '=', $id)->get()->all();
+            foreach ($attachments as $attachment) {
+                if ($attachment->id_status == 9 || $attachment->id_status == 10) {
+                    $attachment->id_status = null;
+                    $attachment->save();
+                }
+            }
+        }
+
         // dd ($application->id_status);
         // $data["email"] = "aleksmakarov5@yandex.ru";
         // $data["title"] = 'По заявке №' . $id . ' изменен статус';
@@ -4358,7 +4367,7 @@ class ApplicationController extends Controller
         $application->save();
         $history->save();
         $notify_id = 0;
-        $status_group = (int)ApplicationStatus::findOrFail($status_id)->current_group;
+        $status_group = ApplicationStatus::findOrFail($status_id)->current_group;
         // dd($status_group);
         if ($status_group == 2) {
             $users = user::where('GroupId', '=', $status_group)->get()->all();
@@ -4416,40 +4425,41 @@ class ApplicationController extends Controller
             }
         }
         if ($status_group == 5) {
-            $user = user::findorfail($application->id_MRK);
-            dd($user);
-            $notify = new notify;
-            $notify->id_user = $user->id;
-            $notify->id_application = $id;
-            $notify->id_text = 3;
-            $notify->link = "/application/";
+            $user = user::find($application->id_MRK);
+            if ($user) {
+                $notify = new notify;
+                $notify->id_user = $user->id;
+                $notify->id_application = $id;
+                $notify->id_text = 3;
+                $notify->link = "/application/";
 
+                $notify_id = $notify->id;
 
-            $notify_id = $notify->id;
-            $status_application = new status_application;
-            $status_application->id_user = $user->id;
-            $status_application->id_application = $id;
-            $status_application->is_readed = false;
-            $status_application->save();
-            if ($user->telegram_notify) {
-                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                $status = ApplicationStatus::findOrFail(
-                    $application->id_status
-                )->StatusName;
-                $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                    )
-                    ->send();
-                $notify->id_message = json_decode($ch)->result->message_id;
+                $status_application = new status_application;
+                $status_application->id_user = $user->id;
+                $status_application->id_application = $id;
+                $status_application->is_readed = false;
+                $status_application->save();
+                if ($user->telegram_notify) {
+                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                    $status = ApplicationStatus::findOrFail(
+                        $application->id_status
+                    )->StatusName;
+                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                        ->keyboard(
+                            Keyboard::make()
+                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                        )
+                        ->send();
+                    $notify->id_message = json_decode($ch)->result->message_id;
+                }
+
+                $notify->save();
             }
-
-            $notify->save();
         }
         if ($status_group == 6) {
-            $user = user::findorfail($application->id_spm);
-            dd($user);
+            $user = user::find($application->id_spm);
+
 
             $notify = new notify;
             $notify->id_user = $user->id;
@@ -4482,7 +4492,7 @@ class ApplicationController extends Controller
         }
         if ($status_group == 8) {
             $users = user::where('GroupId', '=', $status_group)->get()->all();
-            dd($users);
+
 
             foreach ($users as $user) {
                 $notify = new notify;

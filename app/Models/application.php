@@ -46,6 +46,9 @@ class application extends Model
         'ic_pay_date',
         'sto_pay_date',
         'zp_date',
+        'view_date',
+        'ic_answer_date',
+        'sp_date',
     ];
     public function works()
     {

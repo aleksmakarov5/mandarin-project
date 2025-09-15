@@ -45,12 +45,12 @@
 
     <select class="form-cont" id="ub_type" name="ub_type">
 
-            <option value="0" @if (0 === $application->ub_type) selected @endif>
-                Осаго
-            </option>
-            <option value="1" @if (1 === $application->ub_type) selected @endif>
-                Каско
-            </option>
+        <option value="0" @if (0 === $application->ub_type) selected @endif>
+            Осаго
+        </option>
+        <option value="1" @if (1 === $application->ub_type) selected @endif>
+            Каско
+        </option>
 
 
     </select>
@@ -125,8 +125,8 @@
     alert alert-danger
 @enderror">
 
-    <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont" value="{{ $application->ClientPhone }}"
-        placeholder="+7(000)000-00-00" data-phone-pattern>
+    <input type="text" name="ClientPhone" id="ClientPhone" class="form-cont"
+        value="{{ $application->ClientPhone }}" placeholder="+7(000)000-00-00" data-phone-pattern>
     <div class='lbl'>
         <label for="ClientPhone">Телефон клиента</label>
     </div>
@@ -164,11 +164,14 @@
 
     </div>
     <div class='lbl'>
-        <label for="id_spm">Запчастист</label>
+        <label for="id_spm">Наставник</label>
     </div>
     <div class="form-float">
 
         <select class="form-cont" id="id_spm" name="id_spm">
+            <option value="0">
+                ---
+            </option>
             @foreach ($spms as $item)
                 <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>
                     {{ $item->name }}
@@ -228,7 +231,11 @@
     <input type="text" name="dogovor" id="dogovor" class="form-cont" value="{{ $application->dogovor }}">
     <div class='lbl'><label for="dogovor">Страховой полис</label></div>
 </div>
-
+<div class="form-float">
+    <input type="datetime-local" name="view_date" id="view_date" class="form-cont"
+        value="{{ $application->view_date }}">
+    <div class='lbl'><label for="start_date">Дата осмотра</label></div>
+</div>
 <div class="form-float">
     <input type="date" name="start_date" id="start_date" class="form-cont"
         value="{{ $application->start_date }}">
@@ -236,8 +243,8 @@
 </div>
 
 <div class="form-float">
-    <input type="text" name="wait_sp" id="wait_sp" class="form-cont" value="{{ $application->wait_sp }}">
-    <div class='lbl'><label for="wait_sp">Срок поставки запчастей</label></div>
+    <input type="date" name="sp_date" id="sp_date" class="form-cont" value="{{ $application->sp_date }}">
+    <div class='lbl'><label for="wait_sp">Дата поставки запчастей</label></div>
 </div>
 <div class="form-float">
     <input type="date" name="birthday" id="birthday" class="form-cont" value="{{ $application->birthday }}">
