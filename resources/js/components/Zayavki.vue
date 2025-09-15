@@ -271,6 +271,7 @@
                             city_selected.includes(application.id_city) ||
                             city_selected.length == city.length
                         "
+                        :class="application.count_hour > 0 ? '' : 'red'"
                     >
                         <td @click="openApplication(application.id)">
                             <template v-if="application.doc">
