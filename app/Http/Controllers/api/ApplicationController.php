@@ -84,16 +84,7 @@ class ApplicationController extends Controller
                 mkdir($dir, 0777, true);
             }
             $zip_path = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
-            $zip_bool = true;
-            if (file_exists($zip_path)) {
-                while (!$zip = Zip::open($zip_path)) {
-                    sleep(1);
-                }
 
-                $zip_bool = false;
-            } else {
-                $zip = Zip::create($zip_path);
-            }
             $file = $request->file('file');
 
             if ($file->getClientOriginalExtension() == 'pdf') {
@@ -197,7 +188,16 @@ class ApplicationController extends Controller
                         imagedestroy($source);
                         imagedestroy($rotate);
                     }
+                    $zip_bool = true;
+                    if (file_exists($zip_path)) {
+                        while (!$zip = Zip::open($zip_path)) {
+                            sleep(1);
+                        }
 
+                        $zip_bool = false;
+                    } else {
+                        $zip = Zip::create($zip_path);
+                    }
                     $res = $zip->add($filename);
                     // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $zip->close();
