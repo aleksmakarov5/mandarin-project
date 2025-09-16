@@ -75,10 +75,7 @@ class ApplicationController extends Controller
             'load_location' => 'required',
         ]);
         $id = $data['id_app'];
-        while (file_exists('storage/files/' . $id . '/lock.txt')) {
-            $i = 1;
-        }
-        file_put_contents('storage/files/' . $id . '/lock.txt', 'lock');
+
         // return $data;
         if ($request->File('file')) {
 
@@ -89,7 +86,10 @@ class ApplicationController extends Controller
             $zip_path = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
             $zip_bool = true;
             if (file_exists($zip_path)) {
-                $zip = Zip::open($zip_path);
+                while (!$zip = Zip::open($zip_path)) {
+                    sleep(1);
+                }
+
                 $zip_bool = false;
             } else {
                 $zip = Zip::create($zip_path);
@@ -234,7 +234,6 @@ class ApplicationController extends Controller
 
 
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            unlink('storage/files/' . $id . '/lock.txt');
             return $file->getClientOriginalName();
         } else {
             return false;
