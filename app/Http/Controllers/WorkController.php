@@ -253,7 +253,7 @@ class WorkController extends Controller
             }
 
 
-            dd($works, $work_array);
+            // dd($works, $work_array);
             session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окрасочные');
             // echo $work_start . 'Раб_Старт<br /><br />';
