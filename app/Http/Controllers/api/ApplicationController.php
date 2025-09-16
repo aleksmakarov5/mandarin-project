@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\application;
 use App\Models\user_filter;
 use App\Models\attachment;
-use \ZanySoft\Zip\Facades\Zip;
+use ZanySoft\Zip\Facades\Zip;
 use \Golchha21\ReSmushIt\Facades\Optimize;
 
 class ApplicationController extends Controller
@@ -81,13 +81,14 @@ class ApplicationController extends Controller
             if (!is_dir($dir)) {
                 mkdir($dir, 0777, true);
             }
-            $zip_path = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
+            $zip_path = '/storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
             $zip_bool = true;
             if (file_exists($zip_path)) {
                 $zip = Zip::open($zip_path);
                 $zip_bool = false;
             } else {
                 $zip = Zip::create($zip_path);
+                // return 5;
             }
             $file = $request->file('file');
 
@@ -204,7 +205,7 @@ class ApplicationController extends Controller
 
             $zip->close();
             if ($zip_bool) {
-                $zip_path = 'public/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
+                $zip_path = '/storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
                 $document->file_name = $request->load_name . "_" . date('d-m-y');
                 $document->message_id = 0;
                 $document->mime_type = 'application/zip-compressed';
