@@ -193,7 +193,7 @@ class ApplicationController extends Controller
                         imagedestroy($rotate);
                     }
 
-                    $zip->setpath($path)->add($filename);
+                    $zip->setpath($dir)->add($filename);
                     // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                 }
             }
