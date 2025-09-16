@@ -168,6 +168,7 @@ class WorkController extends Controller
 
     public function data_load(Request $request, $id)
     {
+
         session(['works' => []]);
         session(['works_paint' => []]);
         $type = 0;
@@ -194,6 +195,7 @@ class WorkController extends Controller
 
         $html = 'works.html';
         $app = Application::findorfail($id);
+        $id_ic = $app->id_insuranceCompany;
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
 
@@ -205,6 +207,7 @@ class WorkController extends Controller
         $works = [];
 
         if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
+            $id_ic = 5;
             $file = str_replace("</td>", '<br/>', $file);
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
@@ -933,7 +936,7 @@ class WorkController extends Controller
 
 
         // dd($work_array);
-        return view('Work.data_select', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $app->id_insuranceCompany, 't' => $type]);
+        return view('Work.data_select', ['Works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type]);
     }
     public function work_edit($id, $id_work, $count)
     {
