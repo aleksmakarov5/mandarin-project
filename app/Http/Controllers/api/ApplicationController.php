@@ -76,6 +76,7 @@ class ApplicationController extends Controller
         ]);
         $id = $data['id_app'];
         while (file_exists('storage/files/' . $id . '/lock.txt')) {
+            $i = 1;
         }
         file_put_contents('storage/files/' . $id . '/lock.txt', 'lock');
         // return $data;
