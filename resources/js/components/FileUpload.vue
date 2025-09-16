@@ -10,7 +10,7 @@ div.file_listing {
     padding: 5px;
     overflow-y: scroll;
     position: fixed;
-    top: 15%;
+    top: 25%;
     max-height: 70%;
 }
 .remove_file {
