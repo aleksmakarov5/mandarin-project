@@ -68,12 +68,16 @@ class ApplicationController extends Controller
     public function file_upload(Request $request)
     {
 
+
         $data = $this->validate($request, [
             'id_app' => 'required',
             'load_name' => 'required',
             'load_location' => 'required',
         ]);
         $id = $data['id_app'];
+        while (file_exists('storage/files/' . $id . '/lock.txt')) {
+        }
+        file_put_contents('storage/files/' . $id . '/lock.txt', 'lock');
         // return $data;
         if ($request->File('file')) {
 
@@ -229,6 +233,7 @@ class ApplicationController extends Controller
 
 
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
+            unlink('storage/files/' . $id . '/lock.txt');
             return $file->getClientOriginalName();
         } else {
             return false;
