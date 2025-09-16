@@ -209,7 +209,7 @@ class WorkController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            dd($file);
+            // dd($file);
 
             $type = 2;
             $work_start = mb_strpos($file, 'Ремонтные работы');
@@ -222,7 +222,7 @@ class WorkController extends Controller
             // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
 
             $work_array = explode('<br/>', $work);
-            // dd($work_array, $work_end);
+            dd($work_array, $work_end);
 
             $j = 0;
             for ($i = 0; $i < count($work_array) - 1; $i++) {
