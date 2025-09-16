@@ -198,7 +198,7 @@ class ApplicationController extends Controller
                         imagedestroy($rotate);
                     }
 
-                    $zip->setpath($zip_path)->add($filename);
+                    $zip->add($filename);
                     // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $zip->close();
                     attachment::updateOrCreate([
