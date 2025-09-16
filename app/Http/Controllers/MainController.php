@@ -914,7 +914,7 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-        asort($images);
+        // asort($images);
         dd($images);
 
         try {
