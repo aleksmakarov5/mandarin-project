@@ -126,12 +126,14 @@ export default {
                         },
                     })
                     .then((res) => {
-                        // console.log(res);
+                        console.log(res);
                         // this.count++;
 
                         this.colors[this.count++] = "red";
-                        if (this.count == this.files_add.length)
+                        if (this.count == this.files_add.length) {
                             this.files_add = [];
+                            this.colors = [];
+                        }
 
                         // console.log(this.colors[i]);
                     });
