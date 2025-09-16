@@ -42,7 +42,7 @@ div.file_listing {
             id="files_add"
             ref="files_add"
             multiple
-            accept="image/png, image/gif, image/jpeg"
+            accept="image/jpeg"
             v-on:change="handleFilesUpload()"
         />
     </div>
