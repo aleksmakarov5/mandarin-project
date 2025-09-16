@@ -195,27 +195,36 @@ class ApplicationController extends Controller
 
                     $zip->setpath($dir)->add($filename);
                     // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $zip->close();
+                    attachment::updateOrCreate([
+                        'id_application' => $id,
+                        'location' => $request->load_location . "_" . date('d-m-y') . '.zip',
+                        'id_status' => $request->status_id,
+                        'message_id' => 0,
+                        'file_name' => $request->load_name . "_" . date('d-m-y'),
+                        'mime_type' => 'application/zip-compressed',
+                    ], ['file_size' => filesize($zip_path)]);
                 }
             }
 
 
 
-            $zip->close();
-            if ($zip_bool) {
-                $document->file_name = $request->load_name . "_" . date('d-m-y');
-                $document->message_id = 0;
-                $document->mime_type = 'application/zip-compressed';
-                $document->id_application = $id;
 
-                $document->id_status = $request->status_id;
-                $document->location = $request->load_location . "_" . date('d-m-y') . '.zip';
-                // dd($document);
-                try {
-                    $document->file_size = filesize($zip_path);
-                } catch (Exception $e) {
-                }
-                $document->save();
-            }
+            // if ($zip_bool) {
+            //     $document->file_name = $request->load_name . "_" . date('d-m-y');
+            //     $document->message_id = 0;
+            //     $document->mime_type = 'application/zip-compressed';
+            //     $document->id_application = $id;
+
+            //     $document->id_status = $request->status_id;
+            //     $document->location = $request->load_location . "_" . date('d-m-y') . '.zip';
+            //     // dd($document);
+            //     try {
+            //         $document->file_size = filesize($zip_path);
+            //     } catch (Exception $e) {
+            //     }
+            //     $document->save();
+            // }
 
 
 
