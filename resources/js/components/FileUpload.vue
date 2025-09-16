@@ -136,6 +136,9 @@ export default {
                         }
 
                         // console.log(this.colors[i]);
+                    })
+                    .catch((error) => {
+                        $i--;
                     });
             }
             // this.files_add = [];
