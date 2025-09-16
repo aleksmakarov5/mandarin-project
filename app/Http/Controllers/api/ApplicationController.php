@@ -209,7 +209,7 @@ class ApplicationController extends Controller
                 $document->mime_type = 'application/zip-compressed';
                 $document->id_application = $id;
                 try {
-                    $document->file_size = filesize($dir . '/' . $fileNameToStore);
+                    $document->file_size = filesize($dir . '/' . $zip_path);
                 } catch (Exception $e) {
                 }
                 $document->id_status = $request->status_id;
