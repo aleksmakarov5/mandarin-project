@@ -129,7 +129,7 @@ export default {
                     .then((res) => {
                         // console.log(res);
                         this.colors[i] = "red";
-                        count = i;
+                        count++;
                         // console.log(this.colors[i]);
                     });
             }
