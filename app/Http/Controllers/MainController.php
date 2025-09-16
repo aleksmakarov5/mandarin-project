@@ -718,6 +718,7 @@ class MainController extends Controller
 
                 $zip->close();
                 if ($zip_bool) {
+                    $zip_path = 'public/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
                     $document->file_name = $request->load_name . "_" . date('d-m-y');
                     $document->message_id = 0;
                     $document->mime_type = 'application/zip-compressed';
