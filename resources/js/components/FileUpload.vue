@@ -100,7 +100,6 @@ export default {
             }
         },
         removeFile(key) {
-            this.files_add.splice(key, 1);
             this.colors.splice(key, 1);
         },
         addFiles() {
@@ -128,8 +127,12 @@ export default {
                     })
                     .then((res) => {
                         // console.log(res);
-                        this.colors[i] = "red";
-                        count++;
+                        // this.count++;
+
+                        this.colors[this.count++] = "red";
+                        if (this.count == this.files_add.length)
+                            this.files_add = [];
+
                         // console.log(this.colors[i]);
                     });
             }
