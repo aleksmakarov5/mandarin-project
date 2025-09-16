@@ -198,7 +198,7 @@ class ApplicationController extends Controller
                         imagedestroy($rotate);
                     }
 
-                    $zip->add($filename);
+                    $res = $zip->add($filename);
                     // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                     $zip->close();
                     attachment::updateOrCreate([
@@ -234,7 +234,7 @@ class ApplicationController extends Controller
 
 
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            return json_encode($zip);
+            return json_encode($res);
         } else {
             return false;
         }
