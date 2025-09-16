@@ -234,7 +234,7 @@ class ApplicationController extends Controller
 
 
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            return $zip;
+            return json_encode($zip);
         } else {
             return false;
         }
