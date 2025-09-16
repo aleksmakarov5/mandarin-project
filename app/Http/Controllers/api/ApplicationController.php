@@ -84,10 +84,10 @@ class ApplicationController extends Controller
 
             $zip_bool = true;
             if (file_exists($zip_path)) {
-                $zip = Zip::open($zip_path);
+                $zip = zip::open($zip_path);
                 $zip_bool = false;
             } else {
-                $zip = Zip::create($zip_path);
+                $zip = zip::create($zip_path);
                 // return 5;
             }
             $file = $request->file('file');
@@ -210,10 +210,9 @@ class ApplicationController extends Controller
                 $document->message_id = 0;
                 $document->mime_type = 'application/zip-compressed';
                 $document->id_application = $id;
-                try {
-                    $document->file_size = 0;
-                } catch (Exception $e) {
-                }
+
+                $document->file_size = 0;
+
                 $document->id_status = $request->status_id;
                 $document->location = $request->load_location . "_" . date('d-m-y') . '.zip';
                 // dd($document);

@@ -209,7 +209,7 @@ class WorkController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            // dd($file);
+            dd($file);
 
             $type = 2;
             $work_start = mb_strpos($file, 'Ремонтные работы');
