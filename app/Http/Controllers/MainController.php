@@ -890,6 +890,7 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
+
         chmod($dir, 0777);
         foreach ($images as $image) {
             if (is_dir($dir . '/' . $image)) {
@@ -913,7 +914,8 @@ class MainController extends Controller
             }
         }
         $images = scandir($dir);
-
+        asort($images);
+        // dd($images);
 
         try {
             rmdir($dir);
