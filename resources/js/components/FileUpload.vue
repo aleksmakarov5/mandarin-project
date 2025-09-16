@@ -133,8 +133,8 @@ export default {
                         // console.log(this.colors[i]);
                     });
             }
-            this.files_add = [];
-            this.showLoad = false;
+            // this.files_add = [];
+            // this.showLoad = false;
         },
     },
 };
