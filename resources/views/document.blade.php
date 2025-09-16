@@ -312,7 +312,7 @@
                                 :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                 :text="{{ json_encode("Добрый день!<br><br>
 
-                                                                                                                                                                                                                                                                                                                                                                                Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                 :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
                         </div>
                     </td>
@@ -425,11 +425,13 @@
 
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', [
+                        <file-upload :id_app="{{ $id }}" :status_id="30"
+                            :load_name="'Фото деффектовки'" :load_location="'Фото_деффектовки'" />
+                        {{-- @include('document.form_scan', [
                             'status_id' => 30,
                             'load_name' => 'Фото деффектовки',
                             'load_location' => 'Фото_деффектовки',
-                        ])
+                        ]) --}}
                     </th>
                 </tr>
             @endif

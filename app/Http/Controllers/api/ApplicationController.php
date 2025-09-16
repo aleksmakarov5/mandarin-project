@@ -62,4 +62,23 @@ class ApplicationController extends Controller
 
         return true;
     }
+    public function file_upload(Request $request)
+    {
+
+        $data = $this->validate($request, [
+            'id_app' => 'required',
+            'load_name' => 'required',
+            'load_location' => 'required',
+        ]);
+        // return $data;
+        if ($request->File('file')) {
+
+            $file = $request->file('file');
+            $path = $file->storeAs('public/files/' . $data['id_app'] . '/temp/', $file->getClientOriginalName());
+            // $file->move(public_path('uploads'), $file->getClientOriginalName());
+            return $file->getClientOriginalName();
+        } else {
+            return false;
+        }
+    }
 }
