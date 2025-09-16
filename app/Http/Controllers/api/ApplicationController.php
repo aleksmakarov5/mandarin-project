@@ -67,7 +67,7 @@ class ApplicationController extends Controller
     }
     public function file_upload(Request $request)
     {
-
+        $document = new Attachment();
         $data = $this->validate($request, [
             'id_app' => 'required',
             'load_name' => 'required',
@@ -109,7 +109,7 @@ class ApplicationController extends Controller
                 $filename = 'storage/files/' . $id . '/' . $fileNameToStore;
                 // dd($file);
 
-                $document = new Attachment();
+
                 $filename = $request->load_name . "_" . date('d-m-y');
                 $document->file_name = $filename;
                 $document->message_id = 0;
