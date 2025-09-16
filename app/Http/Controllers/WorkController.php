@@ -222,7 +222,7 @@ class WorkController extends Controller
             // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
 
             $work_array = explode('<br/>', $work);
-            dd($work_array, $work_end);
+            // dd($work_array, $work_end);
 
             $j = 0;
             for ($i = 0; $i < count($work_array) - 1; $i++) {
@@ -253,7 +253,7 @@ class WorkController extends Controller
             }
 
 
-            // dd($works, $work_array);
+            dd($works, $work_array);
             session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окрасочные');
             // echo $work_start . 'Раб_Старт<br /><br />';
