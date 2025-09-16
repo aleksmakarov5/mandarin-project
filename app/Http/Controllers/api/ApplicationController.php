@@ -68,7 +68,7 @@ class ApplicationController extends Controller
     public function file_upload(Request $request)
     {
 
-
+        sleep(0.5);
         $data = $this->validate($request, [
             'id_app' => 'required',
             'load_name' => 'required',
