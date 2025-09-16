@@ -110,14 +110,17 @@ export default {
         },
         fileUpload() {
             this.showLoad = true;
-            for (var i = 0; i < this.files_add.length; i++) {
+            let files_upload = this.files_add;
+            for (var i = 0; i < files_upload.length; i++) {
                 let formData = new FormData();
-                let file = this.files_add[i];
+                let file = files_upload[i];
                 formData.append("file", file);
                 formData.append("load_name", this.load_name);
                 formData.append("load_location", this.load_location);
                 formData.append("id_app", this.id_app);
                 formData.append("status_id", this.status_id);
+                formData.append("num", i);
+
                 // console.log(formData);
                 axios
                     .post("/api/application/file_upload", formData, {
@@ -126,11 +129,11 @@ export default {
                         },
                     })
                     .then((res) => {
-                        console.log(res);
-                        // this.count++;
-
-                        this.colors[this.count++] = "red";
-                        if (this.count == this.files_add.length) {
+                        console.log(res.data);
+                        this.count++;
+                        this.files_add[res.data] = "";
+                        this.colors[res.data] = "red";
+                        if (this.count == files_upload.length) {
                             this.files_add = [];
                             this.colors = [];
                         }
@@ -138,7 +141,7 @@ export default {
                         // console.log(this.colors[i]);
                     })
                     .catch((error) => {
-                        $i--;
+                        i--;
                     });
             }
             // this.files_add = [];

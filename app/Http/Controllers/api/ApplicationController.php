@@ -232,9 +232,9 @@ class ApplicationController extends Controller
             // }
 
 
-
+            $num = $request->num;
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            return json_encode($res);
+            return $num;
         } else {
             return false;
         }
