@@ -136,58 +136,58 @@ class ApplicationController extends Controller
                     $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                     if ($size) {
                         Optimize::path($filename);
-                        $document = new Attachment();
-                        $width = 800;
-                        $height = 800;
+                        // $document = new Attachment();
+                        // $width = 800;
+                        // $height = 800;
 
-                        // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
-                        header("Content-type: {$size['mime']}");
-                        $exif = exif_read_data($filename);
-                        // file_put_contents('data.txt', json_encode($exif['Orientation']));
+                        // // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                        // header("Content-type: {$size['mime']}");
+                        // $exif = exif_read_data($filename);
+                        // // file_put_contents('data.txt', json_encode($exif['Orientation']));
 
-                        // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
-                        list($width_orig, $height_orig) = getimagesize($filename);
+                        // // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                        // list($width_orig, $height_orig) = getimagesize($filename);
 
-                        if ($width && ($width_orig < $height_orig)) {
+                        // if ($width && ($width_orig < $height_orig)) {
 
-                            $width = ($height / $height_orig) * $width_orig;
-                        } else {
-                            $height = ($width / $width_orig) * $height_orig;
-                        }
+                        //     $width = ($height / $height_orig) * $width_orig;
+                        // } else {
+                        //     $height = ($width / $width_orig) * $height_orig;
+                        // }
 
-                        // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
-                        $image_p = imagecreatetruecolor($width, $height);
-                        $image = imagecreatefromjpeg($filename);
-                        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+                        // // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                        // $image_p = imagecreatetruecolor($width, $height);
+                        // $image = imagecreatefromjpeg($filename);
+                        // imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
-                        // СОЗДАЁМ
-                        $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        imagejpeg($image_p, $img_name, 60);
+                        // // СОЗДАЁМ
+                        // $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                        // imagejpeg($image_p, $img_name, 60);
 
-                        // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                        unlink($filename);
-                        $filename = $img_name;
-                        if (isset($exif['Orientation'])) {
-                            $degrees = 0;
-                            if ($exif['Orientation'] == 6) {
-                                $degrees = 270;
-                            }
-                            if ($exif['Orientation'] == 3) {
-                                $degrees = 180;
-                            }
-                            if ($exif['Orientation'] == 8) {
-                                $degrees = 90;
-                            }
-                            // Загрузка изображения
-                            $source = imagecreatefromjpeg($filename);
-                            // Поворот
-                            $rotate = imagerotate($source, $degrees, 0);
-                            // Вывод
-                            imagejpeg($rotate, $img_name, 100);
-                            // Высвобождение памяти
-                            imagedestroy($source);
-                            imagedestroy($rotate);
-                        }
+                        // // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                        // unlink($filename);
+                        // $filename = $img_name;
+                        // if (isset($exif['Orientation'])) {
+                        //     $degrees = 0;
+                        //     if ($exif['Orientation'] == 6) {
+                        //         $degrees = 270;
+                        //     }
+                        //     if ($exif['Orientation'] == 3) {
+                        //         $degrees = 180;
+                        //     }
+                        //     if ($exif['Orientation'] == 8) {
+                        //         $degrees = 90;
+                        //     }
+                        //     // Загрузка изображения
+                        //     $source = imagecreatefromjpeg($filename);
+                        //     // Поворот
+                        //     $rotate = imagerotate($source, $degrees, 0);
+                        //     // Вывод
+                        //     imagejpeg($rotate, $img_name, 100);
+                        //     // Высвобождение памяти
+                        //     imagedestroy($source);
+                        //     imagedestroy($rotate);
+                        // }
                         $zip_bool = true;
                         if (file_exists($zip_path)) {
                             while (!$zip = Zip::open($zip_path)) {
