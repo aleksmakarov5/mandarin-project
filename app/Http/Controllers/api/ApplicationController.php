@@ -68,14 +68,14 @@ class ApplicationController extends Controller
     public function file_upload(Request $request)
     {
 
-        sleep(0.5);
+        // sleep(0.5);
         $data = $this->validate($request, [
             'id_app' => 'required',
             'load_name' => 'required',
             'load_location' => 'required',
         ]);
         $id = $data['id_app'];
-
+        $exif = 0;
         // return $data;
         if ($request->File('file')) {
 
@@ -191,7 +191,7 @@ class ApplicationController extends Controller
                         $zip_bool = true;
                         if (file_exists($zip_path)) {
                             while (!$zip = Zip::open($zip_path)) {
-                                sleep(1);
+                                sleep(0.5);
                             }
 
                             $zip_bool = false;
@@ -235,7 +235,7 @@ class ApplicationController extends Controller
 
             $num = $request->num;
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            return $num;
+            return [$num, isset($exif['Orientation']) ? $exif['Orientation'] : 0];
         } else {
             return false;
         }

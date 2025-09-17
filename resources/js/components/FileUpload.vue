@@ -59,7 +59,7 @@ div.file_listing {
         </div>
         <div class="list" v-for="(file, key) in files_add">
             <!-- <img :src="file" width="50" /> -->
-            <div :class="colors[key]">{{ file.name }}</div>
+            <div :class="colors[key]">{{ colors[key] }} {{ file.name }}</div>
             <div>
                 <img
                     class="remove_file"
@@ -129,10 +129,11 @@ export default {
                         },
                     })
                     .then((res) => {
-                        console.log(res.data);
+                        console.log(res.data[1]);
                         this.count++;
-                        this.files_add[res.data] = "";
-                        this.colors[res.data] = "red";
+                        this.colors[res.data[0]] = res.data[1];
+                        this.files_add[res.data[0]] = "";
+                        // this.colors[res.data] = "red";
                         if (this.count == files_upload.length) {
                             this.files_add = [];
                             this.colors = [];
@@ -141,7 +142,7 @@ export default {
                         // console.log(this.colors[i]);
                     })
                     .catch((error) => {
-                        i--;
+                        // i--;
                     });
             }
             // this.files_add = [];
