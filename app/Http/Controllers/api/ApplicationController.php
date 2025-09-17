@@ -137,8 +137,8 @@ class ApplicationController extends Controller
                     if ($size) {
                         // Optimize::path($filename);
                         $document = new Attachment();
-                        $width = 800;
-                        $height = 800;
+                        $width = 700;
+                        $height = 700;
 
                         // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
                         header("Content-type: {$size['mime']}");
@@ -162,7 +162,7 @@ class ApplicationController extends Controller
 
                         // СОЗДАЁМ
                         $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                        imagejpeg($image_p, $img_name, 60);
+                        imagejpeg($image_p, $img_name, 50);
 
                         // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
                         unlink($filename);
@@ -235,7 +235,7 @@ class ApplicationController extends Controller
 
             $num = $request->num;
             // $file->move(public_path('uploads'), $file->getClientOriginalName());
-            return [$num, isset($exif['Orientation']) ? $exif['Orientation'] : 0];
+            return $num;
         } else {
             return false;
         }

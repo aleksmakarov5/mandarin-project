@@ -59,7 +59,10 @@ div.file_listing {
         </div>
         <div class="list" v-for="(file, key) in files_add">
             <!-- <img :src="file" width="50" /> -->
-            <div :class="colors[key]">{{ colors[key] }} {{ file.name }}</div>
+            <div :class="colors[key]">
+                {{ itog[key] }} <span v-if="count > 0">{{ count }}</span
+                >{{ file.name }}
+            </div>
             <div>
                 <img
                     class="remove_file"
@@ -77,7 +80,10 @@ div.file_listing {
             <img src="/storage/img/attachment.png" width="30px"
         /></a>
     </div>
-    <div v-if="showLoad">Загружено {{ count }} изображений</div>
+    <div v-if="showLoad">
+        Загружено {{ count }} изображений
+        <a :href="'/document/' + id_app" class="nav-link">Готово</a>
+    </div>
 </template>
 <script>
 export default {
@@ -88,6 +94,7 @@ export default {
             files_add: [],
             showLoad: false,
             colors: [],
+            itog: [],
             count: 0,
         };
     },
@@ -97,6 +104,7 @@ export default {
             for (var i = 0; i < uploadedFiles.length; i++) {
                 this.files_add.push(uploadedFiles[i]);
                 this.colors.push(" ");
+                this.itog.push(" ");
             }
         },
         removeFile(key) {
@@ -129,10 +137,11 @@ export default {
                         },
                     })
                     .then((res) => {
-                        console.log(res.data[1]);
+                        console.log(res.data);
                         this.count++;
-                        this.colors[res.data[0]] = res.data[1];
-                        this.files_add[res.data[0]] = "";
+                        this.colors[res.data] = "green";
+                        this.itog[res.data] = "Загружено";
+                        this.files_add[res.data] = "";
                         // this.colors[res.data] = "red";
                         if (this.count == files_upload.length) {
                             this.files_add = [];
