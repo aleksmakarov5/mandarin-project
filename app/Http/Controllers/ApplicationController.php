@@ -1739,6 +1739,14 @@ class ApplicationController extends Controller
 
     public function application(Request $request, $id)
     {
+        // $app = application::find($id);
+        // $today = WorkCalendar::now();
+        // $today->addWorkDays(10);
+        // $app->view_date = $today;
+        // $app->save();
+        // $app = application::find($id);
+        // dd($app);
+
         session(['current' => $id]);
         $hide_menu = $request->get('hide_menu');
         // echo (session('rout'));

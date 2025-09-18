@@ -26,6 +26,7 @@ use \ZanySoft\Zip\Facades\Zip;
 use \Golchha21\ReSmushIt\Facades\Optimize;
 use App\Models\attachment;
 use App\Models\User as user_prof;
+use Tochka\Calendar\WorkCalendar;
 
 
 
@@ -262,6 +263,13 @@ class Handler extends WebhookHandler
                             $name = "СМС-приглашение_" . date('d-m-y_h:m:s');
                             $location = "СМС-приглашение_" . date('d-m-y_h:m:s');
                             break;
+                    }
+                    if ($telegram_action->number == 35) {
+                        $app = application::find($telegram_action->id_application);
+                        $today = WorkCalendar::now();
+                        $today->addWorkDays(10);
+                        $app->view_date = $today;
+                        $app->save();
                     }
                     $location = $location . ".jpg";
                     $filename = $this->bot->find(1)->store($this->message->photos()->last(), $path, $location);
