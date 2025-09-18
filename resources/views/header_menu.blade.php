@@ -138,7 +138,7 @@
                 : 0);
         $teor = $sum_teor - $summ_order - $summ_service - $app->sertificat;
         $proc_t = 0;
-        if ($summ_ic_full + $summ_service_ic != 0) {
+        if ($summ_ic_full + $summ_service_ic != 0 && $sum_teor != 0) {
             $proc_t = round(($teor / $sum_teor) * 100);
         }
     } catch (\Exception $e) {
