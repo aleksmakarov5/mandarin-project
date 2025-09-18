@@ -72,7 +72,7 @@
                     <th scope="col">Дата</th>
                     <th scope="col">Тип убытка</th>
                     <th scope="col">СТОА</th>
-                    <template v-if="rout == 'directions'">
+                    <template v-if="rout == 'directions' || rout == 'archive'">
                         <th scope="col">Сумма СК</th>
                         <th scope="col">Сумма З/Ч</th>
                         <th scope="col">Сумма ремонта</th>
@@ -251,7 +251,7 @@
                             @keyup="tableSearch(17, 'applications')"
                         />
                     </th>
-                    <template v-if="rout == 'directions'">
+                    <template v-if="rout == 'directions' || rout == 'archive'">
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col"></th>
@@ -444,7 +444,9 @@
                         <td @click="openApplication(application.id)">
                             {{ application.our_name }}
                         </td>
-                        <template v-if="rout == 'directions'">
+                        <template
+                            v-if="rout == 'directions' || rout == 'archive'"
+                        >
                             <td @click="openApplication(application.id)">
                                 {{ application.summ_ic_full }}
                             </td>
