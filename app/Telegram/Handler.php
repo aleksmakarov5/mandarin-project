@@ -269,6 +269,7 @@ class Handler extends WebhookHandler
                         $today = WorkCalendar::now();
                         $today->addWorkDays(10);
                         $app->view_date = $today;
+                        $app->id_status = 13;
                         $app->save();
                     }
                     $location = $location . ".jpg";
