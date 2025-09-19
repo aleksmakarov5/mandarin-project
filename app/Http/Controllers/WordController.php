@@ -219,9 +219,6 @@ class WordController extends Controller
             $application->finance_statuses_id = 9;
             $application->check_date = date('Y-m-d H:i:s');
             $application->save();
-
-
-        if ($doc_type == 12) {
             $array = [];
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
