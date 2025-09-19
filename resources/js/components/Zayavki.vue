@@ -56,7 +56,7 @@
                 <tr>
                     <th scope="col">Дог</th>
                     <th scope="col">Статус</th>
-                    <th scope="col">Тайминг</th>
+                    <th scope="col" v-if="rout == 'directions'">Согл/Опл</th>
                     <th scope="col">#</th>
 
                     <th scope="col">МРК</th>
@@ -84,7 +84,7 @@
                     </template>
                 </tr>
                 <tr style="heigth: 15px">
-                    <th></th>
+                    <th v-if="rout == 'directions'"></th>
                     <th scope="col">
                         <input
                             class="inp-cont"
@@ -338,7 +338,54 @@
                             </td>
                         </template>
                         <template v-else> -->
-                        <td @click="openApplication(application.id)">
+                        <td
+                            v-if="rout == 'directions'"
+                            @click="openApplication(application.id)"
+                        >
+                            <div
+                                :class="
+                                    'td_round ' + application.FinStatusTheme
+                                "
+                            >
+                                {{ application.FinStatusName }}
+                            </div>
+                            <div
+                                :class="
+                                    'progressbar ' +
+                                    (application.count_hour_f > 0
+                                        ? 'blue'
+                                        : 'red')
+                                "
+                            >
+                                <template
+                                    v-if="application.count_hour_f < 1000"
+                                >
+                                    <span
+                                        :style="
+                                            'width: ' +
+                                            ((application.count_hour_f <
+                                            application.max_hour_f
+                                                ? application.count_hour_f
+                                                : application.max_hour_f) /
+                                                application.max_hour_f) *
+                                                100 +
+                                            '%'
+                                        "
+                                        >{{
+                                            application.count_hour_f > 0
+                                                ? application.count_hour_f
+                                                : "просрочено"
+                                        }}
+                                        <span>
+                                            {{
+                                                showHours(
+                                                    application.count_hour_f
+                                                )
+                                            }}
+                                        </span>
+                                    </span>
+                                </template>
+                            </div>
                             <!-- <template
                                     v-if="
                                         application.id_status < 5 &&
@@ -641,7 +688,10 @@ export default {
             if (count_hours >= 2 && count_hours <= 4) {
                 return " часа";
             }
-            if (count_hours <= 0) {
+            if (count_hours == 0) {
+                return " часов";
+            }
+            if (count_hours < 0) {
                 return " ";
             }
             return " часов";

@@ -153,6 +153,7 @@ export default{
                 formData.append('id_application', this.app_id)
                 formData.append('user_id', this.from)
                 formData.append('subject', this.subject)
+                formData.append('app_status', this.status)
                 axios.post(`/api/mail/send`, formData,
                     {
                         headers: {

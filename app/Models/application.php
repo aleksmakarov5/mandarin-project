@@ -74,4 +74,8 @@ class application extends Model
     {
         return $this->hasMany('App\Models\status_message', 'id_application');
     }
+    public function finance_status()
+    {
+        return $this->hasOne('App\Models\FinanceStatus', 'id');
+    }
 }

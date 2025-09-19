@@ -7,9 +7,7 @@
         $status = App\Models\ApplicationStatus::get()->all();
         $currentStatus = App\Models\ApplicationStatus::where('id', '=', $app->id_status)->first();
         $ic = App\Models\InsuranceCompany::where('id', '=', $app->id_insuranceCompany)->first();
-        if (isset($app->ic_answer_date)) {
-            $currentStatus->StatusName = 'Ожидается ответ СК';
-        }
+
         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();

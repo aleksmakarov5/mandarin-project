@@ -263,58 +263,71 @@
                         ])
                     </th>
                     <td>
-                        <div>
-                            @php
-                                $to = [];
-                                $subj = $application->numberInsuranceCompanyApplication . '_ПЗН';
-                                if (isset($application->id_insuranceCompany)) {
-                                    if ($application->id_insuranceCompany == 3) {
-                                        $to[0] = 'drs-sto@ingos.ru';
-                                        $to[1] = 'sergei.vtorov@ingos.ru';
-                                        $to[2] = 'sergey.sivkov@ingos.ru';
-                                        $to[3] = 'andrey.gretchukhin@ingos.ru';
-                                    } elseif ($application->id_insuranceCompany == 1) {
-                                        $to[0] = 'smeta_szfo@vsk.ru';
-                                    } elseif ($application->id_insuranceCompany == 5) {
-                                        $to[0] = 'akt.rem4@sogaz.ru';
-                                        $to[1] = 'kuznetsov.vitaly@sogaz.ru';
-                                        $to[2] = 'malygin.leonid@sogaz.ru';
-                                    } elseif ($application->id_insuranceCompany == 4) {
-                                        $to[0] = 'arhangelsk_oup@email.reso.ru';
-                                    } elseif ($application->id_insuranceCompany == 7) {
-                                        $to[0] = 'stoarcuu@ugsk.ru';
-                                        $to[1] = 'petrunyasv@ugsk.ru';
-                                        $to[2] = 'menshakoves@ugsk.ru';
-                                        $subj .= ' ' . $application->CarModel . ' ' . $application->gnz;
+                        @if (session('rout') == 'directions')
+                            <div>
+                                @php
+                                    $to = [];
+                                    $subj = $application->numberInsuranceCompanyApplication . '_ПЗН';
+                                    if (isset($application->id_insuranceCompany)) {
+                                        if ($application->id_insuranceCompany == 3) {
+                                            $to[0] = 'drs-sto@ingos.ru';
+                                            $to[1] = 'sergei.vtorov@ingos.ru';
+                                            $to[2] = 'sergey.sivkov@ingos.ru';
+                                            $to[3] = 'andrey.gretchukhin@ingos.ru';
+                                        } elseif ($application->id_insuranceCompany == 1) {
+                                            $to[0] = 'smeta_szfo@vsk.ru';
+                                        } elseif ($application->id_insuranceCompany == 5) {
+                                            $to[0] = 'akt.rem4@sogaz.ru';
+                                            $to[1] = 'kuznetsov.vitaly@sogaz.ru';
+                                            $to[2] = 'malygin.leonid@sogaz.ru';
+                                        } elseif ($application->id_insuranceCompany == 4) {
+                                            $to[0] = 'arhangelsk_oup@email.reso.ru';
+                                        } elseif ($application->id_insuranceCompany == 7) {
+                                            $to[0] = 'stoarcuu@ugsk.ru';
+                                            $to[1] = 'petrunyasv@ugsk.ru';
+                                            $to[2] = 'menshakoves@ugsk.ru';
+                                            $subj .= ' ' . $application->CarModel . ' ' . $application->gnz;
+                                        } else {
+                                            $to[0] = isset($to_email) ? $to_email : '';
+                                        }
                                     } else {
                                         $to[0] = isset($to_email) ? $to_email : '';
                                     }
-                                } else {
-                                    $to[0] = isset($to_email) ? $to_email : '';
-                                }
-                            @endphp
-                            <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                :subject="{{ json_encode($subj) }}" :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
-                                :app_id="{{ $id }}"
-                                :text="{{ json_encode('Направляем предварительный заказ-наряд по убытку №' . $application->numberInsuranceCompanyApplication) }}"
-                                :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
-                        </div>
+                                @endphp
+                                <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                    :subject="{{ json_encode($subj) }}"
+                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
+                                    :text="{{ json_encode('Направляем предварительный заказ-наряд по убытку №' . $application->numberInsuranceCompanyApplication) }}"
+                                    :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="107" />
+                            </div>
+                        @endif
                     </td>
                     <td>
-                        <div>
-                            @php
-                                $to = [];
-                                $to[0] = 'alekseiexpert29@yandex.ru';
-                                $to[1] = 'pdimon55@mail.ru';
-                            @endphp
-                            <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
-                                :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
-                                :text="{{ json_encode("Добрый день!<br><br>
+                        @if (session('rout') == 'directions')
+                            @if ($application->finance_statuses_id != 4)
+                                <a onclick="alert('Не согласован акт осмотра скрытых повреждений!\nДождитесь согласования!')">
+                                    <div class="special-mail-button">
+                                        <img src="/storage/img/new-mail.png" width="20px" />
+                                    </div>
+                                </a>
+                            @else
+                                <div>
+                                    @php
+                                        $to = [];
+                                        $to[0] = 'alekseiexpert29@yandex.ru';
+                                        $to[1] = 'pdimon55@mail.ru';
+                                    @endphp
+                                    <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                        :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
+                                        :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                        :app_id="{{ $id }}"
+                                        :text="{{ json_encode("Добрый день!<br><br>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
-                                :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
-                        </div>
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                        :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
+                                </div>
+                            @endif
+                        @endif
                     </td>
                 </tr>
             @endcan
@@ -345,7 +358,73 @@
                     ])
                 </th>
             </tr>
+            @if (!$def)
+                <tr>
+                    <th scope="col">Акт скрытых повреждений</th>
+                    <th scope="col">
+                        @include('document.form_print', [
+                            'status_id' => 11,
+                            'template' => 'export_hda',
+                        ])
+                    </th>
+                    <th scope="col">
+                        @include('document.form_scan', [
+                            'status_id' => 12,
+                            'load_name' => 'Акт скрытых повреждений',
+                            'load_location' => 'Акт_скрытых_повреждений',
+                        ])
+                    </th>
+                    <td>
+                        @if (session('rout') == 'directions')
+                            <div>
+                                @php
+                                    $to = [];
+                                    if (isset($application->id_insuranceCompany)) {
+                                        if ($application->id_insuranceCompany == 3) {
+                                            $to[0] = 'drs-soglas@ingos.ru';
+                                            $to[1] = 'sergei.vtorov@ingos.ru';
+                                        } elseif ($application->id_insuranceCompany == 1) {
+                                            $to[0] = 'smeta_szfo@vsk.ru';
+                                        } elseif ($application->id_insuranceCompany == 5) {
+                                            $to[0] = 'akt.rem4@sogaz.ru';
+                                            $to[1] = 'kuznetsov.vitaly@sogaz.ru';
+                                            $to[2] = 'malygin.leonid@sogaz.ru';
+                                        } elseif ($application->id_insuranceCompany == 4) {
+                                            $to[0] = 'arhangelsk_oup@email.reso.ru';
+                                        } elseif ($application->id_insuranceCompany == 7) {
+                                            $to[0] = 'stoarcuu@ugsk.ru';
+                                        } else {
+                                            $to[0] = isset($to_email) ? $to_email : '';
+                                        }
+                                    } else {
+                                        $to[0] = isset($to_email) ? $to_email : '';
+                                    }
+                                @endphp
+                                <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_АктСП') }}"
+                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                    :app_id="{{ $id }}"
+                                    :text="{{ json_encode('Направляем акт скрытых повреждений и фото дефектовки по убытку №' . $application->numberInsuranceCompanyApplication) }}"
+                                    :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="103" />
+                            </div>
+                        @endif
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="col">Фото деффектовки</th>
 
+
+                    <th scope="col" colspan=2>
+                        <file-upload :id_app="{{ $id }}" :status_id="30"
+                            :load_name="'Фото деффектовки'" :load_location="'Фото_деффектовки'" />
+                        {{-- @include('document.form_scan', [
+                            'status_id' => 30,
+                            'load_name' => 'Фото деффектовки',
+                            'load_location' => 'Фото_деффектовки',
+                        ]) --}}
+                    </th>
+                </tr>
+            @endif
             <tr>
                 <th scope="col">Акт приема автомобиля на ремонт</th>
                 <th scope="col">
@@ -371,70 +450,7 @@
                     ])
                 </th>
             </tr>
-            @if (!$def)
-                <tr>
-                    <th scope="col">Акт скрытых повреждений</th>
-                    <th scope="col">
-                        @include('document.form_print', [
-                            'status_id' => 11,
-                            'template' => 'export_hda',
-                        ])
-                    </th>
-                    <th scope="col">
-                        @include('document.form_scan', [
-                            'status_id' => 12,
-                            'load_name' => 'Акт скрытых повреждений',
-                            'load_location' => 'Акт_скрытых_повреждений',
-                        ])
-                    </th>
-                    <td>
-                        <div>
-                            @php
-                                $to = [];
-                                if (isset($application->id_insuranceCompany)) {
-                                    if ($application->id_insuranceCompany == 3) {
-                                        $to[0] = 'drs-soglas@ingos.ru';
-                                        $to[1] = 'sergei.vtorov@ingos.ru';
-                                    } elseif ($application->id_insuranceCompany == 1) {
-                                        $to[0] = 'smeta_szfo@vsk.ru';
-                                    } elseif ($application->id_insuranceCompany == 5) {
-                                        $to[0] = 'akt.rem4@sogaz.ru';
-                                        $to[1] = 'kuznetsov.vitaly@sogaz.ru';
-                                        $to[2] = 'malygin.leonid@sogaz.ru';
-                                    } elseif ($application->id_insuranceCompany == 4) {
-                                        $to[0] = 'arhangelsk_oup@email.reso.ru';
-                                    } elseif ($application->id_insuranceCompany == 7) {
-                                        $to[0] = 'stoarcuu@ugsk.ru';
-                                    } else {
-                                        $to[0] = isset($to_email) ? $to_email : '';
-                                    }
-                                } else {
-                                    $to[0] = isset($to_email) ? $to_email : '';
-                                }
-                            @endphp
-                            <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_АктСП') }}"
-                                :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
-                                :text="{{ json_encode('Направляем акт скрытых повреждений и фото дефектовки по убытку №' . $application->numberInsuranceCompanyApplication) }}"
-                                :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <th scope="col">Фото деффектовки</th>
 
-
-                    <th scope="col" colspan=2>
-                        <file-upload :id_app="{{ $id }}" :status_id="30"
-                            :load_name="'Фото деффектовки'" :load_location="'Фото_деффектовки'" />
-                        {{-- @include('document.form_scan', [
-                            'status_id' => 30,
-                            'load_name' => 'Фото деффектовки',
-                            'load_location' => 'Фото_деффектовки',
-                        ]) --}}
-                    </th>
-                </tr>
-            @endif
             <tr>
                 <th scope="col">Акт сдачи автомобиля</th>
                 <th scope="col">
@@ -477,47 +493,57 @@
                 <tr>
                     <th scope="col">Счет</th>
                     <th scope="col">
-                        @include('document.form_print', ['status_id' => 18, 'template' => 'export_sch'])
+                        @if ($application->status_id == 18)
+                            @include('document.form_print', [
+                                'status_id' => 18,
+                                'template' => 'export_sch',
+                            ])
+                        @else
+                            <a class="nav-link"
+                                onclick="alert('Создание счета доступно только при статусе <<Готов>>')">Создать</a>
+                        @endif
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', [
+                        {{-- @include('document.form_scan', [
                             'status_id' => 19,
                             'load_name' => 'Счет',
                             'load_location' => 'Счет',
-                        ])
+                        ]) --}}
                     </th>
                     <td>
-                        <div>
-                            @php
-                                $to = [];
-                                if (isset($application->id_insuranceCompany)) {
-                                    if ($application->id_insuranceCompany == 3) {
-                                        $to[0] = 'drs-sto@ingos.ru';
-                                        $to[1] = 'sergei.vtorov@ingos.ru';
-                                    } elseif ($application->id_insuranceCompany == 1) {
-                                        $to[0] = 'pay.arhangelsk@vsk.ru';
-                                    } elseif ($application->id_insuranceCompany == 5) {
-                                        $to[0] = 'akt.rem4@sogaz.ru';
-                                        $to[1] = 'kuznetsov.vitaly@sogaz.ru';
-                                        $to[2] = 'malygin.leonid@sogaz.ru';
-                                    } elseif ($application->id_insuranceCompany == 4) {
-                                        $to[0] = 'arhangelsk_oup@email.reso.ru';
-                                    } elseif ($application->id_insuranceCompany == 7) {
-                                        $to[0] = 'stoarcuu@ugsk.ru';
+                        @if (session('rout') == 'directions')
+                            <div>
+                                @php
+                                    $to = [];
+                                    if (isset($application->id_insuranceCompany)) {
+                                        if ($application->id_insuranceCompany == 3) {
+                                            $to[0] = 'drs-sto@ingos.ru';
+                                            $to[1] = 'sergei.vtorov@ingos.ru';
+                                        } elseif ($application->id_insuranceCompany == 1) {
+                                            $to[0] = 'pay.arhangelsk@vsk.ru';
+                                        } elseif ($application->id_insuranceCompany == 5) {
+                                            $to[0] = 'akt.rem4@sogaz.ru';
+                                            $to[1] = 'kuznetsov.vitaly@sogaz.ru';
+                                            $to[2] = 'malygin.leonid@sogaz.ru';
+                                        } elseif ($application->id_insuranceCompany == 4) {
+                                            $to[0] = 'arhangelsk_oup@email.reso.ru';
+                                        } elseif ($application->id_insuranceCompany == 7) {
+                                            $to[0] = 'stoarcuu@ugsk.ru';
+                                        } else {
+                                            $to[0] = isset($to_email) ? $to_email : '';
+                                        }
                                     } else {
                                         $to[0] = isset($to_email) ? $to_email : '';
                                     }
-                                } else {
-                                    $to[0] = isset($to_email) ? $to_email : '';
-                                }
 
-                            @endphp
-                            <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_Счет') }}"
-                                :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
-                                :text="{{ json_encode('Направляем комплект документов по факту выполненных работ по убытку №' . $application->numberInsuranceCompanyApplication) }}"
-                                :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="22" />
-                        </div>
+                                @endphp
+                                <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_Счет') }}"
+                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
+                                    :text="{{ json_encode('Направляем комплект документов по факту выполненных работ по убытку №' . $application->numberInsuranceCompanyApplication) }}"
+                                    :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="110" />
+                            </div>
+                        @endif
                     </td>
                 </tr>
             @endcan

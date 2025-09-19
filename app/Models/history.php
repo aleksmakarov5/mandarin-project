@@ -9,6 +9,9 @@ class history extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_user', 'id_application', 'id_status'
+        'id_user',
+        'id_application',
+        'id_status',
+        'is_fin'
     ];
 }

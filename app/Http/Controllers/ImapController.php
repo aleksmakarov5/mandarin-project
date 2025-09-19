@@ -99,7 +99,7 @@ class ImapController extends Controller
             if ($our_company == 2)
                 $city = 3;
             //dd($start_pos_app_number, $subject, $start_pos_gnz, $app_number, $model, $vin, $gnz);
-            $applications = application::updateorcreate(
+            $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 1, 'our_company' => $our_company],
                 [
                     'numberInsuranceCompanyApplication' => $app_number,
@@ -114,6 +114,9 @@ class ImapController extends Controller
                     'id_city' => $city,
                 ]
             );
+            $applications->ic_answer = true;
+            $applications->save();
+
             try {
                 $estimate = estimate::findorfail('id_application', '=', $applications->id);
             } catch (\Exception $e) {
@@ -380,6 +383,9 @@ class ImapController extends Controller
                     'ic_answer_date' => null,
                 ]
             );
+
+            $applications->ic_answer = true;
+            $applications->save();
             try {
                 $estimate = estimate::findorfail('id_application', '=', $applications->id);
             } catch (\Exception $e) {
@@ -634,6 +640,9 @@ class ImapController extends Controller
                 'ic_answer_date' => null,
             ]
         );
+
+        $applications->ic_answer = true;
+        $applications->save();
         try {
             $estimate = estimate::findorfail('id_application', '=', $applications->id);
         } catch (\Exception $e) {
@@ -888,6 +897,9 @@ class ImapController extends Controller
 
             ]
         );
+
+        $applications->ic_answer = true;
+        $applications->save();
         // dd($applications);
         try {
             $estimate = estimate::firstorcreate(
@@ -1157,6 +1169,9 @@ class ImapController extends Controller
                 'ic_answer_date' => null,
             ]
         );
+
+        $applications->ic_answer = true;
+        $applications->save();
         try {
             $estimate = estimate::findorfail('id_application', '=', $applications->id);
         } catch (\Exception $e) {
@@ -1429,6 +1444,9 @@ class ImapController extends Controller
                 'ic_answer_date' => null,
             ]
         );
+
+        $applications->ic_answer = true;
+        $applications->save();
         try {
             $estimate = estimate::findorfail('id_application', '=', $applications->id);
         } catch (\Exception $e) {
@@ -1587,6 +1605,9 @@ class ImapController extends Controller
                 'ic_answer_date' => null,
             ]
         );
+
+        $applications->ic_answer = true;
+        $applications->save();
 
         // dd($applications);
         $message = new Message();

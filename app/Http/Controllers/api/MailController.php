@@ -13,6 +13,7 @@ use App\Models\attachment;
 use App\Models\address;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class MailController extends Controller
 {
@@ -81,9 +82,21 @@ class MailController extends Controller
         $address->save();
         $history->id_user = $request->user_id;
         $history->id_application = $request->id_application;
-        $history->id_status = 25;
+
+
+        $status = $request->app_status;
+        if ($status > 100) {
+            $application->finance_statuses_id = $status - 100;
+            $application->ic_answer_date = date('Y-m-d H:i:s');
+            $history->id_status = $status - 100;
+            $history->is_fin = true;
+        } else {
+            $application->id_status = $status;
+            $application->check_date = date('Y-m-d H:i:s');
+            $history->id_status = $status;
+        }
+        $application->ic_answer = false;
         $history->save();
-        $application->ic_answer_date = date('Y-m-d H:i:s');
         $application->save();
         return $request;
     }

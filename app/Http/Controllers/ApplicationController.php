@@ -1122,6 +1122,7 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1157,6 +1158,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1195,6 +1200,8 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1230,6 +1237,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1266,6 +1277,7 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1301,6 +1313,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1327,6 +1343,7 @@ class ApplicationController extends Controller
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1362,6 +1379,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1396,6 +1417,7 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
 
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1432,6 +1454,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1460,6 +1486,7 @@ class ApplicationController extends Controller
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
 
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
@@ -1496,6 +1523,10 @@ class ApplicationController extends Controller
             }
             $applications = $applications->select(
                 'applications.*',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.name',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
@@ -1578,6 +1609,21 @@ class ApplicationController extends Controller
                         // dd($start, $application);
                     }
                 }
+                if ($application->ic_answer_date != NULL) {
+                    $end_date = WorkCalendar::create($application->ic_answer_date);
+
+                    $start = WorkCalendar::create($application->ic_answer_date);
+                } else {
+                    $end_date = WorkCalendar::now();
+
+                    $start = WorkCalendar::now();
+                }
+
+                $end_date->addWorkDays($application->fin_time);
+
+                $application->max_hour_f = $start->diffInHours($end_date);
+                $application->count_hour_f =  $application->max_hour_f - $current->diffInHours($start);
+
 
                 // if ($application->id_status < 11) {
                 //     $application->count_hour = 48 - $current->diffInHours($application->created_at);
@@ -1602,6 +1648,7 @@ class ApplicationController extends Controller
 
                 //     $application->max_hour = $start->diffInDays($application->end_date);
                 // }
+                // dd($application);
             }
             $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
@@ -1610,7 +1657,7 @@ class ApplicationController extends Controller
                 $application->doc = 0;
         }
         $city = city::all();
-
+        // dd($applications);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
     // public function waiting(Request $request)
@@ -2171,12 +2218,19 @@ class ApplicationController extends Controller
     {
         $histories = DB::table('histories')
             ->where('id_application', '=', $id)
-            ->join('application_statuses', 'histories.id_status', '=', 'application_statuses.id')
             ->join('users', 'histories.id_user', '=', 'users.id')
-            ->select('histories.*', 'application_statuses.StatusName', 'users.name')
+            ->select('histories.*', 'users.name')
             ->get();
+        foreach ($histories as $history) {
+            if ($history->is_fin)
+                $history->StatusName = DB::table('finance_statuses')
+                    ->where('id', '=', $history->id_status)->first()->FinStatusName;
+            else
+                $history->StatusName = DB::table('application_statuses')
+                    ->where('id', '=', $history->id_status)->first()->StatusName;
+        }
         // dd($rewiew->all()) ;
-        return view('application.history', ['histories' => $histories->all()], ['id' => $id]);
+        return view('application.history', ['histories' => $histories], ['id' => $id]);
     }
 
 
@@ -4443,45 +4497,60 @@ class ApplicationController extends Controller
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_application = $id;
-        $application->id_status = $status_id;
-        $application->check_date = carbon::now();
-        if ($status_id == 14) {
 
 
-            $today = WorkCalendar::now();
-            $today->addWorkDays(30);
-            $application->end_date = $today;
-            $application->view_date = null;
+        if ($status_id < 100) {
+            $application->check_date = carbon::now();
+            $application->id_status = $status_id;
+            if ($status_id == 14) {
 
-            $application->start_date = carbon::now();
-            // dd($application);
-            // dd($today, $application->end_date);
-        }
-        if ($status_id == 13) {
-            $attachments = attachment::where('id_application', '=', $id)->get()->all();
-            foreach ($attachments as $attachment) {
-                if ($attachment->id_status == 9 || $attachment->id_status == 10) {
-                    $attachment->id_status = null;
-                    $attachment->save();
+
+                $today = WorkCalendar::now();
+                $today->addWorkDays(30);
+                $application->end_date = $today;
+                $application->view_date = null;
+
+                $application->start_date = carbon::now();
+                $application->finance_statuses_id = 2;
+
+                $application->ic_answer_date = carbon::now();
+
+
+                // dd($application);
+                // dd($today, $application->end_date);
+            }
+            if ($status_id == 13) {
+                $attachments = attachment::where('id_application', '=', $id)->get()->all();
+                foreach ($attachments as $attachment) {
+                    if ($attachment->id_status == 9 || $attachment->id_status == 10) {
+                        $attachment->id_status = null;
+                        $attachment->save();
+                    }
                 }
             }
+
+            // dd ($application->id_status);
+            // $data["email"] = "aleksmakarov5@yandex.ru";
+            // $data["title"] = 'По заявке №' . $id . ' изменен статус';
+            // $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
+            // $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+            // $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+            // $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+
+            // Mail_send::mailer($data['mailer'])->send('email.'. $data['mailer'], $data, function ($message) use ($data) {
+            //     $message->to($data["email"], $data["email"])
+            //         ->from($data['from'], $data['name'])
+            //         ->subject($data["title"]);
+            // });
+
+        } else {
+            $status_id = $status_id - 100;
+
+            $application->finance_statuses_id = $status_id;
+            $history->is_fin = true;
         }
-
-        // dd ($application->id_status);
-        // $data["email"] = "aleksmakarov5@yandex.ru";
-        // $data["title"] = 'По заявке №' . $id . ' изменен статус';
-        // $data["body"] = 'По заявке №' . $id . ' ' . Auth::user()->name . ' установил статус; "' . ApplicationStatus::findOrFail($status_id)->StatusName . ' "';
-        // $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
-        // $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
-        // $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
-
-        // Mail_send::mailer($data['mailer'])->send('email.'. $data['mailer'], $data, function ($message) use ($data) {
-        //     $message->to($data["email"], $data["email"])
-        //         ->from($data['from'], $data['name'])
-        //         ->subject($data["title"]);
-        // });
-
         $history->id_status = $status_id;
+
 
         $application->save();
         $history->save();
@@ -4490,7 +4559,7 @@ class ApplicationController extends Controller
         // dd($status_group);
         if ($status_group == 2) {
             $users = user::where('GroupId', '=', $status_group)->get()->all();
-            dd($users);
+            // dd($users);
 
             foreach ($users as $user) {
                 $notify = new notify;
@@ -4510,7 +4579,7 @@ class ApplicationController extends Controller
         }
         if ($status_group == 3) {
             $users = user::where('GroupId', '=', $status_group)->get()->all();
-            dd($users);
+            // dd($users);
 
             foreach ($users as $user) {
                 $notify = new notify;
@@ -4543,39 +4612,39 @@ class ApplicationController extends Controller
                 $notify->save();
             }
         }
-        if ($status_group == 5) {
-            $user = user::find($application->id_MRK);
-            if ($user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 3;
-                $notify->link = "/application/";
+        // if ($status_group == 5) {
+        //     $user = user::find($application->id_MRK);
+        //     if ($user) {
+        //         $notify = new notify;
+        //         $notify->id_user = $user->id;
+        //         $notify->id_application = $id;
+        //         $notify->id_text = 3;
+        //         $notify->link = "/application/";
 
-                $notify_id = $notify->id;
+        //         $notify_id = $notify->id;
 
-                $status_application = new status_application;
-                $status_application->id_user = $user->id;
-                $status_application->id_application = $id;
-                $status_application->is_readed = false;
-                $status_application->save();
-                if ($user->telegram_notify) {
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    $status = ApplicationStatus::findOrFail(
-                        $application->id_status
-                    )->StatusName;
-                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                        )
-                        ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
-                }
+        //         $status_application = new status_application;
+        //         $status_application->id_user = $user->id;
+        //         $status_application->id_application = $id;
+        //         $status_application->is_readed = false;
+        //         $status_application->save();
+        //         if ($user->telegram_notify) {
+        //             $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        //             $status = ApplicationStatus::findOrFail(
+        //                 $application->id_status
+        //             )->StatusName;
+        //             $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+        //                 ->keyboard(
+        //                     Keyboard::make()
+        //                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+        //                 )
+        //                 ->send();
+        //             $notify->id_message = json_decode($ch)->result->message_id;
+        //         }
 
-                $notify->save();
-            }
-        }
+        //         $notify->save();
+        //     }
+        // }
         if ($status_group == 6) {
             $user = user::find($application->id_spm);
 
@@ -4645,10 +4714,10 @@ class ApplicationController extends Controller
             }
         }
 
-        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-            ->select('notifies.*', 'text_notifies.text')->first();
-        // dd($notification);
-        broadcast(new MessageSent($notification));
+        // $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+        //     ->select('notifies.*', 'text_notifies.text')->first();
+        // // dd($notification);
+        // broadcast(new MessageSent($notification));
 
         return redirect()->back();
     }
