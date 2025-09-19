@@ -323,7 +323,7 @@
                                         :app_id="{{ $id }}"
                                         :text="{{ json_encode("Добрый день!<br><br>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                         :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                                 </div>
                             @endif
@@ -493,8 +493,8 @@
                 <tr>
                     <th scope="col">Счет</th>
                     <th scope="col">
-                        {{ $application->status_id }}
-                        @if ($application->status_id == 18)
+
+                        @if ($application->id_status == 18)
                             @include('document.form_print', [
                                 'status_id' => 18,
                                 'template' => 'export_sch',
