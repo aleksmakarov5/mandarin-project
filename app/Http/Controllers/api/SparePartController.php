@@ -87,6 +87,7 @@ class SparePartController extends Controller
 
     public function update(Request $request, $id)
     {
+        $d = null;
         $sparepart = SparePart::findOrFail($request->id);
         $data = $this->validate($request, [
             'id_application' => 'required',
@@ -143,9 +144,19 @@ class SparePartController extends Controller
                         $sparepart->$key = clearHTML($value);
                     else
                     if (($key == 'date_wait' || $key == 'date_price')) {
-                        if (!empty($value))
+                        if (!empty($value)) {
                             $sparepart->$key = $value;
-                        else
+                            if ($key == 'date_wait')
+                                $app = application::find($sparepart->id_application);
+                            if ($app->sp_date != NULL) {
+                                if (strtotime($app->sp_date) < strtotime($value)) {
+                                    $app->sp_date = $value;
+                                    // dd($app->sp_date, $value);
+                                }
+                            } else
+                                $app->sp_date = $value;
+                            $app->save();
+                        } else
                             $sparepart->$key = null;
                     } else
                         $sparepart->$key = $value;
