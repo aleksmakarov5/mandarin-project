@@ -12,6 +12,91 @@
     @endcanany
 
     <div class="row">
+        <div class="col  col-sm-12 col-md-6 col-lg-6">
+            <h3>Служебная информация</h3>
+            <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
+                <tr>
+                    <th>№ заявки</th>
+                    <th>
+                        {{ $application->id }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Автоюрист</th>
+                    <th>
+                        {{ $application->lawyer_name }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата заявки</th>
+                    <th>
+                        {{ Date::parse($application->created_at)->format('j F Yг. H:i') }}
+                    </th>
+                </tr>
+
+                <tr>
+                    <th>Менеджер по работе с клиентами</th>
+                    <th>
+                        {{ $application->mrk }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Наставник</th>
+                    <th>
+                        {{ $application->spm }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Сервис</th>
+                    <th>
+                        {{ $application->service_name }}
+                    </th>
+                </tr>
+
+            </table>
+        </div>
+        <div class="col  col-sm-12 col-md-6 col-lg-6">
+            <h3>-</h3>
+            <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
+
+                <tr>
+                    <th>Город</th>
+                    <th>
+                        {{ $application->city }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Текущий статус</th>
+                    <th>
+                        {{ $application->StatusName }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата осмотра</th>
+                    <th>
+                        {{ $application->view_date ? Date::parse($application->view_date)->format('j F Yг. H:i') : '' }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата начала ремонта</th>
+                    <th>
+                        {{ $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : '' }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата окончания ремонта</th>
+                    <th>
+                        {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата поставки запчастей</th>
+                    <th>
+                        {{ $application->sp_date ? Date::parse($application->sp_date)->format('j F Yг.') : '' }}
+                    </th>
+                </tr>
+            </table>
+        </div>
         <div class="col col-sm-12 col-md-6 col-lg-4">
             <h3>Убыток</h3>
             <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
@@ -182,91 +267,7 @@
                 </tr>
             </table>
         </div>
-        <div class="col  col-sm-12 col-md-6 col-lg-6">
-            <h3>Служебная информация</h3>
-            <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
-                <tr>
-                    <th>№ заявки</th>
-                    <th>
-                        {{ $application->id }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Автоюрист</th>
-                    <th>
-                        {{ $application->lawyer_name }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Дата заявки</th>
-                    <th>
-                        {{ Date::parse($application->created_at)->format('j F Yг. H:i') }}
-                    </th>
-                </tr>
 
-                <tr>
-                    <th>Менеджер по работе с клиентами</th>
-                    <th>
-                        {{ $application->mrk }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Наставник</th>
-                    <th>
-                        {{ $application->spm }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Сервис</th>
-                    <th>
-                        {{ $application->service_name }}
-                    </th>
-                </tr>
-
-            </table>
-        </div>
-        <div class="col  col-sm-12 col-md-6 col-lg-6">
-            <h3>-</h3>
-            <table id="demo" class="table table-striped-columns table-hover table-group-divider table-responsive">
-
-                <tr>
-                    <th>Город</th>
-                    <th>
-                        {{ $application->city }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Текущий статус</th>
-                    <th>
-                        {{ $application->StatusName }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Дата осмотра</th>
-                    <th>
-                        {{ $application->view_date ? Date::parse($application->view_date)->format('j F Yг. H:i') : '' }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Дата начала ремонта</th>
-                    <th>
-                        {{ $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : '' }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Дата окончания ремонта</th>
-                    <th>
-                        {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
-                    </th>
-                </tr>
-                <tr>
-                    <th>Дата поставки запчастей</th>
-                    <th>
-                        {{ $application->sp_date ? Date::parse($application->sp_date)->format('j F Yг.') : '' }}
-                    </th>
-                </tr>
-            </table>
-        </div>
 
     </div>
 @endsection
