@@ -1326,10 +1326,11 @@ form .nav-link {
     top: 0;
     background-color: #f4f8c19b;
     padding: 10px;
-    border: 2px;
+    border: 5px;
     border-color: #000;
     border-radius: 7px;
     margin: 15px;
+    max-width: 300px;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 

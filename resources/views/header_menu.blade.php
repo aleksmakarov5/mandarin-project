@@ -2,12 +2,16 @@
 
     try {
         $app = App\Models\application::where('id', '=', $id)->first();
+
         $count = appNotification($app->id, Auth::user()->id);
-
+        $max_hour = 1;
+        $count_hour = 1;
         $status = App\Models\ApplicationStatus::get()->all();
+        $f_status = App\Models\FinanceStatus::get()->all();
         $currentStatus = App\Models\ApplicationStatus::where('id', '=', $app->id_status)->first();
+        $fin_status = App\Models\FinanceStatus::where('id', '=', $app->finance_statuses_id)->first();
         $ic = App\Models\InsuranceCompany::where('id', '=', $app->id_insuranceCompany)->first();
-
+        $current = Carbon\Carbon::now();
         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
@@ -25,12 +29,99 @@
         $attachments = DB::table('attachments')->where('id_application', '=', $id)->get();
         $attach_statuses = [];
         $i = 0;
+        if ($app->id_status < 11) {
+            $end_date = Tochka\Calendar\WorkCalendar::create($app->created_at);
+            $end_date->addWorkDays($currentStatus->time);
+            // dd($end_date);
+            $start = Carbon\Carbon::create($app->created_at);
+            $end = Carbon\Carbon::create($end_date);
+            // dd($end);
+            $max_hour = $start->diffInHours($end);
+            // dd($max_hour);
+            // dd($current);
+            //  dd($end);
+            $count_hour = $max_hour - $current->diffInHours($start);
+            // dd($count_hour);
+        }
+        if ($app->id_status == 11) {
+            $end_date = Tochka\Calendar\WorkCalendar::create($app->check_date);
+            $end_date->addWorkDays($currentStatus->time);
+
+            $start = Tochka\Calendar\WorkCalendar::create($app->check_date);
+            $max_hour = $start->diffInHours($end_date);
+            $count_hour = $max_hour - $current->diffInHours($start);
+        }
+        if ($currentStatus->time != 0) {
+            if (!$currentStatus->day) {
+                $end_date = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $end_date->addWorkDays($currentStatus->time);
+
+                $start = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $max_hour = $start->diffInHours($end_date);
+                $count_hour = $max_hour - $current->diffInHours($start);
+            } else {
+                $end_date = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $end_date->addWorkDays($currentStatus->time);
+
+                $start = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $max_hour = $start->diffInDays($end_date);
+                $count_hour = $max_hour - $current->diffInDays($start);
+            }
+        } else {
+            if ($application->id_status == 17) {
+                $start = isset($application->start_date)
+                    ? Carbon\Carbon::create($application->start_date)
+                    : Carbon\Carbon::create($application->napr_date);
+
+                //     $max_hour = $start->diffInDays($application->end_date)
+                $max_hour = $start->diffInDays($application->end_date);
+                $count_hour = $max_hour - $current->diffInDays($start);
+            }
+            if ($application->id_status == 13) {
+                if ($count_hour = $current->diffInHours($application->view_date) < 24) {
+                    $start = Carbon\Carbon::create($application->check_date);
+
+                    //     $max_hour = $start->diffInDays($application->end_date)
+                    $max_hour = $start->diffInHours($application->view_date);
+                    $count_hour = $max_hour - $current->diffInHours($start);
+                    $application->day = 0;
+                } else {
+                    $start = Carbon\Carbon::create($application->check_date);
+
+                    //     $max_hour = $start->diffInDays($application->end_date)
+                    $max_hour = $start->diffInDays($application->view_date);
+                    $count_hour = $max_hour - $current->diffInDays($start);
+                }
+                // dd($application);
+            }
+            if ($application->id_status == 15) {
+                $start = Carbon\Carbon::create($application->check_date);
+
+                //     $max_hour = $start->diffInDays($application->end_date)
+                $max_hour = $start->diffInDays($application->sp_date);
+                $count_hour = $max_hour - $current->diffInDays($start);
+                // dd($start, $application);
+            }
+        }
+        if ($application->ic_answer_date != null) {
+            $end_date = Tochka\Calendar\WorkCalendar::create($application->ic_answer_date);
+
+            $start = Tochka\Calendar\WorkCalendar::create($application->ic_answer_date);
+        } else {
+            $end_date = Tochka\Calendar\WorkCalendar::now();
+
+            $start = Tochka\Calendar\WorkCalendar::now();
+        }
+
+        $end_date->addWorkDays($fin_status->fin_time);
+
+        $max_hour_f = $start->diffInHours($end_date);
+        $count_hour_f = $max_hour_f - $current->diffInHours($start);
         foreach ($attachments as $attachment) {
             if ($attachment->id_status) {
                 $attach_statuses[$i++] = $attachment->id_status;
             }
         }
-        // dd($attach_statuses);
 
         // dd($rewiew->all()) ;
         $summ_ic_full = 0;
@@ -242,30 +333,185 @@
                     <tr>
                         <td>
                             <div class="app-lbl">
-                                <h1>Заявка № {{ $id }} </h1>
-                                <a href="https://emex.ru/catalogs/original2/modifications?vin={{ $app->vin }}"
-                                    target="_blank" class="nav-link">Emex</a>
-                                @if (isset($app->pred_phone))
-                                    <h5><b>Представитель:</b></h5>
-                                    <h5>{{ $app->pred }}</h5>
-                                    <h5>{{ $app->pred_phone }}</h5>
-                                @else
-                                    <h5><b>Клиент:</b></h5>
-                                    <h5>{{ $app->ClientName }}</h5>
-                                    <h5>{{ $app->ClientPhone }}</h5>
-                                @endif
-                                <h5>{{ $app->CarModel }}</h5>
-                                <h5>{{ $app->gnz }}</h5>
+                                <table width="100%">
+                                    <tr>
+                                        <td>
+                                            <h2>Заявка № {{ $id }} </h2>
+                                        </td>
+                                        <td>
+                                            <a href="https://emex.ru/catalogs/original2/modifications?vin={{ $app->vin }}"
+                                                target="_blank" class="nav-link">Emex</a>
+                                        </td>
+                                    </tr>
+                                    @if (isset($app->pred_phone))
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5><b>Представитель:</b> {{ $app->pred }}</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->pred_phone }}</h5>
+                                            </td>
+                                        </tr>
+                                    @else
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5><b>Клиент:</b> {{ $app->ClientName }}</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->ClientPhone }}</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->CarModel }} ({{ $app->mnf_year }} г.в.)</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->gnz }}</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->vin }}</h5>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="td_round {{ $currentStatus->status_theme }}">
+                                                    {{ $currentStatus->StatusName }}
+                                                </div>
+                                            </td>
 
 
-                                <h5>{{ $app->vin }}</h5>
+                                            @if ($count_hour > 0)
+                                                <td>
+
+                                                    <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
+                                                        <span
+                                                            style="width: {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}%">{{ $count_hour > 0 ? $count_hour : 'просрочено' }}
+                                                            <span>
+                                                                @if ($currentStatus->day)
+                                                                    {{ show_days($count_hour) }}
+                                                                @else
+                                                                    {{ show_hours($count_hour) }}
+                                                                @endif
+                                                            </span>
+                                                        </span>
+
+                                                    </div>
+                                                </td>
+                                            @else
+                                                <td scope="col" class="alert alert-danger">
+                                                    Просрочено
+                                                </td>
+                                            @endif
 
 
-                                <div class="td_round {{ $currentStatus->status_theme }}">{{ $currentStatus->StatusName }}
-                                </div>
-                                <h5>{{ $app->numberInsuranceCompanyApplication }}</h5>
-                                <div class="td_round {{ $ic->insurance_companies_theme }}">{{ $ic->name }}
-                                </div>
+                                            {{-- <div
+                                                    class="
+                                    'progressbar
+                                    {{ $count_hour > 0 ? 'blue' : 'red' }}
+                                ">
+                                                    <span
+                                                        style="width: '
+
+                                                        {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}
+                                                            %';">{{ $count_hour > 0 ? $count_hour : 'просрочено' }}
+                                                        @if ($count_hour > 0)
+                                                            <span>
+
+                                                                @if ($currentStatus->day)
+                                                                    дн.
+                                                                @else
+                                                                    ч.
+                                                                @endif
+                                                            </span>
+                                                        @endif
+
+                                                    </span>
+                                                </div> --}}
+
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <div class="td_round {{ $fin_status->FinStatusTheme }}">
+                                                    {{ $fin_status->FinStatusName }}
+                                                </div>
+                                            </td>
+                                            @if ($fin_status->id > 1)
+
+
+                                                @if ($count_hour_f > 0)
+                                                    <td>
+
+                                                        <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
+                                                            <span
+                                                                style="width: {{ (($count_hour_f < $max_hour_f ? $count_hour_f : $max_hour_f) / $max_hour_f) * 100 }}%">{{ $count_hour_f > 0 ? $count_hour_f : 'просрочено' }}
+                                                                <span>
+                                                                    @if ($fin_status->fin_day)
+                                                                        {{ show_days($count_hour_f) }}
+                                                                    @else
+                                                                        {{ show_hours($count_hour_f) }}
+                                                                    @endif
+                                                                </span>
+                                                            </span>
+
+                                                        </div>
+                                                    </td>
+                                                @else
+                                                    <td scope="col" class="alert alert-danger">
+                                                        Просрочено
+                                                    </td>
+                                                @endif
+                                            @else
+                                                <td></td>
+                                            @endif
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                <h5>{{ $app->numberInsuranceCompanyApplication }}</h5>
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+                                            <td>
+                                                <div class="td_round {{ $ic->insurance_companies_theme }}">
+                                                    {{ $ic->name }}
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if ($app->ub_type)
+                                                    <div class="td_round blue" style='color:white;'>
+                                                        Каско
+                                                    </div>
+                                                @else
+                                                    <div class="td_round green">
+                                                        Осаго
+                                                    </div>
+                                                @endif
+                                            </td>
+                                        </tr>
+
+                                    @endif
+                                </table>
+
+
+
+
+
+
+
+
+
+
+
+
+
                             </div>
                         </td>
                         @can('company')
@@ -551,11 +797,13 @@
                                             </li>
                                         @endif
                                         @if ($app->id_status == 12 || $app->id_status == 14)
-                                            <li><a
-                                                    @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату осмотра ')"
+                                            <li><a @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату осмотра ')"
                                                     @else
                                                  onclick="if (!confirm('Изменить статус?')) return false"
-                                                    href="/applications/{{ $id }}/change_st/13" @endif>
+                                                    href="/applications/{{ $id }}/change_st/13" @endif
+                                                    @if ($app->id_status == 14) title="Дефектовка проведена, Т/С выдан клиенту до поступления запчастей"
+                                                    @else
+                                                        title="Клиент вызван на ремонт" @endif>
                                                     <div class="td_round  {{ $status[12]->status_theme }}">
                                                         {{ $status[12]->StatusName }}</div>
                                                 </a>
@@ -569,7 +817,8 @@
                                                     @else
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/14" @endif
-                                                    @endif>
+                                                    @endif
+                                                    title="Т/С поставлен на СТО">
                                                     <div class="td_round  {{ $status[13]->status_theme }}">
                                                         {{ $status[13]->StatusName }}</div>
                                                 </a>
@@ -577,7 +826,14 @@
                                         @endif
                                         @if ($summ_order != 0)
                                             @if ($app->id_status == 14)
-                                                <li><a @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                                <li><a @if ($app->id_lawyer > 2) @if (!in_array(30, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото дефектовки')"
+                                                    @else onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/17" @endif
+                                                    @else
+                                                        @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                                    @else
+                                                    @if (!in_array(5, $attach_statuses)) onclick="alert('Отсутсвует скан соглашения с клиентом')"
                                                     @else
                                                     @if (!in_array(30, $attach_statuses))
                                                         onclick="alert('Отсутсвуют фото дефектовки')"
@@ -588,10 +844,12 @@
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/15" @endif
                                                         @endif
-                                            @endif>
-                                            <div class="td_round  {{ $status[14]->status_theme }}">
-                                                {{ $status[14]->StatusName }}</div>
-                                            </a>
+                                            @endif
+                                        @endif
+                                        @endif>
+                                        <div class="td_round  {{ $status[14]->status_theme }}">
+                                            {{ $status[14]->StatusName }}</div>
+                                        </a>
                                 </li>
                                 @endif
                                 @if ($app->id_status == 15)
@@ -612,50 +870,101 @@
                                 @endif
                             @else
                                 @if ($app->id_status == 14)
-                                    <li><a @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                    <li><a @if ($app->id_lawyer > 2) @if (!in_array(30, $attach_statuses))
+                                                        onclick="alert('Отсутсвуют фото дефектовки')"
+                                                    @else onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/17" @endif
+                                        @else
+                                            @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
+                                                    @else
+                                                    @if (!in_array(5, $attach_statuses)) onclick="alert('Отсутсвует скан соглашения с клиентом')"
                                                     @else
                                                     @if (!in_array(30, $attach_statuses))
                                                         onclick="alert('Отсутсвуют фото дефектовки')"
                                                     @else onclick="if (!confirm('Изменить статус?')) return false"
                                             href="/applications/{{ $id }}/change_st/17" @endif
-                                            @endif>
-                                            <div class="td_round  {{ $status[16]->status_theme }}">
-                                                {{ $status[16]->StatusName }}</div>
-                                        </a>
-                                    </li>
+                                            @endif
                                 @endif
-                                @endif
-                                @if ($app->id_status == 17)
-                                    <li><a @if (!in_array(14, $attach_statuses)) onclick="alert('Отсутсвует скан акта сдачи автомобиля ')"
+                                @endif>
+                                <div class="td_round  {{ $status[16]->status_theme }}">
+                                    {{ $status[16]->StatusName }}</div>
+                                </a>
+                    </li>
+                    @endif
+                    @endif
+                    @if ($app->id_status == 17)
+                        <li><a @if (!in_array(14, $attach_statuses)) onclick="alert('Отсутсвует скан акта сдачи автомобиля ')"
                                                     @else
                                                     @if (!in_array(15, $attach_statuses))
                                                         onclick="alert('Отсутсвуют фото сдачи автомобиля ')"
                                                     @else
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/18" @endif
-                                            @endif>
-                                            <div class="td_round  {{ $status[17]->status_theme }}">
-                                                {{ $status[17]->StatusName }}</div>
-                                        </a>
-                                    </li>
-                                @endif
-                                @if ($app->id_status == 18)
-                                    <li><a
-                                            @if (!$app->ic_pay_date || !$app->sto_pay_date || !$app->zp_date) onclick="alert('Заполните таблицу с датами оплат!')"
+                                @endif>
+                                <div class="td_round  {{ $status[17]->status_theme }}">
+                                    {{ $status[17]->StatusName }}</div>
+                            </a>
+                        </li>
+                    @endif
+                    @if ($app->id_status == 18)
+                        <li><a
+                                @if (!$app->ic_pay_date || !$app->sto_pay_date || !$app->zp_date) onclick="alert('Заполните таблицу с датами оплат!')"
                                                     @else
 
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/25" @endif>
-                                            <div class="td_round  {{ $status[24]->status_theme }}">
-                                                {{ $status[24]->StatusName }}</div>
-                                        </a>
-                                    </li>
-                                @endif
+                                <div class="td_round  {{ $status[24]->status_theme }}">
+                                    {{ $status[24]->StatusName }}</div>
+                            </a>
+                        </li>
+                    @endif
+                    @if ($app->id_status == 27)
+                        <li><a onclick="if (!confirm('Вернуть в работу?')) return false"
+                                href="/applications/{{ $id }}/change_st/2">
+                                <div class="td_round  {{ $status[1]->status_theme }}">
+                                    Вернуть в работу</div>
+                            </a>
+                        </li>
+                    @endif
 
+                    @can('administrator')
+                        <li>
+                            <div class="td_round  {{ $status[19]->status_theme }}">
+                                --Сис. админ--</div>
 
+                        </li>
+                        @for ($i = 1; $i < 28; $i++)
+                            @if (
+                                $i != 2 &&
+                                    $i != 3 &&
+                                    $i != 4 &&
+                                    $i != 5 &&
+                                    $i != 6 &&
+                                    $i != 7 &&
+                                    $i != 8 &&
+                                    $i != 9 &&
+                                    $i != 10 &&
+                                    $i != 10 &&
+                                    $i != 18 &&
+                                    $i != 19 &&
+                                    $i != 20 &&
+                                    $i != 21 &&
+                                    $i != 22 &&
+                                    $i != 23 &&
+                                    $i != 24 &&
+                                    $i != 26)
+                                <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                        href="/applications/{{ $id }}/change_st/{{ $i }}">
+                                        <div class="td_round  {{ $status[$i - 1]->status_theme }}">
+                                            {{ $status[$i - 1]->StatusName }}</div>
+                                    </a>
+                                </li>
+                            @endif
+                        @endfor
+                    @endcan
 
-                            </ul>
-                    </li>
+                </ul>
+                </li>
 
                 </ul>
                 </nav>

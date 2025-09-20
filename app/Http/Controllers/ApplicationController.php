@@ -1585,18 +1585,19 @@ class ApplicationController extends Controller
                     }
                     if ($application->id_status == 13) {
                         if ($application->count_hour = $current->diffInHours($application->view_date) < 24) {
-                            $application->count_hour = $current->diffInHours($application->view_date);
+
                             $start = carbon::create($application->check_date);
 
                             //     $application->max_hour = $start->diffInDays($application->end_date)
                             $application->max_hour = $start->diffInHours($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInHours($start);
                             $application->day = 0;
                         } else {
-                            $application->count_hour = $current->diffInDays($application->view_date);
                             $start = carbon::create($application->check_date);
 
                             //     $application->max_hour = $start->diffInDays($application->end_date)
                             $application->max_hour = $start->diffInDays($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInDays($start);
                         }
                         // dd($application);
                     }
