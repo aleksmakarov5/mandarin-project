@@ -829,8 +829,13 @@
                                             @if ($app->id_status == 14)
                                                 <li><a @if ($app->id_lawyer > 2) @if (!in_array(30, $attach_statuses))
                                                         onclick="alert('Отсутсвуют фото дефектовки')"
+
+                                                    @else
+                                                    @if (!$app->sp_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату поставки З/Ч ')"
+
                                                     @else onclick="if (!confirm('Изменить статус?')) return false"
                                             href="/applications/{{ $id }}/change_st/17" @endif
+                                                        @endif
                                                     @else
                                                         @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
                                                     @else
@@ -844,8 +849,8 @@
                                                     @else
                                                          onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/15" @endif
-                                                        @endif
                                             @endif
+                                        @endif
                                         @endif
                                         @endif>
                                         <div class="td_round  {{ $status[14]->status_theme }}">
