@@ -2234,7 +2234,8 @@ class ApplicationController extends Controller
                     ->where('id', '=', $history->id_status)->first()->StatusName;
         }
         // dd($rewiew->all()) ;
-        return view('application.history', ['histories' => $histories], ['id' => $id]);
+        // dd($histories);
+        return view('application.history', ['histories' => $histories, 'id' => $id]);
     }
 
 
@@ -4561,61 +4562,61 @@ class ApplicationController extends Controller
         $notify_id = 0;
         $status_group = ApplicationStatus::findOrFail($status_id)->current_group;
         // dd($status_group);
-        if ($status_group == 2) {
-            $users = user::where('GroupId', '=', $status_group)->get()->all();
-            // dd($users);
+        // if ($status_group == 2) {
+        //     $users = user::where('GroupId', '=', $status_group)->get()->all();
+        //     // dd($users);
 
-            foreach ($users as $user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 3;
-                $notify->link = "/application/";
+        //     foreach ($users as $user) {
+        //         $notify = new notify;
+        //         $notify->id_user = $user->id;
+        //         $notify->id_application = $id;
+        //         $notify->id_text = 3;
+        //         $notify->link = "/application/";
 
-                $notify->save();
-                $notify_id = $notify->id;
-                $status_application = new status_application;
-                $status_application->id_user = $user->id;
-                $status_application->id_application = $id;
-                $status_application->is_readed = false;
-                $status_application->save();
-            }
-        }
-        if ($status_group == 3) {
-            $users = user::where('GroupId', '=', $status_group)->get()->all();
-            // dd($users);
+        //         $notify->save();
+        //         $notify_id = $notify->id;
+        //         $status_application = new status_application;
+        //         $status_application->id_user = $user->id;
+        //         $status_application->id_application = $id;
+        //         $status_application->is_readed = false;
+        //         $status_application->save();
+        //     }
+        // }
+        // if ($status_group == 3) {
+        //     $users = user::where('GroupId', '=', $status_group)->get()->all();
+        //     // dd($users);
 
-            foreach ($users as $user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 3;
-                $notify->link = "/application/";
+        //     foreach ($users as $user) {
+        //         $notify = new notify;
+        //         $notify->id_user = $user->id;
+        //         $notify->id_application = $id;
+        //         $notify->id_text = 3;
+        //         $notify->link = "/application/";
 
 
-                $notify_id = $notify->id;
-                $status_application = new status_application;
-                $status_application->id_user = $user->id;
-                $status_application->id_application = $id;
-                $status_application->is_readed = false;
-                $status_application->save();
-                if ($user->telegram_notify) {
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    $status = ApplicationStatus::findOrFail(
-                        $application->id_status
-                    )->StatusName;
-                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                        )
-                        ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
-                }
+        //         $notify_id = $notify->id;
+        //         $status_application = new status_application;
+        //         $status_application->id_user = $user->id;
+        //         $status_application->id_application = $id;
+        //         $status_application->is_readed = false;
+        //         $status_application->save();
+        //         if ($user->telegram_notify) {
+        //             $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        //             $status = ApplicationStatus::findOrFail(
+        //                 $application->id_status
+        //             )->StatusName;
+        //             $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+        //                 ->keyboard(
+        //                     Keyboard::make()
+        //                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+        //                 )
+        //                 ->send();
+        //             $notify->id_message = json_decode($ch)->result->message_id;
+        //         }
 
-                $notify->save();
-            }
-        }
+        //         $notify->save();
+        //     }
+        // }
         // if ($status_group == 5) {
         //     $user = user::find($application->id_MRK);
         //     if ($user) {
@@ -4649,74 +4650,74 @@ class ApplicationController extends Controller
         //         $notify->save();
         //     }
         // }
-        if ($status_group == 6) {
-            $user = user::find($application->id_spm);
+        // if ($status_group == 6) {
+        //     $user = user::find($application->id_spm);
 
 
-            $notify = new notify;
-            $notify->id_user = $user->id;
-            $notify->id_application = $id;
-            $notify->id_text = 3;
-            $notify->link = "/application/";
+        //     $notify = new notify;
+        //     $notify->id_user = $user->id;
+        //     $notify->id_application = $id;
+        //     $notify->id_text = 3;
+        //     $notify->link = "/application/";
 
 
-            $notify_id = $notify->id;
-            $status_application = new status_application;
-            $status_application->id_user = $user->id;
-            $status_application->id_application = $id;
-            $status_application->is_readed = false;
-            $status_application->save();
-            if ($user->telegram_notify) {
-                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                $status = ApplicationStatus::findOrFail(
-                    $application->id_status
-                )->StatusName;
-                $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                    ->keyboard(
-                        Keyboard::make()
-                            ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                    )
-                    ->send();
-                $notify->id_message = json_decode($ch)->result->message_id;
-            }
+        //     $notify_id = $notify->id;
+        //     $status_application = new status_application;
+        //     $status_application->id_user = $user->id;
+        //     $status_application->id_application = $id;
+        //     $status_application->is_readed = false;
+        //     $status_application->save();
+        //     if ($user->telegram_notify) {
+        //         $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        //         $status = ApplicationStatus::findOrFail(
+        //             $application->id_status
+        //         )->StatusName;
+        //         $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+        //             ->keyboard(
+        //                 Keyboard::make()
+        //                     ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+        //             )
+        //             ->send();
+        //         $notify->id_message = json_decode($ch)->result->message_id;
+        //     }
 
-            $notify->save();
-        }
-        if ($status_group == 8) {
-            $users = user::where('GroupId', '=', $status_group)->get()->all();
-
-
-            foreach ($users as $user) {
-                $notify = new notify;
-                $notify->id_user = $user->id;
-                $notify->id_application = $id;
-                $notify->id_text = 3;
-                $notify->link = "/application/";
+        //     $notify->save();
+        // }
+        // if ($status_group == 8) {
+        //     $users = user::where('GroupId', '=', $status_group)->get()->all();
 
 
-                $notify_id = $notify->id;
-                $status_application = new status_application;
-                $status_application->id_user = $user->id;
-                $status_application->id_application = $id;
-                $status_application->is_readed = false;
-                $status_application->save();
-                if ($user->telegram_notify) {
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    $status = ApplicationStatus::findOrFail(
-                        $application->id_status
-                    )->StatusName;
-                    $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                        )
-                        ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
-                }
+        //     foreach ($users as $user) {
+        //         $notify = new notify;
+        //         $notify->id_user = $user->id;
+        //         $notify->id_application = $id;
+        //         $notify->id_text = 3;
+        //         $notify->link = "/application/";
 
-                $notify->save();
-            }
-        }
+
+        //         $notify_id = $notify->id;
+        //         $status_application = new status_application;
+        //         $status_application->id_user = $user->id;
+        //         $status_application->id_application = $id;
+        //         $status_application->is_readed = false;
+        //         $status_application->save();
+        //         if ($user->telegram_notify) {
+        //             $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        //             $status = ApplicationStatus::findOrFail(
+        //                 $application->id_status
+        //             )->StatusName;
+        //             $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+        //                 ->keyboard(
+        //                     Keyboard::make()
+        //                         ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+        //                 )
+        //                 ->send();
+        //             $notify->id_message = json_decode($ch)->result->message_id;
+        //         }
+
+        //         $notify->save();
+        //     }
+        // }
 
         // $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
         //     ->select('notifies.*', 'text_notifies.text')->first();

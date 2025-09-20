@@ -51,60 +51,60 @@
             $count_hour = $max_hour - $current->diffInHours($start);
         } elseif ($currentStatus->time != 0) {
             if (!$currentStatus->day) {
-                $end_date = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $end_date = Tochka\Calendar\WorkCalendar::create($app->check_date);
                 $end_date->addWorkDays($currentStatus->time);
 
-                $start = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $start = Tochka\Calendar\WorkCalendar::create($app->check_date);
                 $max_hour = $start->diffInHours($end_date);
                 $count_hour = $max_hour - $current->diffInHours($start);
             } else {
-                $end_date = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $end_date = Tochka\Calendar\WorkCalendar::create($app->check_date);
                 $end_date->addWorkDays($currentStatus->time);
 
-                $start = Tochka\Calendar\WorkCalendar::create($application->check_date);
+                $start = Tochka\Calendar\WorkCalendar::create($app->check_date);
                 $max_hour = $start->diffInDays($end_date);
                 $count_hour = $max_hour - $current->diffInDays($start);
             }
         } else {
-            if ($application->id_status == 17) {
-                $start = isset($application->start_date)
-                    ? Carbon\Carbon::create($application->start_date)
-                    : Carbon\Carbon::create($application->napr_date);
+            if ($app->id_status == 17) {
+                $start = isset($app->start_date)
+                    ? Carbon\Carbon::create($app->start_date)
+                    : Carbon\Carbon::create($app->napr_date);
 
                 //     $max_hour = $start->diffInDays($application->end_date)
-                $max_hour = $start->diffInDays($application->end_date);
+                $max_hour = $start->diffInDays($app->end_date);
                 $count_hour = $max_hour - $current->diffInDays($start);
             }
-            if ($application->id_status == 13) {
-                if ($count_hour = $current->diffInHours($application->view_date) < 24) {
-                    $start = Carbon\Carbon::create($application->check_date);
+            if ($app->id_status == 13) {
+                if ($count_hour = $current->diffInHours($app->view_date) < 24) {
+                    $start = Carbon\Carbon::create($app->check_date);
 
                     //     $max_hour = $start->diffInDays($application->end_date)
-                    $max_hour = $start->diffInHours($application->view_date);
+                    $max_hour = $start->diffInHours($app->view_date);
                     $count_hour = $max_hour - $current->diffInHours($start);
-                    $application->day = 0;
+                    $app->day = 0;
                 } else {
-                    $start = Carbon\Carbon::create($application->check_date);
+                    $start = Carbon\Carbon::create($app->check_date);
 
                     //     $max_hour = $start->diffInDays($application->end_date)
-                    $max_hour = $start->diffInDays($application->view_date);
+                    $max_hour = $start->diffInDays($app->view_date);
                     $count_hour = $max_hour - $current->diffInDays($start);
                 }
                 // dd($application);
             }
-            if ($application->id_status == 15) {
-                $start = Carbon\Carbon::create($application->check_date);
+            if ($app->id_status == 15) {
+                $start = Carbon\Carbon::create($app->check_date);
 
                 //     $max_hour = $start->diffInDays($application->end_date)
-                $max_hour = $start->diffInDays($application->sp_date);
+                $max_hour = $start->diffInDays($app->sp_date);
                 $count_hour = $max_hour - $current->diffInDays($start);
                 // dd($start, $application);
             }
         }
-        if ($application->ic_answer_date != null) {
-            $end_date = Tochka\Calendar\WorkCalendar::create($application->ic_answer_date);
+        if ($app->ic_answer_date != null) {
+            $end_date = Tochka\Calendar\WorkCalendar::create($app->ic_answer_date);
 
-            $start = Tochka\Calendar\WorkCalendar::create($application->ic_answer_date);
+            $start = Tochka\Calendar\WorkCalendar::create($app->ic_answer_date);
         } else {
             $end_date = Tochka\Calendar\WorkCalendar::now();
 
@@ -930,24 +930,24 @@
                     @if ($app->finance_statuses_id == 3 && $app->ic_answer)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/104">
-                                <div class="td_round  {{ $f_status[3]->status_theme }}">
-                                    {{ $status[3]->StatusName }}</div>
+                                <div class="td_round  {{ $f_status[3]->FinStatusTheme }}">
+                                    {{ $f_status[3]->FinStatusName }}</div>
                             </a>
                         </li>
                     @endif
                     @if ($app->finance_statuses_id == 5 && $app->ic_answer)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/106">
-                                <div class="td_round  {{ $f_status[5]->status_theme }}">
-                                    {{ $status[5]->StatusName }}</div>
+                                <div class="td_round  {{ $f_status[5]->FinStatusTheme }}">
+                                    {{ $f_status[5]->FinStatusName }}</div>
                             </a>
                         </li>
                     @endif
                     @if ($app->finance_statuses_id == 7 && $app->ic_answer)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/108">
-                                <div class="td_round  {{ $f_status[7]->status_theme }}">
-                                    {{ $status[7]->StatusName }}</div>
+                                <div class="td_round  {{ $f_status[7]->FinStatusTheme }}">
+                                    {{ $f_status[7]->FinStatusName }}</div>
                             </a>
                         </li>
                     @endif

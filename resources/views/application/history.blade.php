@@ -3,6 +3,7 @@
     История
 @endsection
 @section('main')
+    {{-- {{ dd($histories) }} --}}
     @foreach ($histories as $history)
         <div class="history">
             <div class="history">
@@ -10,7 +11,7 @@
                     {{ $history->name }}
                 </h5>
                 <h6 class="card-subtitle mb-2 text-muted">
-                    {{ $history->created_at }}
+                    {{ Date::parse($history->created_at)->format('j F Yг. H:i') }}
                 </h6>
                 <p class="card-text">
                     {{ $history->StatusName }}
