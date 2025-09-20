@@ -552,7 +552,7 @@ class WordController extends Controller
     public function export_ap($id, $status_id)
     {
         $template = 'ap.docx';
-        $filename = "Приемо-сдаточный Акт №";
+        $filename = "Акт приема автомобиля №";
         $doc_type = $status_id;
         $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
@@ -561,7 +561,7 @@ class WordController extends Controller
     public function export_as($id, $status_id)
     {
         $template = 'as.docx';
-        $filename = "АКТ ПРИЕМА ЛЕГКОВОГО АВТОМОБИЛЯ №";
+        $filename = "АКТ СДАЧИ ЛЕГКОВОГО АВТОМОБИЛЯ №";
         $doc_type = $status_id;
         $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
