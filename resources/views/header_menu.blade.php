@@ -392,28 +392,28 @@
                                         </td>
 
 
-                                        @if ($count_hour > 0)
-                                            <td>
 
-                                                <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
-                                                    <span
-                                                        style="width: {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}%">{{ $count_hour > 0 ? $count_hour : 'просрочено' }}
-                                                        <span>
+                                        <td>
+
+                                            <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
+                                                <span
+                                                    style="width: {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}%">{{ $count_hour > 0 ? $count_hour : 'просрочено' }}
+                                                    <span>
+                                                        @if ($count_hour > 0)
+
+
                                                             @if ($currentStatus->day)
                                                                 {{ show_days($count_hour) }}
                                                             @else
                                                                 {{ show_hours($count_hour) }}
                                                             @endif
-                                                        </span>
+                                                        @endif
                                                     </span>
+                                                </span>
 
-                                                </div>
-                                            </td>
-                                        @else
-                                            <td scope="col" class="alert alert-danger">
-                                                Просрочено
-                                            </td>
-                                        @endif
+                                            </div>
+                                        </td>
+
 
 
                                         {{-- <div
@@ -450,28 +450,25 @@
                                         @if ($fin_status->id > 1)
 
 
-                                            @if ($count_hour_f > 0)
-                                                <td>
 
-                                                    <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
-                                                        <span
-                                                            style="width: {{ (($count_hour_f < $max_hour_f ? $count_hour_f : $max_hour_f) / $max_hour_f) * 100 }}%">{{ $count_hour_f > 0 ? $count_hour_f : 'просрочено' }}
-                                                            <span>
+                                            <td>
+
+                                                <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
+                                                    <span
+                                                        style="width: {{ (($count_hour_f < $max_hour_f ? $count_hour_f : $max_hour_f) / $max_hour_f) * 100 }}%">{{ $count_hour_f > 0 ? $count_hour_f : 'просрочено' }}
+                                                        <span>
+                                                            @if ($count_hour_f > 0)
                                                                 @if ($fin_status->fin_day)
                                                                     {{ show_days($count_hour_f) }}
                                                                 @else
                                                                     {{ show_hours($count_hour_f) }}
                                                                 @endif
-                                                            </span>
+                                                            @endif
                                                         </span>
+                                                    </span>
 
-                                                    </div>
-                                                </td>
-                                            @else
-                                                <td scope="col" class="alert alert-danger">
-                                                    Просрочено
-                                                </td>
-                                            @endif
+                                                </div>
+                                            </td>
                                         @else
                                             <td></td>
                                         @endif
