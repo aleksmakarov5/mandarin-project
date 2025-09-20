@@ -4516,9 +4516,11 @@ class ApplicationController extends Controller
                 $application->view_date = null;
 
                 $application->start_date = carbon::now();
-                $application->finance_statuses_id = 2;
+                if ($application->finance_statuses_id < 3) {
+                    $application->finance_statuses_id = 2;
 
-                $application->ic_answer_date = carbon::now();
+                    $application->ic_answer_date = carbon::now();
+                }
 
 
                 // dd($application);
