@@ -834,7 +834,7 @@
                                                     @if (!$app->sp_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату поставки З/Ч ')"
 
                                                     @else onclick="if (!confirm('Изменить статус?')) return false"
-                                            href="/applications/{{ $id }}/change_st/17" @endif
+                                            href="/applications/{{ $id }}/change_st/15" @endif
                                                         @endif
                                                     @else
                                                         @if (!in_array(3, $attach_statuses)) onclick="alert('Отсутсвует скан договора с клиентом')"
