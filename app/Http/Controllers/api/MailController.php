@@ -85,7 +85,7 @@ class MailController extends Controller
 
 
         $status = $request->app_status;
-        if ($status > 100) {
+        if ($status > 100 && $status < 200) {
             $application->finance_statuses_id = $status - 100;
             $application->ic_answer_date = date('Y-m-d H:i:s');
             $history->id_status = $status - 100;
