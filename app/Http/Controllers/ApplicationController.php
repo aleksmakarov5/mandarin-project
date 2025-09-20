@@ -4549,7 +4549,7 @@ class ApplicationController extends Controller
 
         } else {
             $status_id = $status_id - 100;
-
+            $application->ic_answer = false;
             $application->finance_statuses_id = $status_id;
             $history->is_fin = true;
         }
