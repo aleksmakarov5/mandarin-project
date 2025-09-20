@@ -42,16 +42,14 @@
             //  dd($end);
             $count_hour = $max_hour - $current->diffInHours($start);
             // dd($count_hour);
-        }
-        if ($app->id_status == 11) {
+        } elseif ($app->id_status == 11) {
             $end_date = Tochka\Calendar\WorkCalendar::create($app->check_date);
             $end_date->addWorkDays($currentStatus->time);
 
             $start = Tochka\Calendar\WorkCalendar::create($app->check_date);
             $max_hour = $start->diffInHours($end_date);
             $count_hour = $max_hour - $current->diffInHours($start);
-        }
-        if ($currentStatus->time != 0) {
+        } elseif ($currentStatus->time != 0) {
             if (!$currentStatus->day) {
                 $end_date = Tochka\Calendar\WorkCalendar::create($application->check_date);
                 $end_date->addWorkDays($currentStatus->time);

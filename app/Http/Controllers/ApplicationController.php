@@ -2067,7 +2067,7 @@ class ApplicationController extends Controller
             'gnz' => 'nullable|string',
             'vin' => 'nullable|string',
             'ClientName' => 'nullable|string',
-            'ClientPhone' => 'required|string',
+            'ClientPhone' => 'nullable|string',
             'id_MRK' => 'nullable|integer',
             'id_spm' => 'nullable|integer',
             'id_service' => 'nullable|integer',
@@ -2084,6 +2084,7 @@ class ApplicationController extends Controller
         $history = new history;
         $history->id_user = Auth::user()->id;
         $history->id_status = 2;
+
         if (session('rout') == 'priem')
             $application->id_status = 28;
         else
@@ -2092,6 +2093,8 @@ class ApplicationController extends Controller
 
 
         $phone = $data['ClientPhone'];
+        if (!$phone)
+            $phone = 79000000000;
         $phone = preg_replace('/[^0-9]/', '', $phone);
         $start = mb_strpos($phone, '9');
         $phone = mb_substr($phone, $start);
