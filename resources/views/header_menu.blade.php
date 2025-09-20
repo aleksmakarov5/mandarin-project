@@ -114,9 +114,14 @@
         }
 
         $end_date->addWorkDays($fin_status->fin_time);
+        if ($fin_status->fin_day) {
+            $max_hour_f = $start->diffInDays($end_date);
+            $count_hour_f = $max_hour_f - $current->diffInDays($start);
+        } else {
+            $max_hour_f = $start->diffInHours($end_date);
+            $count_hour_f = $max_hour_f - $current->diffInHours($start);
+        }
 
-        $max_hour_f = $start->diffInHours($end_date);
-        $count_hour_f = $max_hour_f - $current->diffInHours($start);
         foreach ($attachments as $attachment) {
             if ($attachment->id_status) {
                 $attach_statuses[$i++] = $attachment->id_status;
