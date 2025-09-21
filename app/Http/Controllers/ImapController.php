@@ -837,6 +837,8 @@ class ImapController extends Controller
 
     public function sogaz_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
+        $our_company = 6;
+
         $gnz = ' ';
         $app_number = ' ';
         $ub_type = false;
