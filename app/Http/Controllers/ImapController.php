@@ -1608,6 +1608,7 @@ class ImapController extends Controller
             ]
         );
 
+
         $applications->ic_answer = true;
         $applications->save();
 
