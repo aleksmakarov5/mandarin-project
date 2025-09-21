@@ -449,7 +449,7 @@ class WordController extends Controller
         $document->save();
         exec('chmod 755 "' . $pathToSave . '"');
         exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-        if ($doc_type == 18) {
+        if ($doc_type == 18 && $application->id_insuranceCompany == 3) {
 
 
             $location = "Счет_дефектовка" . date('d-m-y_hms') . ".docx";
