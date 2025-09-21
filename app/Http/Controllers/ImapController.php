@@ -1769,7 +1769,12 @@ class ImapController extends Controller
                                 ->buttons($keyboard)
                         )
                         ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
+                    try {
+                        $notify->id_message = json_decode($ch)->result->message_id;
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                    $notify->save();
                 }
                 $notify->save();
             }
