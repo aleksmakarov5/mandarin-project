@@ -244,7 +244,10 @@ class WordController extends Controller
                     'part_number' => $sparepart->part_number
                 );
             }
-            $templateProcessor->cloneRowAndSetValues('SparePart', $array);
+            try {
+                $templateProcessor->cloneRowAndSetValues('SparePart', $array);
+            } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+            }
             $array1 = [];
             $Works = DB::table('works')
                 ->where('id_application', '=', $id)
@@ -262,8 +265,10 @@ class WordController extends Controller
             }
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
-
-            $templateProcessor->cloneRowAndSetValues('work_name', $array1);
+            try {
+                $templateProcessor->cloneRowAndSetValues('work_name', $array1);
+            } catch (\PhpOffice\PhpWord\Exception\Exception $e) {
+            }
             if (isset($estimate->price_repair_full)) {
                 $templateProcessor->setValue('price_repair', in_money($estimate->price_repair));
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
