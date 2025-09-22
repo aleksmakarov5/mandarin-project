@@ -275,7 +275,7 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-                $templateProcessor->setValue('price_sp_full', in_money($estimate->price_sp_full));
+                $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $estimate->price_sp_half : $estimate->price_sp_full));
                 // $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
                 // $estimate->zn_number = $number . ' от ' . Date::parse()->format('j F Y') . 'г.';
                 // $estimate->save();
