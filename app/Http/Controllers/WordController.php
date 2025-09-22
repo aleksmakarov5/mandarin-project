@@ -197,6 +197,9 @@ class WordController extends Controller
             $i = 1;
 
             foreach ($SpareParts as $sparepart) {
+                if ($application->ub_type) {
+                    $sparepart->price_ic_full = $sparepart->price_ic_half;
+                }
                 $array[] = array('id_sp' => str($i), 'SparePart' => $sparepart->name);
                 $i++;
             }
@@ -377,7 +380,7 @@ class WordController extends Controller
             }
             $price_sp_full_md2 = $price_sp_full * 1.02;
             // dd($array);
-
+            $price_sp_full = $application->ub_type ?  $estimate->price_sp_half : $price_sp_full;
             $Works = DB::table('works')
                 ->where('id_application', '=', $id)
                 ->where('summ', '<>', '0')
