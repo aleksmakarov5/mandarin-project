@@ -394,11 +394,10 @@
 
 
                                         <td>
-
-                                            <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
-                                                <span
-                                                    style="width: {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}%">{{ $count_hour > 0 ? $count_hour : 'просрочено' }}
+                                            @if ($count_hour > 0)
+                                                <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
                                                     <span>
+                                                        {{ $count_hour > 0 ? $count_hour : 'просрочено' }}
                                                         @if ($count_hour > 0)
 
 
@@ -409,9 +408,21 @@
                                                             @endif
                                                         @endif
                                                     </span>
-                                                </span>
+                                                </div>
+                                                <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
+                                                    <span
+                                                        style="width: {{ (($count_hour < $max_hour ? $count_hour : $max_hour) / $max_hour) * 100 }}%">
 
-                                            </div>
+                                                    </span>
+
+
+                                                </div>
+                                            @else
+                                                <div class="progressbar {{ $count_hour > 0 ? 'blue' : 'red' }}">
+                                                    <span style="width: 100%;">просрочено
+                                                        <span>
+                                                </div>
+                                            @endif
                                         </td>
 
 
@@ -442,6 +453,10 @@
 
                                     </tr>
                                     <tr>
+                                        <td>&nbsp </td>
+                                        <td> &nbsp</td>
+                                    </tr>
+                                    <tr>
                                         <td>
                                             <div class="td_round {{ $fin_status->FinStatusTheme }}">
                                                 {{ $fin_status->FinStatusName }}
@@ -452,11 +467,10 @@
 
 
                                             <td>
-
-                                                <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
-                                                    <span
-                                                        style="width: {{ (($count_hour_f < $max_hour_f ? $count_hour_f : $max_hour_f) / $max_hour_f) * 100 }}%">{{ $count_hour_f > 0 ? $count_hour_f : 'просрочено' }}
+                                                @if ($count_hour_f > 0)
+                                                    <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
                                                         <span>
+                                                            {{ $count_hour_f > 0 ? $count_hour_f : 'просрочено' }}
                                                             @if ($count_hour_f > 0)
                                                                 @if ($fin_status->fin_day)
                                                                     {{ show_days($count_hour_f) }}
@@ -465,9 +479,23 @@
                                                                 @endif
                                                             @endif
                                                         </span>
-                                                    </span>
+                                                    </div>
 
-                                                </div>
+                                                    <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
+                                                        <span
+                                                            style="width: {{ (($count_hour_f < $max_hour_f ? $count_hour_f : $max_hour_f) / $max_hour_f) * 100 }}%">
+
+                                                        </span>
+
+                                                    </div>
+                                                @else
+                                                    <div class="progressbar {{ $count_hour_f > 0 ? 'blue' : 'red' }}">
+                                                        <span style="width: 100%;">просрочено
+                                                            <span>
+                                                    </div>
+                                                @endif
+
+
                                             </td>
                                         @else
                                             <td></td>
