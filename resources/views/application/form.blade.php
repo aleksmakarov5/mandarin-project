@@ -159,6 +159,13 @@
             </div>
         </div>
         <div class="form-float">
+            <input type="date" name="napr_date" id="napr_date" class="form-cont"
+                value="{{ $application->napr_date }}">
+            <div class='lbl'>
+                <label for="napr_date">Дата направления</label>
+            </div>
+        </div>
+        <div class="form-float">
             <input type="text" name="ub_number" id="ub_number" class="form-cont"
                 value="{{ $application->ub_number }}">
             <div class='lbl'><label for="ub_number">№ убытка</label></div>

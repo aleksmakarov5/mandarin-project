@@ -89,6 +89,7 @@
                         {{ $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : '' }}
                     </th>
                 </tr>
+
                 <tr>
                     <th>Дата поставки запчастей</th>
                     <th>
@@ -126,6 +127,12 @@
                     <th>Дата ДТП</th>
                     <th>
                         {{ isset($application->DTPdate) ? Date::parse($application->DTPdate)->format('j F Yг.') : '' }}
+                    </th>
+                </tr>
+                <tr>
+                    <th>Дата направления</th>
+                    <th>
+                        {{ isset($application->napr_date) ? Date::parse($application->napr_date)->format('j F Yг.') : '' }}
                     </th>
                 </tr>
                 <tr>

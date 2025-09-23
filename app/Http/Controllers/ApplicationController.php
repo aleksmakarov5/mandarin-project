@@ -1988,6 +1988,7 @@ class ApplicationController extends Controller
                 'def' => 'nullable|integer',
                 'start_date' => 'nullable|date',
                 'view_date' => 'nullable|date',
+                'napr_date' => 'nullable|date',
                 'sp_date' => 'nullable|date',
                 'end_date' => 'nullable|date',
                 'wait_sp' => 'nullable|string',
@@ -4538,6 +4539,10 @@ class ApplicationController extends Controller
                     }
                 }
             }
+            if ($status_id == 12) {
+                $application->napr_date = carbon::now();
+            }
+
 
             // dd ($application->id_status);
             // $data["email"] = "aleksmakarov5@yandex.ru";

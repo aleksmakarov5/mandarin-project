@@ -89,6 +89,7 @@ class SparePartController extends Controller
     {
         $d = null;
         $sparepart = SparePart::findOrFail($request->id);
+        $app = application::find($sparepart->id_application);
         $data = $this->validate($request, [
             'id_application' => 'required',
             'name' => 'nullable',
@@ -147,14 +148,14 @@ class SparePartController extends Controller
                         if (!empty($value)) {
                             $sparepart->$key = $value;
                             if ($key == 'date_wait')
-                                $app = application::find($sparepart->id_application);
-                            if ($app->sp_date != NULL) {
-                                if (strtotime($app->sp_date) < strtotime($value)) {
+
+                                if ($app->sp_date != NULL) {
+                                    if (strtotime($app->sp_date) < strtotime($value)) {
+                                        $app->sp_date = $value;
+                                        // dd($app->sp_date, $value);
+                                    }
+                                } else
                                     $app->sp_date = $value;
-                                    // dd($app->sp_date, $value);
-                                }
-                            } else
-                                $app->sp_date = $value;
                             $app->save();
                         } else
                             $sparepart->$key = null;
