@@ -4542,6 +4542,9 @@ class ApplicationController extends Controller
             if ($status_id == 12) {
                 $application->napr_date = carbon::now();
             }
+            if ($status_id == 11) {
+                $application->check_date = date('Y-m-d H:i:s');
+            }
 
 
             // dd ($application->id_status);

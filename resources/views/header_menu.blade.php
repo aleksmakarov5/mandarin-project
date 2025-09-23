@@ -818,6 +818,15 @@
 
                                         </li> --}}
                                         @if ($app->id_status < 12)
+                                            @if ($app->id_insuranceCompany == 4)
+                                                <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                                        href="/applications/{{ $id }}/change_st/11">
+                                                        <div class="td_round  {{ $status[10]->status_theme }}">
+                                                            {{ $status[10]->StatusName }}</div>
+                                                    </a>
+                                                </li>
+
+                                            @endif
                                             <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/12">
                                                     <div class="td_round  {{ $status[11]->status_theme }}">
