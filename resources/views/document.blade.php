@@ -305,11 +305,30 @@
                     <td>
                         @if (session('rout') == 'directions')
                             @if ($application->finance_statuses_id != 4)
-                                <a onclick="alert('Не согласован акт осмотра скрытых повреждений!\nДождитесь согласования!')">
-                                    <div class="special-mail-button">
-                                        <img src="/storage/img/new-mail.png" width="20px" />
+                                @if (!($application->id_insuranceCompany == 1 && $application->ub_type))
+                                    <a
+                                        onclick="alert('Не согласован акт осмотра скрытых повреждений!\nДождитесь согласования!')">
+                                        <div class="special-mail-button">
+                                            <img src="/storage/img/new-mail.png" width="20px" />
+                                        </div>
+                                    </a>
+                                @else
+                                    <div>
+                                        @php
+                                            $to = [];
+                                            $to[0] = 'alekseiexpert29@yandex.ru';
+                                            $to[1] = 'pdimon55@mail.ru';
+                                        @endphp
+                                        <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
+                                            :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
+                                            :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                            :app_id="{{ $id }}"
+                                            :text="{{ json_encode("Добрый день!<br><br>
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                            :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                                     </div>
-                                </a>
+                                @endif
                             @else
                                 <div>
                                     @php
@@ -323,7 +342,7 @@
                                         :app_id="{{ $id }}"
                                         :text="{{ json_encode("Добрый день!<br><br>
 
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                         :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                                 </div>
                             @endif
