@@ -95,7 +95,7 @@ class ImapController extends Controller
             $final_post = mb_strpos($text, '%231');
             $number = mb_substr($text, $start_pos + 9, $final_post - $start_pos - 9);
             echo $number . '<br>';
-            $city = ' ';
+            $city = null;
             if ($our_company == 2)
                 $city = 3;
             //dd($start_pos_app_number, $subject, $start_pos_gnz, $app_number, $model, $vin, $gnz);

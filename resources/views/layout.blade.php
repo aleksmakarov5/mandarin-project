@@ -12,6 +12,7 @@
     <meta charset="utf-8">
 
 
+
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
@@ -24,7 +25,7 @@
     <link rel="icon" href="/storage/img/favicons/image_36.png" sizes="16x16" type="image/png">
     <link rel="mask-icon" href="/storage/img/favicons/safari-pinned-tab.svg" color="#712cf9">
 
-    <link rel="icon" href="/storage/img/favicons/favicon.ico">
+    <link rel="icon" href="favicon.ico">
     <meta name="theme-color" content="#712cf9">
     <!-- Custom styles for this template -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -262,7 +263,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
- <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.js"></script>
     <script>
         baguetteBox.run('.tz-gallery');
     </script>
