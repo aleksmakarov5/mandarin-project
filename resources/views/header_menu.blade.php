@@ -2,7 +2,24 @@
 
     try {
         $app = App\Models\application::where('id', '=', $id)->first();
-
+        if ($app->id_status < 12 && $app->id_status != 6 && $app->id_status != 7) {
+            session(['rout' => 'applications']);
+        }
+        if ($app->id_status == 6 || $app->id_status == 7) {
+            session(['rout' => 'failures']);
+        }
+        if ($app->id_status > 11 && $app->id_status < 25) {
+            session(['rout' => 'directions']);
+        }
+        if ($app->id_status == 25) {
+            session(['rout' => 'archive']);
+        }
+        if ($app->id_status == 27) {
+            session(['rout' => 'temp']);
+        }
+        if ($app->id_status == 28) {
+            session(['rout' => 'priem']);
+        }
         $count = appNotification($app->id, Auth::user()->id);
         $max_hour = 1;
         $count_hour = 1;
