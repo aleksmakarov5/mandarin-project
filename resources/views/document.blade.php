@@ -46,6 +46,8 @@
 
                                                                                                                                                                                 @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'docx' ||
                                                                                                                                                                                         pathinfo($doc->location, PATHINFO_EXTENSION) == 'doc' ||
+                                                                                                                                                                                        pathinfo($doc->location, PATHINFO_EXTENSION) == 'DOC' ||
+                                                                                                                                                                                        pathinfo($doc->location, PATHINFO_EXTENSION) == 'DOCX' ||
                                                                                                                                                                                         pathinfo($doc->location, PATHINFO_EXTENSION) == 'rtf')
 
                                                                                                                                                                                                                                                                                                                                                                             @if (file_exists('storage/files/' . $id . '/' . pathinfo($doc->location, PATHINFO_FILENAME) . '.pdf'))
@@ -314,7 +316,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                     Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                         Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
