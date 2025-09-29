@@ -437,7 +437,12 @@ class WordController extends Controller
             $document->message_id = 0;
             $document->mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             $document->id_application = $id;
-            $document->file_size = filesize($file_save) ? filesize($file_save) : 0;
+            $document->file_size = 0;
+            try {
+                $document->file_size = filesize($file_save);
+            } catch (\Exception $e) {
+                $document->file_size = 0;
+            }
             $document->location = 'таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
             $document->id_status = $doc_type;
             $document->save();
