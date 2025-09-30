@@ -446,6 +446,7 @@ class SparePartController extends Controller
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if (mb_strpos($file, "1\t")) {
+            $id_ic = 1;
             $file = str_replace("</td>", '<br/>', $file);
             for ($i = 1; $i < 300; $i++) {
                 $file = str_replace($i . "\t", $i . '<br/>', $file);
@@ -482,7 +483,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-            dd($SpareParts);
+            // dd($SpareParts);
         }
         if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
