@@ -205,8 +205,60 @@ class WorkController extends Controller
         // dd($file);
         $reset = 0;
         $works = [];
+        if (mb_strpos($file, "1\t")) {
+            $id_ic = 7;
+            $file = str_replace("</td>", '<br/>', $file);
+            for ($i = 1; $i < 300; $i++) {
+                $file = str_replace($i . "\t", $i . '<br/>', $file);
+            }
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            $id_ic = 7;
+            $work_start = mb_strpos($file, 'Ремонтные работы');
+            // echo $work_start . 'Раб_Старт<br /><br />';
 
-        if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
+
+            $work_end = mb_strpos($file, 'ремонтных');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start + 115, $work_end - $work_start - 67);
+            // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+
+            $work_array = explode('<br/>', $work);
+            // dd($work_array, $work_end);
+
+            $j = 0;
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i + 1]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Цена" ||
+                    trim($work_array[$i]) == "Нормо-час" ||
+                    trim($work_array[$i]) == "Кол-во" ||
+                    trim($work_array[$i]) == "Сумма" ||
+                    mb_strpos($work_array[$i], "Сумма")
+
+
+
+                ) {
+                } else {
+                    if (($i - 3) % 5 != 0)
+                        $works[$j++] = $work_array[$i];
+                }
+
+
+                // echo $work_array[$i] . '<br />';
+            }
+
+
+            dd($works, $work_array);
+            session(['works' => $works]);
+        } elseif ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $id_ic = 5;
             $file = str_replace("</td>", '<br/>', $file);
             $file = html_entity_decode(strip_tags($file, ['br']));
