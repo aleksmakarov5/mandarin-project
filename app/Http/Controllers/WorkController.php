@@ -215,11 +215,11 @@ class WorkController extends Controller
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
             $id_ic = 7;
-            $work_start = mb_strpos($file, 'Ремонтные работы');
+            $work_start = mb_strpos($file, 'н-час');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
 
-            $work_end = mb_strpos($file, 'ремонтных');
+            $work_end = mb_strpos($file, 'стоимость ремонта');
             // echo $work_end . 'Раб_фин<br /><br />';
             $work = mb_substr($file, $work_start + 115, $work_end - $work_start - 67);
             // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
@@ -241,7 +241,9 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "Нормо-час" ||
                     trim($work_array[$i]) == "Кол-во" ||
                     trim($work_array[$i]) == "Сумма" ||
-                    mb_strpos($work_array[$i], "Сумма")
+                    mb_strpos($work_array[$i], "Сумма") ||
+                    mb_strpos($work_array[$i], "н-час") ||
+                    trim($work_array[$i]) == "ИТОГО:"
 
 
 
