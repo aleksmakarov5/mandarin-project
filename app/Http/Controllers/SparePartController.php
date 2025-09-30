@@ -446,7 +446,7 @@ class SparePartController extends Controller
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if (mb_strpos($file, "1\t")) {
-            $id_ic = 3;
+            $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
             for ($i = 1; $i < 300; $i++) {
                 $file = str_replace($i . "\t", $i . '<br/>', $file);
