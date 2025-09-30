@@ -446,6 +446,7 @@ class SparePartController extends Controller
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if (mb_strpos($file, "1\t")) {
+            $type = 2;
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
             for ($i = 1; $i < 300; $i++) {
@@ -483,7 +484,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-            // dd($SpareParts);
+            dd($SpareParts);
         } else if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
 
@@ -939,7 +940,7 @@ class SparePartController extends Controller
 
 
 
-        dd($id_ic);
+        // dd($id_ic);
         return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type, 'SP' => $SP]);
     }
     public function data_save(Request $request, $id)
