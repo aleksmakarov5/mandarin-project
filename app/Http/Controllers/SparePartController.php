@@ -446,7 +446,6 @@ class SparePartController extends Controller
         $app = Application::findorfail($id);
         $id_ic = $app->id_insuranceCompany;
         if (mb_strpos($file, "1\t")) {
-            $type = 2;
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
             for ($i = 1; $i < 300; $i++) {
@@ -455,7 +454,6 @@ class SparePartController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            $type = 2;
             $SparePart_start = mb_strpos($file, 'износом, Рубли');
             if (!$SparePart_start)
                 $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
