@@ -939,7 +939,7 @@ class SparePartController extends Controller
 
 
 
-        // dd($type);
+        dd($id_ic);
         return view('SparePart.data_select', ['SpareParts' => $SpareParts, 'id' => $id, 'location' => $request['location'], 'reset' => $reset, 'id_ic' => $id_ic, 't' => $type, 'SP' => $SP]);
     }
     public function data_save(Request $request, $id)
