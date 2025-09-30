@@ -454,7 +454,7 @@ class SparePartController extends Controller
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
             $type = 2;
-            $SparePart_start = mb_strpos($file, 'по каталогу');
+            $SparePart_start = mb_strpos($file, 'износом, Рубли');
             if (!$SparePart_start)
                 $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
             // echo $SparePart_start . 'Раб_Старт<br /><br />';
@@ -463,7 +463,7 @@ class SparePartController extends Controller
                 $iskl = [];
             }
 
-            $SparePart_end = mb_strpos($file, 'Стоимость запчастей');
+            $SparePart_end = mb_strpos($file, 'ИТОГО');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
             $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 18);
             $SparePart_array = explode('<br/>', $SparePart);
