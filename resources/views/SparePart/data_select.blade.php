@@ -95,11 +95,11 @@
 
                 @if ($t != 0)
                     @if ($id_ic == 7)
-                        @for ($i = 1; $i < count($SpareParts) - 8; $i += 8)
+                        @for ($i = 0; $i < count($SpareParts) - 8; $i += 8)
                             @php
                                 $pr = 0;
                                 $iss = 0;
-                                dd($SpareParts);
+                                // dd($SpareParts);
                                 foreach ($SP as $s) {
                                     if (trim($s->part_number) == trim($SpareParts[$i + 1])) {
                                         $iss = 1;
