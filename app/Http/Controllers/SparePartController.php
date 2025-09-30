@@ -481,6 +481,7 @@ class SparePartController extends Controller
                     }
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
+            }
             dd($SpareParts);
         }
         if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
