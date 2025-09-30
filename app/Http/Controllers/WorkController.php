@@ -250,7 +250,7 @@ class WorkController extends Controller
                 ) {
                 } else {
 
-                    $works[$j++] = $work_array[$i];
+                    $works[$j++] = trim($work_array[$i]);
                 }
 
 
