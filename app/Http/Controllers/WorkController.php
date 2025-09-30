@@ -249,8 +249,8 @@ class WorkController extends Controller
 
                 ) {
                 } else {
-                    if (($i - 3) % 5 != 0)
-                        $works[$j++] = $work_array[$i];
+
+                    $works[$j++] = $work_array[$i];
                 }
 
 
