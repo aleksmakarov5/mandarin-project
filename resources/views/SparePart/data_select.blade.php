@@ -99,7 +99,7 @@
                             @php
                                 $pr = 0;
                                 $iss = 0;
-                                //    dd($SP);
+                                dd($SpareParts);
                                 foreach ($SP as $s) {
                                     if (trim($s->part_number) == trim($SpareParts[$i + 1])) {
                                         $iss = 1;
