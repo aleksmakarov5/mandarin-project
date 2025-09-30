@@ -258,7 +258,7 @@ class WorkController extends Controller
             }
 
 
-            dd($works, $work_array);
+            // dd($works, $work_array);
             session(['works' => $works]);
         } elseif ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $id_ic = 5;
