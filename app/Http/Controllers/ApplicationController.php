@@ -3149,6 +3149,8 @@ class ApplicationController extends Controller
 
 
             $app = Application::find($id);
+            if ($request['id_ic'])
+                $app->id_insuranceCompany = 3;
             if ((mb_strpos($file, 'одометр') != 0 || mb_strpos($file, 'Ананьин') != 0 || mb_strpos($file, 'Мандарин') != 0) && !(mb_strpos($file, 'одометра')) || mb_strpos($file, "1\t")) {
                 // $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);

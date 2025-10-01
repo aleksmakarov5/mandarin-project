@@ -17,5 +17,7 @@ class attachment extends Model
         'mime_type',
         'file_size',
         'location',
+        'sto_view',
+        'id_ic'
     ];
 }

@@ -1710,7 +1710,8 @@ class ImapController extends Controller
                 $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
             else
                 $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
-
+            if (pathinfo($attach->location, PATHINFO_EXTENSION) == 'pdf' || pathinfo($attach->location, PATHINFO_EXTENSION) == 'PDF')
+                $attach->id_ic = true;
             $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
             $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
             $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");

@@ -195,6 +195,8 @@ class WorkController extends Controller
 
         $html = 'works.html';
         $app = Application::findorfail($id);
+        if ($request['id_ic'])
+            $app->id_insuranceCompany = 3;
         $id_ic = $app->id_insuranceCompany;
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
