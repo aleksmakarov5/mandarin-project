@@ -285,7 +285,6 @@ class WorkController extends Controller
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
                     trim($work_array[$i]) == "Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -301,12 +300,19 @@ class WorkController extends Controller
 
                 ) {
                 } else {
-                    if (($i - 3) % 5 != 0)
-                        $works[$j++] = $work_array[$i];
+                    // if (($i - 3) % 5 != 0)
+                    $works[$j++] = $work_array[$i];
                 }
 
 
                 // echo $work_array[$i] . '<br />';
+            }
+            $work_array = $works;
+            $works = [];
+            $j = 0;
+            for ($i = 0; $i < count($work_array); $i++) {
+                if (($i - 3) % 5 != 0)
+                    $works[$j++] = trim($work_array[$i]);
             }
 
 
@@ -330,7 +336,6 @@ class WorkController extends Controller
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
                     trim($work_array[$i]) == "Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -385,7 +390,6 @@ class WorkController extends Controller
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
                     trim($work_array[$i]) == "Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -401,15 +405,21 @@ class WorkController extends Controller
 
                 ) {
                 } else {
-                    if (($i - 3) % 5 != 0)
-                        $works[$j++] = $work_array[$i];
+                    // if (($i - 3) % 5 != 0)
+                    $works[$j++] = $work_array[$i];
                 }
 
 
                 // echo $work_array[$i] . '<br />';
             }
 
-
+            $work_array = $works;
+            $works = [];
+            $j = 0;
+            for ($i = 0; $i < count($work_array); $i++) {
+                if (($i - 3) % 5 != 0)
+                    $works[$j++] = trim($work_array[$i]);
+            }
             // dd($works, $work_array);
             session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окрасочные работы');
@@ -430,7 +440,6 @@ class WorkController extends Controller
             for ($i = 0; $i < count($work_array) - 1; $i++) {
                 if (
                     trim($work_array[$i]) == "Наименование" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -483,7 +492,6 @@ class WorkController extends Controller
                     mb_strpos("Наименование", $work_array[$i])  ||
                     mb_strpos("наименование", $work_array[$i])  ||
                     mb_strpos("час", $work_array[$i])  ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -521,7 +529,6 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "> Наименование" ||
                     trim($work_array[$i]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив, н-час" ||
-                    trim($work_array[$i + 1]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб."
                     ||
@@ -571,7 +578,6 @@ class WorkController extends Controller
                 for ($i = 0; $i < count($work_array) - 1; $i++) {
                     if (
                         trim($work_array[$i]) == "Наименование" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив," ||
                         trim($work_array[$i]) == "Сумма, руб."
                         ||
@@ -605,7 +611,6 @@ class WorkController extends Controller
                     for ($i = 0; $i < count($work_array) - 1; $i++) {
                         if (
                             trim($work_array[$i]) == "Наименование" ||
-                            trim($work_array[$i + 1]) == "Наименование" ||
                             trim($work_array[$i]) == "Норматив," ||
                             trim($work_array[$i]) == "Сумма, руб."
                             ||
@@ -642,7 +647,6 @@ class WorkController extends Controller
                     for ($i = 0; $i < count($work_array) - 1; $i++) {
                         if (
                             trim($work_array[$i]) == "Наименование" ||
-                            trim($work_array[$i + 1]) == "Наименование" ||
                             trim($work_array[$i]) == "Норматив," ||
                             trim($work_array[$i]) == "Сумма, руб."
                             ||
@@ -658,12 +662,19 @@ class WorkController extends Controller
 
                         ) {
                         } else {
-                            if (($i - 3) % 5 != 0)
-                                $works[$j++] = trim($work_array[$i]);
+                            // if (($i - 3) % 5 != 0)
+                            $works[$j++] = trim($work_array[$i]);
                         }
 
 
                         // echo $work_array[$i] . '<br />';
+                    }
+                    $work_array = $works;
+                    $works = [];
+                    $j = 0;
+                    for ($i = 0; $i < count($work_array); $i++) {
+                        if (($i - 3) % 5 != 0)
+                            $works[$j++] = trim($work_array[$i]);
                     }
 
 
@@ -687,7 +698,6 @@ class WorkController extends Controller
                     for ($i = 0; $i < count($work_array) - 1; $i++) {
                         if (
                             trim($work_array[$i]) == "Наименование" ||
-                            trim($work_array[$i + 1]) == "Наименование" ||
                             trim($work_array[$i]) == "Норматив," ||
                             trim($work_array[$i]) == "Сумма, руб."
                             ||
@@ -703,13 +713,22 @@ class WorkController extends Controller
 
                         ) {
                         } else {
-                            if (($i - 3) % 5 != 0)
-                                $works[$j++] = trim($work_array[$i]);
+                            // if (($i - 3) % 5 != 0)
+                            $works[$j++] = trim($work_array[$i]);
                         }
 
 
                         // echo $work_array[$i] . '<br />';
                     }
+                    $work_array = $works;
+                    $works = [];
+                    $j = 0;
+                    for ($i = 0; $i < count($work_array); $i++) {
+                        if (($i - 3) % 5 != 0)
+                            $works[$j++] = trim($work_array[$i]);
+                    }
+
+                    // dd($works, $work_array);
                     session(['works_paint' => $works]);
                 } else {
                     if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
@@ -906,7 +925,6 @@ class WorkController extends Controller
                         trim($work_array[$i]) == "> Наименование" ||
                         trim($work_array[$i]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив, н-час" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив," ||
                         trim($work_array[$i]) == "Сумма, руб."
                         ||
@@ -955,7 +973,6 @@ class WorkController extends Controller
                         trim($work_array[$i]) == "> Наименование" ||
                         trim($work_array[$i]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив, н-час" ||
-                        trim($work_array[$i + 1]) == "Наименование" ||
                         trim($work_array[$i]) == "Норматив," ||
                         trim($work_array[$i]) == "Сумма, руб."
                         ||
