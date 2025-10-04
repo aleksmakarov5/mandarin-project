@@ -47,6 +47,7 @@ class MailController extends Controller
         $messages = new message();
         $messages->mailbox_id = $application->our_company;
         $messages->type = 1;
+        $messages->subject = $request->subject;
         $messages->application_id = $request->id_application;
         $messages->body_html = $request->message;
         $messages->message_date = date('Y-m-d H:i:s');
