@@ -986,31 +986,46 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->finance_statuses_id == 3)
-                        <li><a onclick="if (!confirm('Изменить статус?')) return false"
-                                href="/applications/{{ $id }}/change_st/104">
-                                <div class="td_round  {{ $f_status[3]->FinStatusTheme }}">
-                                    {{ $f_status[3]->FinStatusName }}</div>
-                            </a>
-                        </li>
-                    @endif
-                    @if ($app->finance_statuses_id == 5)
-                        <li><a onclick="if (!confirm('Изменить статус?')) return false"
-                                href="/applications/{{ $id }}/change_st/106">
-                                <div class="td_round  {{ $f_status[5]->FinStatusTheme }}">
-                                    {{ $f_status[5]->FinStatusName }}</div>
-                            </a>
-                        </li>
-                    @endif
-                    @if ($app->finance_statuses_id == 7)
-                        <li><a onclick="if (!confirm('Изменить статус?')) return false"
-                                href="/applications/{{ $id }}/change_st/108">
-                                <div class="td_round  {{ $f_status[7]->FinStatusTheme }}">
-                                    {{ $f_status[7]->FinStatusName }}</div>
-                            </a>
-                        </li>
-                    @endif
+                    @if ($app->id_insuranceCompany == 4)
+                        <li>
+                            <div class="td_round  {{ $status[19]->status_theme }}">
+                                ----</div>
 
+                        </li>
+                        @for ($i = 1; $i < 12; $i++)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/{{ $i + 100 }}">
+                                    <div class="td_round  {{ $f_status[$i - 1]->FinStatusTheme }}">
+                                        {{ $f_status[$i - 1]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endfor
+                    @else
+                        @if ($app->finance_statuses_id == 3)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/104">
+                                    <div class="td_round  {{ $f_status[3]->FinStatusTheme }}">
+                                        {{ $f_status[3]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($app->finance_statuses_id == 5)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/106">
+                                    <div class="td_round  {{ $f_status[5]->FinStatusTheme }}">
+                                        {{ $f_status[5]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($app->finance_statuses_id == 7)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/108">
+                                    <div class="td_round  {{ $f_status[7]->FinStatusTheme }}">
+                                        {{ $f_status[7]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endif
+                    @endif
                     @can('administrator')
                         <li>
                             <div class="td_round  {{ $status[19]->status_theme }}">
@@ -1044,27 +1059,39 @@
                                 </li>
                             @endif
                         @endfor
-                        <li>
-                            <div class="td_round  {{ $status[19]->status_theme }}">
-                                ----</div>
-
-                        </li>
-                        @for ($i = 1; $i < 12; $i++)
-                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
-                                    href="/applications/{{ $id }}/change_st/{{ $i + 100 }}">
-                                    <div class="td_round  {{ $f_status[$i - 1]->FinStatusTheme }}">
-                                        {{ $f_status[$i - 1]->FinStatusName }}</div>
-                                </a>
-                            </li>
-                        @endfor
                     @endcan
 
                 </ul>
+
                 </li>
 
                 </ul>
+                @can('administrator')
+                    <ul class="dropbtn">
+                        <li><a href="" class="active">Статус</a>
+                            <ul class="submenu">
+
+                                <li>
+                                    <div class="td_round  {{ $status[19]->status_theme }}">
+                                        ----</div>
+
+                                </li>
+                                @for ($i = 1; $i < 12; $i++)
+                                    <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                            href="/applications/{{ $id }}/change_st/{{ $i + 100 }}">
+                                            <div class="td_round  {{ $f_status[$i - 1]->FinStatusTheme }}">
+                                                {{ $f_status[$i - 1]->FinStatusName }}</div>
+                                        </a>
+                                    </li>
+                                @endfor
+                            </ul>
+                        </li>
+                    </ul>
+                @endcan
                 </nav>
+
                 </li>
+
                 <li class="nav-item"><a href="/application/{{ $id }}"
                         class="nav-link {{ request()->routeIs('application') ? 'tn-active' : '' }}"
                         aria-current="page">Основная
