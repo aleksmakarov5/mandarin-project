@@ -90,6 +90,10 @@ class MailController extends Controller
             $application->ic_answer_date = date('Y-m-d H:i:s');
             $history->id_status = $status - 100;
             $history->is_fin = true;
+        } elseif ($status == 200) {
+
+            $application->ic_answer_date = date('Y-m-d H:i:s');
+            $history->id_status = $status;
         } else {
             $application->id_status = $status;
             $application->check_date = date('Y-m-d H:i:s');

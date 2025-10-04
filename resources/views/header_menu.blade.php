@@ -986,7 +986,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->finance_statuses_id == 3 && $app->ic_answer)
+                    @if ($app->finance_statuses_id == 3)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/104">
                                 <div class="td_round  {{ $f_status[3]->FinStatusTheme }}">
@@ -994,7 +994,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->finance_statuses_id == 5 && $app->ic_answer)
+                    @if ($app->finance_statuses_id == 5)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/106">
                                 <div class="td_round  {{ $f_status[5]->FinStatusTheme }}">
@@ -1002,7 +1002,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->finance_statuses_id == 7 && $app->ic_answer)
+                    @if ($app->finance_statuses_id == 7)
                         <li><a onclick="if (!confirm('Изменить статус?')) return false"
                                 href="/applications/{{ $id }}/change_st/108">
                                 <div class="td_round  {{ $f_status[7]->FinStatusTheme }}">
