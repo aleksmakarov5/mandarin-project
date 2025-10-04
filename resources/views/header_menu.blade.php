@@ -986,7 +986,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->id_insuranceCompany == 4)
+                    @if ($app->id_insuranceCompany == 4 && !Gate::allows('administrator'))
                         <li>
                             <div class="td_round  {{ $status[19]->status_theme }}">
                                 ----</div>
