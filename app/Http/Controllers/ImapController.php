@@ -868,6 +868,12 @@ class ImapController extends Controller
         } else {
             if ($start = mb_strpos($subject, 'SGZA')) {
                 $app_number = mb_substr($subject, $start, 23);
+                if (mb_strpos($app_number, '_'))
+                    $app_number = mb_substr(
+                        $app_number,
+                        0,
+                        mb_strpos($app_number, '_')
+                    );
                 $ub_type = true;
             } else if ($start = mb_strpos($subject, 'XXX')) {
                 $app_number = mb_substr($subject, $start, 20);
@@ -881,7 +887,8 @@ class ImapController extends Controller
             // dd($subject);
         }
         echo $subject . '<br>';
-        $applications = application::firstorcreate(
+        // dd($app_number);
+        $applications = application::firstOrCreate(
             ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5],
             [
                 'numberInsuranceCompanyApplication' => $app_number,
@@ -904,7 +911,7 @@ class ImapController extends Controller
         $applications->save();
         // dd($applications);
         try {
-            $estimate = estimate::firstorcreate(
+            $estimate = estimate::firstOrCreate(
                 ['id_application' => $applications->id],
                 [
                     'id_application' => $applications->id,
