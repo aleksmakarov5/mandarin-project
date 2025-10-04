@@ -882,7 +882,7 @@ class ImapController extends Controller
         }
         echo $subject . '<br>';
         $applications = application::firstorcreate(
-            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5, 'our_company' => 6],
+            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5],
             [
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 5,
