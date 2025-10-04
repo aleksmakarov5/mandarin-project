@@ -546,6 +546,11 @@ class WordController extends Controller
                 $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/avr.docx');
                 //dd($application);
                 $fio = '';
+                if ($application->ub_type)
+                    $templateProcessor->setValue('osn', 'СТОА/054/2/22/60 от 31.07.2023');
+                else
+                    $templateProcessor->setValue('osn', 'СТОА/054/2/22/59 от 24.08.2023');
+
                 if ($application->director) {
                     $fio = $application->director;
                     $fio = explode(' ', $fio);
