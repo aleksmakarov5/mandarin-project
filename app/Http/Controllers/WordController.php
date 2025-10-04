@@ -227,7 +227,7 @@ class WordController extends Controller
         if ($doc_type == 18) {
             $app = application::find($id);
             $app->finance_statuses_id = 9;
-            $app->check_date = date('Y-m-d H:i:s');
+            $app->ic_answer_date = date('Y-m-d H:i:s');
             $app->save();
             $array = [];
             $SpareParts = DB::table('spare_parts')
