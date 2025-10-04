@@ -1044,6 +1044,19 @@
                                 </li>
                             @endif
                         @endfor
+                        <li>
+                            <div class="td_round  {{ $status[19]->status_theme }}">
+                                ----</div>
+
+                        </li>
+                        @for ($i = 1; $i < 12; $i++)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/{{ $i + 100 }}">
+                                    <div class="td_round  {{ $f_status[$i - 1]->FinStatusTheme }}">
+                                        {{ $f_status[$i - 1]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endfor
                     @endcan
 
                 </ul>
