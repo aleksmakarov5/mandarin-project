@@ -544,7 +544,7 @@ class WordController extends Controller
             } else {
 
                 $location = "Акт_выполненных_работ_" . date('d-m-y_hms') . ".docx";
-                $filename = "Акт_выполненных_работ";
+                $filename = "Акт_выполненных_работ_";
                 $number = $id;
                 $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/avr.docx');
                 //dd($application);
