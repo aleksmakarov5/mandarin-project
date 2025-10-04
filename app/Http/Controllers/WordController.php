@@ -351,7 +351,7 @@ class WordController extends Controller
             $price_repair_full = $price_sp_full +
                 (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
                 + $price_repair;
-
+            $price_repair_full = str2number($estimate->price_repair_full);
             $templateProcessor->cloneRowAndSetValues('work_name', $array1);
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('price_repair', in_money($price_repair));
@@ -404,6 +404,7 @@ class WordController extends Controller
             $price_repair_full = $price_sp_full +
                 (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
                 + $price_repair;
+            $price_repair_full = str2number($estimate->price_repair_full);
             $price_sp_full = $application->ub_type ?  $estimate->price_sp_half : $price_sp_full;
             $price_repair_full = $application->ub_type ?  $estimate->price_repair_half : $price_repair_full;
             $estimate = estimate::where('id_application', '=', $id)->first();
@@ -484,7 +485,7 @@ class WordController extends Controller
                 if (isset($estimate->price_repair)) {
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
                     $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full + (isset($estimate->add_pay) ? $estimate->add_pay : 0) - $price_repair_full));
-                    $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full + (isset($estimate->add_pay) ? $estimate->add_pay : 0) - $price_repair_full));
+                    $templateProcessor->setValue('summ_str', $this->num2str((isset($estimate->add_pay) ? $estimate->add_pay : 0)));
                 }
                 $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
                 $templateProcessor->setValue('sch_number', $sch_number);
@@ -558,8 +559,8 @@ class WordController extends Controller
 
                 if (isset($estimate->price_repair)) {
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                    $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full + (isset($estimate->add_pay) ? $estimate->add_pay : 0) - $price_repair_full));
-                    $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full + (isset($estimate->add_pay) ? $estimate->add_pay : 0) - $price_repair_full));
+                    $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                    $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
                 }
                 $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
                 $templateProcessor->setValue('sch_number', $sch_number);
