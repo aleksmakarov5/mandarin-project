@@ -4567,6 +4567,8 @@ class ApplicationController extends Controller
             $status_id = $status_id - 100;
             $application->ic_answer = false;
             $application->finance_statuses_id = $status_id;
+            $application->ic_answer_date = date('Y-m-d H:i:s');
+
             $history->is_fin = true;
         }
         $history->id_status = $status_id;

@@ -102,7 +102,6 @@ class MailController extends Controller
         $application->ic_answer = false;
         $history->save();
         $application->save();
-        dd($application);
         return $request;
     }
 }
