@@ -132,7 +132,8 @@ class WordController extends Controller
         }
         $number = $id;
 
-        $sch_number = $application->numberInsuranceCompanyApplication . '/' . mb_substr($application->city, 0, 1);
+        $sch_number = 'MG-' . $application->id . "/" . mb_substr($application->city, 0, 1);
+
         // dd($sch_number);
         $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
         $templateProcessor->setValue('sch_number', $sch_number);
@@ -561,7 +562,8 @@ class WordController extends Controller
                 }
                 $number = $id;
                 // dd($number);
-                $sch_number = $application->numberInsuranceCompanyApplication . "-1/" . mb_substr($application->city, 0, 1);
+                $sch_number = 'MG-' . $application->id . "/" . mb_substr($application->city, 0, 1);
+
                 // dd($sch_number);
                 $estimate = estimate::where('id_application', '=', $id)->first();
 
