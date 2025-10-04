@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\attachment;
 use App\Models\estimate;
 use App\Models\application;
+use App\Models\InsuranceCompany;
 use App\Models\troubleshooting;
 use Jenssegers\Date\Date;
 use Maatwebsite\Excel\Facades\Excel;
@@ -120,6 +121,7 @@ class WordController extends Controller
             ->where('applications.id', '=', $id)
             ->first();
         // dd($application);
+        $ic = InsuranceCompany::find($application->id_insuranceCompany);
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
         //dd($application);
         $fio = '';
@@ -171,9 +173,9 @@ class WordController extends Controller
         $templateProcessor->setValue('fio', $fio);
         $templateProcessor->setValue('email', $application->our_email);
         if ($application->ub_type)
-            $templateProcessor->setValue('osn', 'СТОА/054/2/22/60 от 31.07.2023');
+            $templateProcessor->setValue('osn', $ic->osn_casco);
         else
-            $templateProcessor->setValue('osn', 'СТОА/054/2/22/59 от 24.08.2023');
+            $templateProcessor->setValue('osn', $ic->osn_osago);
 
 
 
@@ -478,7 +480,7 @@ class WordController extends Controller
                     $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
                 }
                 $number = $id;
-                $sch_number = $application->numberInsuranceCompanyApplication . "-1/" . mb_substr($application->city, 0, 1);
+                $sch_number = 'MG-' . $application->id . "/" . mb_substr($application->city, 0, 1);
                 // dd($sch_number);
                 $estimate = estimate::where('id_application', '=', $id)->first();
 
@@ -547,9 +549,10 @@ class WordController extends Controller
                 //dd($application);
                 $fio = '';
                 if ($application->ub_type)
-                    $templateProcessor->setValue('osn', 'СТОА/054/2/22/60 от 31.07.2023');
+                    $templateProcessor->setValue('osn', $ic->osn_casco);
                 else
-                    $templateProcessor->setValue('osn', 'СТОА/054/2/22/59 от 24.08.2023');
+                    $templateProcessor->setValue('osn', $ic->osn_osago);
+
 
                 if ($application->director) {
                     $fio = $application->director;
