@@ -115,83 +115,10 @@ class Handler extends WebhookHandler
                     if ($load) {
                         if (isset($this->request->message['document']['file_name'])) {
                             $path = $path . "_" . date('d-m-y');
-                            $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
                             $name = $name . " " . date('d-m-y');
-                            if (!is_dir($path)) {
-                                mkdir($path, 0777, true);
-                            }
-                            $zip_path = $path . '.zip';
-                            $zip_bool = true;
-                            if (file_exists($zip_path)) {
-                                $zip = Zip::open($zip_path);
-                                $zip_bool = false;
-                            } else {
-                                $zip = Zip::create($zip_path);
-                            }
-
-                            $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
-
-                            $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
-                            // $filename = $path . $this->request->message['document']['file_name'];
-                            $filenameWithExt = $this->request->message['document']['file_name'];
-                            // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
-                            $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
-                            // $exif = exif_read_data($filename);
-                            if ($size) {
-                                // Optimize::path($filename);
-
-                                // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
-                                $width = 800;
-                                $height = 800;
-
-                                // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
-                                header("Content-type: {$size['mime']}");
-                                $exif = exif_read_data($filename);
-                                // file_put_contents('data.txt', json_encode($exif['Orientation']));
-
-                                // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
-                                list($width_orig, $height_orig) = getimagesize($filename);
-
-                                if ($width && ($width_orig < $height_orig)) {
-
-                                    $width = ($height / $height_orig) * $width_orig;
-                                } else {
-                                    $height = ($width / $width_orig) * $height_orig;
-                                }
-
-                                // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
-                                $image_p = imagecreatetruecolor($width, $height);
-                                $image = imagecreatefromjpeg($filename);
-                                imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-                                // СОЗДАЁМ
-                                $img_name = $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                                imagejpeg($image_p, $img_name, 60);
-
-                                // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                                unlink($filename);
-                                $filename = $img_name;
-                                if (isset($exif['Orientation'])) {
-                                    $degrees = 0;
-                                    if ($exif['Orientation'] == 6) {
-                                        $degrees = 270;
-                                    }
-                                    if ($exif['Orientation'] == 3) {
-                                        $degrees = 180;
-                                    }
-                                    if ($exif['Orientation'] == 8) {
-                                        $degrees = 90;
-                                    }
-                                    // Загрузка изображения
-                                    $source = imagecreatefromjpeg($filename);
-                                    // Поворот
-                                    $rotate = imagerotate($source, $degrees, 0);
-                                    // Вывод
-                                    imagejpeg($rotate, $img_name, 100);
-                                    // Высвобождение памяти
-                                    imagedestroy($source);
-                                    imagedestroy($rotate);
-                                }
+                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf') {
+                                $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
+                                $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
                                 $telegram_action->count = $telegram_action->count + 1;
                                 $telegram_action->save();
                                 $keyboard = [];
@@ -204,16 +131,107 @@ class Handler extends WebhookHandler
                                     )
                                     ->send();
                                 $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
-                                // $file = "storage/files/405/test.txt";
-                                // file_put_contents($file, json_decode($message)->result->message_id);
-                                // // Optimize::path($filename);
-                                $zip->setpath($path)->add($filename);
-                                // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-                                $this->chat->deleteMessage($this->message->id())->send();
                             } else {
-                                $this->chat->deleteMessage($this->message->id())->send();
+
+                                $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
+                                if (!is_dir($path)) {
+                                    mkdir($path, 0777, true);
+                                }
+                                $zip_path = $path . '.zip';
+                                $zip_bool = true;
+                                if (file_exists($zip_path)) {
+                                    $zip = Zip::open($zip_path);
+                                    $zip_bool = false;
+                                } else {
+                                    $zip = Zip::create($zip_path);
+                                }
+
+                                $filename = "img_" . date('d-m-y_hms') . '(' . $telegram_action->count . ").jpg";
+
+                                $filename = $this->bot->find(1)->store($this->message->document(), $path, $this->request->message['document']['file_name']);
+                                // $filename = $path . $this->request->message['document']['file_name'];
+                                $filenameWithExt = $this->request->message['document']['file_name'];
+                                // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
+                                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                                // $exif = exif_read_data($filename);
+                                if ($size) {
+                                    // Optimize::path($filename);
+
+                                    // ОПРЕДЕЛЯЕМ МАКСИМАЛЬНЫЕ ШИРИНУ И ВЫСОТУ ИЗОБРАЖЕНИЯ
+                                    $width = 800;
+                                    $height = 800;
+
+                                    // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                                    header("Content-type: {$size['mime']}");
+                                    $exif = exif_read_data($filename);
+                                    // file_put_contents('data.txt', json_encode($exif['Orientation']));
+
+                                    // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                                    list($width_orig, $height_orig) = getimagesize($filename);
+
+                                    if ($width && ($width_orig < $height_orig)) {
+
+                                        $width = ($height / $height_orig) * $width_orig;
+                                    } else {
+                                        $height = ($width / $width_orig) * $height_orig;
+                                    }
+
+                                    // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                                    $image_p = imagecreatetruecolor($width, $height);
+                                    $image = imagecreatefromjpeg($filename);
+                                    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+                                    // СОЗДАЁМ
+                                    $img_name = $path . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                                    imagejpeg($image_p, $img_name, 60);
+
+                                    // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                                    unlink($filename);
+                                    $filename = $img_name;
+                                    if (isset($exif['Orientation'])) {
+                                        $degrees = 0;
+                                        if ($exif['Orientation'] == 6) {
+                                            $degrees = 270;
+                                        }
+                                        if ($exif['Orientation'] == 3) {
+                                            $degrees = 180;
+                                        }
+                                        if ($exif['Orientation'] == 8) {
+                                            $degrees = 90;
+                                        }
+                                        // Загрузка изображения
+                                        $source = imagecreatefromjpeg($filename);
+                                        // Поворот
+                                        $rotate = imagerotate($source, $degrees, 0);
+                                        // Вывод
+                                        imagejpeg($rotate, $img_name, 100);
+                                        // Высвобождение памяти
+                                        imagedestroy($source);
+                                        imagedestroy($rotate);
+                                    }
+                                    $telegram_action->count = $telegram_action->count + 1;
+                                    $telegram_action->save();
+                                    $keyboard = [];
+                                    $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                                    $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                                        ->keyboard(
+                                            Keyboard::make()
+                                                ->buttons($keyboard)
+                                        )
+                                        ->send();
+                                    $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+                                    // $file = "storage/files/405/test.txt";
+                                    // file_put_contents($file, json_decode($message)->result->message_id);
+                                    // // Optimize::path($filename);
+                                    $zip->setpath($path)->add($filename);
+                                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                                    $this->chat->deleteMessage($this->message->id())->send();
+                                } else {
+                                    $this->chat->deleteMessage($this->message->id())->send();
+                                }
+                                $zip->close();
                             }
-                            $zip->close();
                             $document = attachment::updateOrCreate(
                                 ['id_application' => $telegram_action->id_application, 'file_name' => $name],
                                 [
