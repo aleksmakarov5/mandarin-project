@@ -116,7 +116,6 @@ class Handler extends WebhookHandler
                         if (isset($this->request->message['document']['file_name'])) {
                             $path = $path . "_" . date('d-m-y');
                             $name = $name . " " . date('d-m-y');
-                            $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
                             $zip_path = '';
                             $mime_type = '';
                             if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF') {
