@@ -123,7 +123,7 @@ class Handler extends WebhookHandler
 
                                 $mime_type = 'pdf';
                                 $zip_name = $zip_name . "_" . date('d-m-y') . '(' . $telegram_action->count . ").pdf";
-                                $zip_path = $zip_name;
+                                $zip_path = $path . $zip_name;
                                 $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
                                 $telegram_action->count = $telegram_action->count + 1;
                                 $name = $name . '(' . $telegram_action->count . ')';
