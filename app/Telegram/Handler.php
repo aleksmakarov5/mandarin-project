@@ -118,7 +118,16 @@ class Handler extends WebhookHandler
                             $name = $name . " " . date('d-m-y');
                             $zip_path = '';
                             $mime_type = '';
-                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) != 'jpg') {
+                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF') {
+                                $keyboard = [];
+                                $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
+
+                                $message = $this->chat->message("Получен документ: ")
+                                    ->keyboard(
+                                        Keyboard::make()
+                                            ->buttons($keyboard)
+                                    )
+                                    ->send();
                                 $path = "storage/files/" . $telegram_action->id_application . '/';
 
                                 $mime_type = 'pdf';
