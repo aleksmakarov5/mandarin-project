@@ -122,15 +122,16 @@ class Handler extends WebhookHandler
                                 $path = "storage/files/" . $telegram_action->id_application . '/';
 
                                 $mime_type = 'pdf';
-                                $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
+                                $zip_name = $zip_name . "_" . date('d-m-y') . '(' . $telegram_action->count . ").pdf";
                                 $zip_path = $zip_name;
                                 $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
                                 $telegram_action->count = $telegram_action->count + 1;
+                                $name = $name . '(' . $telegram_action->count . ')';
                                 $telegram_action->save();
                                 $keyboard = [];
                                 $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
 
-                                $message = $this->chat->message("Получено изображений: {$telegram_action->count}")
+                                $message = $this->chat->message("Получено документов: {$telegram_action->count}")
                                     ->keyboard(
                                         Keyboard::make()
                                             ->buttons($keyboard)
