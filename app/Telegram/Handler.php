@@ -117,9 +117,14 @@ class Handler extends WebhookHandler
                             $path = $path . "_" . date('d-m-y');
                             $name = $name . " " . date('d-m-y');
                             $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
-
+                            $zip_path = '';
+                            $mime_type = '';
                             if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF') {
+                                $path = "storage/files/" . $telegram_action->id_application . '/';
+                                $path = $path . "_" . date('d-m-y');
+                                $mime_type = 'pdf';
                                 $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
+                                $zip_path = $zip_name;
                                 $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
                                 $telegram_action->count = $telegram_action->count + 1;
                                 $telegram_action->save();
@@ -233,6 +238,7 @@ class Handler extends WebhookHandler
                                     $this->chat->deleteMessage($this->message->id())->send();
                                 }
                                 $zip->close();
+                                $mime_type = 'application/zip-compressed';
                             }
                             $document = attachment::updateOrCreate(
                                 ['id_application' => $telegram_action->id_application, 'file_name' => $name],
@@ -241,7 +247,7 @@ class Handler extends WebhookHandler
                                     'id_status' => $telegram_action->number,
                                     'file_name' => $name,
                                     'message_id' => 0,
-                                    'mime_type' => 'application/zip-compressed',
+                                    'mime_type' => $mime_type,
                                     'file_size' => filesize($zip_path),
                                     'location' => $zip_name,
                                 ]
