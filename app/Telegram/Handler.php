@@ -138,6 +138,7 @@ class Handler extends WebhookHandler
                                     )
                                     ->send();
                                 $res = $this->messUpdate($this->chat->chat_id, json_decode($message)->result->message_id);
+                                $this->chat->deleteMessage($this->message->id())->send();
                             } else {
 
                                 $zip_name = $zip_name . "_" . date('d-m-y') . ".zip";
