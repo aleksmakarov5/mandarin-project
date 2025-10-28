@@ -766,6 +766,7 @@ class ApplicationController extends Controller
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
+            ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
@@ -790,6 +791,10 @@ class ApplicationController extends Controller
             ->select(
                 'applications.*',
                 'insurance_companies.name',
+                'finance_statuses.FinStatusName',
+                'finance_statuses.fin_time',
+                'finance_statuses.fin_day',
+                'finance_statuses.FinStatusTheme',
                 'insurance_companies.insurance_companies_theme',
                 'services.service_name',
                 'services.services_theme',
@@ -812,6 +817,154 @@ class ApplicationController extends Controller
 
             $application->count_five = 5 - $current->diffInHours($application->check_date);
             $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
+        }
+        $current = carbon::now();
+        foreach ($applications as $application) { {
+
+                // if (isset($application->check_date)) {
+                //     $end_date = WorkCalendar::create($application->check_date);
+                //     $end_date->addWorkDays(1);
+                //     dd($end_date, $application->id);
+                // }
+                if ($application->id_status < 11) {
+
+                    $end_date = WorkCalendar::create($application->created_at);
+                    $end_date->addWorkDays($application->time);
+                    // dd($end_date);
+                    $start = carbon::create($application->created_at);
+                    $end = carbon::create($end_date);
+                    // dd($end);
+                    $application->max_hour = $start->diffInHours($end);
+                    // dd($application->max_hour);
+                    // dd($current);
+                    //  dd($end);
+                    $application->count_hour = $application->max_hour - $current->diffInHours($start);
+                    // dd($application->count_hour);
+                    $application->created = $application->created_at->toFormattedDateString();
+                    $application->count_five = 5 - $current->diffInHours($application->check_date);
+                } elseif ($application->id_status == 11) {
+
+                    $end_date = WorkCalendar::create($application->check_date);
+                    $end_date->addWorkDays($application->time);
+
+                    $start = WorkCalendar::create($application->check_date);
+                    $application->max_hour = $start->diffInHours($end_date);
+                    $application->count_hour =  $application->max_hour - $current->diffInHours($start);
+                    $application->created = $application->created_at->toFormattedDateString();
+                    $application->count_five = 5 - $current->diffInHours($application->check_date);
+                } elseif ($application->time != 0) {
+                    if (!$application->day) {
+                        $end_date = WorkCalendar::create($application->check_date);
+                        $end_date->addWorkDays($application->time);
+
+                        $start = WorkCalendar::create($application->check_date);
+                        $application->max_hour = $start->diffInHours($end_date);
+                        $application->count_hour =  $application->max_hour - $current->diffInHours($start);
+                    } else {
+                        $end_date = WorkCalendar::create($application->check_date);
+                        $end_date->addWorkDays($application->time);
+
+                        $start = WorkCalendar::create($application->check_date);
+                        $application->max_hour = $start->diffInDays($end_date);
+                        $application->count_hour =  $application->max_hour - $current->diffInDays($start);
+                    }
+                } else {
+                    if ($application->id_status == 17) {
+
+                        $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->end_date);
+                        $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                    }
+                    if ($application->id_status == 13) {
+                        if ($application->count_hour = $current->diffInHours($application->view_date) < 24) {
+
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInHours($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInHours($start);
+                            $application->day = 0;
+                        } else {
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInDays($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                        }
+                        // dd($application);
+                    }
+                    if ($application->id_status == 15) {
+                        $start = carbon::create($application->check_date);;
+
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->sp_date);
+                        $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                        // dd($start, $application);
+                    }
+                }
+                if ($application->ic_answer_date != NULL) {
+                    $end_date = WorkCalendar::create($application->ic_answer_date);
+
+                    $start = WorkCalendar::create($application->ic_answer_date);
+                } else {
+                    $end_date = WorkCalendar::now();
+
+                    $start = WorkCalendar::now();
+                }
+
+                $end_date->addWorkDays($application->fin_time);
+
+                $application->max_hour_f = $start->diffInHours($end_date);
+                $application->count_hour_f =  $application->max_hour_f - $current->diffInHours($start);
+
+
+                // if ($application->id_status < 11) {
+                //     $application->count_hour = 48 - $current->diffInHours($application->created_at);
+                //     $application->max_hour = 48;
+                // }
+                // if ($application->id_status == 11) {
+                //     $application->count_hour = 168 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 168;
+                // }
+                // if ($application->id_status == 19) {
+                //     $application->count_hour = 72 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 72;
+                // }
+                // if ($application->id_status == 22) {
+                //     $application->count_hour = 42 - $current->diffInDays($application->check_date);
+                //     $application->max_hour = 42;
+                // }
+                // if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
+                //     $application->count_hour = $current->diffInDays($application->end_date);
+
+                //     $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
+                //     $application->max_hour = $start->diffInDays($application->end_date);
+                // }
+                // dd($application);
+            }
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
+        }
+        foreach ($applications as $application) {
+            // if (isset($application->ic_answer_date)) {
+            //     $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
+            //     $application->max_hour = 48;
+            //     $application->StatusName = "Ожидается ответ СК";
+            //     $application->count_five = 11;
+            // } else
+
+
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
                 $application->doc = $doc->id_status;
             else
