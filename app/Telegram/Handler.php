@@ -116,7 +116,9 @@ class Handler extends WebhookHandler
                         if (isset($this->request->message['document']['file_name'])) {
                             $path = $path . "_" . date('d-m-y');
                             $name = $name . " " . date('d-m-y');
-                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf') {
+                            $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
+
+                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF') {
                                 $zip_name = $zip_name . "_" . date('d-m-y') . ".pdf";
                                 $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
                                 $telegram_action->count = $telegram_action->count + 1;
