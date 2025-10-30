@@ -129,13 +129,18 @@ export default {
                 formData.append("status_id", this.status_id);
                 formData.append("num", i);
 
-                console.log(formData.getAll);
+                // console.log(formData.getAll);
+                const config = {
+                    onUploadProgress: (progressEvent) => {
+                        const progress = Math.round(
+                            (progressEvent.loaded / progressEvent.total) * 100
+                        );
+                        console.log(`File upload progress: ${progress}%`);
+                    },
+                    headers: { "Content-Type": "multipart/form-data" },
+                };
                 axios
-                    .post("/api/application/file_upload", formData, {
-                        headers: {
-                            "Content-Type": "multipart/form-data",
-                        },
-                    })
+                    .post("/api/application/file_upload", formData, config)
                     .then((res) => {
                         console.log(res.data);
                         this.count++;
