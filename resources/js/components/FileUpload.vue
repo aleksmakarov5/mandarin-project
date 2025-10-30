@@ -56,6 +56,7 @@ div.file_listing {
             <span
                 ><a @click.prevent="cancel()" class="nav-link">отмена</a></span
             >
+            <span v-if="progress > 0">{{ progress }}%</span>
         </div>
         <div class="list" v-for="(file, key) in files_add">
             <!-- <img :src="file" width="50" /> -->
@@ -96,6 +97,7 @@ export default {
             colors: [],
             itog: [],
             count: 0,
+            progress: 0,
         };
     },
     methods: {
@@ -135,6 +137,7 @@ export default {
                         const progress = Math.round(
                             (progressEvent.loaded / progressEvent.total) * 100
                         );
+                        this.progress = progress;
                         console.log(`File upload progress: ${progress}%`);
                     },
                     headers: { "Content-Type": "multipart/form-data" },
