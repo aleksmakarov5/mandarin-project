@@ -211,7 +211,7 @@
                             </tr>
                         @endfor
                     @endif
-                    @if ($id_ic == 7)
+                    {{-- @if ($id_ic == 7)
                         @for ($i = 1; $i < count($SpareParts) - 8; $i += 8)
                             @php
                                 $pr = 0;
@@ -248,7 +248,7 @@
 
                             </tr>
                         @endfor
-                    @endif
+                    @endif --}}
                     @if ($id_ic == 3)
                         @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                             @php

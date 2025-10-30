@@ -336,7 +336,7 @@
                                             </template>
                                         </select>
                                     </td>
-                                    <td>
+                                    <td width="450px">
                                         <input
                                             type="date"
                                             name="date_price"
