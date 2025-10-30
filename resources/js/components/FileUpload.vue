@@ -42,7 +42,7 @@ div.file_listing {
             id="files_add"
             ref="files_add"
             multiple
-            accept="image/jpeg"
+            accept="image/jpeg application/pdf"
             v-on:change="handleFilesUpload()"
         />
     </div>
@@ -129,7 +129,7 @@ export default {
                 formData.append("status_id", this.status_id);
                 formData.append("num", i);
 
-                // console.log(formData);
+                console.log(formData.getAll);
                 axios
                     .post("/api/application/file_upload", formData, {
                         headers: {

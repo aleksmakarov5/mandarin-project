@@ -152,11 +152,14 @@
                                 ])
                             </th>
                             <th scope="col">
-                                @include('document.form_scan', [
+                                <file-upload :id_app="{{ $id }}" :status_id="12"
+                                    :load_name="'Заявление о страховом возмещении'"
+                                    :load_location="'Заявление_о_страховом_возмещении'" />
+                                {{-- @include('document.form_scan', [
                                     'status_id' => 12,
                                     'load_name' => 'Заявление о страховом возмещении',
                                     'load_location' => 'Заявление_о_страховом_возмещении',
-                                ])
+                                ]) --}}
                             </th>
                             <th></th>
                         </tr>
@@ -166,7 +169,9 @@
                     <th scope="col">Акт первичного осмотра</th>
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => 20])
+                        <file-upload :id_app="{{ $id }}" :status_id="20" :load_name="'Акт первичного осмотра'"
+                            :load_location="'Акт_первичного_осмотра'" />
+                        {{-- @include('document.form_scan', ['status_id' => 20]) --}}
                     </th>
                     <th></th>
                 </tr>
@@ -174,11 +179,13 @@
                     <th scope="col">Фото первичного осмотра автомобиля</th>
 
                     <th scope="col" colspan="2">
-                        @include('document.form_scan', [
+                        <file-upload :id_app="{{ $id }}" :status_id="21"
+                            :load_name="'Фото первичного осмотра'" :load_location="'Фото_первичного_осмотра'" />
+                        {{-- @include('document.form_scan', [
                             'status_id' => 21,
                             'load_name' => 'Фото первичного осмотра автомобиля',
                             'load_location' => 'Фото_первичного_осмотра_автомобиля',
-                        ])
+                        ]) --}}
                     </th>
                     <th></th>
                 </tr>
@@ -186,7 +193,9 @@
                     <th scope="col">Смета</th>
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => 22])
+                        <file-upload :id_app="{{ $id }}" :status_id="22" :load_name="'Смета'"
+                            :load_location="'Смета'" />
+                        {{-- @include('document.form_scan', ['status_id' => 22]) --}}
                     </th>
                     <th></th>
                 </tr>
@@ -195,7 +204,9 @@
 
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => 1])
+                        <file-upload :id_app="{{ $id }}" :status_id="1" :load_name="'Направление'"
+                            :load_location="'Направление'" />
+                        {{-- @include('document.form_scan', ['status_id' => 1]) --}}
                     </th>
                     <th></th>
                 </tr>
@@ -203,7 +214,9 @@
                     <th scope="col">Калькуляция</th>
 
                     <th scope="col" colspan=2>
-                        @include('document.form_scan', ['status_id' => '23'])
+                        <file-upload :id_app="{{ $id }}" :status_id="23" :load_name="'Калькуляция'"
+                            :load_location="'Калькуляция'" />
+                        {{-- @include('document.form_scan', ['status_id' => '23']) --}}
                     </th>
                     <th></th>
                 </tr>
@@ -218,11 +231,13 @@
                                 ])
                             </th>
                             <th scope="col">
-                                @include('document.form_scan', [
+                                <file-upload :id_app="{{ $id }}" :status_id="7"
+                                    :load_name="'Информационный акт'" :load_location="'Информационный_акт'" />
+                                {{-- @include('document.form_scan', [
                                     'status_id' => 7,
                                     'load_name' => 'Информационный акт',
                                     'load_location' => 'Информационный_акт',
-                                ])
+                                ]) --}}
                             </th>
                             <th></th>
                         </tr>
@@ -239,11 +254,13 @@
                                 ])
                             </th>
                             <th scope="col">
-                                @include('document.form_scan', [
+                                <file-upload :id_app="{{ $id }}" :status_id="7"
+                                    :load_name="'Соглашение о ремонте'" :load_location="'Соглашение_о_ремонте'" />
+                                {{-- @include('document.form_scan', [
                                     'status_id' => 7,
                                     'load_name' => 'СОГЛАШЕНИЕ О РЕМОНТЕ',
                                     'load_location' => 'СОГЛАШЕНИЕ_О_РЕМОНТЕ',
-                                ])
+                                ]) --}}
                             </th>
                             <th></th>
                         </tr>
@@ -258,11 +275,13 @@
                     </th>
 
                     <th scope="col">
-                        @include('document.form_scan', [
+                        <file-upload :id_app="{{ $id }}" :status_id="17" :load_name="'Заказ наряд'"
+                            :load_location="'Заказ_наряд'" />
+                        {{-- @include('document.form_scan', [
                             'status_id' => 17,
                             'load_name' => 'Заказ наряд',
                             'load_location' => 'Заказ_наряд',
-                        ])
+                        ]) --}}
                     </th>
                     <td>
                         @if (session('rout') == 'directions')
@@ -316,7 +335,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                         Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
@@ -329,11 +348,13 @@
                     @include('document.form_print', ['status_id' => 2, 'template' => 'export_dk'])
                 </th>
                 <th scope="col">
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="3" :load_name="'Договор с клиентом'"
+                        :load_location="'Договор_с_клиентом'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 3,
                         'load_name' => 'Договор с клиентом',
                         'load_location' => 'Договор_с_клиентом',
-                    ])
+                    ]) --}}
                 </th>
 
             </tr>
@@ -343,11 +364,14 @@
                     @include('document.form_print', ['status_id' => 4, 'template' => 'export_ds'])
                 </th>
                 <th scope="col">
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="5"
+                        :load_name="'Дополнительное соглашение с клиентом'"
+                        :load_location="'Дополнительное_соглашение_с_клиентом'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 5,
                         'load_name' => 'Дополнительное соглашение с клиентом',
                         'load_location' => 'Дополнительное_соглашение_с_клиентом',
-                    ])
+                    ]) --}}
                 </th>
             </tr>
             @if (!$def)
@@ -360,11 +384,13 @@
                         ])
                     </th>
                     <th scope="col">
-                        @include('document.form_scan', [
+                        <file-upload :id_app="{{ $id }}" :status_id="12"
+                            :load_name="'Акт скрытых повреждений'" :load_location="'Акт_скрытых_повреждений'" />
+                        {{-- @include('document.form_scan', [
                             'status_id' => 12,
                             'load_name' => 'Акт скрытых повреждений',
                             'load_location' => 'Акт_скрытых_повреждений',
-                        ])
+                        ]) --}}
                     </th>
                     <td>
                         @if (session('rout') == 'directions')
@@ -423,11 +449,13 @@
                     @include('document.form_print', ['status_id' => 8, 'template' => 'export_ap'])
                 </th>
                 <th scope="col">
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="9"
+                        :load_name="'Акт приема автомобиля'" :load_location="'Акт_приема_автомобиля'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 9,
                         'load_name' => 'Акт приема автомобиля',
                         'load_location' => 'Акт_приема_автомобиля',
-                    ])
+                    ]) --}}
                 </th>
             </tr>
             <tr>
@@ -435,11 +463,13 @@
 
 
                 <th scope="col" colspan=2>
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="10"
+                        :load_name="'Фото приема автомобиля'" :load_location="'Фото_приема_автомобиля'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 10,
                         'load_name' => 'Фото приема автомобиля',
                         'load_location' => 'Фото_приема_автомобиля',
-                    ])
+                    ]) --}}
                 </th>
             </tr>
 
@@ -449,11 +479,13 @@
                     @include('document.form_print', ['status_id' => 13, 'template' => 'export_as'])
                 </th>
                 <th scope="col">
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="14"
+                        :load_name="'Акт сдачи автомобиля'" :load_location="'Акт_сдачи_автомобиля'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 14,
                         'load_name' => 'Акт сдачи автомобиля',
                         'load_location' => 'Акт_сдачи_автомобиля',
-                    ])
+                    ]) --}}
                 </th>
             </tr>
             <tr>
@@ -461,11 +493,13 @@
 
 
                 <th scope="col" colspan=2>
-                    @include('document.form_scan', [
+                    <file-upload :id_app="{{ $id }}" :status_id="15"
+                        :load_name="'Фото cдачи автомобиля'" :load_location="'Фото_cдачи_автомобиля'" />
+                    {{-- @include('document.form_scan', [
                         'status_id' => 15,
                         'load_name' => 'Фото cдачи автомобиля',
                         'load_location' => 'Фото_cдачи_автомобиля',
-                    ])
+                    ]) --}}
                 </th>
             </tr>
             @can('company')
