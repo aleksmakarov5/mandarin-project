@@ -852,7 +852,7 @@
                                             </li>
                                         @endif
                                         @if ($app->id_status == 12 || $app->id_status == 14)
-                                            <li><a @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату осмотра ')"
+                                            <li><a @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату планируемого осмотра ')"
                                                     @else
                                                  onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/13" @endif

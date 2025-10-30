@@ -72,7 +72,7 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Дата осмотра</th>
+                    <th>Дата планируемого осмотра</th>
                     <th>
                         {{ $application->view_date ? Date::parse($application->view_date)->format('j F Yг. H:i') : '' }}
                     </th>

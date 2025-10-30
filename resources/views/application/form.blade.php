@@ -100,7 +100,7 @@
         <div class="form-float">
             <input type="datetime-local" name="view_date" id="view_date" class="form-cont"
                 value="{{ $application->view_date }}">
-            <div class='lbl'><label for="start_date">Дата осмотра</label></div>
+            <div class='lbl'><label for="start_date">Дата планируемного осмотра</label></div>
         </div>
         <div class="form-float">
             <input type="date" name="start_date" id="start_date" class="form-cont"
