@@ -130,6 +130,7 @@ class EstimateController extends Controller
                     'price_zip' => str2number($request->price_zip),
                     'price_work' => str2number($request->price_work),
                     'price_repair_full' =>  str2number($request->price_repair_full),
+                    'price_repair_half' =>  str2number($request->price_repair_half),
                     'price_repair_full_md2' =>  str2number($request->price_repair_full_md2),
                     'add_pay' =>  str2number($request->add_pay),
                     'emr10' => $request->emr10
