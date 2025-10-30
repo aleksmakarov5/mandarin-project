@@ -599,7 +599,9 @@ export default {
             }
         },
         parseF(n) {
-            return parseFloat();
+            if (!n) return 0;
+
+            return parseFloat(n);
         },
         classDanger(n) {
             if (n < 0) return "alert alert-success";
@@ -678,10 +680,11 @@ export default {
             this.spareparts[index].price_sto = price_sto.innerText
                 .split(" ")
                 .join("");
+
             let n = -1;
             let sum = 0;
             this.updateSparePart(id, index);
-            // console.log(this.spareparts.length);
+
             for (let i = 0; i < this.spareparts.length; i++) {
                 if (
                     this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
@@ -690,15 +693,19 @@ export default {
                 ) {
                     n = i;
                 } else {
-                    sum +=
-                        this.parseF(this.spareparts[i].price_sto) == 0
-                            ? this.parseF(this.spareparts[i].price_ic_full)
-                            : this.parseF(this.spareparts[i].price_sto);
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(
+                            this.spareparts[i].price_sto == 0
+                                ? this.spareparts[i].price_ic_full
+                                : this.spareparts[i].price_sto
+                        );
                 }
             }
-
+            console.log(sum);
             if (n != -1) {
-                this.spareparts[n].price_sto = sum * 0.02;
+                this.spareparts[n].price_sto = this.parseF(sum) * 0.02;
+                console.log(this.spareparts[n].id);
                 this.updateSparePart(this.spareparts[n].id, n);
             }
         },
