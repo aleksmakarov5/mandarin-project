@@ -141,6 +141,8 @@ export default {
                         console.log(`File upload progress: ${progress}%`);
                     },
                     headers: { "Content-Type": "multipart/form-data" },
+                    maxContentLength: 100000000,
+                    maxBodyLength: 100000000,
                 };
                 axios
                     .post("/api/application/file_upload", formData, config)
