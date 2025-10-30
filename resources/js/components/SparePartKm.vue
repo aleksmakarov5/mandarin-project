@@ -226,6 +226,7 @@
                                     )
                                 "
                                 :id="'price_service_' + sparepart.id"
+                                contenteditable
                                 @contextmenu.prevent="
                                     updateSparePartZap(
                                         sparepart.id,
@@ -233,6 +234,10 @@
                                         sparepart.name,
                                         index
                                     )
+                                "
+                                @blur="editPriceService(sparepart.id, index)"
+                                @keydown.enter="
+                                    editPriceService(sparepart.id, index)
                                 "
                             >
                                 <template
@@ -547,6 +552,7 @@ export default {
                     price_analogue: this.spareparts[index].price_analogue,
                     price_used: this.spareparts[index].price_used,
                     price_original: this.spareparts[index].price_original,
+                    price_service: this.spareparts[index].price_service,
                     part_number: this.spareparts[index].part_number,
                     order_number: this.spareparts[index].order_number,
                     price_ic_full: this.spareparts[index].price_ic_full,
@@ -632,6 +638,13 @@ export default {
         editPriceUsed(id, index) {
             let price_used = document.getElementById("price_used_" + id);
             this.spareparts[index].price_used = price_used.innerText
+                .split(" ")
+                .join("");
+            this.updateSparePart(id, index);
+        },
+        editPriceService(id, index) {
+            let price_service = document.getElementById("price_service_" + id);
+            this.spareparts[index].price_service = price_service.innerText
                 .split(" ")
                 .join("");
             this.updateSparePart(id, index);
