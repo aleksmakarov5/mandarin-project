@@ -444,7 +444,7 @@
                                                         $message->body .
                                                         '</blockquote>',
                                                 ) }}"
-                                                :sign="{{ json_encode(isset($sign) ? $sign : '') }}"
+                                                :sign="{{ json_encode('') }}"
                                                 :status="200" />
                                         </a>
                                     </div>
