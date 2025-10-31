@@ -51,7 +51,7 @@
 <div class="row">
                                         <template v-for="(doc,key) in attach">
 
-                                                <div class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id)" :style="docSelected(doc.location)">
+                                                <div v-if="doc.ext!='gif'" class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id)" :style="docSelected(doc.location)">
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
 
