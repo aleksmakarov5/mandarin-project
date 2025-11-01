@@ -1025,6 +1025,14 @@
                                 </a>
                             </li>
                         @endif
+                        @if ($app->finance_statuses_id == 10)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/111">
+                                    <div class="td_round  {{ $f_status[10]->FinStatusTheme }}">
+                                        {{ $f_status[10]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endif
                     @endif
                     @can('administrator')
                         <li>
