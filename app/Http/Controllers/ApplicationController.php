@@ -174,17 +174,20 @@ class ApplicationController extends Controller
 
 
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
+                ->leftjoin('status_chats', function ($query) {
+                    $query->where('status_chats.id_application', '=', 'applications.id')
+                        ->where('status_chats.id_user', '=', auth::user()->id)
+                        ->where('status_chats.is_readed', '=', '0');
                 })
-                ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
+                ->leftjoin('status_applications', function ($query) {
+                    $query->where('status_applications.id_application', '=', 'applications.id')
+                        ->where('status_applications.id_user', '=', auth::user()->id)
+                        ->where('status_applications.is_readed', '=', '0');
                 })
-                ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
+                ->leftjoin('status_messages', function ($query) {
+                    $query->where('status_messages.id_application', '=', 'applications.id')
+                        ->where('status_messages.id_user', '=', auth::user()->id)
+                        ->where('status_messages.is_readed', '=', '0');
                 });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
@@ -214,10 +217,15 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city',
+                'status_chats.id as status_chat_id',
+                'status_applications.id as status_application_id',
+                'status_messages.id as status_message_id'
 
 
 
-            )->orderBy('applications.id', 'desc')->paginate(30);
+
+
+            )->orderBy('applications.id', 'desc')->paginate(300);
         } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
