@@ -354,7 +354,7 @@ class WordController extends Controller
             $price_repair_full = $price_sp_full +
                 (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
                 + $price_repair;
-            $price_repair_full = str2number($estimate->price_repair_full);
+            // $price_repair_full = str2number($estimate->price_repair_full);
             $templateProcessor->cloneRowAndSetValues('work_name', $array1);
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('price_repair', in_money($price_repair));
