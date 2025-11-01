@@ -203,11 +203,11 @@
                                     <notify-buttons :user="{{ Auth::user()->id }}" :pi=`priem`
                                         :count_in="{{ json_encode($count_priem) }}"></notify-buttons>
                                 </li>
-                                <li class="nav-item"><a href="\failures"
+                                {{-- <li class="nav-item"><a href="\failures"
                                         class="nav-link {{ session('rout') == 'failures' ? 'tn-active' : '' }}">Отказы</a>
                                     <notify-buttons :user="{{ Auth::user()->id }}" :pi=`failures`
                                         :count_in="{{ json_encode($count_failures) }}"></notify-buttons>
-                                </li>
+                                </li> --}}
 
                                 <li class="nav-item"><a href="\archive"
                                         class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
