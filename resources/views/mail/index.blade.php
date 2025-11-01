@@ -39,7 +39,7 @@
                             <div class="row">
                                 <div class="col">
                                     <div class="btn-toolbar">
-                                        
+
                                         <div class="btn-group">
                                             <button type="button" class="btn btn-sm btn-outline-secondary"><i
                                                     class="mdi mdi-share text-primary mr-1"></i>

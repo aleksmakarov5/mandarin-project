@@ -5144,7 +5144,7 @@ class ApplicationController extends Controller
     }
     public function add_mail($type, $id, $message_id)
     {
-        $applications = application::where('our_company', '=', $id)->get()->all();
+        $applications = application::get()->all();
         return view('application.add_mail', [
             'applications' => $applications,
             'message_id' => $message_id,
