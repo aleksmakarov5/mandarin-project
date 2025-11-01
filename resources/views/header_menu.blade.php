@@ -1026,8 +1026,10 @@
                             </li>
                         @endif
                         @if ($app->finance_statuses_id == 10)
-                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
-                                    href="/applications/{{ $id }}/change_st/111">
+                            <li><a
+                                    @if (!$app->ic_pay_date) onclick="alert('Укажите дату оплаты!')"
+                                                    @else onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/111" @endif>
                                     <div class="td_round  {{ $f_status[10]->FinStatusTheme }}">
                                         {{ $f_status[10]->FinStatusName }}</div>
                                 </a>
