@@ -446,7 +446,8 @@ class WordController extends Controller
             try {
                 $document->file_size = filesize($file_save);
             } catch (\Exception $e) {
-                $document->file_size = 0;
+                sleep(100);
+                $document->file_size = filesize($file_save);
             }
             $document->location = 'таблица_запчастей_' . date('d-m-y_hms') . ".xlsx";
             $document->id_status = $doc_type;
