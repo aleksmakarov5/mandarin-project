@@ -442,7 +442,7 @@ class WordController extends Controller
             $document->mime_type = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             $document->id_application = $id;
             $document->file_size = 0;
-            delay(500);
+            sleep(500);
             try {
                 $document->file_size = filesize($file_save);
             } catch (\Exception $e) {
