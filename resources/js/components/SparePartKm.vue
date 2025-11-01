@@ -696,7 +696,7 @@ export default {
                     sum =
                         this.parseF(sum) +
                         this.parseF(
-                            this.spareparts[i].price_sto == 0
+                            this.parseF(this.spareparts[i].price_sto) == 0
                                 ? this.spareparts[i].price_ic_full
                                 : this.spareparts[i].price_sto
                         );
