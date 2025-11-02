@@ -509,6 +509,7 @@
             $to[$i++] = 'Malygin.Leonid@sogaz.ru';
             $to[$i++] = 'Kuznetsov.Vitaly@sogaz.ru';
             $to[$i++] = 'Skorobogatov.Sergey@sogaz.ru';
+            $to[$i++] = 'Markina.Polina@sogaz.ru';
         }
         if ($application->id_insuranceCompany == 7) {
             $to[$i++] = 'KoksharovaAG@ugsk.ru';
