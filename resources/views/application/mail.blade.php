@@ -370,16 +370,16 @@
                                                         Прошу отозвать направление на ремонт.<br>
                                                         ТС ' .
                                     $application->CarModel .
-                                    ', г/н ' .
+                                    '<br>, г/н ' .
                                     $application->gnz .
-                                    ', vin ' .
+                                    '<br>, vin ' .
                                     $application->vin .
-                                    ', собственник ' .
+                                    '<br>, собственник ' .
                                     $application->ClientName .
-                                    ', уб. ' .
+                                    '<br>, уб. ' .
                                     $application->numberInsuranceCompanyApplication .
                                     '
-                                                        ТС не ремонтировалось, з/ч не заказывались и счет страховой компании выставлен не будет. <br><br>',
+                                                        <br>ТС не ремонтировалось, з/ч не заказывались и счет страховой компании выставлен не будет. ',
                             ) }}"
                             :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="27" />
                     </div>
