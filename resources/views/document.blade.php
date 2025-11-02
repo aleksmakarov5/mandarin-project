@@ -301,6 +301,7 @@
                                             $to[0] = 'akt.rem4@sogaz.ru';
                                             $to[1] = 'kuznetsov.vitaly@sogaz.ru';
                                             $to[2] = 'malygin.leonid@sogaz.ru';
+                                            $to[3] = 'Markina.Polina@sogaz.ru';
                                         } elseif ($application->id_insuranceCompany == 4) {
                                             $to[0] = 'arhangelsk_oup@email.reso.ru';
                                         } elseif ($application->id_insuranceCompany == 7) {
@@ -335,7 +336,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
@@ -407,6 +408,7 @@
                                             $to[0] = 'akt.rem4@sogaz.ru';
                                             $to[1] = 'kuznetsov.vitaly@sogaz.ru';
                                             $to[2] = 'malygin.leonid@sogaz.ru';
+                                            $to[3] = 'Markina.Polina@sogaz.ru';
                                         } elseif ($application->id_insuranceCompany == 4) {
                                             $to[0] = 'arhangelsk_oup@email.reso.ru';
                                         } elseif ($application->id_insuranceCompany == 7) {
@@ -552,6 +554,7 @@
                                             $to[0] = 'akt.rem4@sogaz.ru';
                                             $to[1] = 'kuznetsov.vitaly@sogaz.ru';
                                             $to[2] = 'malygin.leonid@sogaz.ru';
+                                            $to[3] = 'Markina.Polina@sogaz.ru';
                                         } elseif ($application->id_insuranceCompany == 4) {
                                             $to[0] = 'arhangelsk_oup@email.reso.ru';
                                         } elseif ($application->id_insuranceCompany == 7) {
