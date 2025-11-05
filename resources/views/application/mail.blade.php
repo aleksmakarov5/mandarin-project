@@ -498,7 +498,7 @@
                                                     '<br><blockquote><h5><b>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     From:
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </b>' .
-                                                    isset($message->from->email)
+                                                    $message->from
                                                         ? $message->from->email
                                                         : '--' .
                                                             '<br>
