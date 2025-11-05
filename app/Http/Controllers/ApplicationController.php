@@ -173,19 +173,19 @@ class ApplicationController extends Controller
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
 
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id');
-            // ->with('status_chats', function ($query) {
-            //     $query->where('id_user', '=', auth::user()->id)
-            //         ->where('is_readed', '=', '0');
-            // })
-            // ->with('status_applications', function ($query) {
-            //     $query->where('id_user', '=', auth::user()->id)
-            //         ->where('is_readed', '=', '0');
-            // })
-            // ->with('status_messages', function ($query) {
-            //     $query->where('id_user', '=', auth::user()->id)
-            //         ->where('is_readed', '=', '0');
-            // });
+                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+                ->with('status_chats', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_applications', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                })
+                ->with('status_messages', function ($query) {
+                    $query->where('id_user', '=', auth::user()->id)
+                        ->where('is_readed', '=', '0');
+                });
             $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
             if (isset($user_filters[0]->id_city)) {
@@ -597,16 +597,16 @@ class ApplicationController extends Controller
         }
         // dd($applications);
         // $applications = $this->configure($applications);
-        // foreach ($applications as $application) {
-        //     $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
 
-        //     $count['application'] = $application->status_applications->count();
+            $count['application'] = $application->status_applications->count();
 
-        //     $count['chat'] = $application->status_chats->count();
+            $count['chat'] = $application->status_chats->count();
 
-        //     $count['message'] = $application->status_messages->count();
-        //     $application->count = $count;
-        // }
+            $count['message'] = $application->status_messages->count();
+            $application->count = $count;
+        }
         $city = city::all();
         session(['rout' => 'applications']);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()]);
