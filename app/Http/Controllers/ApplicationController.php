@@ -962,22 +962,22 @@ class ApplicationController extends Controller
             // else
             //     $application->doc = 0;
         }
-        foreach ($applications as $application) {
-            // if (isset($application->ic_answer_date)) {
-            //     $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
-            //     $application->max_hour = 48;
-            //     $application->StatusName = "Ожидается ответ СК";
-            //     $application->count_five = 11;
-            // } else
+        // foreach ($applications as $application) {
+        // if (isset($application->ic_answer_date)) {
+        //     $application->count_hour = 48 - $current->diffInHours($application->ic_answer_date);
+        //     $application->max_hour = 48;
+        //     $application->StatusName = "Ожидается ответ СК";
+        //     $application->count_five = 11;
+        // } else
 
 
-            // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
-            // if (isset($doc->id_status))
-            //     $application->doc = $doc->id_status;
-            // else
-            //     $application->doc = 0;
-        }
-        $applications = $this->configure($applications);
+        // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+        // if (isset($doc->id_status))
+        //     $application->doc = $doc->id_status;
+        // else
+        //     $application->doc = 0;
+        // }
+        // $applications = $this->configure($applications);
         session(['rout' => '']);
 
         $city = city::all();
