@@ -1290,8 +1290,8 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1301,7 +1301,9 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1359,8 +1361,8 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1381,7 +1383,9 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1439,8 +1443,8 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1458,7 +1462,9 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1514,8 +1520,8 @@ class ApplicationController extends Controller
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1525,7 +1531,9 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1581,8 +1589,8 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_mrk', '=', Auth::user()->id)
                 ->join('user_roles', function ($join) {
@@ -1601,7 +1609,9 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1658,8 +1668,8 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_spm', '=', Auth::user()->id)
 
@@ -1671,7 +1681,9 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-
+                ->leftjoin('attachments', function ($join) {
+                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+                })
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
