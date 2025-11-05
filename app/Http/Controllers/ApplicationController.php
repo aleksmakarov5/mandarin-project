@@ -2512,22 +2512,22 @@ class ApplicationController extends Controller
             ->get()
             ->groupBy('message_id');
         foreach ($messages as $message) {
+            $message->to = [];
             if (isset($attacments[$message->id]))
                 $message->attachment = $attacments[$message->id];
             else
                 $message->attachment = [];
+
             if (isset($adresses_from[$message->id]))
-                if (isset($adresses_from[$message->id]))
-                    $message->from = $adresses_from[$message->id][0];
-                else
-                    $message->from = '';
+                $message->from = $adresses_from[$message->id][0];
             else
-                $message->from = [];
+                $message->from = '';
+
+
             if (isset($adresses_to[$message->id]))
-                if (isset($adresses_to[$message->id]))
-                    $message->to = $adresses_to[$message->id];
-                else
-                    $message->to = [];
+                $message->to = $adresses_to[$message->id];
+            else
+                $message->to = [];
         }
         // dd($messages[0]->attachment[1]);
         // foreach ($messages as $message) {
