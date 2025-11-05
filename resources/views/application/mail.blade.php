@@ -497,9 +497,9 @@
                                                     '<br><blockquote><h5><b>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     From:
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </b>' .
-                                                    isset($message->from->email)
+                                                    {{isset($message->from->email)
                                                         ? $message->from->email
-                                                        : '--' .
+                                                        : '--'}} .
                                                             '<br>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <b>Sent:</b>' .
                                                             Date::parse($message->message_date)->format('j F Yг. H:i') .
