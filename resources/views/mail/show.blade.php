@@ -3,7 +3,7 @@
     Все Ящики
 @endsection
 @section('main_content')
-{{$messages->links('vendor.pagination.bootstrap-4')}}
+    {{ $messages->links('vendor.pagination.bootstrap-4') }}
     </div>
     <div class="mailbox">
         <div class="message-list">
@@ -35,12 +35,12 @@
                                         <p class="msg-subject">
                                             {{ $message->subject }}
                                         </p>
-                                        <p class="sender-email">
+                                        {{-- <p class="sender-email">
                                             <i class="far fa-clock"> От кого: </i>
                                             @if (isset($message->from->email))
                                                 {{ $message->from->email }}
                                             @endif
-                                        </p>
+                                        </p> --}}
                                         <p class=""><i class="far fa-clock">
                                                 @if (isset($message->message_date))
                                                     {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
@@ -92,7 +92,7 @@
             @endif
             <div>
                 @php
-echo $body;
+                    echo $body;
                 @endphp
             </div>
             @if (isset($mail->attachment))

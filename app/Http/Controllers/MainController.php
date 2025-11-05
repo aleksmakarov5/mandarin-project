@@ -191,21 +191,21 @@ class MainController extends Controller
             }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)->orderBy('messages.id', 'desc')
-            ->paginate(45);
+            ->paginate(500);
         // dd($messages);
-        foreach ($messages as $message) {
-            $message->attachment = DB::table('attachments')
-                ->where('message_id', '=', $message->id)
-                ->get();
-            $message->from = DB::table('addresses')
-                ->where('message_id', '=', $message->id)
-                ->where('type', '=', 'from')
-                ->first();
-            $message->to = DB::table('addresses')
-                ->where('message_id', '=', $message->id)
-                ->where('type', '=', 'to')
-                ->get();
-        }
+        // foreach ($messages as $message) {
+        //     $message->attachment = DB::table('attachments')
+        //         ->where('message_id', '=', $message->id)
+        //         ->get();
+        //     $message->from = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'from')
+        //         ->first();
+        //     $message->to = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'to')
+        //         ->get();
+        // }
         // dd($mail);
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
