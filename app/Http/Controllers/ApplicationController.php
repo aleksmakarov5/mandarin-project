@@ -776,7 +776,9 @@ class ApplicationController extends Controller
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-
+            ->leftjoin('attachments', function ($join) {
+                $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+            })
             // ->leftjoin('attachments', 'attachments.id_application', '=', 'applications.id')
             // ->where('attachments.id_status', '=', '3')
             // ->where('attachments.id_status', '<>', NULL)
