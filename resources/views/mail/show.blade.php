@@ -66,9 +66,17 @@
             @if (isset($mail->subject))
                 <div class="message-header">
                     <h2>{{ $mail->subject }}</h2>
-                    <p class="sender-email">От кого:
+                    <p class="sender-email"><b>От кого:</b>
                         @if (isset($mail->from->email))
                             {{ $mail->from->email }}
+                        @endif
+                    </p>
+                    <p class="sender-email"><b>Кому:</b>
+                        @if (isset($mail->to[0]->email))
+                            @foreach ($mail->to as $to)
+                                {{ $to->email }};
+                            @endforeach
+
                         @endif
                     </p>
                     <p class=""><i class="far fa-clock">

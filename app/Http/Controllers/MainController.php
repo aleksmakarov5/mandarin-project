@@ -149,6 +149,10 @@ class MainController extends Controller
                     ->where('message_id', '=', $message_id)
                     ->where('type', '=', 'from')
                     ->first();
+                $mail->to = DB::table('addresses')
+                    ->where('message_id', '=', $message_id)
+                    ->where('type', '=', 'to')
+                    ->get();
                 $mail->attachment = DB::table('attachments')
                     ->where('message_id', '=', $mail->id)
                     ->get();
