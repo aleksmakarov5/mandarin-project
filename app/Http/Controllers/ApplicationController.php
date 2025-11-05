@@ -2816,7 +2816,7 @@ class ApplicationController extends Controller
             $text = 'Уважаемый ';
 
         $text .=  ($application->ClientName != "" ? $application->ClientName : 'клиент') . '! Приглашаем Вас на ремонт Вашего транспортного средства ' . $application->CarModel . ' ' . $application->gnz . ' к ' .
-            $our_company->name . ' в СТОА расположенную по адресу: ' .
+            $our_company->name . ' на СТОА расположенную по адресу: ' .
             $service->service_description . ', для проведения восстановительного ремонта по направлению ' .
             $application->numberInsuranceCompanyApplication . ' выданному ' . (isset($application->napr_date) ? Date::parse($application->napr_date)->format('j F Yг.') : '') . ' ' . $ic->address . '. Режим работы СТОА: ' . $service->mode . '.';
         // $dir = 'storage/files/' . $id;
