@@ -160,9 +160,9 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -227,9 +227,9 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -304,9 +304,9 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -373,9 +373,9 @@ class ApplicationController extends Controller
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');;
             })
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -434,9 +434,9 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');;
             })
 
                 ->join('user_roles', function ($join) {
@@ -506,9 +506,9 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '<', '12')
-                    ->where('id_status', '<>', '6')
-                    ->where('id_status', '<>', '7');;
+                    ->where('applications.id_status', '<', '12')
+                    ->where('applications.id_status', '<>', '6')
+                    ->where('applications.id_status', '<>', '7');;
             })
                 ->where(function ($query) {
                     $query
