@@ -35,12 +35,12 @@
                                         <p class="msg-subject">
                                             {{ $message->subject }}
                                         </p>
-                                        {{-- <p class="sender-email">
+                                        <p class="sender-email">
                                             <i class="far fa-clock"> От кого: </i>
-                                            @if (isset($message->from->email))
-                                                {{ $message->from->email }}
+                                            @if (isset($message->from_address))
+                                                {{ $message->from_address }}
                                             @endif
-                                        </p> --}}
+                                        </p>
                                         <p class=""><i class="far fa-clock">
                                                 @if (isset($message->message_date))
                                                     {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}

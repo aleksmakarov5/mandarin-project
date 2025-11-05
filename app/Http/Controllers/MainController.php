@@ -190,7 +190,18 @@ class MainController extends Controller
                 // dd($mail, $body);
             }
         }
-        $messages = DB::table('messages')->where('mailbox_id', '=', $id)->orderBy('messages.id', 'desc')
+        $messages = DB::table('messages')
+            ->where('mailbox_id', '=', $id)
+            // ->leftjoin('addresses', function ($join) {
+            //     $join->where(function ($query) {
+            //         $query
+            //             ->where('addresses.type', '=', 'from');
+            //     })->where('addresses.message_id', '=', 'messages.id');
+            // })
+            ->leftjoin('addresses', 'addresses.message_id', '=', 'messages.id')
+            ->where('addresses.type', '=', 'from')
+            ->select('messages.*', 'addresses.email as from_address')
+            ->orderBy('messages.id', 'desc')
             ->paginate(5000);
         // dd($messages);
         // foreach ($messages as $message) {
