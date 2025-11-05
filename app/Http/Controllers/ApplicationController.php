@@ -72,9 +72,11 @@ class ApplicationController extends Controller
                 $spareparts = $Spareparts[$application->id];
             else
                 $spareparts = $application->spareparts;
-            if (isset($Estimates[$application->id]))
-                $estimates = $Estimates[$application->id];
-            else
+            if (isset($Estimates[$application->id])) {
+                $estimates = $Estimates[$application->id][0];
+                if ($application->ub_type)
+                    $estimates->price_repair_full = $estimates->price_repair_half;
+            } else
                 $estimates = $application->estimates;
             if (isset($Works[$application->id]))
                 $Works_serv = $Works[$application->id];
@@ -86,6 +88,7 @@ class ApplicationController extends Controller
                 $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
                 $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
             }
+            // dd($estimates);
 
             // dd($rewiew->all()) ;
             $summ_ic_full = 0;
@@ -156,6 +159,7 @@ class ApplicationController extends Controller
             $application->summ_full =
                 Number::Currency($summ_service + $summ_order, 'RUR', 'ru');
             $application->proc = $proc;
+            // dd($application, $estimates->price_repair_full);
         }
         return $applications;
     }
