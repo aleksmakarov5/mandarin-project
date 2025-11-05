@@ -160,9 +160,9 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -216,20 +216,19 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city',
-                'attachments.id_status as doc'
 
 
 
 
-            )->orderBy('applications.id', 'desc')->paginate(300);
+            )->orderBy('applications.id', 'desc')->paginate(2000);
         } elseif (Gate::allows('admin') || Gate::allows('km')) {
 
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -295,18 +294,17 @@ class ApplicationController extends Controller
                     'application_statuses.day',
                     'our_companies.our_name',
                     'users.name as MRK_name',
-                    'cities.name as city',
-                    'attachments.id_status as doc'
+                    'cities.name as city'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif ($only_me) {
 
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -366,16 +364,15 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');;
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');;
             })
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -428,15 +425,14 @@ class ApplicationController extends Controller
                 'our_companies.our_name',
                 'users.name as MRK_name',
                 'cities.name as city',
-                'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(300);
+            )->orderBy('applications.id', 'desc')->paginate(20);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');;
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');;
             })
 
                 ->join('user_roles', function ($join) {
@@ -498,17 +494,16 @@ class ApplicationController extends Controller
 
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(300);
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')->paginate(20);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('applications.id_status', '<', '12')
-                    ->where('applications.id_status', '<>', '6')
-                    ->where('applications.id_status', '<>', '7');;
+                    ->where('id_status', '<', '12')
+                    ->where('id_status', '<>', '6')
+                    ->where('id_status', '<>', '7');;
             })
                 ->where(function ($query) {
                     $query
@@ -568,9 +563,8 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(300);
+                'cities.name as city'
+            )->orderBy('applications.id', 'desc')->paginate(20);
         }
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -688,7 +682,7 @@ class ApplicationController extends Controller
     //             'users.name as MRK_name',
     //             'cities.name as city'
     //         )->orderBy('applications.id', 'desc')
-    //             ->paginate(300);
+    //             ->paginate(20);
     //     } else {
     //         $applications = application::where('id_status', '=', '7')
     //             ->orwhere('id_status', '=', '6')
@@ -751,7 +745,7 @@ class ApplicationController extends Controller
     //             'users.name as MRK_name',
     //             'cities.name as city'
     //         )->orderBy('applications.id', 'desc')
-    //             ->paginate(300);
+    //             ->paginate(20);
     //     }
     //     // dd($applications);
     //     $current = carbon::now();
@@ -1069,7 +1063,7 @@ class ApplicationController extends Controller
     public function archive()
     {
 
-        $applications = application::where('applications.id_status', '=', '25')
+        $applications = application::where('id_status', '=', '25')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
             ->leftjoin('attachments', function ($join) {
@@ -1121,10 +1115,9 @@ class ApplicationController extends Controller
             'application_statuses.current_group',
             'our_companies.our_name',
             'users.name as MRK_name',
-            'cities.name as city',
-            'attachments.id_status as doc'
+            'cities.name as city'
         )->orderBy('applications.id', 'desc')
-            ->paginate(300);
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'archive']);
@@ -1141,7 +1134,7 @@ class ApplicationController extends Controller
 
     public function temp()
     {
-        $applications = application::where('applications.id_status', '=', '27')
+        $applications = application::where('id_status', '=', '27')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1193,10 +1186,9 @@ class ApplicationController extends Controller
             'application_statuses.current_group',
             'our_companies.our_name',
             'users.name as MRK_name',
-            'cities.name as city',
-            'attachments.id_status as doc'
+            'cities.name as city'
         )->orderBy('applications.id', 'desc')
-            ->paginate(300);
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'temp']);
@@ -1212,7 +1204,7 @@ class ApplicationController extends Controller
     }
     public function priem()
     {
-        $applications = application::where('applications.id_status', '=', '28')
+        $applications = application::where('id_status', '=', '28')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1264,10 +1256,9 @@ class ApplicationController extends Controller
             'application_statuses.current_group',
             'our_companies.our_name',
             'users.name as MRK_name',
-            'cities.name as city',
-            'attachments.id_status as doc'
+            'cities.name as city'
         )->orderBy('applications.id', 'desc')
-            ->paginate(300);
+            ->paginate(20);
         // dd($applications);
 
         session(['rout' => 'priem']);
@@ -1290,8 +1281,8 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1301,9 +1292,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1351,18 +1340,17 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
 
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1377,9 +1365,7 @@ class ApplicationController extends Controller
                 })
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
@@ -1433,18 +1419,17 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif ($only_me) {
 
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1462,9 +1447,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1512,16 +1495,15 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1531,9 +1513,7 @@ class ApplicationController extends Controller
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
                     $query->where('id_user', '=', auth::user()->id)
@@ -1581,16 +1561,15 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
                 ->where('applications.id_mrk', '=', Auth::user()->id)
                 ->join('user_roles', function ($join) {
@@ -1604,9 +1583,7 @@ class ApplicationController extends Controller
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
@@ -1659,26 +1636,23 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
+                    ->where('id_status', '>', '11')
+                    ->where('id_status', '<', '25');
             })
                 ->where('applications.id_spm', '=', Auth::user()->id)
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
                 ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
                 ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
+
                 ->leftjoin('services', 'applications.id_service', '=', 'services.id')
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
@@ -1731,10 +1705,9 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
+                'cities.name as city'
             )->orderBy('applications.id', 'desc')
-                ->paginate(300);
+                ->paginate(20);
         }
         $applications = $this->configure($applications);
         session(['rout' => 'directions']);
@@ -1743,7 +1716,112 @@ class ApplicationController extends Controller
 
 
         $current = carbon::now();
+        foreach ($applications as $application) { {
 
+                // if (isset($application->check_date)) {
+                //     $end_date = WorkCalendar::create($application->check_date);
+                //     $end_date->addWorkDays(1);
+                //     dd($end_date, $application->id);
+                // }
+                if ($application->time != 0) {
+                    if (!$application->day) {
+                        $end_date = WorkCalendar::create($application->check_date);
+                        $end_date->addWorkDays($application->time);
+
+                        $start = WorkCalendar::create($application->check_date);
+                        $application->max_hour = $start->diffInHours($end_date);
+                        $application->count_hour =  $application->max_hour - $current->diffInHours($start);
+                    } else {
+                        $end_date = WorkCalendar::create($application->check_date);
+                        $end_date->addWorkDays($application->time);
+
+                        $start = WorkCalendar::create($application->check_date);
+                        $application->max_hour = $start->diffInDays($end_date);
+                        $application->count_hour =  $application->max_hour - $current->diffInDays($start);
+                    }
+                } else {
+                    if ($application->id_status == 17) {
+
+                        $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->end_date);
+                        $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                    }
+                    if ($application->id_status == 13) {
+                        if ($application->count_hour = $current->diffInHours($application->view_date) < 24) {
+
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInHours($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInHours($start);
+                            $application->day = 0;
+                        } else {
+                            $start = carbon::create($application->check_date);
+
+                            //     $application->max_hour = $start->diffInDays($application->end_date)
+                            $application->max_hour = $start->diffInDays($application->view_date);
+                            $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                        }
+                        // dd($application);
+                    }
+                    if ($application->id_status == 15) {
+                        $start = carbon::create($application->check_date);;
+
+                        //     $application->max_hour = $start->diffInDays($application->end_date)
+                        $application->max_hour = $start->diffInDays($application->sp_date);
+                        $application->count_hour = $application->max_hour - $current->diffInDays($start);
+                        // dd($start, $application);
+                    }
+                }
+                if ($application->ic_answer_date != NULL) {
+                    $end_date = WorkCalendar::create($application->ic_answer_date);
+
+                    $start = WorkCalendar::create($application->ic_answer_date);
+                } else {
+                    $end_date = WorkCalendar::now();
+
+                    $start = WorkCalendar::now();
+                }
+
+                $end_date->addWorkDays($application->fin_time);
+
+                $application->max_hour_f = $start->diffInHours($end_date);
+                $application->count_hour_f =  $application->max_hour_f - $current->diffInHours($start);
+
+
+                // if ($application->id_status < 11) {
+                //     $application->count_hour = 48 - $current->diffInHours($application->created_at);
+                //     $application->max_hour = 48;
+                // }
+                // if ($application->id_status == 11) {
+                //     $application->count_hour = 168 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 168;
+                // }
+                // if ($application->id_status == 19) {
+                //     $application->count_hour = 72 - $current->diffInHours($application->check_date);
+                //     $application->max_hour = 72;
+                // }
+                // if ($application->id_status == 22) {
+                //     $application->count_hour = 42 - $current->diffInDays($application->check_date);
+                //     $application->max_hour = 42;
+                // }
+                // if ($application->id_status > 10 && $application->id_status != 18 && $application->id_status != 21) {
+                //     $application->count_hour = $current->diffInDays($application->end_date);
+
+                //     $start = isset($application->start_date) ? carbon::create($application->start_date) : carbon::create($application->napr_date);
+
+                //     $application->max_hour = $start->diffInDays($application->end_date);
+                // }
+                // dd($application);
+            }
+            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+            if (isset($doc->id_status))
+                $application->doc = $doc->id_status;
+            else
+                $application->doc = 0;
+        }
         $city = city::all();
         // dd($applications);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
