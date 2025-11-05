@@ -2422,24 +2422,70 @@ class ApplicationController extends Controller
         }
 
         $messages = DB::table('messages')
-            ->where('application_id', '=', $id)
-            ->orderBy('messages.id', 'desc')
+            ->where('messages.application_id', '=', $id)
+            ->select('messages.*')
+            // ->orderBy('messages.id', 'desc')
             // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
             // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
+
             ->get();
+        $adresses_to = DB::table('addresses')
+            ->leftjoin('messages', 'addresses.message_id', '=', 'messages.id')
+            ->where('messages.application_id', '=', $id)
+            ->where('addresses.type', '=', 'to')
+            ->select('messages.id', 'addresses.email')
+            // ->orderBy('messages.id', 'desc')
+            // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
+            // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
+
+            ->get()
+            ->groupBy('id');
+        $adresses_from = DB::table('addresses')
+            ->leftjoin('messages', 'addresses.message_id', '=', 'messages.id')
+            ->where('messages.application_id', '=', $id)
+            ->where('addresses.type', '=', 'from')
+            ->select('messages.id', 'addresses.email',)
+            // ->orderBy('messages.id', 'desc')
+            // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
+            // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
+
+            ->get()
+            ->groupBy('id');
+        $attacments = DB::table('attachments')
+            ->leftjoin('messages', 'attachments.message_id', '=', 'messages.id')
+            ->where('messages.application_id', '=', $id)
+            ->select('attachments.*')
+            // ->orderBy('messages.id', 'desc')
+            // ->leftJoin('attachments', 'attachments.message_id', '=', 'messages.id')
+            // ->select('messages.*', 'attachments.file_name', 'attachments.file_size', 'attachments.location')
+
+            ->get()
+            ->groupBy('message_id');
         foreach ($messages as $message) {
-            $message->attachment = DB::table('attachments')
-                ->where('message_id', '=', $message->id)
-                ->get();
-            $message->from = DB::table('addresses')
-                ->where('message_id', '=', $message->id)
-                ->where('type', '=', 'from')
-                ->first();
-            $message->to = DB::table('addresses')
-                ->where('message_id', '=', $message->id)
-                ->where('type', '=', 'to')
-                ->get();
+            if (isset($attacments[$message->id]))
+                $message->attachment = $attacments[$message->id];
+            else
+                $message->attachment = [];
+            if (isset($adresses_from[$message->id]))
+                if (isset($adresses_from[$message->id]))
+                    $message->from = $adresses_from[$message->id][0];
+            if (isset($adresses_to[$message->id]))
+                $message->to = $adresses_to[$message->id];
         }
+        // dd($messages[0]->attachment[1]);
+        // foreach ($messages as $message) {
+        //     $message->attachment = DB::table('attachments')
+        //         ->where('message_id', '=', $message->id)
+        //         ->get();
+        //     $message->from = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'from')
+        //         ->first();
+        //     $message->to = DB::table('addresses')
+        //         ->where('message_id', '=', $message->id)
+        //         ->where('type', '=', 'to')
+        //         ->get();
+        // }
         // dd($messages);
         // $application = application::findOrFail($id);
         $attachments = attachment::where('id_application', '=', $id)
