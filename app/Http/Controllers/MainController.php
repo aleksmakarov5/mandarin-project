@@ -191,7 +191,7 @@ class MainController extends Controller
             }
         }
         $messages = DB::table('messages')->where('mailbox_id', '=', $id)->orderBy('messages.id', 'desc')
-            ->paginate(500);
+            ->paginate(5000);
         // dd($messages);
         // foreach ($messages as $message) {
         //     $message->attachment = DB::table('attachments')
