@@ -54,6 +54,7 @@
         <table id="applications" class="editable">
             <thead>
                 <tr>
+                    <th>#</th>
                     <th scope="col">Дог</th>
                     <th scope="col">Статус</th>
                     <th scope="col" v-if="rout == 'directions'">Согл/Опл</th>
@@ -84,6 +85,7 @@
                     </template>
                 </tr>
                 <tr style="heigth: 15px">
+                    <th></th>
                     <th v-if="rout == 'directions'"></th>
                     <th scope="col">
                         <input
@@ -264,7 +266,7 @@
                 </tr>
             </thead>
             <tbody>
-                <template v-for="application in applications">
+                <template v-for="(application, key) in applications">
                     <tr
                         :key="application.created_at"
                         v-if="
@@ -273,6 +275,7 @@
                         "
                         :class="application.count_hour > 0 ? '' : 'red'"
                     >
+                        <td>{{ key + 1 }}</td>
                         <td @click="openApplication(application.id)">
                             <template v-if="application.doc">
                                 <div class="td_round yes">да</div>
