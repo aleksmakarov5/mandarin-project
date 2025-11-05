@@ -971,11 +971,11 @@ class ApplicationController extends Controller
             // } else
 
 
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
-            if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
+            // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+            // if (isset($doc->id_status))
+            //     $application->doc = $doc->id_status;
+            // else
+            //     $application->doc = 0;
         }
         $applications = $this->configure($applications);
         session(['rout' => '']);
