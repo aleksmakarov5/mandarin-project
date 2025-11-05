@@ -64,10 +64,13 @@ class ApplicationController extends Controller
 
     public function configure($applications)
     {
+        $Spareparts = SparePart::get()->groupBy('id_application');
+        $Estimates = estimate::get()->groupBy('id_application');
+        $Works = work::get()->groupBy('id_application');
         foreach ($applications as $application) {
-            $spareparts = $application->SpareParts->all();
-            $estimates = $application->estimate;
-            $Works_serv = $application->works->all();
+            $spareparts = $Spareparts[$application->id];
+            $estimates = $Estimates[$application->id];
+            $Works_serv = $Works[$application->id];
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
@@ -1736,7 +1739,7 @@ class ApplicationController extends Controller
             )->orderBy('applications.id', 'desc')
                 ->paginate(300);
         }
-        // $applications = $this->configure($applications);
+        $applications = $this->configure($applications);
         session(['rout' => 'directions']);
         //echo (session('rout'));
 
