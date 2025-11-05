@@ -1025,7 +1025,7 @@
                                 </a>
                             </li>
                         @endif
-                        @if ($app->finance_statuses_id == 10)
+                        @if ($app->finance_statuses_id == 10 || $app->finance_statuses_id == 9)
                             <li><a
                                     @if (!$app->ic_pay_date) onclick="alert('Укажите дату оплаты!')"
                                                     @else onclick="if (!confirm('Изменить статус?')) return false"
