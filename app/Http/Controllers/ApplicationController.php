@@ -298,7 +298,7 @@ class ApplicationController extends Controller
                     'cities.name as city',
                     'attachments.id_status as doc'
                 )->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif ($only_me) {
 
 
@@ -369,7 +369,7 @@ class ApplicationController extends Controller
                 'cities.name as city',
                 'attachments.id_status as doc'
             )->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -429,7 +429,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city',
                 'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(20);
+            )->orderBy('applications.id', 'desc')->paginate(300);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -500,7 +500,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city',
                 'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(20);
+            )->orderBy('applications.id', 'desc')->paginate(300);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -570,7 +570,7 @@ class ApplicationController extends Controller
                 'users.name as MRK_name',
                 'cities.name as city',
                 'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')->paginate(20);
+            )->orderBy('applications.id', 'desc')->paginate(300);
         }
         $current = carbon::now();
         foreach ($applications as $application) {
@@ -688,7 +688,7 @@ class ApplicationController extends Controller
     //             'users.name as MRK_name',
     //             'cities.name as city'
     //         )->orderBy('applications.id', 'desc')
-    //             ->paginate(20);
+    //             ->paginate(300);
     //     } else {
     //         $applications = application::where('id_status', '=', '7')
     //             ->orwhere('id_status', '=', '6')
@@ -751,7 +751,7 @@ class ApplicationController extends Controller
     //             'users.name as MRK_name',
     //             'cities.name as city'
     //         )->orderBy('applications.id', 'desc')
-    //             ->paginate(20);
+    //             ->paginate(300);
     //     }
     //     // dd($applications);
     //     $current = carbon::now();
@@ -1124,7 +1124,7 @@ class ApplicationController extends Controller
             'cities.name as city',
             'attachments.id_status as doc'
         )->orderBy('applications.id', 'desc')
-            ->paginate(20);
+            ->paginate(300);
         // dd($applications);
 
         session(['rout' => 'archive']);
@@ -1196,7 +1196,7 @@ class ApplicationController extends Controller
             'cities.name as city',
             'attachments.id_status as doc'
         )->orderBy('applications.id', 'desc')
-            ->paginate(20);
+            ->paginate(300);
         // dd($applications);
 
         session(['rout' => 'temp']);
@@ -1267,7 +1267,7 @@ class ApplicationController extends Controller
             'cities.name as city',
             'attachments.id_status as doc'
         )->orderBy('applications.id', 'desc')
-            ->paginate(20);
+            ->paginate(300);
         // dd($applications);
 
         session(['rout' => 'priem']);
@@ -1355,7 +1355,7 @@ class ApplicationController extends Controller
                 'attachments.id_status as doc'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
 
 
@@ -1437,7 +1437,7 @@ class ApplicationController extends Controller
                 'attachments.id_status as doc'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif ($only_me) {
 
 
@@ -1516,7 +1516,7 @@ class ApplicationController extends Controller
                 'attachments.id_status as doc'
             )
                 ->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
@@ -1584,7 +1584,7 @@ class ApplicationController extends Controller
                 'cities.name as city',
                 'attachments.id_status as doc'
             )->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         } elseif (Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
@@ -1662,7 +1662,7 @@ class ApplicationController extends Controller
                 'cities.name as city',
                 'attachments.id_status as doc'
             )->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
             // dd($applications);
         } else {
             $applications = application::where(function ($query) {
@@ -1734,7 +1734,7 @@ class ApplicationController extends Controller
                 'cities.name as city',
                 'attachments.id_status as doc'
             )->orderBy('applications.id', 'desc')
-                ->paginate(20);
+                ->paginate(300);
         }
         $applications = $this->configure($applications);
         session(['rout' => 'directions']);
@@ -1843,11 +1843,6 @@ class ApplicationController extends Controller
                 // }
                 // dd($application);
             }
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
-            if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
         }
         $city = city::all();
         // dd($applications);
