@@ -68,9 +68,12 @@ class ApplicationController extends Controller
         $Estimates = estimate::get()->groupBy('id_application');
         $Works = work::get()->groupBy('id_application');
         foreach ($applications as $application) {
-            $spareparts = $Spareparts[$application->id];
-            $estimates = $Estimates[$application->id];
-            $Works_serv = $Works[$application->id];
+            if (isset($Spareparts[$application->id]))
+                $spareparts = $Spareparts[$application->id];
+            if (isset($Estimates[$application->id]))
+                $estimates = $Estimates[$application->id];
+            if (isset($Works[$application->id]))
+                $Works_serv = $Works[$application->id];
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
