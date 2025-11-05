@@ -1736,7 +1736,7 @@ class ApplicationController extends Controller
             )->orderBy('applications.id', 'desc')
                 ->paginate(300);
         }
-        $applications = $this->configure($applications);
+        // $applications = $this->configure($applications);
         session(['rout' => 'directions']);
         //echo (session('rout'));
 
