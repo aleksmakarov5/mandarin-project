@@ -2519,8 +2519,15 @@ class ApplicationController extends Controller
             if (isset($adresses_from[$message->id]))
                 if (isset($adresses_from[$message->id]))
                     $message->from = $adresses_from[$message->id][0];
+                else
+                    $message->from = '';
+            else
+                $message->from = [];
             if (isset($adresses_to[$message->id]))
-                $message->to = $adresses_to[$message->id];
+                if (isset($adresses_to[$message->id]))
+                    $message->to = $adresses_to[$message->id];
+                else
+                    $message->to = [];
         }
         // dd($messages[0]->attachment[1]);
         // foreach ($messages as $message) {
