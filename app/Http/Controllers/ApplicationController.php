@@ -505,6 +505,8 @@ class ApplicationController extends Controller
                 ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
                 ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
                 ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+                ->leftjoin('attachments', 'attachments.id_application', '=', 'applications.id')
+                ->where('attachments.id_status', '=', 3)
 
                 ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
                 ->with('status_chats', function ($query) {
@@ -589,11 +591,11 @@ class ApplicationController extends Controller
             }
 
             // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
-            if (isset($doc->id_status))
-                $application->doc = 0;
+            // if (isset($doc->id_status))
+            //     // $application->doc = 0;
             // $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
+            // else
+            //     $application->doc = 0;
         }
         // dd($applications);
         // $applications = $this->configure($applications);
@@ -774,6 +776,9 @@ class ApplicationController extends Controller
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+
+            ->leftjoin('attachments', 'attachments.id_application', '=', 'applications.id')
+            ->where('attachments.id_status', '=', 3)
             ->with('status_chats', function ($query) {
                 $query->where('id_user', '=', auth::user()->id)
                     ->where('is_readed', '=', '0');
@@ -808,7 +813,8 @@ class ApplicationController extends Controller
                 'application_statuses.day',
                 'our_companies.our_name',
                 'users.name as MRK_name',
-                'cities.name as city'
+                'cities.name as city',
+                'attachments.id_status as doc'
             )->paginate(200);
         // dd($applications);
         $current = carbon::now();
@@ -817,11 +823,11 @@ class ApplicationController extends Controller
             $application->max_hour = 48;
 
             $application->count_five = 5 - $current->diffInHours($application->check_date);
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
-            if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
+            // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 2)->first();
+            // if (isset($doc->id_status))
+            //     $application->doc = $doc->id_status;
+            // else
+            //     $application->doc = 0;
         }
         $current = carbon::now();
         foreach ($applications as $application) { {
@@ -950,11 +956,11 @@ class ApplicationController extends Controller
                 // }
                 // dd($application);
             }
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
-            if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
-            else
-                $application->doc = 0;
+            // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+            // if (isset($doc->id_status))
+            //     $application->doc = $doc->id_status;
+            // else
+            //     $application->doc = 0;
         }
         foreach ($applications as $application) {
             // if (isset($application->ic_answer_date)) {
