@@ -588,9 +588,10 @@ class ApplicationController extends Controller
                 $application->count_five = 5 - $current->diffInHours($application->check_date);
             }
 
-            $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
+            // $doc = attachment::where('id_application', '=', $application->id)->where('id_status', '=', 3)->first();
             if (isset($doc->id_status))
-                $application->doc = $doc->id_status;
+                $application->doc = 0;
+            // $application->doc = $doc->id_status;
             else
                 $application->doc = 0;
         }
