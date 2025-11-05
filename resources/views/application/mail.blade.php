@@ -482,10 +482,15 @@
                                         @php
                                             $to = [];
                                             $subj = $message->subject . ' zn-' . $application->id . '!';
+                                            $fr='--';
                                             // dd($message);
                                             if (isset($message->from->email)) {
                                                 $to[0] = $message->from->email;
+                                                $fr= $message->from->email;
+
                                             }
+
+
                                         @endphp
                                         <a title='Ответить'>
                                             <special-mail :to="{{ json_encode($to) }}"
@@ -498,9 +503,7 @@
                                                     '<br><blockquote><h5><b>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     From:
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     </b>' .
-                                                    $message->from
-                                                        ? $message->from->email
-                                                        : '--' .
+                                                    $fr .
                                                             '<br>
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <b>Sent:</b>' .
                                                             Date::parse($message->message_date)->format('j F Yг. H:i') .
