@@ -70,8 +70,12 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             if (isset($Spareparts[$application->id]))
                 $spareparts = $Spareparts[$application->id];
+            else
+                $spareparts = $application->spareparts;
             if (isset($Estimates[$application->id]))
                 $estimates = $Estimates[$application->id];
+            else
+                $estimates = $application->estimates;
             if (isset($Works[$application->id]))
                 $Works_serv = $Works[$application->id];
             else
