@@ -22,14 +22,21 @@
                 <tbody>
                     @foreach ($messages as $message)
                         <tr>
+
                             <td
                                 onclick="window.location.href='/mailbox/{{ $type }}/{{ $company_id }}/{{ $message->id }}#{{ $message->id }}'; return false">
                                 <div id="{{ $message->id }}"
                                     class="@if ($message->id == $message_id) current @else
 
+
                                     message-name @endif
                                     @if (!$message->is_ready) big-text @endif
-                                    @if (isset($message->application_id)) green @endif">
+
+                                    @if ($message->type) blue
+                            @else
+                                @if (isset($message->application_id)) green @endif
+                            @endif
+                                    ">
 
                                     <div class="details">
                                         <p class="msg-subject">
