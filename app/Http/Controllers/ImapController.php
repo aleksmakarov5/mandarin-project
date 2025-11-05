@@ -1094,19 +1094,19 @@ class ImapController extends Controller
                 $status_message->is_readed = false;
                 $status_message->save();
                 $url = "https://mandarin-portal.ru/mail/" . $id;
-                if ($user->telegram_notify) {
+                // if ($user->telegram_notify) {
 
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    // echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение \n\n ")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
+                //     $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                //     // echo $att;
+                //     $ch = $new_chat->html("По заявке {$id} получено новое сообщение \n\n ")
+                //         ->keyboard(
+                //             Keyboard::make()
+                //                 ->buttons($keyboard)
+                //         )
+                //         ->send();
 
-                    $notify->id_message = json_decode($ch)->result->message_id;
-                }
+                //     $notify->id_message = json_decode($ch)->result->message_id;
+                // }
                 $notify->save();
             }
 
