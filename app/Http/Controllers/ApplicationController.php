@@ -74,6 +74,8 @@ class ApplicationController extends Controller
                 $estimates = $Estimates[$application->id];
             if (isset($Works[$application->id]))
                 $Works_serv = $Works[$application->id];
+            else
+                $Works_serv = $application->works;
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
