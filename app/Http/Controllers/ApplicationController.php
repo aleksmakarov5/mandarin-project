@@ -1141,7 +1141,7 @@ class ApplicationController extends Controller
 
     public function temp()
     {
-        $applications = application::where('id_status', '=', '27')
+        $applications = application::where('applications.id_status', '=', '27')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1212,7 +1212,7 @@ class ApplicationController extends Controller
     }
     public function priem()
     {
-        $applications = application::where('id_status', '=', '28')
+        $applications = application::where('applications.id_status', '=', '28')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
