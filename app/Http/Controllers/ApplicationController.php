@@ -1069,7 +1069,7 @@ class ApplicationController extends Controller
     public function archive()
     {
 
-        $applications = application::where('id_status', '=', '25')
+        $applications = application::where('applications.id_status', '=', '25')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
             ->leftjoin('attachments', function ($join) {
@@ -1141,7 +1141,7 @@ class ApplicationController extends Controller
 
     public function temp()
     {
-        $applications = application::where('id_status', '=', '27')
+        $applications = application::where('applications.id_status', '=', '27')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1212,7 +1212,7 @@ class ApplicationController extends Controller
     }
     public function priem()
     {
-        $applications = application::where('id_status', '=', '28')
+        $applications = application::where('applications.id_status', '=', '28')
             ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
             ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
@@ -1290,8 +1290,8 @@ class ApplicationController extends Controller
         if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
 
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1361,8 +1361,8 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1443,8 +1443,8 @@ class ApplicationController extends Controller
 
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->join('user_roles', function ($join) {
                     $join->where(function ($query) {
@@ -1520,8 +1520,8 @@ class ApplicationController extends Controller
         } elseif (Gate::allows('service')) {
             $applications = application::where(function ($query) {
                 $query
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_service', '=', service::where('id_user', '=', Auth::user()->id)->first()->id)
                 ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -1589,8 +1589,8 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_mrk', '=', Auth::user()->id)
                 ->join('user_roles', function ($join) {
@@ -1668,8 +1668,8 @@ class ApplicationController extends Controller
             $applications = application::where(function ($query) {
                 $query
 
-                    ->where('id_status', '>', '11')
-                    ->where('id_status', '<', '25');
+                    ->where('applications.id_status', '>', '11')
+                    ->where('applications.id_status', '<', '25');
             })
                 ->where('applications.id_spm', '=', Auth::user()->id)
 
