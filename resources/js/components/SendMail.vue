@@ -1,5 +1,18 @@
 <style>
-
+.inp-cont {
+    display: block;
+    width: 100px;
+    font-family: inherit;
+    margin: 0;
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+    background-clip: padding-box;
+    border-radius: 0.25rem;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
 .content{
   align-items: center;
   justify-content: center;
@@ -73,13 +86,43 @@
     </tbody>
 </table>
 
-<table class="table table-striped">
+<table id="books" class="table table-striped">
     <thead>
         <tr>
         <th>ФИО</th>
         <th>Email</th>
         <th>Компания</th>
         <th>Город</th>
+        </tr>
+        <tr>
+<td><input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="ФИО"
+                            id="search-text1"
+                            @keyup="tableSearch(1, 'books')"
+                        /></td>
+<td><input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="email"
+                            id="search-text2"
+                            @keyup="tableSearch(2, 'books')"
+                        /></td>
+<td><input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Компания"
+                            id="search-text3"
+                            @keyup="tableSearch(3, 'books')"
+                        /></td>
+<td><input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Город"
+                            id="search-text4"
+                            @keyup="tableSearch(4, 'books')"
+                        /></td>
         </tr>
     </thead>
     <tbody>
@@ -216,7 +259,7 @@ export default{
         },
         sendMessage() {
             let mess = document.getElementById('message_new');
-             this.message = mess.innerHTML;
+            this.message = mess.innerHTML;
 
             // mess.innerHTML = ''
             let to = []
@@ -338,6 +381,25 @@ export default{
                     this.email = '';
                     this.book.unshift(res.data)
                 })
+        },
+         tableSearch(columnNumber, tableId) {
+            let input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("search-text" + columnNumber);
+            filter = input.value.toUpperCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 2; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[columnNumber - 1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
         },
 
 
