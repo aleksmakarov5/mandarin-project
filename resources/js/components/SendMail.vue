@@ -226,28 +226,16 @@ export default{
             email: '',
         }
     },
-    computed: {
-        docSelected()
-        {
-            return function (location) {
-                if (this.location.includes(location)) {
-                    return 'border: 2px solid #000000;'
-                }
-            }
-        }
-    },
-    methods: {
-        editTo(index)
-        {
-            this.toIndex = index;
-      }
-    },
-
 
     mounted() {
         this.getBook();
-        },
+    },
     methods: {
+          editTo(index)
+        {
+            this.toIndex = index;
+      },
+
         addTo() {
         this.to.push(' ');
         },
