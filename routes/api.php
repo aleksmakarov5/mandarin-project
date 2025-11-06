@@ -91,6 +91,8 @@ Route::group(['namespace' => 'Chat', 'prefix' => 'chat'], function () {
 Route::group(['namespace' => 'Mail', 'prefix' => 'mail'], function () {
 
     Route::post('/send', [MailController::class, 'mail_sent'])->name('mail.send');
+    Route::post('/addUser', [MailController::class, 'addUser'])->name('mail.addUser');
+    Route::get('/book', [MailController::class, 'book'])->name('mail.book');
 
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');

@@ -26,8 +26,72 @@
     margin-top: 40px;
     cursor: pointer;
 }
+.book{
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    position: fixed;
+    background-color: white;
+    width: 80%;
+    height: 80%;
+    padding: 5px;
+    z-index: 7;
+    overflow-y: scroll;
+}
+.close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    width: 20px;
+    z-index: 8;
+}
 </style>
 <template>
+<div class="book" v-if="showBook">
+    <div class="close" @click="showBook=false">
+                <img src="/storage/img/close.png" width="20px" />
+            </div>
+               <h3>Добавить нового</h3>
+            <table class="table table-striped">
+<thead>
+        <tr>
+        <th>ФИО</th>
+        <th>Email</th>
+        <th>Компания</th>
+        <th>Город</th>
+        <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr >
+           <td> <input type="text" v-model="name" placeholder="ФИО"></input></td>
+            <td> <input type="text" v-model="email" placeholder="Email"></input></td>
+            <td> <input type="text" v-model="company" placeholder="Компания"></input></td>
+            <td> <input type="text" v-model="city" placeholder="Город"></input></td>
+<td><input class="nav-link" type="button" value="Добавить" @click="addUser()"></input></td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+        <th>ФИО</th>
+        <th>Email</th>
+        <th>Компания</th>
+        <th>Город</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr v-for="user in book" @click="selectBook(user.email)">
+            <td>{{ user.name }}</td>
+            <td>{{ user.email }}</td>
+            <td>{{ user.company }}</td>
+            <td>{{ user.city }}</td>
+        </tr>
+    </tbody>
+</table>
+</div>
 
 
 <div class="content">
@@ -35,7 +99,7 @@
 <label for="to">Получатель</label> <img class="remove" src="/storage/img/add.png" title="Добавить получателя" width="30" alt="" @click.prevent="addTo()">
             <br>
         <template v-for="(t,i) in to">
-              <input type="text" v-model="to[i]" size="100">
+              <input type="text" v-model="to[i]" size="100" @click="editTo(i)"></input>
               <img class="remove" src="/storage/img/delete.png" title="Удалить получателя" width="20" alt="" @click.prevent="removeTo(i)">
               <br>
          </template>
@@ -109,13 +173,36 @@ export default{
             status: this.in_status,
             message: '',
             location: [],
-            doc_id:[],
+            doc_id: [],
+            showBook: false,
+            book: [],
+            toIndex: 0,
+            name: '',
+            city: '',
+            company: '',
+            email: '',
+        }
+    },
+    computed: {
+        docSelected()
+        {
+            return function (location) {
+                if (this.location.includes(location)) {
+                    return 'border: 2px solid #000000;'
+                }
+            }
+        }
+    },
+    methods: {
+        editTo(index)
+        {
+            this.toIndex = index;
       }
     },
 
 
     mounted() {
-
+        this.getBook();
         },
     methods: {
         addTo() {
@@ -208,7 +295,52 @@ export default{
 
     removeTo(index) {
         this.to.splice(index, 1);
+    },
+
+    editTo(i)
+    {
+            this.toIndex = i;
+            this.showBook = true;
         },
+        getBook()
+        {
+            axios.get(`/api/mail/book`)
+                .then(res => {
+                    console.log(res.data)
+                    this.book = res.data
+                })
+        },
+        selectBook(email)
+        {
+            this.to[this.toIndex] = email;
+            this.showBook = false;
+        },
+        addUser()
+        {
+            let formData = new FormData();
+            formData.append('name', this.name);
+            formData.append('city', this.city);
+            formData.append('company', this.company);
+            formData.append('email', this.email);
+            axios.post(`/api/mail/addUser`, formData,
+                {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                    }
+                }
+            )
+                .then(res => {
+                    console.log(res.data);
+                    this.getBook();
+                    this.name = '';
+                    this.city = '';
+                    this.company = '';
+                    this.email = '';
+                    this.book.unshift(res.data)
+                })
+        },
+
+
 
 
   }

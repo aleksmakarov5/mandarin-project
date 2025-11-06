@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail as Mail_send;
 use App\Models\OurCompany;
 use App\Models\application;
 use App\Models\message;
+use App\Models\book;
 use App\Models\history;
 use App\Models\attachment;
 use App\Models\address;
@@ -108,5 +109,30 @@ class MailController extends Controller
         $history->save();
         $application->save();
         return $request;
+    }
+    public function book()
+    {
+        $book = book::all();
+        return $book;
+    }
+    public function addUser(Request $request)
+    {
+        $user = new book;
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->company = $request->company;
+        $user->city = $request->city;
+        $user->save();
+        return $user;
+    }
+    public function addApp(Request $request)
+    {
+        $user = new application;
+        $user->id_user = $request->user_id;
+        $user->id_status = 1;
+        $user->id_our_company = 1;
+        $user->save();
+        $user->save();
+        return $user;
     }
 }
