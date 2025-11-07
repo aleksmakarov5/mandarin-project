@@ -299,7 +299,8 @@
                                         '!';
                                     if (isset($application->id_insuranceCompany)) {
                                         if ($application->id_insuranceCompany == 3) {
-                                            $to[0] = 'drs-sto@ingos.ru';
+                                            $to[0] = 'price@ingos.ru';
+
                                             $to[1] = 'sergei.vtorov@ingos.ru';
                                             $to[2] = 'sergey.sivkov@ingos.ru';
                                             $to[3] = 'andrey.gretchukhin@ingos.ru';
@@ -343,7 +344,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
