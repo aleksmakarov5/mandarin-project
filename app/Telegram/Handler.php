@@ -58,6 +58,11 @@ class Handler extends WebhookHandler
                         case 0:
                             $load = false;
                             break;
+                        case 1:
+
+                            $name = 0;
+                            $zip_name = 0;
+                            break;
                         case 21:
                             $path = $path . "Фото_первичного_осмотра";
                             $name = "Фото первичного осмотра";
@@ -110,11 +115,6 @@ class Handler extends WebhookHandler
                             $path = $path . "Фото_сдачи_автомобиля";
                             $name = "Фото сдачи автомобиля";
                             $zip_name = "Фото_сдачи_автомобиля";
-                            break;
-                        case 1:
-
-                            $name = 0;
-                            $zip_name = 0;
                             break;
                     }
                     if ($load) {
