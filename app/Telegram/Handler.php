@@ -111,23 +111,40 @@ class Handler extends WebhookHandler
                             $name = "Фото сдачи автомобиля";
                             $zip_name = "Фото_сдачи_автомобиля";
                             break;
+                        case 40:
+
+                            $name = 0;
+                            $zip_name = 0;
+                            break;
                     }
                     if ($load) {
                         if (isset($this->request->message['document']['file_name'])) {
+
                             $path = $path . "_" . date('d-m-y');
                             $name = $name . " " . date('d-m-y');
                             $zip_path = '';
                             $mime_type = '';
-                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF') {
+                            if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF' || $name == 0) {
 
                                 $path = "storage/files/" . $telegram_action->id_application . '/';
+                                if ($name == 0) {
+                                    $mime_type = pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION);
+                                    $name = $this->request->message['document']['file_name'];
+                                    $zip_name = $name . "_" . date('d-m-y') . '(' . $telegram_action->count . ").pdf";
+                                    $zip_path = $path . $zip_name;
 
-                                $mime_type = 'pdf';
-                                $zip_name = $zip_name . "_" . date('d-m-y') . '(' . $telegram_action->count . ").pdf";
-                                $zip_path = $path . $zip_name;
-                                $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
+                                    $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
+                                } else {
+                                    $mime_type = 'pdf';
+                                    $name = $name . '(' . $telegram_action->count . ')';
+                                    $zip_name = $zip_name . "_" . date('d-m-y') . '(' . $telegram_action->count . ").pdf";
+                                    $zip_path = $path . $zip_name;
+
+                                    $filename = $this->bot->find(1)->store($this->message->document(), $path, $zip_name);
+                                }
+
                                 $telegram_action->count = $telegram_action->count + 1;
-                                $name = $name . '(' . $telegram_action->count . ')';
+
                                 $telegram_action->save();
                                 $keyboard = [];
                                 $keyboard[0] = Button::make("ГОТОВО")->action("documents")->param('id', "{$telegram_action->id_application}");
@@ -550,6 +567,7 @@ class Handler extends WebhookHandler
             $keyboard[$i++] = Button::make("Фото дефектовки")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "30");
             $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
             $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
+            $keyboard[$i++] = Button::make("Другое")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "40");
         }
         $message = $this->chat->message("Выберите тип загружаемых данных")
             ->keyboard(
