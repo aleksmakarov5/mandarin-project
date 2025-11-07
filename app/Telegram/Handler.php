@@ -557,6 +557,7 @@ class Handler extends WebhookHandler
         $keyboard[$i++] = Button::make("В/У (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "34");
         $keyboard[$i++] = Button::make("Скриншот СМС")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "35");
         $keyboard[$i++] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
+        $keyboard[$i++] = Button::make("Другое")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "40");
         if ($app->id_status < 25) {
             $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
             $keyboard[$i++] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
@@ -567,7 +568,6 @@ class Handler extends WebhookHandler
             $keyboard[$i++] = Button::make("Фото дефектовки")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "30");
             $keyboard[$i++] = Button::make("Акт сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "14");
             $keyboard[$i++] = Button::make("Фото сдачи автомобиля")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "15");
-            $keyboard[$i++] = Button::make("Другое")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "40");
         }
         $message = $this->chat->message("Выберите тип загружаемых данных")
             ->keyboard(
