@@ -127,7 +127,7 @@ class Handler extends WebhookHandler
                             if (pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'PDF' || $name == 0) {
 
                                 $path = "storage/files/" . $telegram_action->id_application . '/';
-                                if ($name == 0) {
+                                if ($telegram_action->number == 1) {
                                     $mime_type = pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION) == 'pdf' || pathinfo($this->request->message['document']['file_name'], PATHINFO_EXTENSION);
                                     $name = $this->request->message['document']['file_name'];
                                     $zip_name = $name;
