@@ -111,7 +111,7 @@ class Handler extends WebhookHandler
                             $name = "Фото сдачи автомобиля";
                             $zip_name = "Фото_сдачи_автомобиля";
                             break;
-                        case 50:
+                        case 1:
 
                             $name = 0;
                             $zip_name = 0;
@@ -557,7 +557,7 @@ class Handler extends WebhookHandler
         $keyboard[$i++] = Button::make("В/У (лицевая сторона)")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "34");
         $keyboard[$i++] = Button::make("Скриншот СМС")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "35");
         $keyboard[$i++] = Button::make("Фото первичного осмотра")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "21");
-        $keyboard[$i++] = Button::make("Другое")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "50");
+        $keyboard[$i++] = Button::make("Другое")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "1");
         if ($app->id_status < 25) {
             $keyboard[$i++] = Button::make("Договор с клиентом")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "3");
             $keyboard[$i++] = Button::make("Доп соглашение")->action("doc_save")->param('id', "{$this->data->get('id')}")->param('id_doc', "5");
