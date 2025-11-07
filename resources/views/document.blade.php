@@ -289,6 +289,14 @@
                                 @php
                                     $to = [];
                                     $subj = $application->numberInsuranceCompanyApplication . '_ПЗН';
+                                    $subj .=
+                                        ' ' .
+                                        $application->CarModel .
+                                        ' ' .
+                                        $application->gnz .
+                                        ' zn-' .
+                                        $application->id .
+                                        '!';
                                     if (isset($application->id_insuranceCompany)) {
                                         if ($application->id_insuranceCompany == 3) {
                                             $to[0] = 'drs-sto@ingos.ru';
@@ -308,7 +316,6 @@
                                             $to[0] = 'stoarcuu@ugsk.ru';
                                             $to[1] = 'petrunyasv@ugsk.ru';
                                             $to[2] = 'menshakoves@ugsk.ru';
-                                            $subj .= ' ' . $application->CarModel . ' ' . $application->gnz;
                                         } else {
                                             $to[0] = isset($to_email) ? $to_email : '';
                                         }
@@ -336,7 +343,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
@@ -421,7 +428,7 @@
                                     }
                                 @endphp
                                 <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_АктСП') }}"
+                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_АктСП' . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
                                     :app_id="{{ $id }}"
                                     :text="{{ json_encode('Направляем акт скрытых повреждений и фото дефектовки по убытку №' . $application->numberInsuranceCompanyApplication) }}"
@@ -568,7 +575,7 @@
 
                                 @endphp
                                 <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
-                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_Счет') }}"
+                                    :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_Счет' . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode('Направляем комплект документов по факту выполненных работ по убытку №' . $application->numberInsuranceCompanyApplication) }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="110" />
