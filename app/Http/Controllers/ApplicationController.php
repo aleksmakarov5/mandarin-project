@@ -5420,7 +5420,7 @@ class ApplicationController extends Controller
     }
     public function move_mail_index($id_prev, $id, $message_id)
     {
-        $applications = application::where('our_company', '=', $id)->get()->all();
+        $applications = application::get()->all();
         return view('application.move_mail', [
             'applications' => $applications,
             'message_id' => $message_id,
