@@ -853,7 +853,7 @@ class ImapController extends Controller
             $start = mb_strpos($email->getHTMLBody(), "Заявление");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 11));
             $app_number = trim($body[0]);
-            $app_number =  preg_replace('/[^0-9№DAONBDMT]/', '', $app_number);
+            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMT]/', '', $app_number);
             $start = mb_strpos($email->getHTMLBody(), "VIN");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 5));
             $vin = trim($body[0]);
@@ -878,7 +878,7 @@ class ImapController extends Controller
                     );
                 $ub_type = true;
             } else {
-                $app_number =  preg_replace('/[^0-9№DAONBDMT]/', '', $subject);
+                $app_number =  preg_replace('/[^0-9№DPAONBDMT]/', '', $subject);
             }
             // if ($start = mb_strpos($subject, 'XXX')) {
             //     $app_number = mb_substr($subject, $start);
