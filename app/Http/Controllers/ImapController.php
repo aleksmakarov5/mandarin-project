@@ -883,11 +883,20 @@ class ImapController extends Controller
                 $app_number = mb_substr($subject, $start, 20);
             } else if ($start = mb_strpos($subject, 'ttt')) {
                 $app_number = mb_substr($subject, $start, 20);
+            } else if ($start = mb_strpos($subject, 'ТТТ')) {
+                $app_number = mb_substr($subject, $start, 20);
+            } else if ($start = mb_strpos($subject, 'ттт')) {
+                $app_number = mb_substr($subject, $start, 20);
+            } else if ($start = mb_strpos($subject, 'ХХХ')) {
+                $app_number = mb_substr($subject, $start, 20);
+            } else if ($start = mb_strpos($subject, 'ххх')) {
+                $app_number = mb_substr($subject, $start, 20);
             }
             // dd($subject);
+            dd($app_number);
         }
         echo $subject . '<br>';
-        // dd($app_number);
+
         $applications = application::firstOrCreate(
             ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5],
             [
