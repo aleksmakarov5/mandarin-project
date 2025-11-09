@@ -866,6 +866,7 @@ class ImapController extends Controller
 
             // dd($body, $array_subject);
         } else {
+            $subject = str_replace(' ', '', $subject);
             if ($start = mb_strpos($subject, 'SGZA')) {
                 $app_number = mb_substr($subject, $start, 23);
                 if (mb_strpos($app_number, '_'))
@@ -875,25 +876,28 @@ class ImapController extends Controller
                         mb_strpos($app_number, '_')
                     );
                 $ub_type = true;
-            } else if ($start = mb_strpos($subject, 'XXX')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'TTT')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'xxx')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'ttt')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'ТТТ')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'ттт')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'ХХХ')) {
-                $app_number = mb_substr($subject, $start, 20);
-            } else if ($start = mb_strpos($subject, 'ххх')) {
-                $app_number = mb_substr($subject, $start, 20);
+            } else {
+                $app_number =  preg_replace('/[^0-9№]/', '', $subject);
             }
+            // if ($start = mb_strpos($subject, 'XXX')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'TTT')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'xxx')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'ttt')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'ТТТ')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'ттт')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'ХХХ')) {
+            //     $app_number = mb_substr($subject, $start);
+            // } else if ($start = mb_strpos($subject, 'ххх')) {
+            //     $app_number = mb_substr($subject, $start);
+            // }
             // dd($subject);
-            dd($app_number);
+            // dd($app_number);
         }
         echo $subject . '<br>';
 
