@@ -2004,6 +2004,7 @@ class ApplicationController extends Controller
         $application = application::join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
 
             ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->leftjoin('users as mrks', 'applications.id_mrk', '=', 'mrks.id')
@@ -2033,7 +2034,8 @@ class ApplicationController extends Controller
                 'spms.name as spm',
                 'mrks.name as mrk',
                 'cities.name as city',
-                'lawyers.lawyer_name'
+                'lawyers.lawyer_name',
+                'our_companies.our_name'
             )
             ->where('applications.id', '=', $id)
             ->first();
@@ -2094,6 +2096,7 @@ class ApplicationController extends Controller
 
         $services = DB::table('services')->get();
         $lawyers = DB::table('lawyers')->get();
+        $our_companies = DB::table('our_companies')->get();
 
         $InsuranceCompany = new InsuranceCompany;
         $application = application::join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
@@ -2140,6 +2143,7 @@ class ApplicationController extends Controller
             [
                 'application' => $application,
                 'InsuranceCompany' => $InsuranceCompany->all(),
+                'our_companies' => $our_companies,
 
                 'mrks' => $mrks,
                 'services' => $services,
@@ -2202,7 +2206,8 @@ class ApplicationController extends Controller
                 'pred' => 'nullable|string',
                 'pred_phone' => 'nullable|string',
                 'ub_type' => 'nullable',
-                'gender' => 'nullable'
+                'gender' => 'nullable',
+                'our_company' => 'nullable|integer',
 
             ]);
             // dd($data);

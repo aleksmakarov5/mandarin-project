@@ -28,6 +28,12 @@
                     </th>
                 </tr>
                 <tr>
+                    <th>Юр. лицо</th>
+                    <th>
+                        {{ $application->our_name }}
+                    </th>
+                </tr>
+                <tr>
                     <th>Дата заявки</th>
                     <th>
                         {{ Date::parse($application->created_at)->format('j F Yг. H:i') }}
