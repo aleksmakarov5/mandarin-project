@@ -92,8 +92,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="Статус"
-                            id="search-text2"
-                            @keyup="tableSearch(2, 'applications')"
+                            id="search-text3"
+                            @keyup="tableSearch(3, 'applications')"
                         />
                     </th>
 
@@ -103,8 +103,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder=""
-                            id="search-text4"
-                            @keyup="tableSearch(4, 'applications')"
+                            id="search-text5"
+                            @keyup="tableSearch(5, 'applications')"
                         />
                     </th>
                     <th scope="col">
@@ -112,8 +112,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="МРК"
-                            id="search-text5"
-                            @keyup="tableSearch(5, 'applications')"
+                            id="search-text6"
+                            @keyup="tableSearch(6, 'applications')"
                         />
                     </th>
                     <th scope="col">
@@ -165,15 +165,6 @@
                             class="inp-cont"
                             type="text"
                             placeholder="СК"
-                            id="search-text7"
-                            @keyup="tableSearch(7, 'applications')"
-                        />
-                    </th>
-                    <th scope="col">
-                        <input
-                            class="inp-cont"
-                            type="text"
-                            placeholder="СТО"
                             id="search-text8"
                             @keyup="tableSearch(8, 'applications')"
                         />
@@ -182,7 +173,7 @@
                         <input
                             class="inp-cont"
                             type="text"
-                            placeholder="Юрист"
+                            placeholder="СТО"
                             id="search-text9"
                             @keyup="tableSearch(9, 'applications')"
                         />
@@ -191,7 +182,7 @@
                         <input
                             class="inp-cont"
                             type="text"
-                            placeholder="№ убытка "
+                            placeholder="Юрист"
                             id="search-text10"
                             @keyup="tableSearch(10, 'applications')"
                         />
@@ -200,7 +191,7 @@
                         <input
                             class="inp-cont"
                             type="text"
-                            placeholder="ФИО клиента"
+                            placeholder="№ убытка "
                             id="search-text11"
                             @keyup="tableSearch(11, 'applications')"
                         />
@@ -209,9 +200,18 @@
                         <input
                             class="inp-cont"
                             type="text"
-                            placeholder="Телефон"
+                            placeholder="ФИО клиента"
                             id="search-text12"
                             @keyup="tableSearch(12, 'applications')"
+                        />
+                    </th>
+                    <th scope="col">
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="Телефон"
+                            id="search-text13"
+                            @keyup="tableSearch(13, 'applications')"
                         />
                     </th>
 
@@ -220,8 +220,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="Авто "
-                            id="search-text13"
-                            @keyup="tableSearch(13, 'applications')"
+                            id="search-text14"
+                            @keyup="tableSearch(14, 'applications')"
                         />
                     </th>
                     <th scope="col">
@@ -229,8 +229,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="ГРЗ"
-                            id="search-text14"
-                            @keyup="tableSearch(14, 'applications')"
+                            id="search-text15"
+                            @keyup="tableSearch(15, 'applications')"
                         />
                     </th>
                     <th scope="col"></th>
@@ -240,8 +240,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="Тип убытка"
-                            id="search-text14"
-                            @keyup="tableSearch(16, 'applications')"
+                            id="search-text17"
+                            @keyup="tableSearch(17, 'applications')"
                         />
                     </th>
                     <th scope="col">
@@ -249,8 +249,8 @@
                             class="inp-cont"
                             type="text"
                             placeholder="СТОА"
-                            id="search-text17"
-                            @keyup="tableSearch(17, 'applications')"
+                            id="search-text18"
+                            @keyup="tableSearch(18, 'applications')"
                         />
                     </th>
                     <template v-if="rout == 'directions' || rout == 'archive'">
