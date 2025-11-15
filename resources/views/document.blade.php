@@ -300,6 +300,23 @@
                                     if (isset($application->id_insuranceCompany)) {
                                         if ($application->id_insuranceCompany == 3) {
                                             $to[0] = 'price@ingos.ru';
+                                            $to[1] = 'andrey.gretchukhin@ingos.ru';
+                                            $to[2] = 'sergey.sivkov@ingos.ru';
+                                            $gnz = str_replace('RUS', '', $application->gnz);
+                                            $subj =
+                                                'Согласование стоимости з/ч ' .
+                                                $application->vin .
+                                                ' ' .
+                                                $gnz .
+                                                ' ' .
+                                                $application->numberInsuranceCompanyApplication .
+                                                ' zn-' .
+                                                $application->id .
+                                                '!';
+                                        } elseif ($application->id_insuranceCompany == 1) {
+                                            $to[0] = 'smeta_szfo@vsk.ru';
+                                        } elseif ($application->id_insuranceCompany == 5) {
+                                            $to[0] = 'akt.rem4@sogaz.ru';
                                         } elseif ($application->id_insuranceCompany == 1) {
                                             $to[0] = 'smeta_szfo@vsk.ru';
                                         } elseif ($application->id_insuranceCompany == 5) {
@@ -340,7 +357,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
