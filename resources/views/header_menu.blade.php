@@ -99,7 +99,7 @@
                     //     $max_hour = $start->diffInDays($application->end_date)
                     $max_hour = $start->diffInHours($app->view_date);
                     $count_hour = $max_hour - $current->diffInHours($start);
-                    $app->day = 0;
+                    $currentStatus->day = 0;
                 } else {
                     $start = Carbon\Carbon::create($app->check_date);
 
