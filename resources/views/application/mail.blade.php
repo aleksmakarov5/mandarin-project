@@ -436,7 +436,7 @@
                                         {{ $message->from->email }}
                                     @endif
                                 </p>
-                                <p class=" small mb-0 text-white"><i class="far fa-clock">
+                                <p class=" small mb-0"><i class="far fa-clock">
                                         @if (isset($message->message_date))
                                             {{ Date::parse($message->message_date)->format('j F Yг. H:i') }}
                                         @endif
