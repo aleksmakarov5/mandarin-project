@@ -8,6 +8,9 @@
 
         <input type="submit" value="Обновить" class="nav-link">
     </form>
+
+
+
     {{-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             var eventCalllback = function(e) {
