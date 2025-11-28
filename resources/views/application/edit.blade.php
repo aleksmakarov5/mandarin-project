@@ -1,4 +1,5 @@
 @extends('header_menu')
+{{-- dsfsd --}}
 @section('main')
     <a href="/application/{{ $application->id }}" class="nav-link">Отмена</a>
     <form action="/applications/{{ $application->id }}/update" method="POST">
