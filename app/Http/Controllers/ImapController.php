@@ -2010,6 +2010,8 @@ class ImapController extends Controller
 
                         // dd($app_id);
                     } else {
+                        $sogaz = 0;
+                        $ingos = 0;
                         foreach ($from as $fr) {
                             if (mb_strpos($fr, 'sogaz') !== false)
                                 $sogaz = 1;
