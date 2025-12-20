@@ -1886,17 +1886,21 @@ class ImapController extends Controller
                             // dd($app_id);
                         } else {
                             $sogaz = 0;
+                            $ingos = 0;
                             foreach ($from as $fr) {
                                 if (mb_strpos($fr, 'sogaz') !== false)
                                     $sogaz = 1;
+                                if (mb_strpos($fr, 'ingos') !== false)
+                                    $ingos = 1;
                             }
+
                             if ($sogaz) {
                                 echo "Sogaz <br>";
                                 $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             }
                             if (mb_strpos($body_html, 'vsk.ru') !== false) {
                                 $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
-                            } elseif (mb_strpos($body_html, 'ingos') !== false) {
+                            } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
                                 echo "Ingos";
 
                                 $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
