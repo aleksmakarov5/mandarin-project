@@ -467,6 +467,8 @@ class WordController extends Controller
         $document->file_size = filesize($pathToSave);
         $document->location = $location;
         $document->id_status = $doc_type;
+        if ($doc_type != 18)
+            $document->sto_view = true;
         $document->save();
         exec('chmod 755 "' . $pathToSave . '"');
         exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);

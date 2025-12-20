@@ -268,6 +268,9 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/document/{id}', [MainController::class, 'document'])->name('document');
+        Route::get('/doc_show/{id}', [MainController::class, 'doc_show'])->name('doc_show');
+        Route::get('/doc_hide/{id}', [MainController::class, 'doc_hide'])->name('doc_hide');
+
         Route::get('/document_delete/{id}', [MainController::class, 'document_delete'])->name('document_delete');
 
         Route::get('documents/{id}/doc_load', [MainController::class, 'doc_load'])->name('doc_load');

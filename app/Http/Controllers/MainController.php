@@ -289,6 +289,22 @@ class MainController extends Controller
 
         ], ['id' => $id]);
     }
+    public function doc_show($id)
+    {
+        $document = attachment::where('id', '=', $id)
+            ->first();
+        $document->sto_view = true;
+        $document->save();
+        return redirect()->back();
+    }
+    public function doc_hide($id)
+    {
+        $document = attachment::where('id', '=', $id)
+            ->first();
+        $document->sto_view = false;
+        $document->save();
+        return redirect()->back();
+    }
     public function document_delete(request $request, $id)
     {
 
