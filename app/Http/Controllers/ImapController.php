@@ -1452,7 +1452,7 @@ class ImapController extends Controller
     public function reso_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
         echo $subject . '<br>';
-        echo mb_strpos($subject, 'Уведомление о появлении нового лота');
+        echo mb_strpos('_' . $subject, 'Уведомление о появлении нового лота');
 
         if (mb_strpos($subject, 'Уведомление о появлении нового лота') !== false) {
             $applications = application::firstorcreate(
