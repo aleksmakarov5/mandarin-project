@@ -697,8 +697,9 @@ class ImapController extends Controller
                 }
                 $zip_path = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y') . '.zip';
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
-                $attachment->save($path = $dir . '/', $filename);
+                // $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                $path = '';
+                $attachment->save($path = $dir . '/', $filename . '.jpg');
 
 
                 $upload_folder = '' . $id . '/foto' . "_" . date('d-m-y');
@@ -709,69 +710,16 @@ class ImapController extends Controller
                 // Расширение
                 $extention = pathinfo($attachment->getFilename(), PATHINFO_EXTENSION);
                 // Путь для сохранения
-                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                $fileNameToStore = $filename . "." . $extention;
                 // Сохраняем файл
                 // $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
-                $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
+                $filename = $path . $filename . '.jpg';
 
                 // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
-
+                // dd($filename);
                 $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
                 if ($size) {
-                    // Optimize::path($filename);
-                    $document = new Attachment();
-                    $width = 700;
-                    $height = 700;
-
-                    // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
-                    header("Content-type: {$size['mime']}");
-                    $exif = exif_read_data($filename);
-                    // file_put_contents('data.txt', json_encode($exif['Orientation']));
-
-                    // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
-                    list($width_orig, $height_orig) = getimagesize($filename);
-
-                    if ($width && ($width_orig < $height_orig)) {
-
-                        $width = ($height / $height_orig) * $width_orig;
-                    } else {
-                        $height = ($width / $width_orig) * $height_orig;
-                    }
-
-                    // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
-                    $image_p = imagecreatetruecolor($width, $height);
-                    $image = imagecreatefromjpeg($filename);
-                    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
-
-                    // СОЗДАЁМ
-                    $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
-                    imagejpeg($image_p, $img_name, 50);
-
-                    // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
-                    unlink($filename);
-                    $filename = $img_name;
-                    if (isset($exif['Orientation'])) {
-                        $degrees = 0;
-                        if ($exif['Orientation'] == 6) {
-                            $degrees = 270;
-                        }
-                        if ($exif['Orientation'] == 3) {
-                            $degrees = 180;
-                        }
-                        if ($exif['Orientation'] == 8) {
-                            $degrees = 90;
-                        }
-                        // Загрузка изображения
-                        $source = imagecreatefromjpeg($filename);
-                        // Поворот
-                        $rotate = imagerotate($source, $degrees, 0);
-                        // Вывод
-                        imagejpeg($rotate, $img_name, 100);
-                        // Высвобождение памяти
-                        imagedestroy($source);
-                        imagedestroy($rotate);
-                    }
                     $zip_bool = true;
                     if (file_exists($zip_path)) {
                         while (!$zip = Zip::open($zip_path)) {
@@ -789,7 +737,7 @@ class ImapController extends Controller
                         'id_application' => $id,
                         'location' => "foto_" . date('d-m-y') . '.zip',
                         'id_status' => 21,
-                        'message_id' => 0,
+                        'message_id' => $message->id,
                         'file_name' =>  "foto_" . date('d-m-y'),
                         'mime_type' => 'application/zip-compressed',
                     ], ['file_size' => filesize($zip_path)]);
