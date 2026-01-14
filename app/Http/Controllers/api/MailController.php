@@ -98,6 +98,7 @@ class MailController extends Controller
             if ($application->id_status <= 11) {
 
                 $application->check_date = date('Y-m-d H:i:s');
+                $application->id_status = 11;
             }
             $history->id_status = $status;
         } else {
