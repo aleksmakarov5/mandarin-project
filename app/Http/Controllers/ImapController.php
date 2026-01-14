@@ -1812,7 +1812,7 @@ class ImapController extends Controller
                         'id_application' => $id,
                         'location' => "foto_" . date('d-m-y') . '.zip',
                         'id_status' => 21,
-                        'message_id' => 0,
+                        'message_id' => $message->id,
                         'file_name' =>  "foto_" . date('d-m-y'),
                         'mime_type' => 'application/zip-compressed',
                     ], ['file_size' => filesize($zip_path)]);
