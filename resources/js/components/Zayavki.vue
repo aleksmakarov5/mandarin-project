@@ -58,6 +58,7 @@
                     <th scope="col">Дог</th>
                     <th scope="col">Статус</th>
                     <th scope="col" v-if="rout == 'directions'">Согл/Опл</th>
+                    <th v-else></th>
                     <th scope="col">#</th>
 
                     <th scope="col">МРК</th>
@@ -87,6 +88,7 @@
                 <tr style="heigth: 15px">
                     <th></th>
                     <th v-if="rout == 'directions'"></th>
+                    <th v-else></th>
                     <th scope="col">
                         <input
                             class="inp-cont"
@@ -424,6 +426,7 @@
                                     </div>
                                 </template> -->
                         </td>
+                        <td v-else></td>
                         <!-- </template> -->
 
                         <td @click="openApplication(application.id)">
