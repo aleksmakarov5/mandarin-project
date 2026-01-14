@@ -690,85 +690,191 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
-            $attachment->save($path = $dir . '/', $filename);
-            $attach = new attachment();
-            $attach->message_id = $message->id;
-            $attach->id_application = $applications->id;
-            $attach->location = $filename;
-            $attach->mime_type = $attachment->getMimeType();
-            $attach->file_size = $attachment->getSize();
-            $attach->file_name = $attachment->getFilename();
-            $attach->save();
-            if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
-                $history = new history;
-                $history->id_user = 1;
-                $history->id_application = $applications->id;
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg') {
+                $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                $zip_path = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y') . '.zip';
+                $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                $attachment->save($path = $dir . '/', $filename);
 
-                $applications->id_status = 12;
 
-                $today = WorkCalendar::now();
-                $today->addWorkDays(30);
-                $applications->end_date = $today;
+                $upload_folder = '' . $id . '/foto' . "_" . date('d-m-y');
+                $filenameWithExt = $filename; //
+                // Имя и расширение файла
+                // Только оригинальное имя файла
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Расширение
+                $extention = pathinfo($attachment->getFilename(), PATHINFO_EXTENSION);
+                // Путь для сохранения
+                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                // Сохраняем файл
+                // $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
-                $applications->napr_date = carbon::now();
-                $history->id_status = 12;
-                $applications->save();
-                $history->save();
+                $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
 
-                try {
+                // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
 
-                    $user = user::findorfail($applications->id_MRK);
-                    $notify = new notify;
-                    $notify->id_user = $user->id;
-                    $notify->id_application = $id;
-                    $notify->id_text = 3;
-                    $notify->link = "/application/";
+                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                if ($size) {
+                    // Optimize::path($filename);
+                    $document = new Attachment();
+                    $width = 700;
+                    $height = 700;
 
-                    $notify_id = $notify->id;
-                    $status_application = new status_application;
-                    $status_application->id_user = $user->id;
-                    $status_application->id_application = $id;
-                    $status_application->is_readed = false;
-                    $status_application->save();
-                    if ($user->telegram_notify) {
-                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                        $status = ApplicationStatus::findOrFail(
-                            $applications->id_status
-                        )->StatusName;
-                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                            ->keyboard(
-                                Keyboard::make()
-                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                            )
-                            ->send();
-                        $notify->id_message = json_decode($ch)->result->message_id;
+                    // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                    header("Content-type: {$size['mime']}");
+                    $exif = exif_read_data($filename);
+                    // file_put_contents('data.txt', json_encode($exif['Orientation']));
+
+                    // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                    list($width_orig, $height_orig) = getimagesize($filename);
+
+                    if ($width && ($width_orig < $height_orig)) {
+
+                        $width = ($height / $height_orig) * $width_orig;
+                    } else {
+                        $height = ($width / $width_orig) * $height_orig;
                     }
 
-                    $notify->save();
+                    // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                    $image_p = imagecreatetruecolor($width, $height);
+                    $image = imagecreatefromjpeg($filename);
+                    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
+                    // СОЗДАЁМ
+                    $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                    imagejpeg($image_p, $img_name, 50);
 
-                    $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                        ->select('notifies.*', 'text_notifies.text')->first();
-                    broadcast(new MessageSent($notification));
-                } catch (\Exception $e) {
-                    // dd($e);
+                    // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                    unlink($filename);
+                    $filename = $img_name;
+                    if (isset($exif['Orientation'])) {
+                        $degrees = 0;
+                        if ($exif['Orientation'] == 6) {
+                            $degrees = 270;
+                        }
+                        if ($exif['Orientation'] == 3) {
+                            $degrees = 180;
+                        }
+                        if ($exif['Orientation'] == 8) {
+                            $degrees = 90;
+                        }
+                        // Загрузка изображения
+                        $source = imagecreatefromjpeg($filename);
+                        // Поворот
+                        $rotate = imagerotate($source, $degrees, 0);
+                        // Вывод
+                        imagejpeg($rotate, $img_name, 100);
+                        // Высвобождение памяти
+                        imagedestroy($source);
+                        imagedestroy($rotate);
+                    }
+                    $zip_bool = true;
+                    if (file_exists($zip_path)) {
+                        while (!$zip = Zip::open($zip_path)) {
+                            sleep(0.5);
+                        }
+
+                        $zip_bool = false;
+                    } else {
+                        $zip = Zip::create($zip_path);
+                    }
+                    $res = $zip->add($filename);
+                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $zip->close();
+                    attachment::updateOrCreate([
+                        'id_application' => $id,
+                        'location' => "foto_" . date('d-m-y') . '.zip',
+                        'id_status' => 21,
+                        'message_id' => 0,
+                        'file_name' =>  "foto_" . date('d-m-y'),
+                        'mime_type' => 'application/zip-compressed',
+                    ], ['file_size' => filesize($zip_path)]);
                 }
+            } else {
+                $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                $attachment->save($path = $dir . '/', $filename);
+                $attach = new attachment();
+                $attach->message_id = $message->id;
+                $attach->id_application = $applications->id;
+                $attach->location = $filename;
+                $attach->mime_type = $attachment->getMimeType();
+                $attach->file_size = $attachment->getSize();
+                $attach->file_name = $attachment->getFilename();
+                $attach->save();
+                if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
+                    $history = new history;
+                    $history->id_user = 1;
+                    $history->id_application = $applications->id;
+
+                    $applications->id_status = 12;
+
+                    $today = WorkCalendar::now();
+                    $today->addWorkDays(30);
+                    $applications->end_date = $today;
+
+                    $applications->napr_date = carbon::now();
+                    $history->id_status = 12;
+                    $applications->save();
+                    $history->save();
+
+                    try {
+
+                        $user = user::findorfail($applications->id_MRK);
+                        $notify = new notify;
+                        $notify->id_user = $user->id;
+                        $notify->id_application = $id;
+                        $notify->id_text = 3;
+                        $notify->link = "/application/";
+
+                        $notify_id = $notify->id;
+                        $status_application = new status_application;
+                        $status_application->id_user = $user->id;
+                        $status_application->id_application = $id;
+                        $status_application->is_readed = false;
+                        $status_application->save();
+                        if ($user->telegram_notify) {
+                            $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                            $status = ApplicationStatus::findOrFail(
+                                $applications->id_status
+                            )->StatusName;
+                            $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                                ->keyboard(
+                                    Keyboard::make()
+                                        ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                                )
+                                ->send();
+                            $notify->id_message = json_decode($ch)->result->message_id;
+                        }
+
+                        $notify->save();
+
+
+                        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                            ->select('notifies.*', 'text_notifies.text')->first();
+                        broadcast(new MessageSent($notification));
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                }
+
+                if (
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+                )
+                    $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
+                else
+                    $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+
+                $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+                $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
             }
-
-            if (
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
-            )
-                $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
-            else
-                $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
-
-            $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
-            $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-            $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
         }
         //echo $to;
         foreach ($to as $mail) {
@@ -1659,86 +1765,191 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
-            $attachment->save($path = $dir . '/', $filename);
-            $attach = new attachment();
-            $attach->message_id = $message->id;
-            $attach->id_application = $applications->id;
-            $attach->location = $filename;
-            $attach->mime_type = $attachment->getMimeType();
-            $attach->file_size = $attachment->getSize();
-            $attach->file_name = $attachment->getFilename();
-            $attach->save();
-            if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
-                $history = new history;
-                $history->id_user = 1;
-                $history->id_application = $applications->id;
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg') {
+                $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
+                if (!is_dir($dir)) {
+                    mkdir($dir, 0777, true);
+                }
+                $zip_path = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y') . '.zip';
+                $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                $attachment->save($path = $dir . '/', $filename);
 
-                $applications->id_status = 12;
 
-                $today = WorkCalendar::now();
-                $today->addWorkDays(30);
-                $applications->end_date = $today;
+                $upload_folder = '' . $id . '/foto' . "_" . date('d-m-y');
+                $filenameWithExt = $filename; //
+                // Имя и расширение файла
+                // Только оригинальное имя файла
+                $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                // Расширение
+                $extention = pathinfo($attachment->getFilename(), PATHINFO_EXTENSION);
+                // Путь для сохранения
+                $fileNameToStore = $filename . "_" . date('d-m-y_hms') . "." . $extention;
+                // Сохраняем файл
+                // $path = $file->storeAs('public/files/' . $upload_folder, $fileNameToStore);
 
-                $applications->napr_date = carbon::now();
-                $history->id_status = 12;
-                $applications->save();
-                $history->save();
+                $filename = 'storage/files/' . $upload_folder . '/' . $fileNameToStore;
 
-                try {
+                // ПРОВЕРКА НА ИЗОБРАЖЕНИЕ
 
-                    $user = user::findorfail($applications->id_MRK);
-                    $notify = new notify;
-                    $notify->id_user = $user->id;
-                    $notify->id_application = $id;
-                    $notify->id_text = 3;
-                    $notify->link = "/application/";
+                $size = getimagesize($filename); // если это изображение и у него определён размер, то продолжаем
+                if ($size) {
+                    // Optimize::path($filename);
+                    $document = new Attachment();
+                    $width = 700;
+                    $height = 700;
 
-                    $notify_id = $notify->id;
-                    $status_application = new status_application;
-                    $status_application->id_user = $user->id;
-                    $status_application->id_application = $id;
-                    $status_application->is_readed = false;
-                    $status_application->save();
-                    if ($user->telegram_notify) {
-                        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                        $status = ApplicationStatus::findOrFail(
-                            $applications->id_status
-                        )->StatusName;
-                        $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
-                            ->keyboard(
-                                Keyboard::make()
-                                    ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
-                            )
-                            ->send();
-                        $notify->id_message = json_decode($ch)->result->message_id;
+                    // РАБОТАЕМ КОРРЕКТНО. ОПРЕДЕЛЯЕМ ТИП
+                    header("Content-type: {$size['mime']}");
+                    $exif = exif_read_data($filename);
+                    // file_put_contents('data.txt', json_encode($exif['Orientation']));
+
+                    // ПОЛУЧАЕМ НОВЫЕ РАЗМЕРЫ
+                    list($width_orig, $height_orig) = getimagesize($filename);
+
+                    if ($width && ($width_orig < $height_orig)) {
+
+                        $width = ($height / $height_orig) * $width_orig;
+                    } else {
+                        $height = ($width / $width_orig) * $height_orig;
                     }
 
-                    $notify->save();
+                    // ПЕРЕСОХРАНЯЕМ ИЗОБРАЖЕНИЕ
+                    $image_p = imagecreatetruecolor($width, $height);
+                    $image = imagecreatefromjpeg($filename);
+                    imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
+                    // СОЗДАЁМ
+                    $img_name = $dir . '/' . pathinfo($filenameWithExt, PATHINFO_FILENAME) . 'compressed.' . pathinfo($filenameWithExt, PATHINFO_EXTENSION);
+                    imagejpeg($image_p, $img_name, 50);
 
-                    $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
-                        ->select('notifies.*', 'text_notifies.text')->first();
-                    broadcast(new MessageSent($notification));
-                } catch (\Exception $e) {
-                    // dd($e);
+                    // УДАЛЯЕМ ИСХОДНИК - НУЖЕН АДРЕС. НАПРИМЕР, images/img001.jpg
+                    unlink($filename);
+                    $filename = $img_name;
+                    if (isset($exif['Orientation'])) {
+                        $degrees = 0;
+                        if ($exif['Orientation'] == 6) {
+                            $degrees = 270;
+                        }
+                        if ($exif['Orientation'] == 3) {
+                            $degrees = 180;
+                        }
+                        if ($exif['Orientation'] == 8) {
+                            $degrees = 90;
+                        }
+                        // Загрузка изображения
+                        $source = imagecreatefromjpeg($filename);
+                        // Поворот
+                        $rotate = imagerotate($source, $degrees, 0);
+                        // Вывод
+                        imagejpeg($rotate, $img_name, 100);
+                        // Высвобождение памяти
+                        imagedestroy($source);
+                        imagedestroy($rotate);
+                    }
+                    $zip_bool = true;
+                    if (file_exists($zip_path)) {
+                        while (!$zip = Zip::open($zip_path)) {
+                            sleep(0.5);
+                        }
+
+                        $zip_bool = false;
+                    } else {
+                        $zip = Zip::create($zip_path);
+                    }
+                    $res = $zip->add($filename);
+                    // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+                    $zip->close();
+                    attachment::updateOrCreate([
+                        'id_application' => $id,
+                        'location' => "foto_" . date('d-m-y') . '.zip',
+                        'id_status' => 21,
+                        'message_id' => 0,
+                        'file_name' =>  "foto_" . date('d-m-y'),
+                        'mime_type' => 'application/zip-compressed',
+                    ], ['file_size' => filesize($zip_path)]);
                 }
-            }
+            } else {
+                $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                $attachment->save($path = $dir . '/', $filename);
+                $attach = new attachment();
+                $attach->message_id = $message->id;
+                $attach->id_application = $applications->id;
+                $attach->location = $filename;
+                $attach->mime_type = $attachment->getMimeType();
+                $attach->file_size = $attachment->getSize();
+                $attach->file_name = $attachment->getFilename();
+                $attach->save();
+                if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
+                    $history = new history;
+                    $history->id_user = 1;
+                    $history->id_application = $applications->id;
 
-            if (
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
-                pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
-            )
-                $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
-            else
-                $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
-            if (pathinfo($attach->location, PATHINFO_EXTENSION) == 'pdf' || pathinfo($attach->location, PATHINFO_EXTENSION) == 'PDF')
-                $attach->id_ic = true;
-            $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
-            $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-            $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+                    $applications->id_status = 12;
+
+                    $today = WorkCalendar::now();
+                    $today->addWorkDays(30);
+                    $applications->end_date = $today;
+
+                    $applications->napr_date = carbon::now();
+                    $history->id_status = 12;
+                    $applications->save();
+                    $history->save();
+
+                    try {
+
+                        $user = user::findorfail($applications->id_MRK);
+                        $notify = new notify;
+                        $notify->id_user = $user->id;
+                        $notify->id_application = $id;
+                        $notify->id_text = 3;
+                        $notify->link = "/application/";
+
+                        $notify_id = $notify->id;
+                        $status_application = new status_application;
+                        $status_application->id_user = $user->id;
+                        $status_application->id_application = $id;
+                        $status_application->is_readed = false;
+                        $status_application->save();
+                        if ($user->telegram_notify) {
+                            $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+                            $status = ApplicationStatus::findOrFail(
+                                $applications->id_status
+                            )->StatusName;
+                            $ch = $new_chat->html("По заявке {$id} изменен статус\nТекущий статус - <i>{$status}</i>")
+                                ->keyboard(
+                                    Keyboard::make()
+                                        ->buttons([Button::make("Открыть заявку")->webApp("https://mandarin-portal.ru/application/{$id}"),])
+                                )
+                                ->send();
+                            $notify->id_message = json_decode($ch)->result->message_id;
+                        }
+
+                        $notify->save();
+
+
+                        $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                            ->select('notifies.*', 'text_notifies.text')->first();
+                        broadcast(new MessageSent($notification));
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                }
+
+                if (
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'zip' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == 'rar' ||
+                    pathinfo($attach->location, PATHINFO_EXTENSION) == '7z'
+                )
+                    $path = 'https://mandarin-portal.ru/gallery/' . $id . '/' . $attach->location . '/' . $attach->file_name;
+                else
+                    $path = "https://mandarin-portal.ru/" . $dir . '/' . $filename;
+
+                $att .= "<a href='" . $path . "'>" . pathinfo($attachment->getFilename(), PATHINFO_FILENAME) . "</a>\n ";
+                $name = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                $keyboard[$i++] = Button::make("{$name}")->webApp("{$path}");
+            }
         }
         //echo $to;
         foreach ($to as $mail) {
