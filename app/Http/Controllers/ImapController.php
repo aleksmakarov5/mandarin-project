@@ -1562,7 +1562,7 @@ class ImapController extends Controller
         echo $subject . '<br>';
         echo mb_strpos('_' . $subject, 'Уведомление о появлении нового лота');
 
-        if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0) {
+        if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0 && mb_strpos('_' . $subject, 'Повторное уведомление о новом лоте') == 0) {
             $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => date('dmY_hms'), 'id_insuranceCompany' => 4, 'our_company' => 6],
                 [
