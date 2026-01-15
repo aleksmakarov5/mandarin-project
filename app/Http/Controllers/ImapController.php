@@ -2063,11 +2063,11 @@ class ImapController extends Controller
                                 $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             }
                             if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                                $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+                                $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                             } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
                                 echo "Ingos";
 
-                                $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+                                $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                             } elseif (mb_strpos($body_html, 'reso') !== false) {
                                 $this->reso_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             } elseif (mb_strpos($body_html, 'Югория') !== false) {
