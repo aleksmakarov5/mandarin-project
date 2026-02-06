@@ -212,10 +212,13 @@
             </div>
         </div>
         <div class="form-float">
-            <input type="text" name="vehicle_passport" id="vehicle_passport" class="form-cont"
-                value="{{ $application->vehicle_passport }}">
-            <div class='lbl'><label for="vehicle_passport">ПТС/Свидетельство о регистрации</label></div>
+            <input type="text" name="mnf_year" id="mnf_year" class="form-cont"
+                value="{{ $application->mnf_year }}">
+            <div class='lbl'>
+                <label for="mnf_year">Год выпуска ТС</label>
+            </div>
         </div>
+
         <div class="form-float">
             <input type="text" name="Color" id="Color" class="form-cont"
                 value="{{ $application->Color }}">
@@ -229,11 +232,9 @@
             <div class='lbl'><label for="mileage">Пробег</label></div>
         </div>
         <div class="form-float">
-            <input type="text" name="mnf_year" id="mnf_year" class="form-cont"
-                value="{{ $application->mnf_year }}">
-            <div class='lbl'>
-                <label for="mnf_year">Год выпуска ТС</label>
-            </div>
+            <input type="text" name="vehicle_passport" id="vehicle_passport" class="form-cont"
+                value="{{ $application->vehicle_passport }}">
+            <div class='lbl'><label for="vehicle_passport">ПТС/Свидетельство о регистрации</label></div>
         </div>
     </div>
     <div class="col col-sm-12 col-md-6 col-lg-4">

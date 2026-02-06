@@ -339,9 +339,12 @@
                                     title="Объединить заявки"
                                     onclick="if (!confirm('Объеденить заявку №{{ $app->id }} с другим делом?')) return false"><img
                                         src="/storage/img/edin.png" width="30" alt="Добавить"></a>
-                                <a href="/applications/{{ $app->id }}/delete" class="msg_but" title="Удалить заявку"
-                                    onclick="if (!confirm('Точно удалить заявку №{{ $app->id }}?')) return false"><img
-                                        src="/storage/img/delete.png" width="30" alt="Удалить"></a>
+                                @can('administrator')
+                                    <a href="/applications/{{ $app->id }}/delete" class="msg_but" title="Удалить заявку"
+                                        onclick="if (!confirm('Точно удалить заявку №{{ $app->id }}?')) return false"><img
+                                            src="/storage/img/delete.png" width="30" alt="Удалить"></a>
+                                @endcan
+
                                 <a href="/applications/{{ $app->id }}/move_temp" class="msg_but"
                                     title="Перенести в корзину"
                                     onclick="if (!confirm('Переместить в корзину заявку №{{ $app->id }}?')) return false"><img

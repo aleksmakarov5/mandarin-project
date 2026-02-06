@@ -533,7 +533,7 @@
                                 </div>
                             </td>
                         </template>
-                        <td>
+                        <td v-if="user_id == 2">
                             <a
                                 class="nav-link"
                                 @click="deleteApplication(application.id)"

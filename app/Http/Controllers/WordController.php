@@ -117,12 +117,16 @@ class WordController extends Controller
             ->leftjoin('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('legal_entities', 'our_companies.id_legal', '=', 'legal_entities.id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-            ->select('applications.*', 'cities.name as city', 'legal_entities.*', 'services.service_description', 'our_companies.our_email')
+            ->leftjoin('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->select('applications.*', 'cities.name as city', 'legal_entities.*', 'services.service_description', 'our_companies.our_email', 'insurance_companies.*')
             ->where('applications.id', '=', $id)
             ->first();
         // dd($application);
         $ic = InsuranceCompany::find($application->id_insuranceCompany);
         $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
+        $estimate = estimate::where('id_application', '=', $id)->first();
+        $nds = str2number($estimate->price_repair_full) * 0.05;
+        $summ_nds = str2number($estimate->price_repair_full) + $nds;
         //dd($application);
         $fio = '';
         if ($application->director) {
@@ -173,6 +177,8 @@ class WordController extends Controller
         $templateProcessor->setValue('service_description', $application->service_description);
         $templateProcessor->setValue('fio', $fio);
         $templateProcessor->setValue('email', $application->our_email);
+        $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+        $templateProcessor->setValue('nds', in_money($nds));
         if ($application->ub_type)
             $templateProcessor->setValue('osn', $ic->osn_casco);
         else
@@ -345,6 +351,8 @@ class WordController extends Controller
             }
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
+            $nds = str2number($estimate->price_repair_full) * 0.05;
+            $summ_nds = str2number($estimate->price_repair_full) + $nds;
 
 
             $price_repair_full_md2 = $price_sp_full_md2 +
@@ -415,7 +423,7 @@ class WordController extends Controller
             if (isset($estimate->price_repair)) {
                 $templateProcessor->setValue('zn_num', $estimate->zn_number);
                 $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
-                $templateProcessor->setValue('summ_str', $this->num2str($price_repair_full));
+                $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
             }
         }
 
@@ -473,6 +481,96 @@ class WordController extends Controller
         exec('chmod 755 "' . $pathToSave . '"');
         exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
         if ($doc_type == 18) {
+            $location = "УПД" . date('d-m-y_hms') . ".docx";
+            $filename = "УПД_";
+            $number = $id;
+            $templateProcessor = new TemplateProcessor('storage/doc_template/upd.docx');
+            //dd($application);
+            $fio = '';
+            if ($application->ub_type)
+                $templateProcessor->setValue('osn', $ic->osn_casco);
+            else
+                $templateProcessor->setValue('osn', $ic->osn_osago);
+            $templateProcessor->setValue('dolzh', !$application->ip ? 'Директор' : 'Индивидуальный предприниматель');
+
+            if ($application->director) {
+                $fio = $application->director;
+                $fio = explode(' ', $fio);
+                $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
+            }
+
+            $number = $id;
+            // dd($number);
+            $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
+
+            // dd($sch_number);
+            $estimate = estimate::where('id_application', '=', $id)->first();
+
+            if (isset($estimate->price_repair)) {
+                $templateProcessor->setValue('zn_num', $estimate->zn_number);
+                $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+                $templateProcessor->setValue('nds', in_money($nds));
+                $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
+            }
+            $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+            $templateProcessor->setValue('sch_number', $sch_number);
+            $templateProcessor->setValue('number', $number);
+            $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
+            $templateProcessor->setValue('CarModel', $application->CarModel);
+            $templateProcessor->setValue('gnz', $application->gnz);
+            $templateProcessor->setValue('vin', $application->vin);
+            $templateProcessor->setValue('city', $application->city);
+            $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+            $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+            $templateProcessor->setValue('pass_date', $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+            $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('mnf_year', $application->mnf_year);
+            $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
+            $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+            $templateProcessor->setValue('wait_sp', $application->wait_sp);
+            $templateProcessor->setValue('phone', $application->ClientPhone);
+            $templateProcessor->setValue('birthday', $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+            $templateProcessor->setValue('DTPdate', $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+            $templateProcessor->setValue('napr_date', $application->napr_date ? Date::parse($application->napr_date)->format('j F Yг.') : "_____ _______________ 20_____г.");
+            $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+            $templateProcessor->setValue('bank', $application->bank);
+            $templateProcessor->setValue('inn', $application->inn);
+            $templateProcessor->setValue('kpp', $application->kpp);
+            $templateProcessor->setValue('ogrn', $application->ogrn);
+            $templateProcessor->setValue('okpo', $application->okpo);
+
+            $templateProcessor->setValue('sch_korr', $application->sch_korr);
+            $templateProcessor->setValue('bik', $application->bik);
+            $templateProcessor->setValue('sch_numb', $application->sch_numb);
+            $templateProcessor->setValue('fullname', $application->fullname);
+            $templateProcessor->setValue('address', $application->address);
+            $templateProcessor->setValue('director', $application->director);
+            $templateProcessor->setValue('name', $application->name);
+            $templateProcessor->setValue('in_face', $application->in_face);
+            $templateProcessor->setValue('service_description', $application->service_description);
+            $templateProcessor->setValue('fio', $fio);
+            $templateProcessor->setValue('email', $application->our_email);
+            $templateProcessor->setValue('ic_fullname', $application->ic_fullname);
+            $templateProcessor->setValue('ic_address', $application->ic_address);
+            $templateProcessor->setValue('ic_inn', $application->ic_inn);
+            $templateProcessor->setValue('ic_kpp', $application->ic_kpp);
+            $pathToSave = $dir . '/' . $location;
+            $templateProcessor->saveAs($pathToSave);
+            $document = new Attachment();
+            $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
+            $document->message_id = 0;
+            $document->mime_type = mime_content_type($pathToSave);
+            $document->id_application = $id;
+            $document->file_size = filesize($pathToSave);
+            $document->location = $location;
+            $document->id_status = $doc_type;
+            $document->save();
+            exec('chmod 755 "' . $pathToSave . '"');
+            exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+
             if ($application->id_insuranceCompany == 3) {
 
 
@@ -492,9 +590,14 @@ class WordController extends Controller
                 $estimate = estimate::where('id_application', '=', $id)->first();
 
                 if (isset($estimate->price_repair)) {
+                    $nds = (isset($estimate->add_pay) ? $estimate->add_pay : 0) * 0.05;
+                    $summ_nds = (isset($estimate->add_pay) ? $estimate->add_pay : 0) + $nds;
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                    $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full + (isset($estimate->add_pay) ? $estimate->add_pay : 0) - $price_repair_full));
-                    $templateProcessor->setValue('summ_str', $this->num2str((isset($estimate->add_pay) ? $estimate->add_pay : 0)));
+
+                    $templateProcessor->setValue('nds', $nds);
+                    $templateProcessor->setValue('summ_nds', $summ_nds);
+                    $templateProcessor->setValue('price_repair_full', in_money(isset($estimate->add_pay) ? $estimate->add_pay : 0));
+                    $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
                 }
                 $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
                 $templateProcessor->setValue('sch_number', $sch_number);
@@ -547,91 +650,182 @@ class WordController extends Controller
                 $document->save();
                 exec('chmod 755 "' . $pathToSave . '"');
                 exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
-            } else {
-                if ($application->id_insuranceCompany != 1) {
-                    $location = "Акт_выполненных_работ_" . date('d-m-y_hms') . ".docx";
-                    $filename = "Акт_выполненных_работ_";
-                    $number = $id;
-                    $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/avr.docx');
-                    //dd($application);
-                    $fio = '';
-                    if ($application->ub_type)
-                        $templateProcessor->setValue('osn', $ic->osn_casco);
-                    else
-                        $templateProcessor->setValue('osn', $ic->osn_osago);
+                $location = "УПД_дефектовка" . date('d-m-y_hms') . ".docx";
+                $filename = "УПД_дефектовка_";
+                $number = $id;
+                $templateProcessor = new TemplateProcessor('storage/doc_template/upd_def.docx');
+                //dd($application);
+                $fio = '';
+                if ($application->ub_type)
+                    $templateProcessor->setValue('osn', $ic->osn_casco);
+                else
+                    $templateProcessor->setValue('osn', $ic->osn_osago);
+                $templateProcessor->setValue('dolzh', !$application->ip ? 'Директор' : 'Индивидуальный предприниматель');
 
-
-                    if ($application->director) {
-                        $fio = $application->director;
-                        $fio = explode(' ', $fio);
-                        $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
-                    }
-                    $number = $id;
-                    // dd($number);
-                    $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
-
-                    // dd($sch_number);
-                    $estimate = estimate::where('id_application', '=', $id)->first();
-
-                    if (isset($estimate->price_repair)) {
-                        $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                        $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
-                        $templateProcessor->setValue('summ_str', $this->num2str($estimate->price_repair_full));
-                    }
-                    $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
-                    $templateProcessor->setValue('sch_number', $sch_number);
-                    $templateProcessor->setValue('number', $number);
-                    $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
-                    $templateProcessor->setValue('CarModel', $application->CarModel);
-                    $templateProcessor->setValue('gnz', $application->gnz);
-                    $templateProcessor->setValue('vin', $application->vin);
-                    $templateProcessor->setValue('city', $application->city);
-                    $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
-                    $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
-                    $templateProcessor->setValue('pass_date', $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-                    $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
-                    $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
-                    $templateProcessor->setValue('mnf_year', $application->mnf_year);
-                    $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
-                    $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-                    $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
-                    $templateProcessor->setValue('wait_sp', $application->wait_sp);
-                    $templateProcessor->setValue('phone', $application->ClientPhone);
-                    $templateProcessor->setValue('birthday', $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
-                    $templateProcessor->setValue('DTPdate', $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
-                    $templateProcessor->setValue('napr_date', $application->napr_date ? Date::parse($application->napr_date)->format('j F Yг.') : "_____ _______________ 20_____г.");
-                    $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
-                    $templateProcessor->setValue('bank', $application->bank);
-                    $templateProcessor->setValue('inn', $application->inn);
-                    $templateProcessor->setValue('kpp', $application->kpp);
-                    $templateProcessor->setValue('ogrn', $application->ogrn);
-                    $templateProcessor->setValue('okpo', $application->okpo);
-
-                    $templateProcessor->setValue('sch_korr', $application->sch_korr);
-                    $templateProcessor->setValue('bik', $application->bik);
-                    $templateProcessor->setValue('sch_numb', $application->sch_numb);
-                    $templateProcessor->setValue('fullname', $application->fullname);
-                    $templateProcessor->setValue('address', $application->address);
-                    $templateProcessor->setValue('director', $application->director);
-                    $templateProcessor->setValue('name', $application->name);
-                    $templateProcessor->setValue('in_face', $application->in_face);
-                    $templateProcessor->setValue('service_description', $application->service_description);
-                    $templateProcessor->setValue('fio', $fio);
-                    $templateProcessor->setValue('email', $application->our_email);
-                    $pathToSave = $dir . '/' . $location;
-                    $templateProcessor->saveAs($pathToSave);
-                    $document = new Attachment();
-                    $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
-                    $document->message_id = 0;
-                    $document->mime_type = mime_content_type($pathToSave);
-                    $document->id_application = $id;
-                    $document->file_size = filesize($pathToSave);
-                    $document->location = $location;
-                    $document->id_status = $doc_type;
-                    $document->save();
-                    exec('chmod 755 "' . $pathToSave . '"');
-                    exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+                if ($application->director) {
+                    $fio = $application->director;
+                    $fio = explode(' ', $fio);
+                    $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
                 }
+
+                $number = $id;
+                // dd($number);
+                $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
+
+                // dd($sch_number);
+                $estimate = estimate::where('id_application', '=', $id)->first();
+
+                if (isset($estimate->price_repair)) {
+                    $templateProcessor->setValue('zn_num', $estimate->zn_number);
+                    $templateProcessor->setValue('price_repair_full', in_money($estimate->add_pay));
+                    $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+                    $templateProcessor->setValue('nds', in_money($nds));
+                    $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
+                }
+                $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+                $templateProcessor->setValue('sch_number', $sch_number);
+                $templateProcessor->setValue('number', $number);
+                $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
+                $templateProcessor->setValue('CarModel', $application->CarModel);
+                $templateProcessor->setValue('gnz', $application->gnz);
+                $templateProcessor->setValue('vin', $application->vin);
+                $templateProcessor->setValue('city', $application->city);
+                $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+                $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+                $templateProcessor->setValue('pass_date', $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+                $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
+                $templateProcessor->setValue('mnf_year', $application->mnf_year);
+                $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
+                $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                $templateProcessor->setValue('wait_sp', $application->wait_sp);
+                $templateProcessor->setValue('phone', $application->ClientPhone);
+                $templateProcessor->setValue('birthday', $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                $templateProcessor->setValue('DTPdate', $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                $templateProcessor->setValue('napr_date', $application->napr_date ? Date::parse($application->napr_date)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+                $templateProcessor->setValue('bank', $application->bank);
+                $templateProcessor->setValue('inn', $application->inn);
+                $templateProcessor->setValue('kpp', $application->kpp);
+                $templateProcessor->setValue('ogrn', $application->ogrn);
+                $templateProcessor->setValue('okpo', $application->okpo);
+
+                $templateProcessor->setValue('sch_korr', $application->sch_korr);
+                $templateProcessor->setValue('bik', $application->bik);
+                $templateProcessor->setValue('sch_numb', $application->sch_numb);
+                $templateProcessor->setValue('fullname', $application->fullname);
+                $templateProcessor->setValue('address', $application->address);
+                $templateProcessor->setValue('director', $application->director);
+                $templateProcessor->setValue('name', $application->name);
+                $templateProcessor->setValue('in_face', $application->in_face);
+                $templateProcessor->setValue('service_description', $application->service_description);
+                $templateProcessor->setValue('fio', $fio);
+                $templateProcessor->setValue('email', $application->our_email);
+                $templateProcessor->setValue('ic_fullname', $application->ic_fullname);
+                $templateProcessor->setValue('ic_address', $application->ic_address);
+                $templateProcessor->setValue('ic_inn', $application->ic_inn);
+                $templateProcessor->setValue('ic_kpp', $application->ic_kpp);
+                $pathToSave = $dir . '/' . $location;
+                $templateProcessor->saveAs($pathToSave);
+                $document = new Attachment();
+                $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
+                $document->message_id = 0;
+                $document->mime_type = mime_content_type($pathToSave);
+                $document->id_application = $id;
+                $document->file_size = filesize($pathToSave);
+                $document->location = $location;
+                $document->id_status = $doc_type;
+                $document->save();
+                exec('chmod 755 "' . $pathToSave . '"');
+                exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+            } else {
+                // if ($application->id_insuranceCompany != 1) {
+                //     $location = "Акт_выполненных_работ_" . date('d-m-y_hms') . ".docx";
+                //     $filename = "Акт_выполненных_работ_";
+                //     $number = $id;
+                //     $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/avr.docx');
+                //     //dd($application);
+                //     $fio = '';
+                //     if ($application->ub_type)
+                //         $templateProcessor->setValue('osn', $ic->osn_casco);
+                //     else
+                //         $templateProcessor->setValue('osn', $ic->osn_osago);
+
+
+                //     if ($application->director) {
+                //         $fio = $application->director;
+                //         $fio = explode(' ', $fio);
+                //         $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
+                //     }
+                //     $number = $id;
+                //     // dd($number);
+                //     $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
+
+                //     // dd($sch_number);
+                //     $estimate = estimate::where('id_application', '=', $id)->first();
+
+                //     if (isset($estimate->price_repair)) {
+                //         $templateProcessor->setValue('zn_num', $estimate->zn_number);
+                //         $templateProcessor->setValue('price_repair_full', in_money($estimate->price_repair_full));
+                //         $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+                //         $templateProcessor->setValue('nds', in_money($nds));
+                //         $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
+                //     }
+                //     $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+                //     $templateProcessor->setValue('sch_number', $sch_number);
+                //     $templateProcessor->setValue('number', $number);
+                //     $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
+                //     $templateProcessor->setValue('CarModel', $application->CarModel);
+                //     $templateProcessor->setValue('gnz', $application->gnz);
+                //     $templateProcessor->setValue('vin', $application->vin);
+                //     $templateProcessor->setValue('city', $application->city);
+                //     $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
+                //     $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
+                //     $templateProcessor->setValue('pass_date', $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                //     $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
+                //     $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
+                //     $templateProcessor->setValue('mnf_year', $application->mnf_year);
+                //     $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
+                //     $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                //     $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
+                //     $templateProcessor->setValue('wait_sp', $application->wait_sp);
+                //     $templateProcessor->setValue('phone', $application->ClientPhone);
+                //     $templateProcessor->setValue('birthday', $application->birthday ? Date::parse($application->birthday)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                //     $templateProcessor->setValue('DTPdate', $application->DTPdate ? Date::parse($application->DTPdate)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                //     $templateProcessor->setValue('napr_date', $application->napr_date ? Date::parse($application->napr_date)->format('j F Yг.') : "_____ _______________ 20_____г.");
+                //     $templateProcessor->setValue('vehicle_passport', $application->vehicle_passport);
+                //     $templateProcessor->setValue('bank', $application->bank);
+                //     $templateProcessor->setValue('inn', $application->inn);
+                //     $templateProcessor->setValue('kpp', $application->kpp);
+                //     $templateProcessor->setValue('ogrn', $application->ogrn);
+                //     $templateProcessor->setValue('okpo', $application->okpo);
+
+                //     $templateProcessor->setValue('sch_korr', $application->sch_korr);
+                //     $templateProcessor->setValue('bik', $application->bik);
+                //     $templateProcessor->setValue('sch_numb', $application->sch_numb);
+                //     $templateProcessor->setValue('fullname', $application->fullname);
+                //     $templateProcessor->setValue('address', $application->address);
+                //     $templateProcessor->setValue('director', $application->director);
+                //     $templateProcessor->setValue('name', $application->name);
+                //     $templateProcessor->setValue('in_face', $application->in_face);
+                //     $templateProcessor->setValue('service_description', $application->service_description);
+                //     $templateProcessor->setValue('fio', $fio);
+                //     $templateProcessor->setValue('email', $application->our_email);
+                //     $pathToSave = $dir . '/' . $location;
+                //     $templateProcessor->saveAs($pathToSave);
+                //     $document = new Attachment();
+                //     $document->file_name = $filename . $number . ' от ' . Date::parse()->format('j F Y') . ".docx";
+                //     $document->message_id = 0;
+                //     $document->mime_type = mime_content_type($pathToSave);
+                //     $document->id_application = $id;
+                //     $document->file_size = filesize($pathToSave);
+                //     $document->location = $location;
+                //     $document->id_status = $doc_type;
+                //     $document->save();
+                //     exec('chmod 755 "' . $pathToSave . '"');
+                //     exec('libreoffice --headless --convert-to pdf "' . $pathToSave . '" --outdir ' . $dir);
+                // }
             }
         }
     }

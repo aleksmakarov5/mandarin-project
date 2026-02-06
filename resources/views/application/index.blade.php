@@ -177,11 +177,12 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>ПТС/Свидетельство о регистрации</th>
+                    <th>Год выпуска ТС</th>
                     <th>
-                        {{ $application->vehicle_passport }}
+                        {{ $application->mnf_year }}
                     </th>
                 </tr>
+
                 <tr>
                     <th>Цвет</th>
                     <th>
@@ -195,9 +196,9 @@
                     </th>
                 </tr>
                 <tr>
-                    <th>Год выпуска ТС</th>
+                    <th>ПТС/Свидетельство о регистрации</th>
                     <th>
-                        {{ $application->mnf_year }}
+                        {{ $application->vehicle_passport }}
                     </th>
                 </tr>
             </table>
