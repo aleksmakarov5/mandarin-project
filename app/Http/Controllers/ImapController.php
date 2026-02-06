@@ -690,7 +690,7 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg') {
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPG') {
                 $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
@@ -743,6 +743,8 @@ class ImapController extends Controller
                     ], ['file_size' => filesize($zip_path)]);
                 }
             } else {
+                $dir = 'storage/files/' . $applications->id;
+
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
                 $attachment->save($path = $dir . '/', $filename);
@@ -1038,7 +1040,7 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg') {
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPG') {
                 $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
@@ -1091,6 +1093,8 @@ class ImapController extends Controller
                     ], ['file_size' => filesize($zip_path)]);
                 }
             } else {
+                $dir = 'storage/files/' . $applications->id;
+
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
                 $attachment->save($path = $dir . '/', $filename);
@@ -1767,7 +1771,7 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg') {
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPG') {
                 $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
@@ -1820,6 +1824,8 @@ class ImapController extends Controller
                     ], ['file_size' => filesize($zip_path)]);
                 }
             } else {
+                $dir = 'storage/files/' . $applications->id;
+
                 $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
                 $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
                 $attachment->save($path = $dir . '/', $filename);
