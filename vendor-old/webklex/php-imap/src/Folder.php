@@ -34,7 +34,8 @@ use Webklex\PHPIMAP\Traits\HasEvents;
  *
  * @package Webklex\PHPIMAP
  */
-class Folder {
+class Folder
+{
     use HasEvents;
 
     /**
@@ -128,7 +129,8 @@ class Folder {
      * @param string $delimiter
      * @param string[] $attributes
      */
-    public function __construct(Client $client, string $folder_name, string $delimiter, array $attributes) {
+    public function __construct(Client $client, string $folder_name, string $delimiter, array $attributes)
+    {
         $this->client = $client;
 
         $this->events["message"] = $client->getDefaultEvents("message");
@@ -156,7 +158,8 @@ class Folder {
      * @throws ConnectionFailedException
      * @throws ResponseException
      */
-    public function query(array $extensions = []): WhereQuery {
+    public function query(array $extensions = []): WhereQuery
+    {
         $this->getClient()->checkConnection();
         $this->getClient()->openFolder($this->path);
         $extensions = count($extensions) > 0 ? $extensions : $this->getClient()->extensions;
@@ -176,7 +179,8 @@ class Folder {
      * @throws ConnectionFailedException
      * @throws ResponseException
      */
-    public function search(array $extensions = []): WhereQuery {
+    public function search(array $extensions = []): WhereQuery
+    {
         return $this->query($extensions);
     }
 
@@ -192,7 +196,8 @@ class Folder {
      * @throws ConnectionFailedException
      * @throws ResponseException
      */
-    public function messages(array $extensions = []): WhereQuery {
+    public function messages(array $extensions = []): WhereQuery
+    {
         return $this->query($extensions);
     }
 
@@ -201,7 +206,8 @@ class Folder {
      *
      * @return bool
      */
-    public function hasChildren(): bool {
+    public function hasChildren(): bool
+    {
         return $this->has_children;
     }
 
@@ -211,7 +217,8 @@ class Folder {
      *
      * @return Folder
      */
-    public function setChildren(FolderCollection $children): Folder {
+    public function setChildren(FolderCollection $children): Folder
+    {
         $this->children = $children;
 
         return $this;
@@ -222,7 +229,8 @@ class Folder {
      *
      * @return FolderCollection
      */
-    public function getChildren(): FolderCollection {
+    public function getChildren(): FolderCollection
+    {
         return $this->children;
     }
 
@@ -233,7 +241,8 @@ class Folder {
      *
      * @return string|array|bool|string[]|null
      */
-    protected function decodeName($name): string|array|bool|null {
+    protected function decodeName($name): string|array|bool|null
+    {
         $parts = [];
         foreach (explode($this->delimiter, $name) as $item) {
             $parts[] = EncodingAliases::convert($item, "UTF7-IMAP", "UTF-8");
@@ -249,7 +258,8 @@ class Folder {
      *
      * @return string|bool
      */
-    protected function getSimpleName($delimiter, $full_name): string|bool {
+    protected function getSimpleName($delimiter, $full_name): string|bool
+    {
         $arr = explode($delimiter, $full_name);
         return end($arr);
     }
@@ -258,7 +268,8 @@ class Folder {
      * Parse attributes and set it to object properties.
      * @param $attributes
      */
-    protected function parseAttributes($attributes): void {
+    protected function parseAttributes($attributes): void
+    {
         $this->no_inferiors = in_array('\NoInferiors', $attributes);
         $this->no_select = in_array('\NoSelect', $attributes);
         $this->marked = in_array('\Marked', $attributes);
@@ -281,7 +292,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function move(string $new_name, bool $expunge = true): array {
+    public function move(string $new_name, bool $expunge = true): array
+    {
         $this->client->checkConnection();
         $status = $this->client->getConnection()->renameFolder($this->full_name, $new_name)->validatedData();
         if ($expunge) $this->client->expunge();
@@ -307,7 +319,8 @@ class Folder {
      * @throws MessageNotFoundException
      * @throws ResponseException
      */
-    public function overview(string $sequence = null): array {
+    public function overview(string $sequence = null): array
+    {
         $this->client->openFolder($this->path);
         $sequence = $sequence === null ? "1:*" : $sequence;
         $uid = ClientManager::get('options.sequence', IMAP::ST_MSGN);
@@ -329,7 +342,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function appendMessage(string $message, array $options = null, Carbon|string $internal_date = null): array {
+    public function appendMessage(string $message, array $options = null, Carbon|string $internal_date = null): array
+    {
         /**
          * Check if $internal_date is parsed. If it is null it should not be set. Otherwise, the message can't be stored.
          * If this parameter is set, it will set the INTERNALDATE on the appended message. The parameter should be a
@@ -358,7 +372,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function rename(string $new_name, bool $expunge = true): array {
+    public function rename(string $new_name, bool $expunge = true): array
+    {
         return $this->move($new_name, $expunge);
     }
 
@@ -375,9 +390,10 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function delete(bool $expunge = true): array {
+    public function delete(bool $expunge = true): array
+    {
         $status = $this->client->getConnection()->deleteFolder($this->path)->validatedData();
-        if ($this->client->getActiveFolder() == $this->path){
+        if ($this->client->getActiveFolder() == $this->path) {
             $this->client->setActiveFolder(null);
         }
 
@@ -400,7 +416,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function subscribe(): array {
+    public function subscribe(): array
+    {
         $this->client->openFolder($this->path);
         return $this->client->getConnection()->subscribeFolder($this->path)->validatedData();
     }
@@ -416,7 +433,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function unsubscribe(): array {
+    public function unsubscribe(): array
+    {
         $this->client->openFolder($this->path);
         return $this->client->getConnection()->unsubscribeFolder($this->path)->validatedData();
     }
@@ -434,7 +452,8 @@ class Folder {
      * @throws ImapServerErrorException
      * @throws ResponseException
      */
-    public function idle(callable $callback, int $timeout = 300): void {
+    public function idle(callable $callback, int $timeout = 300): void
+    {
         $this->client->setTimeout($timeout);
 
         if (!in_array("IDLE", $this->client->getConnection()->getCapabilities()->validatedData())) {
@@ -502,7 +521,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function getStatus(): array {
+    public function getStatus(): array
+    {
         return $this->examine();
     }
 
@@ -514,7 +534,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function loadStatus(): Folder {
+    public function loadStatus(): Folder
+    {
         $this->status = $this->getStatus();
         return $this;
     }
@@ -530,7 +551,8 @@ class Folder {
      * @throws AuthFailedException
      * @throws ResponseException
      */
-    public function examine(): array {
+    public function examine(): array
+    {
         return $this->client->getConnection()->examineFolder($this->path)->validatedData();
     }
 
@@ -545,7 +567,8 @@ class Folder {
      * @throws ResponseException
      * @throws RuntimeException
      */
-    public function select(): array {
+    public function select(): array
+    {
         return $this->client->getConnection()->selectFolder($this->path)->validatedData();
     }
 
@@ -554,7 +577,8 @@ class Folder {
      *
      * @return Client
      */
-    public function getClient(): Client {
+    public function getClient(): Client
+    {
         return $this->client;
     }
 
@@ -562,7 +586,8 @@ class Folder {
      * Set the delimiter
      * @param $delimiter
      */
-    public function setDelimiter($delimiter): void {
+    public function setDelimiter($delimiter): void
+    {
         if (in_array($delimiter, [null, '', ' ', false]) === true) {
             $delimiter = ClientManager::get('options.delimiter', '/');
         }
