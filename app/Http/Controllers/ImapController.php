@@ -163,7 +163,8 @@ class ImapController extends Controller
                 else
                     $link = $out[0][0];
                 print_r($link);
-
+                $link = str_replace('amp;', '', $link);
+                // dd($link);
                 $dir = 'storage/files/' . $applications->id;
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
