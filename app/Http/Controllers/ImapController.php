@@ -173,30 +173,35 @@ class ImapController extends Controller
                 }
                 if ($link) {
                     // dd($link);
-                    file_put_contents($dir . "/Tmpfile.zip", fopen($link, 'r'));
-                }
-                $zip = Zip::open($dir . '/Tmpfile.zip');
-                $zip->extract($dir . '/tmp');
-                $zip->close();
-                Storage::delete("public/files/'.$applications->id.'/Tmpfile.zip");
-                $id = $applications->id;
-                $att = scandir('storage/files/' . $id . '/tmp');
-                foreach ($att as $file) {
-                    if ($file != '.' && $file != '..') {
-                        $filename = pathinfo($file, PATHINFO_FILENAME);
-                        $attach = new attachment();
-                        $attach->message_id = $message->id;
-                        $attach->id_application = $applications->id;
-                        $attach->location = $file;
-                        $attach->mime_type = pathinfo($file, PATHINFO_EXTENSION);
-                        $attach->file_size = filesize('storage/files/' . $id . "/tmp/" . $file);
-                        $attach->file_name = $filename;
-                        $attach->save();
-                        copy('storage/files/' . $id . "/tmp/" . $file, 'storage/files/' . $id . "/" . $file);
-                        unlink('storage/files/' . $id . "/tmp/" . $file);
+                    try {
+                        file_put_contents($dir . "/Tmpfile.zip", fopen($link, 'r'));
+
+
+                        $zip = Zip::open($dir . '/Tmpfile.zip');
+                        $zip->extract($dir . '/tmp');
+                        $zip->close();
+                        Storage::delete("public/files/'.$applications->id.'/Tmpfile.zip");
+                        $id = $applications->id;
+                        $att = scandir('storage/files/' . $id . '/tmp');
+                        foreach ($att as $file) {
+                            if ($file != '.' && $file != '..') {
+                                $filename = pathinfo($file, PATHINFO_FILENAME);
+                                $attach = new attachment();
+                                $attach->message_id = $message->id;
+                                $attach->id_application = $applications->id;
+                                $attach->location = $file;
+                                $attach->mime_type = pathinfo($file, PATHINFO_EXTENSION);
+                                $attach->file_size = filesize('storage/files/' . $id . "/tmp/" . $file);
+                                $attach->file_name = $filename;
+                                $attach->save();
+                                copy('storage/files/' . $id . "/tmp/" . $file, 'storage/files/' . $id . "/" . $file);
+                                unlink('storage/files/' . $id . "/tmp/" . $file);
+                            }
+                        }
+                        rmdir('storage/files/' . $id . '/tmp');
+                    } catch (\Exception $e) {
                     }
                 }
-                rmdir('storage/files/' . $id . '/tmp');
             }
             // dd($applications);
 
