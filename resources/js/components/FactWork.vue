@@ -1,7 +1,7 @@
 <template>
     <div>
         <button class="accordion-est" @click="show = !show">
-            Фактические работы
+            Фактические работы и дополнительные расходы
         </button>
         <div :class="show ? '' : 'd_none'">
             <table class="troubleshooting">
