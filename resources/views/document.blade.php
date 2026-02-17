@@ -447,7 +447,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
@@ -479,6 +479,21 @@
                     <file-upload :id_app="{{ $id }}" :status_id="5"
                         :load_name="'Дополнительное соглашение с клиентом'"
                         :load_location="'Дополнительное_соглашение_с_клиентом'" />
+                    {{-- @include('document.form_scan', [
+                        'status_id' => 5,
+                        'load_name' => 'Дополнительное соглашение с клиентом',
+                        'load_location' => 'Дополнительное_соглашение_с_клиентом',
+                    ]) --}}
+                </th>
+            </tr>
+            <tr>
+                <th scope="col">Ремонтная ведомость</th>
+                <th scope="col">
+                    @include('document.form_print', ['status_id' => 31, 'template' => 'export_rv'])
+                </th>
+                <th scope="col">
+                    <file-upload :id_app="{{ $id }}" :status_id="31" :load_name="'Ремонтная ведомость'"
+                        :load_location="'Ремонтная_ведомость'" />
                     {{-- @include('document.form_scan', [
                         'status_id' => 5,
                         'load_name' => 'Дополнительное соглашение с клиентом',
@@ -680,7 +695,8 @@
                                 @endphp
                                 <special-mail :to="{{ json_encode($to) }}" :from="{{ Auth::user()->id }}"
                                     :subject="{{ json_encode($application->numberInsuranceCompanyApplication . '_Счет' . ' zn-' . $application->id . '!') }}"
-                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
+                                    :attach="{{ json_encode(isset($attach) ? $attach : []) }}"
+                                    :app_id="{{ $id }}"
                                     :text="{{ json_encode('Направляем комплект документов по факту выполненных работ по убытку №' . $application->numberInsuranceCompanyApplication) }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="110" />
                             </div>

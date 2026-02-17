@@ -11,6 +11,7 @@ import NextStep from "./components/NextStep.vue";
 import Troubleshootings from "./components/Troubleshootings.vue";
 import Estimate from "./components/Estimate.vue";
 import FactWork from "./components/FactWork.vue";
+import PlanWork from "./components/PlanWork.vue";
 import Work from "./components/Work.vue";
 import WorkPaint from "./components/WorkPaint.vue";
 import SparePartMrk from "./components/SparePartMrk.vue";
@@ -40,6 +41,7 @@ const app = createApp({
         Troubleshootings,
         Estimate,
         FactWork,
+        PlanWork,
         Work,
         WorkPaint,
         SparePartMrk,

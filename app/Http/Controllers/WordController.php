@@ -123,8 +123,24 @@ class WordController extends Controller
             ->first();
         // dd($application);
         $ic = InsuranceCompany::find($application->id_insuranceCompany);
-        $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
+        if ($doc_type == 31)
+            $templateProcessor = new TemplateProcessor('storage/doc_template/' . $template);
+        else
+            $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
         $estimate = estimate::where('id_application', '=', $id)->first();
+        $mrk = DB::table('users')->where('id', '=', $application->id_MRK)->first();
+        $mrk_name = '_________';
+        $mrk_full = '_________';
+        $mrk_phone = '_____________';
+        if (isset($mrk->name)) {
+            $mrk_full = $mrk->name;
+            $mrk_phone = $mrk->phone;
+            $mrk_name = $mrk_full;
+            $mrk_n = explode(' ', $mrk_name);
+            $mrk_name = $mrk_n[0] . ' ' . mb_substr($mrk_n[1], 0, 1, 'UTF-8') . '.';
+            if (isset($mrk_n[2]))
+                $mrk_name .= ' ' . mb_substr($mrk_n[2], 0, 1, 'UTF-8') . '.';
+        }
         $nds = str2number($estimate->price_repair_full) * 0.05;
         $summ_nds = str2number($estimate->price_repair_full) + $nds;
         //dd($application);
@@ -141,6 +157,11 @@ class WordController extends Controller
         // dd($sch_number);
         $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
         $templateProcessor->setValue('sch_number', $sch_number);
+
+        $templateProcessor->setValue('mrk', $mrk_name);
+
+        $templateProcessor->setValue('mrk_full', $mrk_full);
+        $templateProcessor->setValue('mrk_phone', $mrk_phone);
         $templateProcessor->setValue('number', $number);
         $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
@@ -201,7 +222,7 @@ class WordController extends Controller
             $templateProcessor->cloneRowAndSetValues('PartName', $array);
         }
 
-        if ($doc_type == 4) {
+        if ($doc_type == 4 || $doc_type == 31) {
             $array = [];
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
@@ -217,9 +238,8 @@ class WordController extends Controller
             }
             $templateProcessor->cloneRowAndSetValues('id_sp', $array);
             $array1 = [];
-            $Works = DB::table('works')
+            $Works = DB::table('plan_works')
                 ->where('id_application', '=', $id)
-                ->where('price_service', '<>', '0')
                 ->get();
             $i = 1;
             foreach ($Works as $work) {
@@ -932,6 +952,14 @@ class WordController extends Controller
         $template = 'sch.docx';
         $filename = "Счет №";
         $doc_type = 18;
+        $this->export_doc($id, $template, $filename,  $doc_type);
+        return redirect()->route('document', $id);
+    }
+    public function export_rv($id)
+    {
+        $template = 'rv.docx';
+        $filename = "Ремонтная ведомость ";
+        $doc_type = 31;
         $this->export_doc($id, $template, $filename,  $doc_type);
         return redirect()->route('document', $id);
     }

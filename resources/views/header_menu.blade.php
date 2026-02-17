@@ -32,6 +32,7 @@
         $spareparts = DB::table('spare_parts')->where('id_application', '=', $id)->get();
         $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         $Works_serv = DB::table('works')->where('id_application', '=', $id)->get();
+
         $summ_service = 0;
         $summ_service_ic = 0;
         $summ_pzn = 0;
