@@ -48,7 +48,7 @@ class ImapController extends Controller
         $gnz = ' ';
         $app_number = preg_replace('/[^0-9]/', '', $subject);
         if (!$app_number) {
-            $app_number = date('dmY_hms');
+            $app_number = date('!dm_hms');
         }
         if ($app_number[0] == 9)
 
