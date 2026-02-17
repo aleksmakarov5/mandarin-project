@@ -47,6 +47,9 @@ class ImapController extends Controller
         $vin =  ' ';
         $gnz = ' ';
         $app_number = preg_replace('/[^0-9]/', '', $subject);
+        if (!$app_number) {
+            $app_number = date('dmY_hms');
+        }
         if ($app_number[0] == 9)
 
             $app_number = mb_substr($app_number, 0, 7);
@@ -2305,11 +2308,11 @@ class ImapController extends Controller
 
 
                     if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'ingos') !== false) {
                         echo "Ingos";
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 27);
+                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                     } elseif (mb_strpos($body_html, 'Югория') !== false) {
                         $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                     } else {
