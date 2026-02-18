@@ -630,7 +630,7 @@ class WorkController extends Controller
                     // dd($works);
                     session(['works' => $works]);
                 } else if (mb_strpos($file, 'www.autoins.ru')) {
-                    $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+                    $file = mb_substr($file, mb_strpos($file, 'Ремонтные работы, рубли'), mb_strlen($file));
                     // dd($file);
                     $work_start = mb_strpos($file, 'Ремонтные работы, рубли');
                     // echo $work_start . 'Раб_Старт<br /><br />';
