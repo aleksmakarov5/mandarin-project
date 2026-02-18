@@ -280,7 +280,12 @@
                             city_selected.includes(application.id_city) ||
                             city_selected.length == city.length
                         "
-                        :class="application.count_hour > 0 ? '' : 'red'"
+                        :class="
+                            classColor(
+                                application.count_hour,
+                                application.finance_statuses_id
+                            )
+                        "
                     >
                         <td>{{ key + 1 }}</td>
                         <td @click="openApplication(application.id)">
@@ -737,6 +742,11 @@ export default {
                     }
                 }
             }
+        },
+        classColor(countHour, finStatus) {
+            if (finStatus == 11) return "green";
+            else if (countHour > 0) return "";
+            else return "red";
         },
     },
 };
