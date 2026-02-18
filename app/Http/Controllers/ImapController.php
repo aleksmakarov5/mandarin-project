@@ -245,11 +245,11 @@ class ImapController extends Controller
                     $history->id_application = $applications->id;
 
                     $applications->id_status = 12;
+                    $applications->check_date = carbon::now();
 
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
-
                     $applications->napr_date = carbon::now();
                     $history->id_status = 12;
                     $applications->save();
@@ -463,6 +463,7 @@ class ImapController extends Controller
 
                     $applications->id_status = 12;
 
+                    $applications->check_date = carbon::now();
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
@@ -775,6 +776,7 @@ class ImapController extends Controller
 
                     $applications->id_status = 12;
 
+                    $applications->check_date = carbon::now();
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
@@ -1125,6 +1127,7 @@ class ImapController extends Controller
 
                     $applications->id_status = 12;
 
+                    $applications->check_date = carbon::now();
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
@@ -1447,6 +1450,7 @@ class ImapController extends Controller
 
                 $applications->id_status = 12;
 
+                $applications->check_date = carbon::now();
                 $today = WorkCalendar::now();
                 $today->addWorkDays(30);
                 $applications->end_date = $today;
@@ -1856,6 +1860,7 @@ class ImapController extends Controller
 
                     $applications->id_status = 12;
 
+                    $applications->check_date = carbon::now();
                     $today = WorkCalendar::now();
                     $today->addWorkDays(30);
                     $applications->end_date = $today;
