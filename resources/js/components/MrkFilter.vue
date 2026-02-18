@@ -9,17 +9,32 @@
         @click="mrk_filter_show = !mrk_filter_show"
     ></div>
     <div class="city-filter" v-if="mrk_filter_show">
-        <table class="table">
+        <table class="table" id="mrks">
             <thead>
-                <th>
-                    <input
-                        type="checkbox"
-                        :checked="mrk_selected.length == mrk.length"
-                        id="all_city"
-                        @change="allMrkSelect()"
-                    />
-                </th>
-                <th>Все</th>
+                <tr>
+                    <th>
+                        <input
+                            type="checkbox"
+                            :checked="mrk_selected.length == mrk.length"
+                            id="all_city"
+                            @change="allMrkSelect()"
+                        />
+                    </th>
+
+                    <th>Все</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th>
+                        <input
+                            class="inp-cont"
+                            type="text"
+                            placeholder="ФИО"
+                            id="searchtext2"
+                            @keyup="tableSearch(2, 'mrks')"
+                        />
+                    </th>
+                </tr>
             </thead>
             <tbody>
                 <tr v-for="c in mrk">
@@ -102,6 +117,40 @@ export default {
             this.mrk_selected = [];
             for (let i = 0; i < this.mrk.length; i++) {
                 this.mrk_selected[i] = this.mrk[i].id;
+            }
+        },
+        tableSearch(k, table) {
+            var phrase = document.getElementById("searchtext" + k);
+            var table = document.getElementById(table);
+            var regPhrase = new RegExp(phrase.value, "i");
+            var flag = false;
+            for (var i = 1; i < table.rows.length; i++) {
+                flag = false;
+                flag = regPhrase.test(table.rows[i].cells[k].innerHTML);
+                if (flag) {
+                    table.rows[i].style.display = "";
+                } else {
+                    table.rows[i].style.display = "none";
+                }
+            }
+        },
+        tableSearch(columnNumber, tableId) {
+            let input, filter, table, tr, td, i, txtValue;
+            input = document.getElementById("searchtext" + columnNumber);
+            filter = input.value.toUpperCase();
+            table = document.getElementById(tableId);
+            tr = table.getElementsByTagName("tr");
+
+            for (i = 1; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[columnNumber - 1];
+                if (td) {
+                    txtValue = td.textContent || td.innerText;
+                    if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
             }
         },
     },
