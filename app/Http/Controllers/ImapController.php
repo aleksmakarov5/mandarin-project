@@ -2068,19 +2068,23 @@ class ImapController extends Controller
                         } else {
                             $sogaz = 0;
                             $ingos = 0;
+                            $vsk = 0;
                             foreach ($from as $fr) {
                                 if (mb_strpos($fr, 'sogaz') !== false)
                                     $sogaz = 1;
                                 if (mb_strpos($fr, 'ingos') !== false)
 
                                     $ingos = 1;
+                                if (mb_strpos($fr, 'vsk') !== false)
+
+                                    $vsk = 1;
                             }
 
                             if ($sogaz) {
                                 echo "Sogaz <br>";
                                 $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             }
-                            if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                            if (mb_strpos($body_html, 'vsk.ru') !== false || $vsk == 1) {
                                 $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                             } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
                                 echo "Ingos";
@@ -2193,19 +2197,23 @@ class ImapController extends Controller
                     } else {
                         $sogaz = 0;
                         $ingos = 0;
+                        $vsk = 0;
                         foreach ($from as $fr) {
                             if (mb_strpos($fr, 'sogaz') !== false)
                                 $sogaz = 1;
                             if (mb_strpos($fr, 'ingos') !== false)
 
                                 $ingos = 1;
+                            if (mb_strpos($fr, 'vsk') !== false)
+
+                                $vsk = 1;
                         }
 
                         if ($sogaz) {
                             echo "Sogaz <br>";
                             $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         }
-                        if (mb_strpos($body_html, 'vsk.ru') !== false) {
+                        if (mb_strpos($body_html, 'vsk.ru') !== false || $vsk == 1) {
                             $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                         } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
                             echo "Ingos";
@@ -2306,59 +2314,85 @@ class ImapController extends Controller
                     $our_company = 3;
                     // dd($message);
 
+                    if (mb_strpos($subject, 'zn-')) {
+                        $app_id_start = mb_strpos($subject, 'zn-');
 
-                    if (mb_strpos($body_html, 'vsk.ru') !== false) {
-                        $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
-                    } elseif (mb_strpos($body_html, 'ingos') !== false) {
-                        echo "Ingos";
+                        $app_id_end = mb_strpos($subject, '!');
+                        $app_id = mb_substr($subject, $app_id_start + 3, $app_id_end - $app_id_start - 3);
+                        $this->pzn_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, $app_id);
 
-                        $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
-                    } elseif (mb_strpos($body_html, 'Югория') !== false) {
-                        $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        // dd($app_id);
                     } else {
-                        echo "Not info";
-                        $mess = new Message();
-                        $mess->subject = $message->getSubject();
-                        $mess->uid = $uid;
-                        $mess->body_html = $message->getHTMLBody();
-                        $mess->body_text = $message->getTextBody();
-                        $mess->header = $message->getHeaders();
-                        $mess->message_date = $message->getdate();
-                        $mess->mailbox_id = 3;
-                        // dd($mess);
-                        $mess->save();
-                        foreach ($to as $mail) {
-                            // dd($mail);
-                            $address = new address;
-                            $address->message_id = $mess->id;
-                            $address->email = $mail->mail;
-                            $address->type = 'to';
-                            $address->save();
-                        }
-                        //dd($from, $to, $address);
-                        foreach ($from as $mail) {
-                            $address = new address;
-                            $address->message_id = $mess->id;
-                            $address->email = $mail->mail;
-                            $address->type = 'from';
-                            $address->save();
-                        }
-                        $dir = 'storage/files/temp';
-                        if (!is_dir($dir)) {
-                            mkdir($dir, 0777, true);
-                        }
+                        $sogaz = 0;
+                        $ingos = 0;
+                        $vsk = 0;
+                        foreach ($from as $fr) {
+                            if (mb_strpos($fr, 'sogaz') !== false)
+                                $sogaz = 1;
+                            if (mb_strpos($fr, 'ingos') !== false)
 
-                        foreach ($attachments as $attachment) {
-                            $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
-                            $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
-                            $attachment->save($path = $dir . '/', $filename);
-                            $attach = new attachment();
-                            $attach->message_id = $mess->id;
-                            $attach->location = $filename;
-                            $attach->mime_type = $attachment->getMimeType();
-                            $attach->file_size = $attachment->getSize();
-                            $attach->file_name = $attachment->getFilename();
-                            $attach->save();
+                                $ingos = 1;
+                            if (mb_strpos($fr, 'vsk') !== false)
+
+                                $vsk = 1;
+                        }
+                        if ($sogaz) {
+                            echo "Sogaz <br>";
+                            $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        }
+                        if (mb_strpos($body_html, 'vsk.ru') !== false || $vsk == 1) {
+                            $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
+                        } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
+                            echo "Ingos";
+
+                            $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
+                        } elseif (mb_strpos($body_html, 'Югория') !== false) {
+                            $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
+                        } else {
+                            echo "Not info";
+                            $mess = new Message();
+                            $mess->subject = $message->getSubject();
+                            $mess->uid = $uid;
+                            $mess->body_html = $message->getHTMLBody();
+                            $mess->body_text = $message->getTextBody();
+                            $mess->header = $message->getHeaders();
+                            $mess->message_date = $message->getdate();
+                            $mess->mailbox_id = 3;
+                            // dd($mess);
+                            $mess->save();
+                            foreach ($to as $mail) {
+                                // dd($mail);
+                                $address = new address;
+                                $address->message_id = $mess->id;
+                                $address->email = $mail->mail;
+                                $address->type = 'to';
+                                $address->save();
+                            }
+                            //dd($from, $to, $address);
+                            foreach ($from as $mail) {
+                                $address = new address;
+                                $address->message_id = $mess->id;
+                                $address->email = $mail->mail;
+                                $address->type = 'from';
+                                $address->save();
+                            }
+                            $dir = 'storage/files/temp';
+                            if (!is_dir($dir)) {
+                                mkdir($dir, 0777, true);
+                            }
+
+                            foreach ($attachments as $attachment) {
+                                $filename = pathinfo($attachment->getFilename(), PATHINFO_FILENAME);
+                                $filename .= "_" . date('d-m-y_hms') . "." . $attachment->getExtension();
+                                $attachment->save($path = $dir . '/', $filename);
+                                $attach = new attachment();
+                                $attach->message_id = $mess->id;
+                                $attach->location = $filename;
+                                $attach->mime_type = $attachment->getMimeType();
+                                $attach->file_size = $attachment->getSize();
+                                $attach->file_name = $attachment->getFilename();
+                                $attach->save();
+                            }
                         }
                     }
                 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\application;
 use App\Models\user_filter;
+use App\Models\mrk_filters;
 use App\Models\attachment;
 use \ZanySoft\Zip\Facades\Zip;
 use \Golchha21\ReSmushIt\Facades\Optimize;
@@ -61,6 +62,53 @@ class ApplicationController extends Controller
         ]);
         foreach ($data['id_city'] as $city_id) {
             $user_filter = user_filter::firstOrCreate(['id_user' => $data['id_user'], 'id_city' => $city_id]);
+        }
+
+        return true;
+    }
+    public function delete_mrk_filter(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_mrk' => 'required',
+            'id_user' => 'required'
+        ]);
+
+        $user_filter = mrk_filters::where('id_user', '=', $data['id_user'])->where('id_mrk', '=', $data['id_mrk'])->first();
+        if ($user_filter)  // if filter exists then delete it
+            $user_filter->delete();
+
+        return true;
+    }
+    public function add_mrk_filter(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_mrk' => 'required',
+            'id_user' => 'required'
+        ]);
+        $user_filter = mrk_filters::firstOrCreate(['id_user' => $data['id_user'], 'id_mrk' => $data['id_mrk']]);
+
+        return true;
+    }
+    public function delete_mrk_filters(Request $request)
+    {
+        $data = $this->validate($request, [
+
+            'id_user' => 'required'
+        ]);
+        $user_filters = mrk_filters::where('id_user', '=', $data['id_user'])->get();
+        foreach ($user_filters as $user_filter) {
+            $user_filter->delete();
+        }
+        return true;
+    }
+    public function add_mrk_filters(Request $request)
+    {
+        $data = $this->validate($request, [
+            'id_mrk' => 'required|array',
+            'id_user' => 'required'
+        ]);
+        foreach ($data['id_mrk'] as $mrk_id) {
+            $user_filter = mrk_filters::firstOrCreate(['id_user' => $data['id_user'], 'id_mrk' => $mrk_id]);
         }
 
         return true;

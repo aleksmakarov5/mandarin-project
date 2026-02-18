@@ -63,6 +63,10 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     Route::post('/delete_filter', [ApplicationController::class, 'delete_filter']);
     Route::post('/add_filters', [ApplicationController::class, 'add_filters']);
     Route::post('/delete_filters', [ApplicationController::class, 'delete_filters']);
+    Route::post('/add_mrk_filter', [ApplicationController::class, 'add_mrk_filter']);
+    Route::post('/delete_mrk_filter', [ApplicationController::class, 'delete_mrk_filter']);
+    Route::post('/add_mrk_filters', [ApplicationController::class, 'add_mrk_filters']);
+    Route::post('/delete_mrk_filters', [ApplicationController::class, 'delete_mrk_filters']);
     Route::post('/file_upload', [ApplicationController::class, 'file_upload']);
 
     // Route::post('/', 'StoreController');

@@ -110,13 +110,18 @@
                         />
                     </th>
                     <th scope="col">
-                        <input
+                        <mrk-filter
+                            :user_id="user_id"
+                            :mrk="mrk"
+                            :mrk_filter="mrk_filter"
+                        />
+                        <!-- <input
                             class="inp-cont"
                             type="text"
                             placeholder="МРК"
                             id="search-text6"
                             @keyup="tableSearch(6, 'applications')"
-                        />
+                        /> -->
                     </th>
                     <th scope="col">
                         <div
@@ -554,11 +559,22 @@
 
 <script>
 import NotifyCounter from "../components/NotifyCounter.vue";
+import MrkFilter from "../components/MrkFilter.vue";
+
 export default {
     components: {
         NotifyCounter,
+        MrkFilter,
     },
-    props: ["user_id", "in_applications", "rout", "city", "filter"],
+    props: [
+        "user_id",
+        "in_applications",
+        "rout",
+        "city",
+        "filter",
+        "mrk_filter",
+        "mrk",
+    ],
 
     data() {
         return {

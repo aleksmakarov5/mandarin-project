@@ -5,20 +5,18 @@
 @section('main_content')
     <h1>
         Все заявки</h1>
-        {{$applications->links('vendor.pagination.bootstrap-4')}}
-@can('company')
+    {{ $applications->links('vendor.pagination.bootstrap-4') }}
+    @can('company')
+        <a href="/applications/create" class="nav-link">Добавить заявку</a>
 
 
-    <a href="/applications/create" class="nav-link">Добавить заявку</a>
-
-
-    @if (Gate::allows('mrk') && !Gate::allows('admin'))
-        @if (session('rout') == 'applications' || session('rout') == 'directions')
-            <a href="?only_me={{ isset($only_me) && $only_me ? '0' : '1' }}"
-                class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
+        @if (Gate::allows('mrk') && !Gate::allows('admin'))
+            @if (session('rout') == 'applications' || session('rout') == 'directions')
+                <a href="?only_me={{ isset($only_me) && $only_me ? '0' : '1' }}"
+                    class="nav-link">{{ isset($only_me) && $only_me ? 'Показать только мои' : 'Показать все' }}</a>
+            @endif
         @endif
-    @endif
-@endcan
+    @endcan
     </div>
 
     <div id="app">
@@ -31,15 +29,22 @@
                 </ul>
             </div>
         @endif
-@php
-    $rout= session('rout');
-    if (Gate::allows('service'))
-    {
-        $rout='applications';
-    }
-@endphp
+        @php
+            $rout = session('rout');
+            if (Gate::allows('service')) {
+                $rout = 'applications';
+            }
+            $mrk = App\Models\User::join('user_roles', function ($join) {
+                $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
+            })
+                ->select('users.*')
+                ->get();
+            $mrk_filter = App\Models\mrk_filters::where('id_user', '=', Auth::user()->id)->get();
+
+        @endphp
         <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications->all()) }}"
-            :rout=`{{$rout}}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}" />
+            :rout=`{{ $rout }}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}"
+            :mrk="{{ json_encode($mrk) }}" :mrk_filter="{{ json_encode($mrk_filter) }}" />
 
         {{-- <table id ="applications" class="editable">
             <thead>
