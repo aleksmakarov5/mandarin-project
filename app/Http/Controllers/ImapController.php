@@ -2065,7 +2065,7 @@ class ImapController extends Controller
                             echo "ZN ZN ZN <br>";
                             $app_id_start = mb_strpos($subject, 'zn-');
 
-                            $app_id_end = mb_strpos($subject, '!');
+                            $app_id_end = mb_strrpos($subject, '!');
                             $app_id = mb_substr($subject, $app_id_start + 3, $app_id_end - $app_id_start - 3);
                             $this->pzn_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, $app_id);
 
@@ -2194,7 +2194,7 @@ class ImapController extends Controller
                     if (mb_strpos($subject, 'zn-')) {
                         $app_id_start = mb_strpos($subject, 'zn-');
 
-                        $app_id_end = mb_strpos($subject, '!');
+                        $app_id_end = mb_strrpos($subject, '!');
                         $app_id = mb_substr($subject, $app_id_start + 3, $app_id_end - $app_id_start - 3);
                         $this->pzn_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, $app_id);
 
@@ -2322,7 +2322,7 @@ class ImapController extends Controller
                     if (mb_strpos($subject, 'zn-')) {
                         $app_id_start = mb_strpos($subject, 'zn-');
 
-                        $app_id_end = mb_strpos($subject, '!');
+                        $app_id_end = mb_strrpos($subject, '!');
                         $app_id = mb_substr($subject, $app_id_start + 3, $app_id_end - $app_id_start - 3);
                         $this->pzn_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, $app_id);
 
