@@ -53,7 +53,7 @@
                         $me = DB::table('user_roles')
                             ->where('id_user', '=', Auth::user()->id)
                             ->where('id_group', '=', 5)
-                            ->get();
+                            ->first();
                     @endphp
                     @if (!$application->id_MRK && isset($me->id))
                         <option value="{{ Auth::user()->id }}" selected>
