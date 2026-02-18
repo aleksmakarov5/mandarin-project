@@ -223,7 +223,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -316,7 +316,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -408,7 +408,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -486,7 +486,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -573,7 +573,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -1210,6 +1210,23 @@ class ApplicationController extends Controller
                     $query->orWhere('id_city', '=', 0);
             });
         }
+        $mrk_filters = mrk_filters::where('id_user', '=', auth::user()->id)->get();
+
+        if (isset($mrk_filters[0]->id_mrk)) {
+            $applications->where(function ($query) use ($mrk_filters) {
+                $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
+                for ($i = 1; $i < $mrk_filters->count(); $i++) {
+                    $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
+                }
+                $mrk_all = User::join('user_roles', function ($join) {
+                    $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
+                })
+                    ->select('users.*')
+                    ->get();
+                if ($mrk_filters->count() == ($mrk_all->count()))
+                    $query->orWhere('id_MRK', '=', null);
+            });
+        }
         $applications = $applications->select(
             'applications.*',
             'insurance_companies.name',
@@ -1280,6 +1297,23 @@ class ApplicationController extends Controller
                 }
                 if ($user_filters->count() == (city::all()->count()))
                     $query->orWhere('id_city', '=', 0);
+            });
+        }
+        $mrk_filters = mrk_filters::where('id_user', '=', auth::user()->id)->get();
+
+        if (isset($mrk_filters[0]->id_mrk)) {
+            $applications->where(function ($query) use ($mrk_filters) {
+                $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
+                for ($i = 1; $i < $mrk_filters->count(); $i++) {
+                    $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
+                }
+                $mrk_all = User::join('user_roles', function ($join) {
+                    $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
+                })
+                    ->select('users.*')
+                    ->get();
+                if ($mrk_filters->count() == ($mrk_all->count()))
+                    $query->orWhere('id_MRK', '=', null);
             });
         }
         $applications = $applications->select(
@@ -1439,8 +1473,9 @@ class ApplicationController extends Controller
             if (isset($mrk_filters[0]->id_mrk)) {
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
+                    // dd($mrk_filters->count());
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -1539,7 +1574,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -1635,7 +1670,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -1721,7 +1756,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
@@ -1816,7 +1851,7 @@ class ApplicationController extends Controller
                 $applications->where(function ($query) use ($mrk_filters) {
                     $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
                     for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_MRK);
+                        $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
                     }
                     $mrk_all = User::join('user_roles', function ($join) {
                         $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
