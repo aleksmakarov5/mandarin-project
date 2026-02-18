@@ -95,7 +95,11 @@
             <label for="id_spm">Сервис</label>
         </div>
         <div class="form-float">
-
+            @if (!$application->id_service)
+                @php
+                    $application->id_service = Auth::user()->default_service;
+                @endphp
+            @endif
             <select class="form-cont" id="id_service" name="id_service">
                 @foreach ($services as $item)
                     <option value="{{ $item->id }}" @if ($item->id === $application->id_service) selected @endif>
