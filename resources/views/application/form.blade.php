@@ -49,6 +49,17 @@
             <div class="form-float">
 
                 <select class="form-cont" id="id_MRK" name="id_MRK">
+                    @php
+                        $me = DB::table('user_roles')
+                            ->where('id_user', '=', Auth::user()->id)
+                            ->where('id_group', '=', 5)
+                            ->get();
+                    @endphp
+                    @if (!$application->id_MRK && isset($me->id))
+                        <option value="{{ Auth::user()->id }}" selected>
+                            {{ Auth::user()->name }}
+                        </option>
+                    @endif
                     @foreach ($mrks as $item)
                         <option value="{{ $item->user_id }}" @if ($item->user_id === $application->id_MRK) selected @endif>
                             {{ $item->name }}
