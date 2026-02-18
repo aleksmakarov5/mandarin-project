@@ -118,7 +118,7 @@ class WordController extends Controller
             ->leftjoin('legal_entities', 'our_companies.id_legal', '=', 'legal_entities.id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->select('applications.*', 'cities.name as city', 'legal_entities.*', 'services.service_description', 'our_companies.our_email', 'insurance_companies.*')
+            ->select('applications.*', 'cities.name as city', 'legal_entities.*', 'services.service_description', 'our_companies.our_email', 'insurance_companies.name as ic_name', 'insurance_companies.ic_address', 'insurance_companies.ic_fullname', 'insurance_companies.ic_inn', 'insurance_companies.ic_kpp')
             ->where('applications.id', '=', $id)
             ->first();
         // dd($application);
@@ -569,6 +569,7 @@ class WordController extends Controller
             $templateProcessor->setValue('address', $application->address);
             $templateProcessor->setValue('director', $application->director);
             $templateProcessor->setValue('name', $application->name);
+            $templateProcessor->setValue('ic_name', $application->ic_name);
             $templateProcessor->setValue('in_face', $application->in_face);
             $templateProcessor->setValue('service_description', $application->service_description);
             $templateProcessor->setValue('fio', $fio);
