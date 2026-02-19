@@ -270,7 +270,7 @@
                     Мужской
                 </option>
                 <option value="1" @if (1 === $application->gender) selected @endif>
-                    Женскиий
+                    Женский
                 </option>
 
 
