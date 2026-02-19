@@ -447,6 +447,7 @@ class SparePartController extends Controller
         if ($request['id_ic'])
             $app->id_insuranceCompany = 3;
         $id_ic = $app->id_insuranceCompany;
+
         if (mb_strpos($file, "1\t")) {
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
@@ -485,6 +486,46 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
             // dd($SpareParts);
+        } else if ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
+            // dd($file);
+            $file = str_replace("</td>", '<br/>', $file);
+            $id_ic = 100;
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            // dd($file);
+            $SparePart_start = mb_strpos($file, 'Сумма, руб.');
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, 'стоимость узлов и деталей');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 30);
+            $SparePart_array = explode('<br/>', $SparePart);
+            // dd($SparePart_array);
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+                // echo $SparePart_array[$i] . '<br />';
+                // dd($SpareParts);
+                // dd($SparePart_array);
+            }
         } else if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
 
