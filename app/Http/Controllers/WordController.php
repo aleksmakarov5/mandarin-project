@@ -320,7 +320,6 @@ class WordController extends Controller
             $array = [];
             $SpareParts = DB::table('spare_parts')
                 ->where('id_application', '=', $id)
-                ->where('price_ic_full', '<>', '0')
                 ->get();
             $i = 1;
             // dd($SpareParts);
