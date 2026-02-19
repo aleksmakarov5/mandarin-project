@@ -13,6 +13,12 @@
     border-radius: 0.25rem;
     transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 }
+.green1 {
+    background-color: palegreen;
+}
+.red1 {
+    background-color: rgb(245, 85, 85);
+}
 .city-filter {
     position: absolute;
     background-color: #fff;
@@ -744,9 +750,9 @@ export default {
             }
         },
         classColor(countHour, finStatus) {
-            if (finStatus == 11) return "green";
+            if (finStatus == 11) return "green1";
             else if (countHour > 0) return "";
-            else return "red";
+            else return "red1";
         },
     },
 };
