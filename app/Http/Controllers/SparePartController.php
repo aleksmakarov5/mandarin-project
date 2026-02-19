@@ -505,7 +505,7 @@ class SparePartController extends Controller
 
             $SparePart_end = mb_strpos($file, 'стоимость узлов и деталей');
             // echo $SparePart_end . 'Раб_фин<br /><br />';
-            $SparePart = mb_substr($file, $SparePart_start + 18, $SparePart_end - $SparePart_start - 30);
+            $SparePart = mb_substr($file, $SparePart_start + 17, $SparePart_end - $SparePart_start - 30);
             $SparePart_array = explode('<br/>', $SparePart);
             // dd($SparePart_array);
             $j = 0;
