@@ -2874,32 +2874,32 @@ class ApplicationController extends Controller
                     // $body = preg_replace("~<blockquote(.*?)>(.*)</blockquote>~si", "", ' ' . $body . ' ');
                     // $body = substr($body, 0, strpos($body, '<blockquote'));
                 }
-                $loc = Attachment::where('message_id', '=', $message->id)
-                    ->where('file_name', 'like', '%image001.png%')
-                    ->first();
-                $location = isset($loc->location) ? $loc->location : '';
-                $body = str_replace('image001.png', $location, $body);
+                // $loc = Attachment::where('message_id', '=', $message->id)
+                //     ->where('file_name', 'like', '%image001.png%')
+                //     ->first();
+                // $location = isset($loc->location) ? $loc->location : '';
+                // $body = str_replace('image001.png', $location, $body);
 
-                $start = mb_strpos('png', $body) ? 2 : 1;
-                for ($i = $start; $i < 10; $i++) {
-                    $loc = Attachment::where('message_id', '=', $message->id)
-                        ->where('file_name', 'like', '%image00' . $i . '.gif%')
-                        ->first();
-                    $location = isset($loc->location) ? $loc->location : '';
-                    $body = str_replace('image00' . $i . '.gif', $location, $body);
-                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
-                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
-                    // $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
-                    // $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
+                // $start = mb_strpos('png', $body) ? 2 : 1;
+                // for ($i = $start; $i < 10; $i++) {
+                //     $loc = Attachment::where('message_id', '=', $message->id)
+                //         ->where('file_name', 'like', '%image00' . $i . '.gif%')
+                //         ->first();
+                //     $location = isset($loc->location) ? $loc->location : '';
+                //     $body = str_replace('image00' . $i . '.gif', $location, $body);
+                //     // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                //     // $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
+                //     // $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
+                //     // $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
 
-                }
+                // }
                 $body = preg_replace("~<base(.*?)>(.*)</base>~si", "",  $body);
                 $body = preg_replace("~<base(.*?)>~si", "",  $body);
                 $body = preg_replace("~<img(.*?)>~si", "",  $body);
                 $message->body = $body;
             }
         }
-        $application = application::where('id', '=', $id)->first();
+        // $application = application::where('id', '=', $id)->first();
         if ($application->id_status < 12 && $application->id_status != 6 && $application->id_status != 7)
             session(['rout' => 'applications']);
         if ($application->id_status == 6 || $application->id_status == 7)
