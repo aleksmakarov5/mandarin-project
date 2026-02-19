@@ -2738,16 +2738,16 @@ class ApplicationController extends Controller
             ->where('id_user', '=', Auth::user()->id)
             ->where('id_text', '=', 1)
             ->get()->all();
-        foreach ($notify as $notif) {
-            if ($notif->id_message) {
+        // foreach ($notify as $notif) {
+        //     if ($notif->id_message) {
 
-                // dd($notif);
-                $user = User::where('id', '=', Auth::user()->id)->first();
-                $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                $ch = $new_chat->deleteMessage($notif->id_message)->send();
-            }
-            $notif->delete();
-        }
+        //         // dd($notif);
+        //         $user = Auth::user();
+        //         $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        //         $ch = $new_chat->deleteMessage($notif->id_message)->send();
+        //     }
+        //     $notif->delete();
+        // }
 
         $status_message = status_message::where('id_user', '=', Auth::user()->id)->where('id_application', '=', $id)
             ->where('is_readed', '=', '0')->get();
