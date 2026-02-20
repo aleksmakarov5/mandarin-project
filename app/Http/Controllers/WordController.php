@@ -510,7 +510,10 @@ class WordController extends Controller
                 $templateProcessor->setValue('osn', $ic->osn_casco);
             else
                 $templateProcessor->setValue('osn', $ic->osn_osago);
-            $templateProcessor->setValue('dolzh', !$application->ip ? 'Директор' : 'Индивидуальный предприниматель');
+            $templateProcessor->setValue('dolzh', $application->dolzh);
+            $templateProcessor->setValue('ogrnip', $application->ogrnip);
+            $templateProcessor->setValue('Buh', $application->Buh);
+            $templateProcessor->setValue('Ip_name', $application->Ip_name);
 
             if ($application->director) {
                 $fio = $application->director;
