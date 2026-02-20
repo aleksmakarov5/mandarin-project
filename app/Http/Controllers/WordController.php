@@ -510,7 +510,6 @@ class WordController extends Controller
                 $templateProcessor->setValue('osn', $ic->osn_casco);
             else
                 $templateProcessor->setValue('osn', $ic->osn_osago);
-            dd($application);
             $templateProcessor->setValue('dolzh', $application->dolzh);
             $templateProcessor->setValue('ogrnip', $application->ogrnip);
             $templateProcessor->setValue('Buh', $application->Buh);
