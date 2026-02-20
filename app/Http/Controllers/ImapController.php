@@ -1600,7 +1600,7 @@ class ImapController extends Controller
                 $app_number = 'АТ' . $app_number;
             }
             $applications = application::firstorcreate(
-                ['numberInsuranceCompanyApplication' => date('dmY_hms'), 'id_insuranceCompany' => 4, 'our_company' => 1],
+                ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 4, 'our_company' => 1],
                 [
                     'numberInsuranceCompanyApplication' => $app_number,
                     'id_insuranceCompany' => 4,
