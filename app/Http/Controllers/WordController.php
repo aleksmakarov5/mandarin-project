@@ -514,6 +514,7 @@ class WordController extends Controller
             $templateProcessor->setValue('ogrnip', $application->ogrnip);
             $templateProcessor->setValue('Buh', $application->Buh);
             $templateProcessor->setValue('Ip_name', $application->Ip_name);
+            $templateProcessor->setValue('Director', $application->director);
 
             if ($application->director) {
                 $fio = $application->director;
