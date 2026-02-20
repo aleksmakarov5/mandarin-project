@@ -157,6 +157,8 @@ Route::group(['namespace' => 'Work', 'prefix' => 'work'], function () {
         ->name('api.work.index');
     Route::post('/create', [WorkController::class, 'store'])
         ->name('api.work.create');
+    Route::post('/paint/{id}', [WorkController::class, 'paint'])
+        ->name('api.work.paint');
     Route::post('/{id}/update', [
         WorkController::class,
         'update'

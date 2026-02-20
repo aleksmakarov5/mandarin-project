@@ -173,6 +173,23 @@ class WorkController extends Controller
         $res = $this->show($work->id_application);
         return $res;
     }
+
+    public function paint($id)
+    {
+        $work = work::findOrFail($id);
+        if ($work->paint > 0) {
+            $work->paint = 0;
+            $work->save();
+            $res = $this->show_paint($work->id_application);
+        } else {
+            $work->paint = 1;
+            $work->save();
+            $res = $this->show($work->id_application);
+        }
+
+
+        return $res;
+    }
     public function destroy_paint($id)
     {
         $work = work::findOrFail($id);

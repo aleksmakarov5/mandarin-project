@@ -12,6 +12,7 @@ class book extends Model
         'name',
         'email',
         'company',
-        'city'
+        'city',
+        'dolzhn'
     ];
 }

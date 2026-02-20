@@ -95,6 +95,14 @@
                                         alt="delete"
                                 /></a>
                             </td>
+                            <td scope="col">
+                                <a @click.prevent="makePaint(work.id)">
+                                    <img
+                                        src="/storage/img/paint.png"
+                                        width="30"
+                                        alt="delete"
+                                /></a>
+                            </td>
                         </tr>
                     </template>
                     <tr>
@@ -176,6 +184,12 @@ export default {
                     console.log(res);
                 });
             }
+        },
+        makePaint(id) {
+            axios.post(`/api/work/paint/${id}`).then((res) => {
+                this.getWorks(res);
+                console.log(res);
+            });
         },
         changeEditWorkId(id, name, count_hours_pzn) {
             // this.EditWorkId=id
