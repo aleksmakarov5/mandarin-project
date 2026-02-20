@@ -3820,7 +3820,7 @@ class ApplicationController extends Controller
 
                         $applications['vin'] = $application_array[3];
                         $applications['mnf_year'] = $application_array[4];
-                        $applications['mileage'] = $application_array[4];
+                        $applications['mileage'] = $application_array[5];
                         $parse_start = mb_strpos($file, 'СТРАХОВАТЕЛЬ');
                         if (!$parse_start)
                             $parse_start = mb_strpos($file, 'ПОТЕРПЕВШИЙ');
