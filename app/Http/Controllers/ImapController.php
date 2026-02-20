@@ -1584,7 +1584,8 @@ class ImapController extends Controller
 
         if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0 && mb_strpos('_' . $subject, 'Повторное уведомление о новом лоте') == 0) {
             $app_number = date('dmY_hms');
-            $subject = strtoupper($subject);
+            $subject = mb_strtoupper($subject);
+            // dd($subject);
             if (mb_strpos('_' . $subject, 'ПР') != 0) {
                 $app_number = preg_replace('/[^0-9]/', '', $subject);
                 $app_number = 'ПР' . $app_number;
