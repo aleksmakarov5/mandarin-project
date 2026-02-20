@@ -1586,19 +1586,29 @@ class ImapController extends Controller
             $app_number = date('dmY_hms');
             $subject = mb_strtoupper($subject);
             // dd($subject);
+            $start = 0;
+            $st = 0;
             if (mb_strpos('_' . $subject, 'ПР') != 0) {
-                $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $app_number = 'ПР' . $app_number;
+                // $app_number = preg_replace('/[^0-9]/', '', $subject);
+                $start = mb_strpos($subject, 'ПР');
+                $st = 1;
+                // $app_number = 'ПР' . $app_number;
             }
             if (mb_strpos('_' . $subject, 'AT') != 0) {
-                dd($subject);
-                $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $app_number = 'АТ' . $app_number;
+                // dd($subject);
+                $start = mb_strpos($subject, 'AT');
+                $st = 1;
+                // $app_number = preg_replace('/[^0-9]/', '', $subject);
+                // $app_number = 'АТ' . $app_number;
             }
             if (mb_strpos('_' . $subject, 'АТ') != 0) {
-                $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $app_number = 'АТ' . $app_number;
+                // $app_number = preg_replace('/[^0-9]/', '', $subject);
+                $start = mb_strpos($subject, 'АТ');
+                $st = 1;
+                // $app_number = 'АТ' . $app_number;
             }
+            if ($st)
+                $app_number = mb_substr($subject, $start, 10);
             $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 4, 'our_company' => 1],
                 [
