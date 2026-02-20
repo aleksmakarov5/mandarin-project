@@ -1579,14 +1579,28 @@ class ImapController extends Controller
     }
     public function reso_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
-        echo $subject . '<br>';
-        echo mb_strpos('_' . $subject, 'Уведомление о появлении нового лота');
+        // echo $subject . '<br>';
+        // echo mb_strpos('_' . $subject, 'Уведомление о появлении нового лота');
 
         if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0 && mb_strpos('_' . $subject, 'Повторное уведомление о новом лоте') == 0) {
+            $app_number = date('dmY_hms');
+            if (mb_strpos('_' . $subject, 'ПР')) {
+                $app_number = preg_replace('/[^0-9]/', '', $subject);
+                $app_number = 'ПР' . $app_number;
+            }
+            if (mb_strpos('_' . $subject, 'AT')) {
+                dd($subject);
+                $app_number = preg_replace('/[^0-9]/', '', $subject);
+                $app_number = 'АТ' . $app_number;
+            }
+            if (mb_strpos('_' . $subject, 'АТ')) {
+                $app_number = preg_replace('/[^0-9]/', '', $subject);
+                $app_number = 'АТ' . $app_number;
+            }
             $applications = application::firstorcreate(
                 ['numberInsuranceCompanyApplication' => date('dmY_hms'), 'id_insuranceCompany' => 4, 'our_company' => 1],
                 [
-                    'numberInsuranceCompanyApplication' => date('dmY_hms'),
+                    'numberInsuranceCompanyApplication' => $app_number,
                     'id_insuranceCompany' => 4,
                     'CarModel' => " ",
                     'gnz' => '',
@@ -2076,6 +2090,7 @@ class ImapController extends Controller
                             $sogaz = 0;
                             $ingos = 0;
                             $vsk = 0;
+                            $reso = 0;
                             foreach ($from as $fr) {
                                 if (mb_strpos($fr, 'sogaz') !== false)
                                     $sogaz = 1;
@@ -2085,6 +2100,9 @@ class ImapController extends Controller
                                 if (mb_strpos($fr, 'vsk') !== false)
 
                                     $vsk = 1;
+                                if (mb_strpos($fr, 'reso') !== false)
+
+                                    $reso = 1;
                             }
 
                             if ($sogaz) {
@@ -2097,7 +2115,7 @@ class ImapController extends Controller
                                 echo "Ingos";
 
                                 $this->ingos_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
-                            } elseif (mb_strpos($body_html, 'reso') !== false) {
+                            } elseif (mb_strpos($body_html, 'reso') !== false || $reso == 1) {
                                 $this->reso_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             } elseif (mb_strpos($body_html, 'Югория') !== false) {
                                 $this->ugor_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
