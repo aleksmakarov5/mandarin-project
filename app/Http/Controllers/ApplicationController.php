@@ -2944,6 +2944,9 @@ class ApplicationController extends Controller
                 $body = preg_replace("~<base(.*?)>(.*)</base>~si", "",  $body);
                 $body = preg_replace("~<base(.*?)>~si", "",  $body);
                 $body = preg_replace("~<img(.*?)>~si", "",  $body);
+                if (!$body) {
+                    $body = $message->body_text;
+                }
                 $message->body = $body;
             }
         }

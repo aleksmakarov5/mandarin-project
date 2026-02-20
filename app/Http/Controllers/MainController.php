@@ -158,6 +158,7 @@ class MainController extends Controller
                     ->get();
                 $body = $mail->body_html;
 
+
                 $body_start = mb_strpos($body, '<body');
                 if (!$body_start)
                     $body_start = mb_strpos($body, '<BODY');
@@ -173,6 +174,9 @@ class MainController extends Controller
                 $body = str_replace('<base target="_self" href="https://e.mail.ru/">', '', $body);
                 $body = str_replace('<base href="https://e.mail.ru/" target="_self">', '', $body);
                 $body = str_replace('<base target="_self" href="https://e.mail.ru/" style="">', '', $body);
+                if (!$body) {
+                    $body = $mail->body_text;
+                }
                 if (isset($mail->application_id)) {
                     $body = str_replace('cid:', '/storage/files/' . $mail->application_id . '/', $body);
                     $body = str_replace('gif', 'gif"', $body);
