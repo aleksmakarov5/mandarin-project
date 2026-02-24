@@ -144,7 +144,7 @@ export default {
                     maxContentLength: 1000000000,
                     maxBodyLength: 1000000000,
                 };
-                sleep(500).then(() =>
+                this.sleep(500).then(() =>
                     axios
                         .post("/api/application/file_upload", formData, config)
                         .then((res) => {
