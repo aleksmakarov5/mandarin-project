@@ -1605,7 +1605,8 @@ class ApplicationController extends Controller
                         $query
                             ->where('user_roles.id_group', '=', 2)
                             ->orWhere('user_roles.id_group', '=', 8)
-                            ->orWhere('user_roles.id_group', '=', 3);
+                            ->orWhere('user_roles.id_group', '=', 3)
+                            ->orWhere('user_roles.id_group', '=', 5);
                     })->where('user_roles.id_user', '=', Auth::user()->id);
                 })
                 ->join('role_companies', function ($join) {
