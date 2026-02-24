@@ -152,7 +152,6 @@ class FileController extends Controller
             }
 
 
-
             $zip->close();
             if ($zip_bool) {
                 $zip_path = '/storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';

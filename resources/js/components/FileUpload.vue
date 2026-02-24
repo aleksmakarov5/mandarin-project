@@ -144,28 +144,34 @@ export default {
                     maxContentLength: 1000000000,
                     maxBodyLength: 1000000000,
                 };
-                axios
-                    .post("/api/application/file_upload", formData, config)
-                    .then((res) => {
-                        console.log(res.data);
-                        this.count++;
-                        this.colors[res.data] = "green";
-                        this.itog[res.data] = "Загружено";
-                        this.files_add[res.data] = "";
-                        // this.colors[res.data] = "red";
-                        if (this.count == files_upload.length) {
-                            this.files_add = [];
-                            this.colors = [];
-                        }
+                sleep(500).then(() =>
+                    axios
+                        .post("/api/application/file_upload", formData, config)
+                        .then((res) => {
+                            console.log(res.data);
+                            this.count++;
+                            this.colors[res.data] = "green";
+                            this.itog[res.data] = "Загружено";
+                            this.files_add[res.data] = "";
+                            // this.colors[res.data] = "red";
+                            if (this.count == files_upload.length) {
+                                this.files_add = [];
+                                this.colors = [];
+                            }
 
-                        // console.log(this.colors[i]);
-                    })
-                    .catch((error) => {
-                        // i--;
-                    });
+                            // console.log(this.colors[i]);
+                        })
+                        .catch((error) => {
+                            // i--;
+                        })
+                );
             }
+
             // this.files_add = [];
             // this.showLoad = false;
+        },
+        sleep(ms) {
+            return new Promise((resolve) => setTimeout(resolve, ms));
         },
     },
 };
