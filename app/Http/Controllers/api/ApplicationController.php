@@ -165,6 +165,14 @@ class ApplicationController extends Controller
                     // dd($document);
                     $document->save();
                 } else {
+                    $attachment = attachment::firstOrCreate([
+                        'id_application' => $id,
+                        'location' => $request->load_location . "_" . date('d-m-y') . '.zip',
+                        'id_status' => $request->status_id,
+                        'message_id' => 0,
+                        'file_name' => $request->load_name . "_" . date('d-m-y'),
+                        'mime_type' => 'application/zip-compressed',
+                    ], []);
                     $upload_folder = '' . $id . '/' . $request->load_location . "_" . date('d-m-y');
                     $filenameWithExt = $file->getClientOriginalName(); //
                     // Имя и расширение файла
@@ -249,14 +257,8 @@ class ApplicationController extends Controller
                         $res = $zip->add($filename);
                         // $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
                         $zip->close();
-                        attachment::updateOrCreate([
-                            'id_application' => $id,
-                            'location' => $request->load_location . "_" . date('d-m-y') . '.zip',
-                            'id_status' => $request->status_id,
-                            'message_id' => 0,
-                            'file_name' => $request->load_name . "_" . date('d-m-y'),
-                            'mime_type' => 'application/zip-compressed',
-                        ], ['file_size' => filesize($zip_path)]);
+                        $attachment->file_size = filesize($zip_path);
+                        $attachment->save();
                     }
                 }
             }
