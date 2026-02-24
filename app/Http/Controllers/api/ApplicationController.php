@@ -172,7 +172,7 @@ class ApplicationController extends Controller
                         'message_id' => 0,
                         'file_name' => $request->load_name . "_" . date('d-m-y'),
                         'mime_type' => 'application/zip-compressed',
-                    ], []);
+                    ], ['file_size' => 1]);
                     $upload_folder = '' . $id . '/' . $request->load_location . "_" . date('d-m-y');
                     $filenameWithExt = $file->getClientOriginalName(); //
                     // Имя и расширение файла
