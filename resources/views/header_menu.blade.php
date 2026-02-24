@@ -697,7 +697,7 @@
                                     </tr>
                                 </table>
                             @endif
-                            @canany(['buh', 'admin', 'administrator'])
+                            @canany(['buh', 'admin', 'administrator', 'mrk'])
                                 @if (session('rout') == 'directions' || session('rout') == 'archive')
                                     <date-pay :app_id={{ $id }}
                                         :in_ic_pay_date="{{ json_encode($app->ic_pay_date) }}"
