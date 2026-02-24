@@ -165,7 +165,7 @@ class ApplicationController extends Controller
                     // dd($document);
                     $document->save();
                 } else {
-                    $attachment = attachment::firstOrCreate([
+                    $attachment = attachment::updateOrCreate([
                         'id_application' => $id,
                         'location' => $request->load_location . "_" . date('d-m-y') . '.zip',
                         'id_status' => $request->status_id,
