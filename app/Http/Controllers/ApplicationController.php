@@ -1405,7 +1405,7 @@ class ApplicationController extends Controller
             'cities.name as city',
             'attachments.id_status as doc'
         )->orderBy('applications.id', 'desc')
-            ->paginate(500);
+            ->paginate(1500);
         // dd($applications);
 
         session(['rout' => 'temp']);
