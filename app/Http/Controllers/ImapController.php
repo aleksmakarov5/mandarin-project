@@ -2095,6 +2095,7 @@ class ImapController extends Controller
                             $app_id = mb_substr($subject, $app_id_start + 3, $app_id_end - $app_id_start - 3);
 
                             $app_id = preg_replace('/[^0-9]/', '', $app_id);
+                            $app_id = mb_substr($app_id, 0, 4);
                             $this->pzn_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, $app_id);
 
                             // dd($app_id);
