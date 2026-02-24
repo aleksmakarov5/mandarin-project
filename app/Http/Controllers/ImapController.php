@@ -367,6 +367,21 @@ class ImapController extends Controller
                     // }
                     $notify->save();
                 }
+                if ($applications->id_MRK) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_MRK;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_MRK;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+
+                    $notify->save();
+                }
 
                 $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                     ->select('notifies.*', 'text_notifies.text')->first();
@@ -582,6 +597,21 @@ class ImapController extends Controller
                             ->send();
                         $notify->id_message = json_decode($ch)->result->message_id;
                     }
+
+                    $notify->save();
+                }
+                if ($applications->id_MRK) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_MRK;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_MRK;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
 
                     $notify->save();
                 }
@@ -898,6 +928,22 @@ class ImapController extends Controller
                 // }
                 $notify->save();
             }
+            if ($applications->id_MRK) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_MRK;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
+                $notify->save();
+            }
+
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')->first();
@@ -1250,6 +1296,21 @@ class ImapController extends Controller
                 // }
                 $notify->save();
             }
+            if ($applications->id_MRK) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_MRK;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
+                $notify->save();
+            }
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')->first();
@@ -1557,18 +1618,22 @@ class ImapController extends Controller
                 $status_message->is_readed = false;
                 $status_message->save();
                 $url = "https://mandarin-portal.ru/mail/" . $id;
-                if ($user->telegram_notify) {
 
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    // echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
-                    $notify->id_message = json_decode($ch)->result->message_id;
-                }
+                $notify->save();
+            }
+            if ($applications->id_MRK) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_MRK;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
                 $notify->save();
             }
 
@@ -1994,23 +2059,22 @@ class ImapController extends Controller
                 $status_message->is_readed = false;
                 $status_message->save();
                 $url = "https://mandarin-portal.ru/mail/" . $id;
-                if ($user->telegram_notify) {
 
-                    $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
-                    // echo $att;
-                    $ch = $new_chat->html("По заявке {$id} получено новое сообщение от страховой компании \n\n <a href='{$url}'>Открыть в браузере</a>\n")
-                        ->keyboard(
-                            Keyboard::make()
-                                ->buttons($keyboard)
-                        )
-                        ->send();
-                    try {
-                        $notify->id_message = json_decode($ch)->result->message_id;
-                    } catch (\Exception $e) {
-                        // dd($e);
-                    }
-                    $notify->save();
-                }
+                $notify->save();
+            }
+            if ($applications->id_MRK) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_MRK;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
                 $notify->save();
             }
 
