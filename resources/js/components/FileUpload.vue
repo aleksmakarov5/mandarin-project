@@ -144,7 +144,7 @@ export default {
                     maxContentLength: 1000000000,
                     maxBodyLength: 1000000000,
                 };
-                this.sleep(500).then(() =>
+                setTimeout(() => {
                     axios
                         .post("/api/application/file_upload", formData, config)
                         .then((res) => {
@@ -163,8 +163,8 @@ export default {
                         })
                         .catch((error) => {
                             // i--;
-                        })
-                );
+                        });
+                }, i * 500);
             }
 
             // this.files_add = [];
