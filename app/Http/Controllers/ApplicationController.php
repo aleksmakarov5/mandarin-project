@@ -1495,7 +1495,7 @@ class ApplicationController extends Controller
         $only_me = 0;
         $only_me = $request->get('only_me');
 
-        if (Gate::allows('administrator') || Gate::allows('mrk')) {
+        if (Gate::allows('administrator')) {
             $applications = application::where(function ($query) {
                 $query
                     ->where('applications.id_status', '>', '11')
@@ -1592,7 +1592,7 @@ class ApplicationController extends Controller
             )
                 ->orderBy('applications.id', 'desc')
                 ->paginate(300);
-        } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
+        } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('mrk')) {
 
 
             $applications = application::where(function ($query) {
