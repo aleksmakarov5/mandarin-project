@@ -38,7 +38,6 @@
     @auth('web')
         @php
             $applications = DB::table('applications')
-                ->where('id_status', '<>', '27')
                 ->leftjoin('status_applications', function ($join) {
                     $join
                         ->on('status_applications.id_application', '=', 'applications.id')
