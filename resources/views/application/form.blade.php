@@ -43,54 +43,53 @@
             </select>
 
         </div>
-        @canany(['admin', 'administrator'])
 
-            <div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
-            <div class="form-float">
+        <div class='lbl'><label for="id_MRK">Менеджер по работе с клиентами</label></div>
+        <div class="form-float">
 
-                <select class="form-cont" id="id_MRK" name="id_MRK">
-                    @php
-                        $me = DB::table('user_roles')
-                            ->where('id_user', '=', Auth::user()->id)
-                            ->where('id_group', '=', 5)
-                            ->first();
-                    @endphp
-                    @if (!$application->id_MRK && isset($me->id))
-                        <option value="{{ Auth::user()->id }}" selected>
-                            {{ Auth::user()->name }}
-                        </option>
-                    @endif
-                    @foreach ($mrks as $item)
-                        <option value="{{ $item->user_id }}" @if ($item->user_id === $application->id_MRK) selected @endif>
-                            {{ $item->name }}
-                        </option>
-                    @endforeach
-
-
-
-                </select>
-
-            </div>
-            <div class='lbl'>
-                <label for="id_spm">Наставник</label>
-            </div>
-            <div class="form-float">
-
-                <select class="form-cont" id="id_spm" name="id_spm">
-                    <option value="0">
-                        ---
+            <select class="form-cont" id="id_MRK" name="id_MRK">
+                @php
+                    $me = DB::table('user_roles')
+                        ->where('id_user', '=', Auth::user()->id)
+                        ->where('id_group', '=', 5)
+                        ->first();
+                @endphp
+                @if (!$application->id_MRK && isset($me->id))
+                    <option value="{{ Auth::user()->id }}" selected>
+                        {{ Auth::user()->name }}
                     </option>
-                    @foreach ($spms as $item)
-                        <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>
-                            {{ $item->name }}
-                        </option>
-                    @endforeach
+                @endif
+                @foreach ($mrks as $item)
+                    <option value="{{ $item->user_id }}" @if ($item->user_id === $application->id_MRK) selected @endif>
+                        {{ $item->name }}
+                    </option>
+                @endforeach
 
-                </select>
 
-            </div>
 
-        @endcanany
+            </select>
+
+        </div>
+        <div class='lbl'>
+            <label for="id_spm">Наставник</label>
+        </div>
+        <div class="form-float">
+
+            <select class="form-cont" id="id_spm" name="id_spm">
+                <option value="0">
+                    ---
+                </option>
+                @foreach ($spms as $item)
+                    <option value="{{ $item->id }}" @if ($item->id === $application->id_spm) selected @endif>
+                        {{ $item->name }}
+                    </option>
+                @endforeach
+
+            </select>
+
+        </div>
+
+
         <div class='lbl'>
             <label for="id_spm">Сервис</label>
         </div>
