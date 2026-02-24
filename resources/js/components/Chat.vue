@@ -433,8 +433,15 @@ div.attachment-show img {
                     <img src="/storage/img/attachment.png" width="20px"
                 /></a>
             </div>
-            <div class="message-button" @click.prevent="sendMessage()">
+            <div
+                v-if="can_send"
+                class="message-button"
+                @click.prevent="sendMessage()"
+            >
                 <img src="/storage/img/send_mess.png" width="30px" />
+            </div>
+            <div v-if="!can_send" class="message-button">
+                <img src="/storage/img/sending_chat.gif" width="30px" />
             </div>
             <!-- <div class="team-button" @click="work_group_show=!work_group_show">
              <a title="Рабочая группа">
@@ -484,6 +491,7 @@ export default {
             minus_work_group_show: false,
             work_group_selected: [],
             replayShow: false,
+            can_send: true,
         };
     },
     created() {
@@ -743,6 +751,7 @@ export default {
             }
         },
         sendMessage() {
+            this.can_send = false;
             let mess = document.getElementById("message_");
             let reply = document.getElementById("reply_");
 
@@ -801,6 +810,7 @@ export default {
                     })
 
                     .then((res) => {
+                        this.can_send = true;
                         this.chats.unshift(res.data);
 
                         mess.innerHTML = "";
