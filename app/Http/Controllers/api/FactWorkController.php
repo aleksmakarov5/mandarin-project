@@ -77,7 +77,12 @@ class FactWorkController extends Controller
 
 
         foreach ($data as $key => $val) {
-            $work->$key = $val;
+
+            if ($key == 'price_service') {
+                if ($val != 0)
+                    $work->$key = $val;
+            } else
+                $work->$key = $val;
         }
         $work->save();
         $res = $this->show($work->id_application);
