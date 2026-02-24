@@ -164,7 +164,7 @@ export default {
                         .catch((error) => {
                             // i--;
                         });
-                }, i * 1000);
+                }, i * 500);
             }
 
             // this.files_add = [];
