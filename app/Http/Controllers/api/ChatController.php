@@ -65,21 +65,21 @@ class ChatController extends Controller
                     $status_chat->save();
                     $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                         ->select('notifies.*', 'text_notifies.text')->first();
-                    broadcast(new MessageSent($notification));
-                    if ($recipient->telegram_notify) {
-                        $message = strip_tags($data['message'], '<b></b><br>');
-                        $message = str_replace('&nbsp;', ' ', $message);
-                        $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
-                        $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
-                            ->send();
-                        try {
-                            $file = "storage/test.txt";
-                            $notify->id_message = json_decode($ch)->result->message_id;
-                            file_put_contents($file, json_decode($ch));
-                        } catch (\Exception $e) {
-                            // dd($e);
-                        }
-                    }
+                    // broadcast(new MessageSent($notification));
+                    // if ($recipient->telegram_notify) {
+                    //     $message = strip_tags($data['message'], '<b></b><br>');
+                    //     $message = str_replace('&nbsp;', ' ', $message);
+                    //     $new_chat = TelegraphChat::where('chat_id', '=', $recipient->telegram_id)->first();
+                    //     $ch = $new_chat->html("В чате заявки {$data['id_application']} новое сообщение \n<b>{$author->name}</b>\n\n <i>{$message}</i>")
+                    //         ->send();
+                    //     try {
+                    //         $file = "storage/test.txt";
+                    //         $notify->id_message = json_decode($ch)->result->message_id;
+                    //         file_put_contents($file, json_decode($ch));
+                    //     } catch (\Exception $e) {
+                    //         // dd($e);
+                    //     }
+                    // }
                     if ($recipient->email_notify) {
                         $message = $data['message'];
                         Mail::to($recipient->email)->queue(new newmessage($data['id_application'], $author->name, $data['message']));
