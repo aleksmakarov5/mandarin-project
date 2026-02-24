@@ -1346,6 +1346,7 @@ class ApplicationController extends Controller
                 $query->where('id_user', '=', auth::user()->id)
                     ->where('is_readed', '=', '0');
             })
+
             ->with('spareparts')
             ->with('works')
             ->with('estimate');
@@ -1413,6 +1414,16 @@ class ApplicationController extends Controller
         foreach ($applications as $application) {
             $application->count_hour = 1;
             $application->max_hour = 1000;
+        }
+        foreach ($applications as $application) {
+            $count = ['application' => 0, 'chat' => 0, 'message' => 0];
+
+            $count['application'] = $application->status_applications->count();
+
+            $count['chat'] = $application->status_chats->count();
+
+            $count['message'] = $application->status_messages->count();
+            $application->count = $count;
         }
         // $applications = $this->configure($applications);
         $city = city::all();
