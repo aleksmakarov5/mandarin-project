@@ -817,7 +817,26 @@ export default {
                         this.to = [];
                         this.message = "";
                         this.files = [];
+                    })
+                    .catch((error) => {
+
+                        this.can_send = true;
                     });
+            }
+        },
+        deleteMessage(id) {
+            axios
+                .post(`/api/chat/delete`, {
+                    id: id,
+                })
+                .then((res) => {
+                    for (let i = 0; i < this.chats.length; i++) {
+                        if (this.chats[i].id == id) {
+                            this.chats.splice(i, 1);
+                        }
+                    }
+                });
+                    ;
             }
         },
         handleFilesUpload() {
