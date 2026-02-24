@@ -71,6 +71,7 @@
 
             $count_archive = ['application' => 0, 'chat' => 0, 'message' => 0];
             $count_priem = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_temp = ['application' => 0, 'chat' => 0, 'message' => 0];
             foreach ($applications as $application) {
                 if ($application->status < 12 && $application->status != 6 && $application->status != 7) {
                     if ($application->app) {
@@ -125,6 +126,17 @@
                     }
                     if ($application->message) {
                         $count_priem['message']++;
+                    }
+                }
+                if ($application->status == 27) {
+                    if ($application->app) {
+                        $count_temp['application']++;
+                    }
+                    if ($application->chat) {
+                        $count_temp['chat']++;
+                    }
+                    if ($application->message) {
+                        $count_temp['message']++;
                     }
                 }
             }
@@ -216,6 +228,8 @@
                                 </li>
                                 <li class="nav-item"><a href="\temp"
                                         class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Корзина</a>
+                                    <notify-buttons :user="{{ Auth::user()->id }}" :pi=`temp`
+                                        :count_in="{{ json_encode($count_temp) }}"></notify-buttons>
 
                                 </li>
                                 <li class="nav-item"><a href="\message"
