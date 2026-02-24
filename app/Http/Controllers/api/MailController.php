@@ -77,6 +77,7 @@ class MailController extends Controller
                 $attach_new->save();
             }
         $history = new history;
+
         $address = new address;
         $address->message_id = $messages->id;
         $address->type = 'from';

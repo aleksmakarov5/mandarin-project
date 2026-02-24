@@ -5850,6 +5850,12 @@ class ApplicationController extends Controller
             $application = application::findOrFail($id);
             $application->id_status = 27;
             $application->save();
+            $history = new history;
+
+            $history->id_user = Auth::id();
+            $history->id_application = $id;
+            $history->id_status = 27;
+            $history->save();
             session(['rout' => 'temp']);
             return redirect()->route('application', $id);
         } catch (\Exception $error) {
