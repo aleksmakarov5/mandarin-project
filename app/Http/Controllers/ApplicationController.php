@@ -1495,7 +1495,7 @@ class ApplicationController extends Controller
         $only_me = 0;
         $only_me = $request->get('only_me');
 
-        if (Gate::allows('administrator')) {
+        if (Gate::allows('administrator') || Gate::allows('mrk')) {
             $applications = application::where(function ($query) {
                 $query
                     ->where('applications.id_status', '>', '11')
@@ -1902,113 +1902,115 @@ class ApplicationController extends Controller
                 'attachments.id_status as doc'
             )->orderBy('applications.id', 'desc')
                 ->paginate(300);
-        } elseif (Gate::allows('mrk')) {
-            $applications = application::where(function ($query) {
-                $query
+        }
+        // elseif (Gate::allows('mrk')) {
+        //     $applications = application::where(function ($query) {
+        //         $query
 
-                    ->where('applications.id_status', '>', '11')
-                    ->where('applications.id_status', '<', '25');
-            })
-                ->where('applications.id_mrk', '=', Auth::user()->id)
-                ->join('user_roles', function ($join) {
-                    $join
-                        ->where('user_roles.id_group', '=', 5)
-                        ->where('user_roles.id_user', '=', Auth::user()->id);
-                })
-                ->join('role_companies', function ($join) {
-                    $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
-                })
-                ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-                ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
-                ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
+        //             ->where('applications.id_status', '>', '11')
+        //             ->where('applications.id_status', '<', '25');
+        //     })
+        //         ->where('applications.id_mrk', '=', Auth::user()->id)
+        //         ->join('user_roles', function ($join) {
+        //             $join
+        //                 ->where('user_roles.id_group', '=', 5)
+        //                 ->where('user_roles.id_user', '=', Auth::user()->id);
+        //         })
+        //         ->join('role_companies', function ($join) {
+        //             $join->on('role_companies.id_company', '=', 'applications.our_company')->on('role_companies.id_role', '=', 'user_roles.id');
+        //         })
+        //         ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+        //         ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+        //         ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
 
-                ->leftjoin('services', 'applications.id_service', '=', 'services.id')
-                ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-                ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
-                ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
-                ->leftjoin('attachments', function ($join) {
-                    $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
-                })
-                ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
-                ->with('status_chats', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_applications', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('status_messages', function ($query) {
-                    $query->where('id_user', '=', auth::user()->id)
-                        ->where('is_readed', '=', '0');
-                })
-                ->with('spareparts')
-                ->with('works')
-                ->with('estimate');
-            $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
+        //         ->leftjoin('services', 'applications.id_service', '=', 'services.id')
+        //         ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
+        //         ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+        //         ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
+        //         ->leftjoin('attachments', function ($join) {
+        //             $join->on('attachments.id_application', '=', 'applications.id')->where('attachments.id_status', '=', '3');
+        //         })
+        //         ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
+        //         ->with('status_chats', function ($query) {
+        //             $query->where('id_user', '=', auth::user()->id)
+        //                 ->where('is_readed', '=', '0');
+        //         })
+        //         ->with('status_applications', function ($query) {
+        //             $query->where('id_user', '=', auth::user()->id)
+        //                 ->where('is_readed', '=', '0');
+        //         })
+        //         ->with('status_messages', function ($query) {
+        //             $query->where('id_user', '=', auth::user()->id)
+        //                 ->where('is_readed', '=', '0');
+        //         })
+        //         ->with('spareparts')
+        //         ->with('works')
+        //         ->with('estimate');
+        //     $user_filters = user_filter::where('id_user', '=', auth::user()->id)->get();
 
-            if (isset($user_filters[0]->id_city)) {
-                $applications->where(function ($query) use ($user_filters) {
-                    $query->where('id_city', '=', $user_filters[0]->id_city);
-                    for ($i = 1; $i < $user_filters->count(); $i++) {
-                        $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
-                    }
-                    if ($user_filters->count() == (city::all()->count()))
-                        $query->orWhere('id_city', '=', 0);
-                });
-            }
-            $mrk_filters = mrk_filters::where('id_user', '=', auth::user()->id)->get();
+        //     if (isset($user_filters[0]->id_city)) {
+        //         $applications->where(function ($query) use ($user_filters) {
+        //             $query->where('id_city', '=', $user_filters[0]->id_city);
+        //             for ($i = 1; $i < $user_filters->count(); $i++) {
+        //                 $query->orWhere('id_city', '=', $user_filters[$i]->id_city);
+        //             }
+        //             if ($user_filters->count() == (city::all()->count()))
+        //                 $query->orWhere('id_city', '=', 0);
+        //         });
+        //     }
+        //     $mrk_filters = mrk_filters::where('id_user', '=', auth::user()->id)->get();
 
-            if (isset($mrk_filters[0]->id_mrk)) {
-                $applications->where(function ($query) use ($mrk_filters) {
-                    if ($mrk_filters[0]->id_mrk == 58)
-                        $query->Where('id_MRK', '=', null);
-                    else {
-                        $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
-                        $query->orWhere('id_spm', '=', $mrk_filters[0]->id_mrk);
-                    }
-                    for ($i = 1; $i < $mrk_filters->count(); $i++) {
-                        if ($mrk_filters[$i]->id_mrk == 25)
-                            $query->orWhere('id_MRK', '=', null);
-                        else {
-                            $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
-                            $query->orWhere('id_spm', '=', $mrk_filters[$i]->id_mrk);
-                        }
-                    }
-                    $mrk_all = User::join('user_roles', function ($join) {
-                        $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
-                    })
-                        ->select('users.*')
-                        ->get();
-                    if ($mrk_filters->count() == ($mrk_all->count()))
-                        $query->orWhere('id_MRK', '=', null);
-                });
-            }
-            $applications = $applications->select(
-                'applications.*',
-                'finance_statuses.FinStatusName',
-                'finance_statuses.fin_time',
-                'finance_statuses.fin_day',
-                'finance_statuses.FinStatusTheme',
-                'insurance_companies.name',
-                'insurance_companies.insurance_companies_theme',
-                'services.service_name',
-                'services.services_theme',
-                'lawyers.lawyer_name',
-                'lawyers.color as lawyers_color',
-                'application_statuses.StatusName',
-                'application_statuses.status_theme',
-                'application_statuses.current_group',
-                'application_statuses.time',
-                'application_statuses.day',
-                'our_companies.our_name',
-                'users.name as MRK_name',
-                'cities.name as city',
-                'attachments.id_status as doc'
-            )->orderBy('applications.id', 'desc')
-                ->paginate(300);
-            // dd($applications);
-        } else {
+        //     if (isset($mrk_filters[0]->id_mrk)) {
+        //         $applications->where(function ($query) use ($mrk_filters) {
+        //             if ($mrk_filters[0]->id_mrk == 58)
+        //                 $query->Where('id_MRK', '=', null);
+        //             else {
+        //                 $query->where('id_MRK', '=', $mrk_filters[0]->id_mrk);
+        //                 $query->orWhere('id_spm', '=', $mrk_filters[0]->id_mrk);
+        //             }
+        //             for ($i = 1; $i < $mrk_filters->count(); $i++) {
+        //                 if ($mrk_filters[$i]->id_mrk == 25)
+        //                     $query->orWhere('id_MRK', '=', null);
+        //                 else {
+        //                     $query->orWhere('id_MRK', '=', $mrk_filters[$i]->id_mrk);
+        //                     $query->orWhere('id_spm', '=', $mrk_filters[$i]->id_mrk);
+        //                 }
+        //             }
+        //             $mrk_all = User::join('user_roles', function ($join) {
+        //                 $join->on('user_roles.id_user', '=', 'users.id')->where('user_roles.id_group', '=', '5');
+        //             })
+        //                 ->select('users.*')
+        //                 ->get();
+        //             if ($mrk_filters->count() == ($mrk_all->count()))
+        //                 $query->orWhere('id_MRK', '=', null);
+        //         });
+        //     }
+        //     $applications = $applications->select(
+        //         'applications.*',
+        //         'finance_statuses.FinStatusName',
+        //         'finance_statuses.fin_time',
+        //         'finance_statuses.fin_day',
+        //         'finance_statuses.FinStatusTheme',
+        //         'insurance_companies.name',
+        //         'insurance_companies.insurance_companies_theme',
+        //         'services.service_name',
+        //         'services.services_theme',
+        //         'lawyers.lawyer_name',
+        //         'lawyers.color as lawyers_color',
+        //         'application_statuses.StatusName',
+        //         'application_statuses.status_theme',
+        //         'application_statuses.current_group',
+        //         'application_statuses.time',
+        //         'application_statuses.day',
+        //         'our_companies.our_name',
+        //         'users.name as MRK_name',
+        //         'cities.name as city',
+        //         'attachments.id_status as doc'
+        //     )->orderBy('applications.id', 'desc')
+        //         ->paginate(300);
+        //     // dd($applications);
+        // }
+        else {
             $applications = application::where(function ($query) {
                 $query
 
