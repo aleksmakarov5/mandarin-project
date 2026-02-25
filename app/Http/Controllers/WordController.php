@@ -166,6 +166,7 @@ class WordController extends Controller
         $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
         $templateProcessor->setValue('gnz', $application->gnz);
+        $templateProcessor->setValue('in_face', $application->in_face);
         $templateProcessor->setValue('vin', $application->vin);
         $templateProcessor->setValue('city', $application->city);
         $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
@@ -517,7 +518,7 @@ class WordController extends Controller
             $templateProcessor->setValue('Director', $application->director);
 
             if ($application->director) {
-                $fio = $application->director;
+                $fio = ($application->director == ' ') ? $application->Ip_name : $application->director;
                 $fio = explode(' ', $fio);
                 $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
             }
