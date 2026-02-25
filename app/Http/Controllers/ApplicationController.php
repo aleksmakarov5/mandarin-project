@@ -939,13 +939,13 @@ class ApplicationController extends Controller
             ->orwhere('CarModel', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('ClientPhone', 'LIKE', '%' . $data['find'] . '%')
             ->orwhere('applications.id', 'LIKE', '%' . $data['find'] . '%')
-            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
-            ->join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->leftjoin('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+            ->leftjoin('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
 
-            ->join('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
+            ->leftjoin('finance_statuses', 'finance_statuses.id', '=', 'applications.finance_statuses_id')
             ->leftjoin('services', 'applications.id_service', '=', 'services.id')
             ->leftjoin('lawyers', 'applications.id_lawyer', '=', 'lawyers.id')
-            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->leftjoin('our_companies', 'applications.our_company', '=', 'our_companies.id')
             ->leftjoin('users', 'applications.id_MRK', '=', 'users.id')
 
             ->leftjoin('cities', 'applications.id_city', '=', 'cities.id')
