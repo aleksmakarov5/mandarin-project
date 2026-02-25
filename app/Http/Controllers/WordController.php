@@ -146,7 +146,8 @@ class WordController extends Controller
         //dd($application);
         $fio = '';
         if ($application->director) {
-            $fio = $application->director;
+            $fio = ($application->director == ' ') ? $application->Ip_name : $application->director;
+
             $fio = explode(' ', $fio);
             $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
         }
@@ -518,7 +519,7 @@ class WordController extends Controller
             $templateProcessor->setValue('Director', $application->director);
 
             if ($application->director) {
-                $fio = (!$application->director) ? $application->Ip_name : $application->director;
+                $fio = ($application->director == ' ') ? $application->Ip_name : $application->director;
                 $fio = explode(' ', $fio);
                 $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
             }
@@ -605,7 +606,8 @@ class WordController extends Controller
                 //dd($application);
                 $fio = '';
                 if ($application->director) {
-                    $fio = $application->director;
+                    $fio = ($application->director == ' ') ? $application->Ip_name : $application->director;
+
                     $fio = explode(' ', $fio);
                     $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
                 }
@@ -688,7 +690,8 @@ class WordController extends Controller
                 $templateProcessor->setValue('dolzh', !$application->ip ? 'Директор' : 'Индивидуальный предприниматель');
 
                 if ($application->director) {
-                    $fio = $application->director;
+                    $fio = ($application->director == ' ') ? $application->Ip_name : $application->director;
+
                     $fio = explode(' ', $fio);
                     $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
                 }
