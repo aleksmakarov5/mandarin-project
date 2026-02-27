@@ -48,6 +48,10 @@
     justify-content: center;
     align-items: center;
 }
+.mw {
+    max-width: 110px;
+    overflow: hidden;
+}
 </style>
 <template>
     <div>
@@ -492,13 +496,13 @@
                         <td @click="openApplication(application.id)">
                             {{ application.numberInsuranceCompanyApplication }}
                         </td>
-                        <td @click="openApplication(application.id)">
+                        <td @click="openApplication(application.id)" class="mw">
                             {{ application.ClientName }}
                         </td>
                         <td @click="openApplication(application.id)">
                             {{ application.ClientPhone }}
                         </td>
-                        <td @click="openApplication(application.id)">
+                        <td @click="openApplication(application.id)" class="mw">
                             {{ application.CarModel }}
                         </td>
                         <td @click="openApplication(application.id)">
