@@ -3757,7 +3757,80 @@ class ApplicationController extends Controller
             $app = Application::find($id);
             if ($request['id_ic'])
                 $app->id_insuranceCompany = 3;
+            if (
+                mb_strpos($file, 'Эксперт: _______________/') != 0
+            ) {
+                // dd($file);
+                $application_start = mb_strpos($file, 'транспортного средств');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['CarModel'] = $application_array[1];
+                $application_start = mb_strpos($file, 'VIN');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['vin'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Пробег');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mileage'] = (int) $application_array[1];
+                // $file = html_entity_decode(strip_tags($file, ['br']));
+                $file = str_replace("\t", '', $file);
+                $file = str_replace("\n\n", '<br/>', $file);
+                $file = str_replace("<br/><br/>", '<br/>', $file);
 
+                $file = str_replace("\n", ' ', $file);
+                $file = str_replace("  ", ' ', $file);
+                // $file = str_replace("/\u{000D}", '<br/>', $file);
+
+
+                $file = preg_replace("(\u{A0})", ' ', $file);
+
+                $file = str_replace("/\u{A0}/", '', $file);
+
+
+
+                // dd($applications['numberInsuranceCompanyApplication']);
+                $estimate_start = mb_strpos($file, 'узлов и деталей с учетом стоимости');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[0] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'деталей с учетом износа');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[1] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'ремонта/замены');
+                $estimate = mb_substr($file, $estimate_start);
+
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[2] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'окраски вкл.');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[3] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'лакокрасочных материалов');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[4] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'стоимость устранения дефектов АТС (с учетом скидки)');
+                if (!$estimate_start)
+                    $estimate_start = mb_strpos($file, 'АМТС (с');
+
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[7] = str2number($estimate[1]);
+                $estimate_start = mb_strpos($file, 'АМТС (без');
+                $estimate = mb_substr($file, $estimate_start);
+                $estimate = preg_replace("(\u{A0})", ' ', $estimate);
+                $estimate = explode('<br/>', $estimate);
+                $price[6] = str2number($estimate[1]);
+                // dd($applications);
+            } else
             if ((mb_strpos($file, 'одометр') != 0 && !mb_strpos($file, 'НАПРАВЛЕНИЕ'))
                 || ((mb_strpos($file, 'Ананьин') != 0) && !mb_strpos($file, 'НАПРАВЛЕНИЕ'))
                 || (mb_strpos($file, 'Мандарин') != 0) && (!(mb_strpos($file, 'одометра')) && (mb_strpos($file, 'НАПРАВЛЕНИЕ') == 0))
