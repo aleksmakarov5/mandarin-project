@@ -751,6 +751,7 @@ export default {
         },
         classColor(countHour, finStatus) {
             if (finStatus == 11) return "green1";
+            if (finStatus == 10) return "oplata";
             else if (countHour > 0) return "";
             else return "red1";
         },
