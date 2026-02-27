@@ -262,6 +262,132 @@ class WorkController extends Controller
 
             // dd($works, $work_array);
             session(['works' => $works]);
+        } elseif ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
+            // dd($file);
+            $id_ic = 1;
+            $file = str_replace("</td>", '<br/>', $file);
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+
+
+            $work_start = mb_strpos($file, 'Работы');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+            $work_end = mb_strpos($file, 'ремонта/замены');
+            // echo $work_end . 'Раб_фин<br /><br />';
+            $work = mb_substr($file, $work_start, $work_end - $work_start);
+            // $file = mb_substr($file, mb_strpos($file, 'www.autoins.ru') + 14, mb_strlen($file));
+
+            $work_array = explode('<br/>', $work);
+            // dd($work_array, $work_end);
+
+            $j = 0;
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Цена" ||
+                    trim($work_array[$i]) == "Нормо-час" ||
+                    trim($work_array[$i]) == "Кол-во" ||
+                    trim($work_array[$i]) == "Сумма" ||
+                    trim($work_array[$i]) == "KN" ||
+                    trim($work_array[$i]) == "БН" ||
+                    trim($work_array[$i]) == "Работы" ||
+                    trim($work_array[$i]) == "№ прогр." ||
+                    mb_strpos($work_array[$i], "Сумма") ||
+                    mb_strpos($work_array[$i], "прогр") ||
+                    mb_strpos($work_array[$i], "Норматив") ||
+                    mb_strpos($work_array[$i], "KN")
+
+
+
+                ) {
+                } else {
+                    // if (($i - 3) % 5 != 0)
+                    $works[$j++] = $work_array[$i];
+                }
+
+
+                // echo $work_array[$i] . '<br />';
+            }
+            $work_array = $works;
+            // dd($work_array);
+            $works = [];
+            $j = 0;
+            for ($i = 0; $i < count($work_array); $i++) {
+
+                $works[$j++] = trim($work_array[$i]);
+            }
+
+
+            // dd($works, $work_array);
+            session(['works' => $works]);
+
+            $work_start = mb_strpos($file, 'Окраска');
+            // echo $work_start . 'Раб_Старт<br /><br />';
+            $work = '';
+            if ($work_start) {
+                $work_end = mb_strpos($file, 'стоимость окраски');
+                $work = mb_substr($file, $work_start, $work_end - $work_start);
+            }
+
+
+            $work_array = [];
+            $works = [];
+            $work_array = explode('<br/>', $work);
+            // dd($work_array, $work_end);
+
+            $j = 0;
+            for ($i = 0; $i < count($work_array) - 1; $i++) {
+                if (
+                    trim($work_array[$i]) == "Наименование" ||
+                    trim($work_array[$i]) == "Норматив," ||
+                    trim($work_array[$i]) == "Сумма, руб."
+                    ||
+                    trim($work_array[$i]) == "Цена ед., руб." ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "Цена" ||
+                    trim($work_array[$i]) == "Нормо-час" ||
+                    trim($work_array[$i]) == "Кол-во" ||
+                    trim($work_array[$i]) == "Сумма" ||
+                    trim($work_array[$i]) == "KN" ||
+                    trim($work_array[$i]) == "БН" ||
+                    trim($work_array[$i]) == "Работы" ||
+                    trim($work_array[$i]) == "Окраска" ||
+                    trim($work_array[$i]) == "№ прогр." ||
+                    trim($work_array[$i]) == "БН" ||
+                    trim($work_array[$i]) == "н-час" ||
+                    trim($work_array[$i]) == "№ прогр." ||
+                    mb_strpos($work_array[$i], "Сумма") ||
+                    mb_strpos($work_array[$i], "прогр") ||
+                    mb_strpos($work_array[$i], "Норматив") ||
+                    mb_strpos($work_array[$i], "руб") ||
+                    mb_strpos($work_array[$i], "краска") ||
+                    mb_strpos($work_array[$i], "KN")
+
+
+
+                ) {
+                } else {
+
+                    $works[$j++] = $work_array[$i];
+                }
+
+
+                // echo $work_array[$i] . '<br />';
+            }
+            // dd($works);
+            session(['works_paint' => $works]);
+            // echo $SparePart_array[$i] . '<br />';
+
+
+            // dd($SparePart_array);
         } elseif ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $id_ic = 5;
             $file = str_replace("</td>", '<br/>', $file);
