@@ -392,6 +392,7 @@ class SparePartController extends Controller
         $type = 0;
         $SpareParts = [];
         $reset = 0;
+        dd($request);
         if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
             if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
                 $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
