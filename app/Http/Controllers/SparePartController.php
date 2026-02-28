@@ -962,7 +962,7 @@ class SparePartController extends Controller
                     }
                 }
             } else if (($app->id_insuranceCompany == 7)) { {
-                    // dd($file);
+                    dd($file);
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
                     if ($SparePart_start) {
                         // echo $SparePart_start . 'Раб_Старт<br /><br />';
