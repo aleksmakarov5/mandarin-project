@@ -202,8 +202,9 @@
                                 <td> {{ $SpareParts[$i] }} <input type="checkbox" name='iskl[{{ $i }}]'
                                         value={{ $i }}> </td>
                                 <td @if ($iss == 1) style=background-color:grey @endif>
-                                    {{ $SpareParts[$i + 1] }}<input type="checkbox" name='iskl[{{ $i + 1 }}]'
-                                        value={{ $i + 1 }}> </td>
+                                    @php echo mb_strpos($SpareParts[$i + 1], 'БН') || mb_strpos($SpareParts[$i + 1], 'бн') || $SpareParts[$i + 1] == 'БН'|| !$SpareParts[$i + 1]   ? $SpareParts[$i + 1] . " " . $j : $SpareParts[$i + 1] @endphp
+                                    <input type="checkbox" name='iskl[{{ $i + 1 }}]' value={{ $i + 1 }}>
+                                </td>
                                 <td> {{ $SpareParts[$i + 2] }}<input type="checkbox" name='iskl[{{ $i + 2 }}]'
                                         value={{ $i + 2 }}> </td>
                                 <td @if ($pr > str2number($SpareParts[$i + 3])) style=background-color:red @endif>
