@@ -66,7 +66,14 @@
                     <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
                     <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
                     <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
-                    <input type="hidden" name="part_number[{{ $j }}]" value="{{ $SpareParts[$i] }}">
+                    <input type="hidden" name="part_number[{{ $j }}]"
+                        value="@php
+echo mb_strpos($SpareParts[$i], 'БН') ||
+                                        mb_strpos($SpareParts[$i], 'бн') ||
+                                        $SpareParts[$i] == 'БН' ||
+                                        trim($SpareParts[$i]) == ''
+                                            ? $SpareParts[$i] . ' ' . $j
+                                        : $SpareParts[$i]; @endphp">
                     <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
                 @endfor
             @endif
