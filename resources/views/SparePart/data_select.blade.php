@@ -311,7 +311,14 @@
                             <tr>
                                 <td> {{ $j }} </td>
                                 <td @if ($iss == 1) style=background-color:grey @endif>
-                                    @php echo mb_strpos($SpareParts[$i ], 'БН') || mb_strpos($SpareParts[$i ], 'бн') || $SpareParts[$i ] == 'БН'|| !$SpareParts[$i]   ? $SpareParts[$i ] . " " . $j : $SpareParts[$i ] @endphp<input type="checkbox" name='iskl[{{ $i }}]'
+                                    @php
+                                        dd($SpareParts);
+                                        echo mb_strpos($SpareParts[$i], 'БН') ||
+                                        mb_strpos($SpareParts[$i], 'бн') ||
+                                        $SpareParts[$i] == 'БН' ||
+                                        !$SpareParts[$i]
+                                            ? $SpareParts[$i] . ' ' . $j
+                                        : $SpareParts[$i]; @endphp<input type="checkbox" name='iskl[{{ $i }}]'
                                         value={{ $i }}> </td>
                                 <td> {{ $SpareParts[$i + 1] }}<input type="checkbox" name='iskl[{{ $i + 1 }}]'
                                         value={{ $i + 1 }}> </td>
