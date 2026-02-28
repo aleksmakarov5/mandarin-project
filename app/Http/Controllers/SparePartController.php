@@ -392,24 +392,26 @@ class SparePartController extends Controller
         $type = 0;
         $SpareParts = [];
         $reset = 0;
-        dd($request);
-        if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
-            if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
-                $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
-                $dir = 'storage/files/' . $id;
-                exec('chmod 755 "' . $pathToSave . '"');
-                $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
-                exec($comand);
-                // dd($comand);
+        // dd($request);
+        if (pathinfo($request['location'], PATHINFO_EXTENSION) != 'html') {
+            if (pathinfo($request['location'], PATHINFO_EXTENSION) == 'doc' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'docx' || pathinfo($request['location'], PATHINFO_EXTENSION) == 'rtf') {
+                if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.html')) {
+                    $pathToSave = 'storage/files/' . $id . '/' . $request['location'];
+                    $dir = 'storage/files/' . $id;
+                    exec('chmod 755 "' . $pathToSave . '"');
+                    $comand = 'libreoffice --headless --convert-to html "' . $pathToSave . '" --outdir ' . $dir;
+                    exec($comand);
+                    // dd($comand);
+                }
+                $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
             }
-            $request['location'] = pathinfo($request['location'], PATHINFO_FILENAME) . '.html';
-            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/works.html');
-        }
-        //dd($request['iskl']);
-        else {
-            rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-            exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
-            rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+            //dd($request['iskl']);
+            else {
+                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
+                rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
+            }
         }
         $html = 'works.html';
         //  include('storage/files/'.$id.'/' . $html);
