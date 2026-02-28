@@ -312,7 +312,7 @@
                                 <td> {{ $j }} </td>
                                 <td @if ($iss == 1) style=background-color:grey @endif>
                                     @php
-                                        dd($SpareParts[$i] == '');
+                                        dd(trim($SpareParts[$i]) == '');
                                         echo mb_strpos($SpareParts[$i], 'БН') ||
                                         mb_strpos($SpareParts[$i], 'бн') ||
                                         $SpareParts[$i] == 'БН' ||
