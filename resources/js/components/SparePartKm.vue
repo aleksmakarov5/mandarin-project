@@ -14,6 +14,8 @@
                         <th scope="col">Зак. номер</th>
 
                         <th scope="col">Цена СК</th>
+                        <th v-if="type">Скидка</th>
+                        <th v-if="type">Цена <br />со скидкой</th>
                         <th scope="col">Цена ПЗН</th>
 
                         <th scope="col">Оригинал</th>
@@ -41,11 +43,30 @@
                         <th scope="col"></th>
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
+
+                        <th v-if="type" contenteditable>
+                            {{
+                                "undefined" !== typeof spareparts[0]
+                                    ? spareparts[0].iznos
+                                    : 0
+                            }}
+                        </th>
+                        <th v-if="type">{{ makeMoney(summ_ic_half) }}</th>
                         <th scope="col">{{ makeMoney(summ_sto) }}</th>
                         <th scope="col" colspan="7"></th>
                         <th scope="col">
-                            <div :class="classDanger(delta_res_full)">
-                                {{ makeMoney(delta_res_full) }}
+                            <div
+                                :class="
+                                    classDanger(
+                                        type ? delta_res_half : delta_res_full
+                                    )
+                                "
+                            >
+                                {{
+                                    makeMoney(
+                                        type ? delta_res_half : delta_res_full
+                                    )
+                                }}
                             </div>
                         </th>
 
@@ -125,6 +146,28 @@
                                 {{ makeCount(sparepart.price_ic_full) }}
                             </td>
                             <td
+                                v-if="type"
+                                class="ic_price"
+                                :id="'iznos_' + sparepart.id"
+                                contenteditable
+                                @blur="editIznos(sparepart.id, index)"
+                                @keydown.enter="editIznos(sparepart.id, index)"
+                            >
+                                {{ makeProc(sparepart.iznos) }}
+                            </td>
+                            <td
+                                v-if="type"
+                                class="ic_price"
+                                :id="'price_ic_half_' + sparepart.id"
+                                contenteditable
+                                @blur="editPriceIcHalf(sparepart.id, index)"
+                                @keydown.enter="
+                                    editPriceIcHalf(sparepart.id, index)
+                                "
+                            >
+                                {{ makeCount(sparepart.price_ic_half) }}
+                            </td>
+                            <td
                                 class="ic_price"
                                 :id="'price_sto_' + sparepart.id"
                                 contenteditable
@@ -138,6 +181,8 @@
                                         sparepart.price_sto &&
                                             sparepart.price_sto != 0
                                             ? sparepart.price_sto
+                                            : type
+                                            ? sparepart.price_ic_half
                                             : sparepart.price_ic_full
                                     )
                                 }}
@@ -439,12 +484,15 @@
 export default {
     props: [
         "app_id",
+        "ub_type",
         "rout",
         "in_statuses",
         "in_spareparts",
         "in_summ_sto",
         "in_summ_ic_full",
         "in_delta_res_full",
+        "in_summ_ic_half",
+        "in_delta_res_half",
     ],
 
     data() {
@@ -453,6 +501,7 @@ export default {
             id_app: this.app_id,
             rout_it: this.rout,
             EditSparePartId: null,
+            type: this.ub_type,
             name: "",
             part_number: "",
             order_number: "",
@@ -468,11 +517,13 @@ export default {
             comment: "",
             summ_sto: this.in_summ_sto,
             delta_res_full: this.in_delta_res_full,
+            delta_res_half: this.in_delta_res_half,
             delta: 0,
             selected_price: "",
             selected_mrk: "",
             statuses: this.in_statuses,
             summ_ic_full: this.in_summ_ic_full,
+            summ_ic_half: this.in_summ_ic_half,
             name_Cr: "",
             show: true,
         };
@@ -488,6 +539,8 @@ export default {
             this.summ_sto = res.data[2];
             this.delta_res_full = res.data[3];
             this.statuses = res.data[4];
+            this.summ_ic_half = res.data[5];
+            this.delta_res_half = res.data[6];
         },
         deletesparepart(id) {
             if (confirm("Точно удалить?")) {
@@ -548,6 +601,7 @@ export default {
                     id_application: this.app_id,
                     name: this.spareparts[index].name,
                     comment: this.spareparts[index].comment,
+
                     price_sto: this.spareparts[index].price_sto,
                     price_analogue: this.spareparts[index].price_analogue,
                     price_used: this.spareparts[index].price_used,
@@ -556,6 +610,8 @@ export default {
                     part_number: this.spareparts[index].part_number,
                     order_number: this.spareparts[index].order_number,
                     price_ic_full: this.spareparts[index].price_ic_full,
+                    price_ic_half: this.spareparts[index].price_ic_half,
+                    iznos: this.spareparts[index].iznos,
                     status_id: this.spareparts[index].status_id,
                     date_price: this.spareparts[index].date_price,
                     date_wait: this.spareparts[index].date_wait,
@@ -591,6 +647,18 @@ export default {
             if (n == "-") return "нет";
             let text = parseFloat(n)
                 .toFixed(2)
+                .replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
+            // text=text.substring(0, text.indexOf("."))
+            if (text == "0") return "";
+            else {
+                return text;
+            }
+        },
+        makeProc(n) {
+            if (!n) return "";
+            if (n == "-") return "нет";
+            let text = parseFloat(n)
+                .toFixed()
                 .replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
             // text=text.substring(0, text.indexOf("."))
             if (text == "0") return "";
@@ -725,6 +793,20 @@ export default {
             this.spareparts[index].price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id, index);
         },
+        editPriceIcHalf(id, index) {
+            let price_ic_half = document.getElementById("price_ic_half_" + id);
+            this.spareparts[index].price_ic_half = price_ic_half.innerText;
+            this.updateSparePart(id, index);
+        },
+        editIznos(id, index) {
+            let iznos = document.getElementById("iznos_" + id);
+            this.spareparts[index].iznos = iznos.innerText;
+            this.spareparts[index].price_ic_half =
+                (this.parseF(this.spareparts[index].price_ic_full) / 100) *
+                (100 - this.parseF(this.spareparts[index].iznos));
+            this.updateSparePart(id, index);
+        },
+
         fortmatDate(date) {
             let options = {
                 year: "numeric",

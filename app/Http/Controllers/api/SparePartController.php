@@ -29,16 +29,18 @@ class SparePartController extends Controller
         $summ_sto = 0;
         $delta_res_full = 0;
         $summ_order = 0;
+        $summ_ic_half = 0;
 
         foreach ($spareparts as $i => $sparepart) {
-            $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
+            // $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
 
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
+            $summ_ic_half = $summ_ic_half + str2number($sparepart->price_ic_half);
             if (str2number($sparepart->price_sto) == 0)
                 $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
             else
                 $summ_sto = $summ_sto + str2number($sparepart->price_sto);
-
+            $summ_ic_half = $summ_ic_half +  str2number($sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:
                     $summ_order = $summ_order + str2number($sparepart->price_original);
@@ -62,8 +64,9 @@ class SparePartController extends Controller
             }
         }
         $delta_res_full = $summ_order - $summ_ic_full;
+        $delta_res_half = $summ_order - $summ_ic_half;
 
-        return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses];
+        return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses, $summ_ic_half, $delta_res_half];
     }
 
 
@@ -110,11 +113,16 @@ class SparePartController extends Controller
             'selected_service' => 'nullable',
             'price_service' => 'nullable',
             'approved' => 'nullable',
-            'status_id' => 'nullable'
+            'status_id' => 'nullable',
+            'iznos' => 'nullable',
         ]);
 
         if (isset($data['price_ic_full']))
             $data['price_ic_full'] = str2number($data['price_ic_full']);
+        if (isset($data['price_ic_half']))
+            $data['price_ic_half'] = str2number($data['price_ic_half']);
+        if (isset($data['iznos']))
+            $data['iznos'] = str2number($data['iznos']);
         if (isset($data['price_sto']))
             $data['price_sto'] = str2number($data['price_sto']);
         if (isset($data['price_analogue']))

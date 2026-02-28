@@ -5,45 +5,25 @@
 @section('main')
     @php
         $Plan_works = DB::table('plan_works')->where('id_application', '=', $id)->get();
+        $ub_type = DB::table('applications')->where('id', '=', $id)->first()->ub_type;
+
     @endphp
     {{-- {{ session('GroupId') }} --}}
-    @if (Gate::allows('km') || Gate::allows('km') || (Gate::allows('mrk') && Gate::allows('spm')))
-        <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
-            :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
-            :in_statuses="{{ json_encode($statuses) }}" :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
+
+    @if (Gate::allows('service'))
+        <spare-part-service :app_id={{ $id }}
+            :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-service>
     @else
-        @if (Gate::allows('mrk'))
-            <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
-                :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
-                :in_statuses="{{ json_encode($statuses) }}"
-                :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
-            {{-- <spare-part-mrk :app_id={{ $id }} :rout=`{{ session('rout') }}` :in_summ_ic_full=`{{ $summ_ic_full }}`
-                    :in_summ_sto=`{{ $summ_sto }}` :in_delta_res_full=`{{ $delta_res_full }}`
-                    :in_statuses="{{ json_encode($statuses) }}"
-                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-mrk> --}}
-        @else
-            @if (Gate::allows('spm'))
-                <spare-part-zap :app_id={{ $id }} :rout=`{{ session('rout') }}`
-                    :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
-                    :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
-                    :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-zap>
-            @else
-                @if (Gate::allows('service'))
-                    <spare-part-service :app_id={{ $id }}
-                        :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-service>
-                @else
-                    <spare-part-km :app_id={{ $id }} :rout=`{{ session('rout') }}`
-                        :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
-                        :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
-                        :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
-                    {{-- <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
+        <spare-part-km :ub_type={{ $ub_type }} :app_id={{ $id }} :rout=`{{ session('rout') }}`
+            :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_ic_half=`{{ $summ_ic_half }}` :in_summ_sto=`{{ $summ_sto }}`
+            :in_delta_res_full=`{{ $delta_res_full }}` :in_delta_res_half=`{{ $delta_res_half }}`
+            :in_statuses="{{ json_encode($statuses) }}" :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-km>
+        {{-- <spare-part-all :app_id={{ $id }} :rout=`{{ session('rout') }}`
                             :in_summ_ic_full=`{{ $summ_ic_full }}` :in_summ_sto=`{{ $summ_sto }}`
                             :in_delta_res_full=`{{ $delta_res_full }}` :in_statuses="{{ json_encode($statuses) }}"
                             :in_spareparts="{{ json_encode($spareparts) }}"></spare-part-all> --}}
-                @endif
-            @endif
-        @endif
     @endif
+
 
 
     @can('company')

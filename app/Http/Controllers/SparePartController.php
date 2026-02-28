@@ -104,7 +104,7 @@ class SparePartController extends Controller
         $delta_full = [];
         $delta_half = [];
         foreach ($spareparts as $i => $sparepart) {
-            $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
+            // $sparepart->price_ic_full = $app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full;
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
             if (str2number($sparepart->price_sto) == 0)
                 $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
