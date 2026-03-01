@@ -14,7 +14,7 @@ class EstimateController extends Controller
     {
         $sert = application::findOrFail($id)->sertificat;
 
-        $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        $estimates = estimate::where('id_application', '=', $id)->first();
         if ($estimates == null)
             $estimates = estimate::updateorcreate(
                 ['id_application' => $id],
