@@ -44,7 +44,13 @@
                         <th scope="col"></th>
                         <th scope="col">{{ makeMoney(summ_ic_full) }}</th>
 
-                        <th v-if="type" contenteditable>
+                        <th
+                            v-if="type"
+                            contenteditable
+                            id="skidka"
+                            @blur="editSkid(id)"
+                            @keydown.enter="editSkid(id)"
+                        >
                             {{
                                 "undefined" !== typeof spareparts[0]
                                     ? spareparts[0].iznos
@@ -621,6 +627,17 @@ export default {
                 });
             this.changeEditSparePartId(null);
         },
+        updateSparePartAll() {
+            axios
+                .post(`/api/sparepart/update_all`, {
+                    id_application: this.app_id,
+                    spareparts: this.spareparts,
+                })
+                .then((res) => {
+                    this.getSpareParts(res);
+                });
+            this.changeEditSparePartId(null);
+        },
 
         createSparePart() {
             axios
@@ -805,6 +822,17 @@ export default {
                 (this.parseF(this.spareparts[index].price_ic_full) / 100) *
                 (100 - this.parseF(this.spareparts[index].iznos));
             this.updateSparePart(id, index);
+        },
+
+        editSkid(id) {
+            let skidka = document.getElementById("skidka");
+            for (let i = 0; i < this.spareparts.length; i++) {
+                this.spareparts[i].iznos = skidka.innerText;
+                this.spareparts[i].price_ic_half =
+                    (this.parseF(this.spareparts[i].price_ic_full) / 100) *
+                    (100 - this.parseF(this.spareparts[i].iznos));
+            }
+            this.updateSparePartAll();
         },
 
         fortmatDate(date) {

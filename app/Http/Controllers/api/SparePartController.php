@@ -37,10 +37,9 @@ class SparePartController extends Controller
             $summ_ic_full = $summ_ic_full + str2number($sparepart->price_ic_full);
             $summ_ic_half = $summ_ic_half + str2number($sparepart->price_ic_half);
             if (str2number($sparepart->price_sto) == 0)
-                $summ_sto = $summ_sto +  str2number($sparepart->price_ic_full);
+                $summ_sto = $summ_sto +  str2number($app->ub_type ? $sparepart->price_ic_half : $sparepart->price_ic_full);
             else
                 $summ_sto = $summ_sto + str2number($sparepart->price_sto);
-            $summ_ic_half = $summ_ic_half +  str2number($sparepart->price_ic_half);
             switch ($sparepart->selected_price) {
                 case 1:
                     $summ_order = $summ_order + str2number($sparepart->price_original);
@@ -88,6 +87,24 @@ class SparePartController extends Controller
         return $res;
     }
 
+    public function update_all(Request $request)
+    {
+        $data = $this->validate(
+            $request,
+            [
+                'id_application' => 'required',
+                'spareparts' => 'required|array',
+            ]
+        );
+        foreach ($data['spareparts'] as $sparepart) {
+            $sp = SparePart::find($sparepart['id']);
+            $sp->iznos = $sparepart['iznos'];
+            $sp->price_ic_half = $sparepart['price_ic_half'];
+            $sp->save();
+        }
+        $res = $this->show($data['id_application']);
+        return $res;
+    }
     public function update(Request $request, $id)
     {
         $d = null;

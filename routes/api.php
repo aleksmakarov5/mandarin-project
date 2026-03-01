@@ -187,6 +187,10 @@ Route::group(['namespace' => 'SparePart', 'prefix' => 'sparepart'], function () 
         SparePartController::class,
         'update'
     ])->name('api.sparepart.update');
+    Route::post('/update_all', [
+        SparePartController::class,
+        'update_all'
+    ])->name('api.sparepart.update_all');
     Route::delete('/{id}', [SparePartController::class, 'destroy']);
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
