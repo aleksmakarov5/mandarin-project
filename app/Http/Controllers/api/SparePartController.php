@@ -8,6 +8,7 @@ use App\Models\application;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\SparePart;
+use App\Models\estimate;
 
 class SparePartController extends Controller
 {
@@ -64,6 +65,10 @@ class SparePartController extends Controller
         }
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
+        $estimate = estimate::where('id_application', '=', $data['id_application'])->first();
+        $estimate->price_sp_half = $summ_ic_half;
+        $estimate->price_repair_half = str2number($estimate->price_sp_half) + str2number($estimate->price_paint_half) + str2number($estimate->price_zip) + str2number($estimate->price_work);
+        $estimate->save();
 
         return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses, $summ_ic_half, $delta_res_half];
     }
@@ -102,6 +107,7 @@ class SparePartController extends Controller
             $sp->price_ic_half = $sparepart['price_ic_half'];
             $sp->save();
         }
+
         $res = $this->show($data['id_application']);
         return $res;
     }
