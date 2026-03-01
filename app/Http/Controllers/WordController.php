@@ -123,9 +123,11 @@ class WordController extends Controller
             ->first();
         // dd($application);
         $ic = InsuranceCompany::find($application->id_insuranceCompany);
-        if ($doc_type == 31)
+        if ($doc_type == 31 || $doc_type == 35) {
+            if ($doc_type == 35)
+                $template = $application->ub_type ? 'pzn_casco.docx' : 'pzn_osago.docx';
             $templateProcessor = new TemplateProcessor('storage/doc_template/' . $template);
-        else
+        } else
             $templateProcessor = new TemplateProcessor('storage/doc_template/' . $application->id_insuranceCompany . '/' . $template);
         $estimate = estimate::where('id_application', '=', $id)->first();
         $mrk = DB::table('users')->where('id', '=', $application->id_MRK)->first();
@@ -141,8 +143,8 @@ class WordController extends Controller
             if (isset($mrk_n[2]))
                 $mrk_name .= ' ' . mb_substr($mrk_n[2], 0, 1, 'UTF-8') . '.';
         }
-        $nds = str2number($estimate->price_repair_full) * 0.05;
-        $summ_nds = str2number($estimate->price_repair_full) + $nds;
+        $nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) * 0.05;
+        $summ_nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) + $nds;
         //dd($application);
         $fio = '';
         if ($application->director) {
@@ -156,13 +158,14 @@ class WordController extends Controller
         $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
 
         // dd($sch_number);
-        $templateProcessor->setValue('Client', $application->ClientName ?? '_____________________________________________________________');
+        $templateProcessor->setValue('Client', $application->ClientName ?? '________________________________');
         $templateProcessor->setValue('sch_number', $sch_number);
 
         $templateProcessor->setValue('mrk', $mrk_name);
 
         $templateProcessor->setValue('mrk_full', $mrk_full);
         $templateProcessor->setValue('mrk_phone', $mrk_phone);
+        $templateProcessor->setValue('ic_fullname', $application->ic_fullname);
         $templateProcessor->setValue('number', $number);
         $templateProcessor->setValue('Date', Date::parse()->format('j F Y'));
         $templateProcessor->setValue('CarModel', $application->CarModel);
@@ -328,12 +331,12 @@ class WordController extends Controller
             $price_sp_full = 0;
             foreach ($SpareParts as $sparepart) {
                 $array[] = array(
-                    'SparePart' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? $sparepart->name : bold_text($sparepart->name),
+                    'SparePart' => (($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0))) || $application->ub_type ? $sparepart->name : bold_text($sparepart->name),
                     'count' => $sparepart->count,
-                    'summ' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
+                    'summ' => (($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0))) || $application->ub_type ? in_money($sparepart->price_ic_full) : bold_text(in_money($sparepart->price_sto)),
                     'iznos' => $sparepart->iznos,
-                    'sum_half' => ($sparepart->price_ic_half),
-                    'part_number' => ($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0)) ? $sparepart->part_number : bold_text($sparepart->part_number)
+                    'sum_half' => in_money($sparepart->price_ic_half),
+                    'part_number' => (($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0))) || $application->ub_type ? $sparepart->part_number : bold_text($sparepart->part_number)
                 );
                 $price_sp_full
                     += $sparepart->price_sto == 0
@@ -372,8 +375,8 @@ class WordController extends Controller
             }
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
-            $nds = str2number($estimate->price_repair_full) * 0.05;
-            $summ_nds = str2number($estimate->price_repair_full) + $nds;
+            $nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) * 0.05;
+            $summ_nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) + $nds;
 
 
             $price_repair_full_md2 = $price_sp_full_md2 +
@@ -390,10 +393,11 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-                $templateProcessor->setValue('price_sp_full', in_money($price_sp_full));
+                $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $estimate->price_sp_half : $price_sp_full));
                 $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
-                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
+                $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $estimate->price_repair_half : $price_repair_full));
                 $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
+                $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
                 $estimate->save();
             }
         }

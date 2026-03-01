@@ -16,7 +16,7 @@
                         <th scope="col">Цена СК</th>
                         <th v-if="type">Скидка</th>
                         <th v-if="type">Цена <br />со скидкой</th>
-                        <th scope="col">Цена ПЗН</th>
+                        <th v-if="!type" scope="col">Цена ПЗН</th>
 
                         <th scope="col">Оригинал</th>
                         <th scope="col">Аналог</th>
@@ -58,7 +58,9 @@
                             }}
                         </th>
                         <th v-if="type">{{ makeMoney(summ_ic_half) }}</th>
-                        <th scope="col">{{ makeMoney(summ_sto) }}</th>
+                        <th v-if="!type" scope="col">
+                            {{ makeMoney(summ_sto) }}
+                        </th>
                         <th scope="col" colspan="7"></th>
                         <th scope="col">
                             <div
@@ -174,6 +176,7 @@
                                 {{ makeCount(sparepart.price_ic_half) }}
                             </td>
                             <td
+                                v-if="!type"
                                 class="ic_price"
                                 :id="'price_sto_' + sparepart.id"
                                 contenteditable
@@ -758,7 +761,29 @@ export default {
             this.spareparts[index].price_ic_full = price_ic_full.innerText
                 .split(" ")
                 .join("");
+
             this.updateSparePart(id, index);
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                } else {
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(this.spareparts[i].price_ic_full);
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.spareparts[n].price_ic_full = this.parseF(sum) * 0.02;
+                // console.log(this.spareparts[n].id);
+                this.updateSparePart(this.spareparts[n].id, n);
+            }
         },
         editPriceSto(id, index) {
             let price_sto = document.getElementById("price_sto_" + id);
@@ -787,10 +812,10 @@ export default {
                         );
                 }
             }
-            console.log(sum);
+            // console.log(sum);
             if (n != -1) {
                 this.spareparts[n].price_sto = this.parseF(sum) * 0.02;
-                console.log(this.spareparts[n].id);
+                // console.log(this.spareparts[n].id);
                 this.updateSparePart(this.spareparts[n].id, n);
             }
         },
@@ -809,11 +834,53 @@ export default {
             let price_ic_full = document.getElementById("price_ic_full_" + id);
             this.spareparts[index].price_ic_full = price_ic_full.innerText;
             this.updateSparePart(id, index);
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                } else {
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(this.spareparts[i].price_ic_full);
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.spareparts[n].price_ic_full = this.parseF(sum) * 0.02;
+                // console.log(this.spareparts[n].id);
+                this.updateSparePart(this.spareparts[n].id, n);
+            }
         },
         editPriceIcHalf(id, index) {
             let price_ic_half = document.getElementById("price_ic_half_" + id);
             this.spareparts[index].price_ic_half = price_ic_half.innerText;
             this.updateSparePart(id, index);
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                } else {
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(this.spareparts[i].price_ic_half);
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.spareparts[n].price_ic_half = this.parseF(sum) * 0.02;
+                // console.log(this.spareparts[n].id);
+                this.updateSparePart(this.spareparts[n].id, n);
+            }
         },
         editIznos(id, index) {
             let iznos = document.getElementById("iznos_" + id);
@@ -822,6 +889,27 @@ export default {
                 (this.parseF(this.spareparts[index].price_ic_full) / 100) *
                 (100 - this.parseF(this.spareparts[index].iznos));
             this.updateSparePart(id, index);
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                } else {
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(this.spareparts[i].price_ic_half);
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.spareparts[n].price_ic_half = this.parseF(sum) * 0.02;
+                // console.log(this.spareparts[n].id);
+                this.updateSparePart(this.spareparts[n].id, n);
+            }
         },
 
         editSkid(id) {
@@ -833,6 +921,27 @@ export default {
                     (100 - this.parseF(this.spareparts[i].iznos));
             }
             this.updateSparePartAll();
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                } else {
+                    sum =
+                        this.parseF(sum) +
+                        this.parseF(this.spareparts[i].price_ic_half);
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.spareparts[n].price_ic_half = this.parseF(sum) * 0.02;
+                // console.log(this.spareparts[n].id);
+                this.updateSparePart(this.spareparts[n].id, n);
+            }
         },
 
         fortmatDate(date) {
