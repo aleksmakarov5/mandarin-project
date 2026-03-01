@@ -102,8 +102,9 @@ class SparePartController extends Controller
             ]
         );
         foreach ($data['spareparts'] as $sparepart) {
+            $sp = SparePart::find($sparepart['id']);
             if (!(mb_strpos($sp->name, 'детали') || (mb_strpos($sp->name, 'ДЕТАЛИ')))) {
-                $sp = SparePart::find($sparepart['id']);
+
                 $sp->iznos = $sparepart['iznos'];
                 $sp->price_ic_half = $sparepart['price_ic_half'];
                 $sp->save();
