@@ -329,6 +329,7 @@ class WordController extends Controller
             $i = 1;
             // dd($SpareParts);
             $price_sp_full = 0;
+            $price_sp_half = 0;
             foreach ($SpareParts as $sparepart) {
                 $array[] = array(
                     'SparePart' => (($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0))) || $application->ub_type ? $sparepart->name : bold_text($sparepart->name),
@@ -342,6 +343,7 @@ class WordController extends Controller
                     += $sparepart->price_sto == 0
                     ? str2number($sparepart->price_ic_full)
                     : str2number($sparepart->price_sto);
+                $price_sp_half += str2number($sparepart->price_ic_half);
             }
             $price_sp_full_md2 = $price_sp_full * 1.02;
             // dd($array);
@@ -375,17 +377,17 @@ class WordController extends Controller
             }
             // dd($array1);
             $estimate = estimate::where('id_application', '=', $id)->first();
-            $nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) * 0.05;
-            $summ_nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) + $nds;
+            $price_repair_half = $price_repair + str2number((isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)) + $price_sp_half;
+            $price_repair_full = $price_repair + str2number((isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)) + $price_sp_full;
+            $nds = str2number($application->ub_type ? $price_repair_half : $price_repair_full) * 0.05;
+            $summ_nds = str2number($application->ub_type ? $price_repair_half : $price_repair_full) + $nds;
 
 
             $price_repair_full_md2 = $price_sp_full_md2 +
                 (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
                 + $price_repair;
 
-            $price_repair_full = $price_sp_full +
-                (isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)
-                + $price_repair;
+
             // $price_repair_full = str2number($estimate->price_repair_full);
             $templateProcessor->cloneRowAndSetValues('work_name', $array1);
             if (isset($estimate->price_repair)) {
@@ -393,7 +395,7 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
                 $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-                $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $estimate->price_sp_half : $price_sp_full));
+                $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $price_sp_half : $price_sp_full));
                 $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
                 $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $estimate->price_repair_half : $price_repair_full));
                 $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
