@@ -159,7 +159,7 @@
                 $summ_ic_full +
                 (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full));
             $sum_teor +=
-                $sparepart->price_sto == 0
+                $sparepart->price_sto == 0 || $app->ub_type
                     ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_ic_full))
                     : (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $sparepart->price_sto));
             $summ_ic_half =
