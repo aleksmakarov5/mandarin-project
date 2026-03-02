@@ -65,12 +65,12 @@ class SparePartController extends Controller
         }
         $delta_res_full = $summ_order - $summ_ic_full;
         $delta_res_half = $summ_order - $summ_ic_half;
-        $estimate = estimate::where('id_application', '=', $id)->first();
-        $estimate->price_sp_half = $summ_ic_half;
-        $estimate->price_sp_full = $summ_ic_full;
-        $estimate->price_repair_full = str2number($estimate->price_sp_full) + str2number($estimate->price_paint) + str2number($estimate->price_zip) + str2number($estimate->price_repair);
-        $estimate->price_repair_half = str2number($estimate->price_sp_half) + str2number($estimate->price_paint) + str2number($estimate->price_zip) + str2number($estimate->price_repair);
-        $estimate->save();
+        // $estimate = estimate::where('id_application', '=', $id)->first();
+        // $estimate->price_sp_half = $summ_ic_half;
+        // $estimate->price_sp_full = $summ_ic_full;
+        // $estimate->price_repair_full = str2number($estimate->price_sp_full) + str2number($estimate->price_paint) + str2number($estimate->price_zip) + str2number($estimate->price_repair);
+        // $estimate->price_repair_half = str2number($estimate->price_sp_half) + str2number($estimate->price_paint) + str2number($estimate->price_zip) + str2number($estimate->price_repair);
+        // $estimate->save();
 
         return [$spareparts, $summ_ic_full, $summ_sto, $delta_res_full, $statuses, $summ_ic_half, $delta_res_half];
     }
