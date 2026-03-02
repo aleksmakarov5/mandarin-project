@@ -610,7 +610,7 @@
                                                 <div class="alert alert-success">
                                                     {{ in_money($sum_teor) }}
                                                     р. <br>
-                                                    {{ in_money($sum_teor * 1.05) }}
+                                                    {{ in_money($sum_teor * 1.05) }} р.
                                                 </div>
                                             </td>
                                             <td>
