@@ -203,8 +203,6 @@ class WordController extends Controller
         $templateProcessor->setValue('service_description', $application->service_description);
         $templateProcessor->setValue('fio', $fio);
         $templateProcessor->setValue('email', $application->our_email);
-        $templateProcessor->setValue('summ_nds', in_money($summ_nds));
-        $templateProcessor->setValue('nds', in_money($nds));
         if ($application->ub_type)
             $templateProcessor->setValue('osn', $ic->osn_casco);
         else
@@ -396,10 +394,11 @@ class WordController extends Controller
             $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
             $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $price_repair_half : $price_repair_full));
             $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
-            $templateProcessor->setValue('summ_nds', in_money($summ_nds));
-            $templateProcessor->setValue('nds', in_money($nds));
+
             $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
         }
+        $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+        $templateProcessor->setValue('nds', in_money($nds));
         $price_sp_full = 0;
         $price_repair_full = 0;
         if ($doc_type == 18 || $doc_type == 37) {
