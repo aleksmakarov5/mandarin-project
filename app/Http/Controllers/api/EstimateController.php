@@ -33,9 +33,7 @@ class EstimateController extends Controller
 
                 ]
             );
-        $estimates->price_repair_half = str2number($estimates->price_sp_half) + str2number($estimates->price_paint) + str2number($estimates->price_zip) + str2number($estimates->price_repair);
-        $estimates->price_repair_full = str2number($estimates->price_sp_full) + str2number($estimates->price_paint) + str2number($estimates->price_zip) + str2number($estimates->price_repair);
-        $estimates->save();
+
         // if ($estimates->emr10) {
         //     $estimates->price_sp_full = round(str2number($estimates->price_sp_full) * 1.1, 2);
         //     $estimates->price_sp_half = round(str2number($estimates->price_sp_half) * 1.1, 2);
