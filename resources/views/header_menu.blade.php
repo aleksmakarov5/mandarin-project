@@ -40,7 +40,7 @@
             $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
             $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
             $summ_pzn +=
-                $work->count_hours_pzn == 0
+                $work->count_hours_pzn == 0 || $app->ub_type
                     ? str2number($work->summ)
                     : str2number($work->count_hours_pzn) * str2number($work->price);
         }
@@ -241,12 +241,8 @@
         if ($summ_ic_full != 0) {
             $proc = round(($eco_delta_full / $summ_ic_full) * 100);
         }
-        $sum_teor +=
-            $summ_pzn +
-            (isset($estimates->price_zip)
-                ? (float) str_replace(',', '.', preg_replace('/[^,.0-9]/', '', $estimates->price_zip))
-                : 0);
-        $teor = $sum_teor - $summ_order - $summ_service - $app->sertificat;
+        $sum_teor += $summ_pzn + (isset($estimates->price_zip) ? str2number($estimates->price_zip) : 0);
+        $teor = $sum_teor - $summ_order - $summ_service;
         $proc_t = 0;
         if ($summ_ic_full + $summ_service_ic != 0 && $sum_teor != 0) {
             $proc_t = round(($teor / $sum_teor) * 100);
