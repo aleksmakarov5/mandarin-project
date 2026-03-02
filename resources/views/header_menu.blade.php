@@ -575,7 +575,9 @@
                                             </tr>
                                             <tr align=center>
                                                 <th>
-                                                    сумма:
+                                                    сумма (без НДС):<br>
+                                                    сумма (включая НДС):
+
                                                 </th>
                                                 <th>
                                                     выгода:
@@ -607,7 +609,8 @@
                                             <td>
                                                 <div class="alert alert-success">
                                                     {{ in_money($sum_teor) }}
-                                                    р.
+                                                    р. <br>
+                                                    {{ in_money($sum_teor * 1.05) }}
                                                 </div>
                                             </td>
                                             <td>
