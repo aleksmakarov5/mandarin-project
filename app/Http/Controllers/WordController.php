@@ -340,7 +340,7 @@ class WordController extends Controller
                     'part_number' => (($sparepart->price_sto == 0) || (in_money($sparepart->price_ic_full, 0) == in_money($sparepart->price_sto, 0))) || $application->ub_type ? $sparepart->part_number : bold_text($sparepart->part_number)
                 );
                 $price_sp_full
-                    += $sparepart->price_sto == 0
+                    += $sparepart->price_sto == 0 || $application->ub_type
                     ? str2number($sparepart->price_ic_full)
                     : str2number($sparepart->price_sto);
                 $price_sp_half += str2number($sparepart->price_ic_half);
@@ -397,7 +397,7 @@ class WordController extends Controller
                 $templateProcessor->setValue('price_work', in_money($estimate->price_work));
                 $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $price_sp_half : $price_sp_full));
                 $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
-                $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $estimate->price_repair_half : $price_repair_full));
+                $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $price_repair_half : $price_repair_full));
                 $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
                 $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
                 $estimate->save();
