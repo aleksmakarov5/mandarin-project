@@ -13,7 +13,8 @@
                         <th scope="col">Кат. номер</th>
                         <th scope="col">Зак. номер</th>
 
-                        <th scope="col">Цена СК</th>
+                        <th v-if="type" scope="col">Цена</th>
+                        <th v-else scope="col">Цена СК</th>
                         <th v-if="type">Скидка</th>
                         <th v-if="type">Цена <br />со скидкой</th>
                         <th v-if="!type" scope="col">Цена ПЗН</th>
