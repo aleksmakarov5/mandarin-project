@@ -396,8 +396,9 @@ class WordController extends Controller
             $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
             $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $price_repair_half : $price_repair_full));
             $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
+            $templateProcessor->setValue('summ_nds', in_money($summ_nds));
+            $templateProcessor->setValue('nds', in_money($nds));
             $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
-            $estimate->save();
         }
         $price_sp_full = 0;
         $price_repair_full = 0;
@@ -441,13 +442,11 @@ class WordController extends Controller
             $price_repair_full = str2number($estimate->price_repair_full);
             $price_sp_full = $application->ub_type ?  $estimate->price_sp_half : $price_sp_full;
             $price_repair_full = $application->ub_type ?  $estimate->price_repair_half : $price_repair_full;
-            $estimate = estimate::where('id_application', '=', $id)->first();
 
-            if (isset($estimate->price_repair)) {
-                $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
-                $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
-            }
+
+            $templateProcessor->setValue('zn_num', $estimate->zn_number);
+            $templateProcessor->setValue('price_repair_full', in_money($price_repair_full));
+            $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
         }
 
 
