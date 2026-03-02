@@ -390,18 +390,14 @@ class WordController extends Controller
 
             // $price_repair_full = str2number($estimate->price_repair_full);
             $templateProcessor->cloneRowAndSetValues('work_name', $array1);
-            if (isset($estimate->price_repair)) {
-                $templateProcessor->setValue('price_repair', in_money($price_repair));
-                $templateProcessor->setValue('price_paint', in_money($estimate->price_paint));
-                $templateProcessor->setValue('price_zip', in_money($estimate->price_zip));
-                $templateProcessor->setValue('price_work', in_money($estimate->price_work));
-                $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $price_sp_half : $price_sp_full));
-                $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
-                $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $price_repair_half : $price_repair_full));
-                $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
-                $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
-                $estimate->save();
-            }
+            $templateProcessor->setValue('price_repair', in_money($price_repair));
+            $templateProcessor->setValue('price_zip', in_money(isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0));
+            $templateProcessor->setValue('price_sp_full', in_money($application->ub_type ? $price_sp_half : $price_sp_full));
+            $templateProcessor->setValue('price_sp_full_md2', in_money($price_sp_full_md2));
+            $templateProcessor->setValue('price_repair_full', in_money($application->ub_type ? $price_repair_half : $price_repair_full));
+            $templateProcessor->setValue('price_repair_full_md2', in_money($price_repair_full_md2));
+            $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
+            $estimate->save();
         }
         $price_sp_full = 0;
         $price_repair_full = 0;
