@@ -1650,6 +1650,7 @@ class ImapController extends Controller
         if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0 && mb_strpos('_' . $subject, 'Повторное уведомление о новом лоте') == 0) {
             $app_number = date('dmY_hms');
             $subject = mb_strtoupper($subject);
+            $subject = str_replace('РЕЗУЛЬТАТ', '', $subject);
             // dd($subject);
             $start = 0;
             $st = 0;
