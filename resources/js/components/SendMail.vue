@@ -154,7 +154,7 @@
 <label for="text">Текст сообщения</label>
 <div id="message_new" contenteditable class="new_message"  @keyup="editMessage()">
 <span v-html="text"></span>
-<table v-if="location[0]">
+<!-- <table v-if="location[0]">
     <tr>
         <th>
             Вложения доступны по ссылке
@@ -166,7 +166,7 @@
         </td>
 
     </tr>
-</table>
+</table> -->
 <span v-html="sign"></span>
 </div>
 <div class="row">
@@ -283,10 +283,10 @@ export default{
                 for (let i = 0; i < to.length; i++) {
                     formData.append('to[' + i + ']', to[i])
                 }
-                //  for (let i = 0; i < this.location.length; i++) {
-                //     formData.append('location[' + i + ']', this.location[i])
-                //     formData.append('doc_id[' + i + ']', this.doc_id[i])
-                //  }
+                 for (let i = 0; i < this.location.length; i++) {
+                    formData.append('location[' + i + ']', this.location[i])
+                    formData.append('doc_id[' + i + ']', this.doc_id[i])
+                 }
 
 
                 formData.append('message', this.message)
