@@ -116,8 +116,10 @@ class MailController extends Controller
             rename($zip, $file);
             $splites = scandir('storage/files/' . $request->id_application . '/split');
             $count = 0;
+            $files1 = [];
             for ($i = 1; $i < count($splites) - 1; $i++) {
                 rename('storage/files/' . $request->id_application . '/split/fot' . $i . '.zip', 'storage/files/' . $request->id_application . '/' . pathinfo($file, PATHINFO_FILENAME) . '_' . $i . '.zip');
+                $files1[] = public_path('/storage/files/' . $request->id_application . '/' . pathinfo($file, PATHINFO_FILENAME) . '_' . $i . '.zip');
                 $count = $i;
             }
 
@@ -182,6 +184,68 @@ class MailController extends Controller
             $address->type = 'from';
             $address->email = $data["from"];
             $address->save();
+            $j = 2;
+            foreach ($files1 as $file) {
+                $data["email"] = $request->to;
+                $data["title"] = $request->subject;
+                $data["body"] = $request->message;
+                $data['body'] = str_replace('____', "Размер вложений более 20Мб. Вложения отправлены в виде нескольких файлов. Количество писем: " . $count . "<br>Письмо " . $j++ . " из " . $count . " <br>", $data['body']);
+
+                $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+                $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+                $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+
+
+
+                Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $file) {
+                    foreach ($data["email"] as $email) {
+                        $message->to($email, $data["name"]);
+                    }
+
+                    $message->from($data['from'], $data['name'])
+                        ->subject($data["title"]);
+
+                    $message->attach($file);
+                });
+                // $application->id_status = 25;
+                $messages = new message();
+                $messages->mailbox_id = $application->our_company;
+                $messages->type = 1;
+                $messages->subject = $request->subject;
+                $messages->application_id = $request->id_application;
+                $messages->body_html = $data["body"];
+                $messages->message_date = date('Y-m-d H:i:s');
+                $messages->save();
+
+                foreach ($data["email"] as $email) {
+
+                    $address = new address;
+                    $address->message_id = $messages->id;
+                    $address->type = 'to';
+                    $address->email = $email;
+                    $address->save();
+                }
+
+
+
+                $attach_new = new attachment;
+                $attach_new->message_id = $messages->id;
+                $attach_new->id_application = $request->id_application;
+                $attach_new->sended = 1;
+                $attach_new->location = pathinfo($file, PATHINFO_FILENAME) . '.' . pathinfo($file, PATHINFO_EXTENSION);
+                $attach_new->mime_type = pathinfo($file, PATHINFO_EXTENSION);
+                $attach_new->file_size = filesize($file);
+                $attach_new->file_name = pathinfo($file, PATHINFO_FILENAME) . '.' . pathinfo($file, PATHINFO_EXTENSION);
+                $attach_new->save();
+
+                $address = new address;
+
+
+                $address->message_id = $messages->id;
+                $address->type = 'from';
+                $address->email = $data["from"];
+                $address->save();
+            }
         }
         $history = new history;
         $history->id_user = $request->user_id;
