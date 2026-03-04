@@ -169,10 +169,10 @@ class MailController extends Controller
                 $attach_new->message_id = $messages->id;
                 $attach_new->id_application = $request->id_application;
                 $attach_new->sended = 1;
-                $attach_new->location = $file;
+                $attach_new->location = pathinfo($file, PATHINFO_FILENAME) . '.' . pathinfo($file, PATHINFO_EXTENSION);
                 $attach_new->mime_type = pathinfo($file, PATHINFO_EXTENSION);
                 $attach_new->file_size = filesize($file);
-                $attach_new->file_name = $file;
+                $attach_new->file_name = pathinfo($file, PATHINFO_FILENAME) . '.' . pathinfo($file, PATHINFO_EXTENSION);
                 $attach_new->save();
             }
             $address = new address;
