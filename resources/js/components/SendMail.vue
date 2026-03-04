@@ -307,7 +307,7 @@ export default{
                         console.log(res.data);
 
                         mess.innerHTML = '';
-                        // location.reload()
+                        location.reload()
                     })
             }
 
