@@ -95,6 +95,7 @@ class MailController extends Controller
             $address->email = $data["from"];
             $address->save();
         } else {
+            $id = $request->id_application;
             $file = '';
             $zip = 'storage/files/' . $request->id_application . '/fot.zip';
             for ($i = 0; $i < count($request->location); $i++) {
@@ -102,6 +103,11 @@ class MailController extends Controller
                     $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
                 else
                     $file = 'storage/files/' . $request->id_application . '/' . $request->location[$i];
+            }
+            if (!is_dir('storage/files/' . $id . '/split')) {
+
+                mkdir('storage/files/' . $id . '/split', 0777, true);
+                chmod('storage/files/' . $id . '/split', 0777);
             }
             rename($file, $zip);
             exec("zipsplit -b storage/files/" . $request->id_application . "/split -n 15728640 " . $zip);
