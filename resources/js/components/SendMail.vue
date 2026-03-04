@@ -162,7 +162,7 @@
     </tr>
     <tr v-for="(loc,i) in location">
         <td>
-            <a :href="'https://mandarin-portal.ru/storage/files/'+app_id+'/'+loc" target="_blank">{{ location[i].name }}</a>
+            <a :href="'https://mandarin-portal.ru/storage/files/'+app_id+'/'+loc" target="_blank">{{ loc }}</a>
         </td>
 
     </tr>
@@ -172,7 +172,7 @@
 <div class="row">
                                         <template v-for="(doc,key) in attach">
 
-                                                <div v-if="doc.ext!='gif'" class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id,doc.name)" :style="docSelected(doc.location)">
+                                                <div v-if="doc.ext!='gif'" class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id)" :style="docSelected(doc.location)">
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
 
@@ -232,6 +232,7 @@ export default{
             message: '',
             location: [],
             doc_id: [],
+            names:[],
             showBook: false,
             book: [],
             toIndex: 0,
