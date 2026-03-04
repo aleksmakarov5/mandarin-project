@@ -171,9 +171,7 @@ class MailController extends Controller
                 $attach_new->sended = 1;
                 $attach_new->location = $file;
                 $attach_new->mime_type = pathinfo($file, PATHINFO_EXTENSION);
-                $attach_new->file_size = filesize(
-                    public_path($file)
-                );
+                $attach_new->file_size = filesize($file);
                 $attach_new->file_name = $file;
                 $attach_new->save();
             }
