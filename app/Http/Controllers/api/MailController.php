@@ -98,6 +98,7 @@ class MailController extends Controller
             $id = $request->id_application;
             $file = '';
             $zip = 'storage/files/' . $request->id_application . '/fot.zip';
+            $files = [];
             for ($i = 0; $i < count($request->location); $i++) {
                 if (pathinfo('/storage/files/' . $request->id_application . '/' . $request->location[$i], PATHINFO_EXTENSION) != 'zip')
                     $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
@@ -128,7 +129,7 @@ class MailController extends Controller
             $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
             $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
             $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
-            $files = [];
+
 
 
             Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
