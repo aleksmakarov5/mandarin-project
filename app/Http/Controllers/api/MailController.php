@@ -21,6 +21,7 @@ class MailController extends Controller
     public function mail_sent(Request $request)
     {
         $application = application::findOrFail($request->id_application);
+        clearstatcache();
         $size = 0;
         if (isset($request->location[0]))
             for ($i = 0; $i < count($request->location); $i++) {
