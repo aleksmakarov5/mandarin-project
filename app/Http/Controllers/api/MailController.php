@@ -96,19 +96,19 @@ class MailController extends Controller
             $address->save();
         } else {
             $file = '';
-            $zip = '/storage/files/' . $request->id_application . '/fot.zip';
+            $zip = 'storage/files/' . $request->id_application . '/fot.zip';
             for ($i = 0; $i < count($request->location); $i++) {
                 if (pathinfo('/storage/files/' . $request->id_application . '/' . $request->location[$i], PATHINFO_EXTENSION) != 'zip')
                     $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
                 else
-                    $file = '/storage/files/' . $request->id_application . '/' . $request->location[$i];
+                    $file = 'storage/files/' . $request->id_application . '/' . $request->location[$i];
             }
             rename($file, $zip);
-            exec("zipsplit -b /storage/files/" . $request->id_application . "/split -n 15728640 " . $zip);
-            $splites = scandir('/storage/files/' . $request->id_application . '/split');
+            exec("zipsplit -b storage/files/" . $request->id_application . "/split -n 15728640 " . $zip);
+            $splites = scandir('storage/files/' . $request->id_application . '/split');
             $count = 0;
             for ($i = 1; $i < count($splites); $i++) {
-                rename('/storage/files/' . $request->id_application . '/split/fot' . $i . '.zip', '/storage/files/' . $request->id_application . '/' . pathinfo('/storage/files/' . $request->id_application . '/' . $request->location[$i], PATHINFO_FILENAME) . $i . '.zip');
+                rename('storage/files/' . $request->id_application . '/split/fot' . $i . '.zip', 'storage/files/' . $request->id_application . '/' . pathinfo('storage/files/' . $request->id_application . '/' . $request->location[$i], PATHINFO_FILENAME) . $i . '.zip');
                 $count = $i;
             }
             rename($zip, $file);
