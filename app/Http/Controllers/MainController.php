@@ -876,7 +876,7 @@ class MainController extends Controller
         $hide_menu = $request->get('hide_menu');
         $location = str_replace('%20', ' ', $location);
         $name = str_replace('%20', ' ', $name);
-        $dir = '/storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
+        $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
         // dd($dir . "." . pathinfo($location, PATHINFO_EXTENSION));
         chmod($dir . "." . pathinfo($location, PATHINFO_EXTENSION), 0777);
 
