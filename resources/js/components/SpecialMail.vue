@@ -41,7 +41,8 @@
             :in_attach="attach"
             :in_app_id="app_id"
             :in_status="status"
-            :text="text + '<br><br><br><br>' + sign"
+            :text="text + '<br><br>'"
+            :sign="'<br><br>' + sign"
         />
     </div>
 </template>

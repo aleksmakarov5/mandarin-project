@@ -154,11 +154,25 @@
 <label for="text">Текст сообщения</label>
 <div id="message_new" contenteditable class="new_message"  @keyup="editMessage()">
 <span v-html="text"></span>
+<table v-if="location[0]">
+    <tr>
+        <th>
+            Вложения доступны по ссылке
+        </th>
+    </tr>
+    <tr v-for="(loc,i) in location">
+        <td>
+            <a :href="'https://mandarin-portal.ru/storage/'+app_id+'/'+loc" target="_blank">{{ loc }}</a>
+        </td>
+
+    </tr>
+</table>
+<span v-html="sign"></span>
 </div>
 <div class="row">
                                         <template v-for="(doc,key) in attach">
 
-                                                <div v-if="doc.ext!='gif'" class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id)" :style="docSelected(doc.location)">
+                                                <div v-if="doc.ext!='gif'" class="card" style="width: 20rem;" @click="editAttach(doc.location,doc.id,doc.name)" :style="docSelected(doc.location)">
                                                     <div class="row g-0">
                                                         <div class="col-md-4">
 
@@ -202,7 +216,8 @@ export default{
         'in_attach',
         'in_app_id',
         'in_status',
-        'text'
+        'text',
+        'sign'
     ],
 
     data()
@@ -261,10 +276,10 @@ export default{
                 for (let i = 0; i < to.length; i++) {
                     formData.append('to[' + i + ']', to[i])
                 }
-                 for (let i = 0; i < this.location.length; i++) {
-                    formData.append('location[' + i + ']', this.location[i])
-                    formData.append('doc_id[' + i + ']', this.doc_id[i])
-                 }
+                //  for (let i = 0; i < this.location.length; i++) {
+                //     formData.append('location[' + i + ']', this.location[i])
+                //     formData.append('doc_id[' + i + ']', this.doc_id[i])
+                //  }
 
 
                 formData.append('message', this.message)
