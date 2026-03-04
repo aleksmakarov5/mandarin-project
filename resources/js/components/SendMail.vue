@@ -162,7 +162,7 @@
     </tr>
     <tr v-for="(loc,i) in location">
         <td>
-            <a :href="'https://mandarin-portal.ru/storage/'+app_id+'/'+loc" target="_blank">{{ loc }}</a>
+            <a :href="'https://mandarin-portal.ru/storage/files/'+app_id+'/'+loc" target="_blank">{{ location[i].name }}</a>
         </td>
 
     </tr>
