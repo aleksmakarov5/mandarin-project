@@ -111,13 +111,14 @@ class MailController extends Controller
             }
             rename($file, $zip);
             exec("zipsplit -b storage/files/" . $request->id_application . "/split -n 15728640 " . $zip);
+            rename($zip, $file);
             $splites = scandir('storage/files/' . $request->id_application . '/split');
             $count = 0;
             for ($i = 1; $i < count($splites) - 1; $i++) {
                 rename('storage/files/' . $request->id_application . '/split/fot' . $i . '.zip', 'storage/files/' . $request->id_application . '/' . pathinfo($file, PATHINFO_FILENAME) . '_' . $i . '.zip');
                 $count = $i;
             }
-            rename($zip, $file);
+
 
             $data["email"] = $request->to;
             $data["title"] = $request->subject;
