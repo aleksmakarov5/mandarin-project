@@ -179,6 +179,7 @@ class WordController extends Controller
         $templateProcessor->setValue('pass_struct', $application->ClientPasport_struct ?? "_______________________________ _______________________________ _______________________________");
         $templateProcessor->setValue('ub_number', $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('mnf_date', isset($application->mnf_year) ? $application->mnf_year : '');
+        $templateProcessor->setValue('mnf_year', isset($application->mnf_year) ? $application->mnf_year : '');
         $templateProcessor->setValue('id_insuranceCompany', $application->numberInsuranceCompanyApplication);
         $templateProcessor->setValue('start_date', $application->start_date ? Date::parse($application->start_date)->format('j F Yг.') : "___ _______________ 20_____г.");
         $templateProcessor->setValue('end_date', $application->end_date ? Date::parse($application->end_date)->format('j F Yг.') : "___ _______________ 20_____г.");
