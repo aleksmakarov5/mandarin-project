@@ -74,20 +74,20 @@ class MailController extends Controller
             }
 
 
-            foreach ($files as $file) {
-                $attach_new = new attachment;
-                $attach_new->message_id = $messages->id;
-                $attach_new->id_application = $request->id_application;
-                $attach_new->sended = 1;
-                $attach_new->location = $file;
-                $attach_new->mime_type = pathinfo($file, PATHINFO_EXTENSION);
-                $attach_new->file_size = filesize(
-                    public_path('/storage/files/' . $request->id_application . '/' . $file)
-                );
-                $attach_new->file_name = $file;
-                $attach_new->save();
-            }
 
+            if (isset($request->doc_id))
+                foreach ($request->doc_id as $id) {
+                    $attach_new = new attachment;
+                    $attach_new->message_id = $messages->id;
+                    $attach_new->id_application = $request->id_application;
+                    $attach_old = attachment::where('id', '=', $id)->first();
+                    $attach_new->sended = 1;
+                    $attach_new->location = $attach_old->location;
+                    $attach_new->mime_type = $attach_old->mime_type;
+                    $attach_new->file_size = $attach_old->file_size;
+                    $attach_new->file_name = $attach_old->file_name;
+                    $attach_new->save();
+                }
             $address = new address;
 
 
@@ -163,20 +163,20 @@ class MailController extends Controller
                 $address->save();
             }
 
-            if (isset($request->doc_id))
-                foreach ($request->doc_id as $id) {
-                    $attach_new = new attachment;
-                    $attach_new->message_id = $messages->id;
-                    $attach_new->id_application = $request->id_application;
-                    $attach_old = attachment::where('id', '=', $id)->first();
-                    $attach_new->sended = 1;
-                    $attach_new->location = $attach_old->location;
-                    $attach_new->mime_type = $attach_old->mime_type;
-                    $attach_new->file_size = $attach_old->file_size;
-                    $attach_new->file_name = $attach_old->file_name;
-                    $attach_new->save();
-                }
 
+            foreach ($files as $file) {
+                $attach_new = new attachment;
+                $attach_new->message_id = $messages->id;
+                $attach_new->id_application = $request->id_application;
+                $attach_new->sended = 1;
+                $attach_new->location = $file;
+                $attach_new->mime_type = pathinfo($file, PATHINFO_EXTENSION);
+                $attach_new->file_size = filesize(
+                    public_path('/storage/files/' . $request->id_application . '/' . $file)
+                );
+                $attach_new->file_name = $file;
+                $attach_new->save();
+            }
             $address = new address;
 
 
