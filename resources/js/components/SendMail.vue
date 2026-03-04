@@ -198,7 +198,24 @@
                                         </template>
                                     </div>
 <div class="send-button" @click.prevent="sendMessage()" title="Отправить сообщение">
-       <img src="/storage/img/send_mess.png" width="30px">
+       <img v-if="can_send" src="/storage/img/send_mess.png" width="30px">
+       <img v-else src="/storage/img/send_mess_gray.gif" width="30px">
+        </div>
+</div>
+
+
+
+</template>
+
+<script>
+export default{
+
+    props: [
+        'in_to',
+        'in_from',
+        'in_subject',
+        'in_attach',
+        'in_app_id',
         </div>
 </div>
 
@@ -240,6 +257,7 @@ export default{
             city: '',
             company: '',
             email: '',
+            can_send:true,
         }
     },
 
@@ -262,6 +280,7 @@ export default{
 
         },
         sendMessage() {
+            this.can_send = false;
             let mess = document.getElementById('message_new');
             this.message = mess.innerHTML;
 
@@ -298,7 +317,8 @@ export default{
 
                     .then(res => {
                         //console.log(this.to)
-                        console.log(res.data);
+            // console.log(res.data);
+                        this.can_send = true;
                         mess.innerHTML = '';
                         location.reload()
                     })
