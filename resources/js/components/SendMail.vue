@@ -199,7 +199,7 @@
                                     </div>
 <div class="send-button" @click.prevent="sendMessage()" title="Отправить сообщение">
     <template v-if="can_send"><img src="/storage/img/send_mess.png" width="30px"/></template>
-    <template v-else ><img src="/storage/img/send_mess_gray.png" width="30px"/></template>
+    <template v-else ><img src="/storage/img/send_mess_gray.gif" width="30px"/></template>
 
 </div>
 </div>
@@ -304,10 +304,10 @@ export default{
 
                     .then(res => {
                         //console.log(this.to)
-                        // console.log(res.data);
+                        console.log(res.data);
 
                         mess.innerHTML = '';
-                        location.reload()
+                        // location.reload()
                     })
             }
 
@@ -360,7 +360,7 @@ export default{
         {
             axios.get(`/api/mail/book`)
                 .then(res => {
-                    console.log(res.data)
+                    // console.log(res.data)
                     this.book = res.data
                 })
         },
@@ -384,7 +384,7 @@ export default{
                 }
             )
                 .then(res => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     this.getBook();
                     this.name = '';
                     this.city = '';
