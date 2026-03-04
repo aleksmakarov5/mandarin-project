@@ -119,7 +119,7 @@ class MailController extends Controller
                 $count = $i;
             }
 
-
+            $count++;
             $data["email"] = $request->to;
             $data["title"] = $request->subject;
             $data["body"] = $request->message;
@@ -129,10 +129,7 @@ class MailController extends Controller
             $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
             $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
             $files = [];
-            if (isset($request->location[0]))
-                for ($i = 0; $i < count($request->location); $i++) {
-                    $files[] = public_path('/storage/files/' . $request->id_application . '/' . $request->location[$i]);
-                }
+
 
             Mail_send::mailer($data['mailer'])->send('email.' . $data['mailer'], $data, function ($message) use ($data, $files) {
                 foreach ($data["email"] as $email) {
