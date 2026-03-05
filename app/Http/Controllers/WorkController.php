@@ -200,7 +200,8 @@ class WorkController extends Controller
         $id_ic = $app->id_insuranceCompany;
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
-
+        if (mb_strpos($file, 'zn-'))
+            $app->id_insuranceCompany = 1;
         $file = html_entity_decode($file);
         $file = str_replace('<50%', 'менее 50%', $file);
 

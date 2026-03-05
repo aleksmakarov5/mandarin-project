@@ -3755,6 +3755,8 @@ class ApplicationController extends Controller
 
 
             $app = Application::find($id);
+            if (mb_strpos($file, 'zn-'))
+                $app->id_insuranceCompany = 1;
             if ($request['id_ic'])
                 $app->id_insuranceCompany = 3;
             if (
