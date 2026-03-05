@@ -197,11 +197,12 @@ class WorkController extends Controller
         $app = Application::findorfail($id);
         if ($request['id_ic'])
             $app->id_insuranceCompany = 3;
-        $id_ic = $app->id_insuranceCompany;
         //  include('storage/files/'.$id.'/' . $html);
         $file = file_get_contents('storage/files/' . $id . '/' . $html);
         if (mb_strpos($file, 'zn-'))
             $app->id_insuranceCompany = 1;
+
+        $id_ic = $app->id_insuranceCompany;
         $file = html_entity_decode($file);
         $file = str_replace('<50%', 'менее 50%', $file);
 
