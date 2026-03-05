@@ -451,6 +451,8 @@ class SparePartController extends Controller
         if ($request['id_ic'])
             $app->id_insuranceCompany = 3;
         $id_ic = $app->id_insuranceCompany;
+        if (mb_strpos($file, 'zn-'))
+            $app->id_insuranceCompany = 1;
 
         if (mb_strpos($file, "1\t")) {
             $id_ic = 7;
