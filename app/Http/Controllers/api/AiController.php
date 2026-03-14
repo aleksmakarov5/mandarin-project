@@ -12,7 +12,7 @@ class AiController extends Controller
     {
         $data = $request->all();
         $file = "storage/files/test1.txt";
-        file_put_contents($file, $data);
+        file_put_contents($file, json_encode($data['result']));
         return $data;
     }
     public function sendAi()
