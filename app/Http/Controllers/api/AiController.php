@@ -12,7 +12,7 @@ class AiController extends Controller
     {
         $data = $request->all();
         $file = "storage/files/test1.txt";
-        file_put_contents($file, json_encode($data['result']['damages']));
+        file_put_contents($file, json_encode($data));
         return $data;
     }
     public function sendAi()
@@ -23,8 +23,8 @@ class AiController extends Controller
         ])
             ->asForm()
             ->post('http://localhost:8000/assess', [
-                'archive_url' => 'https://mandarin-portal.ru/storage/files/7889/foto_06-03-26_100303.zip',
-                'app_id' => '7748',
+                'archive_url' => 'https://mandarin-portal.ru/storage/files/8003/foto_13-03-26.zip',
+                'app_id' => '8003',
                 'accident_date' => '15.01.2025',
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
