@@ -7,6 +7,8 @@ use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\TroubleshootingController;
 use App\Http\Controllers\WordController;
+use App\Http\Controllers\WarehouseController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\LawyersController;
 
 use App\Http\Controllers\AdminController;
@@ -316,6 +318,12 @@ Route::middleware("auth:web")->group(
                 Route::post('/update', [PersonalController::class, 'update'])->name('personal.update');
             }
         );
+        Route::prefix('warehouse')->group(
+            function () {
+                Route::get('/', [WarehouseController::class, 'index'])->name('warehouse');
+            }
+        );
+
         Route::get('/auth/telegram/callback', [PersonalController::class, 'callback'])->name('telegram.callback');;
 
 

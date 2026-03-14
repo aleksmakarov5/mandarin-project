@@ -25,6 +25,9 @@ import SpecialMail from "./components/SpecialMail.vue";
 import AnswerMail from "./components/AnswerMail.vue";
 import DatePay from "./components/DatePay.vue";
 import FileUpload from "./components/FileUpload.vue";
+import Warehouses from "./components/Warehouses.vue";
+import InventoryItems from "./components/InventoryItems.vue";
+import Counterparties from "./components/Counterparties.vue";
 
 const app1 = createApp({
     components: {
@@ -57,6 +60,9 @@ const app = createApp({
         SpecialMail,
         AnswerMail,
         FileUpload,
+        Warehouses,
+        InventoryItems,
+        Counterparties,
     },
 });
 app.mount("#app");

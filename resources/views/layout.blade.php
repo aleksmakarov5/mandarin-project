@@ -191,8 +191,7 @@
 
                     <ul class="nav nav-pills">
 
-                        <li class="nav-item"><a href="\" class="nav-link
-                                {{ session('rout') == 'home' ? 'tn-active' : '' }}">Главная</a></li>
+
 
 
                         @auth('web')
@@ -233,6 +232,10 @@
                                 </li>
                                 <li class="nav-item"><a href="\message"
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
+                                <li class="nav-item"><a href="\warehouse"
+                                        class="nav-link {{ session('rout') == 'warehouse' ? 'tn-active' : '' }}">Склад</a></li>
+                                <li class="nav-item"><a href="\reports"
+                                        class="nav-link {{ session('rout') == 'reports' ? 'tn-active' : '' }}">Отчеты</a></li>
                             @endcan
 
 
@@ -243,6 +246,8 @@
                                     class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Выйти</a></li>
                         @endauth
                         @guest('web')
+                            <li class="nav-item"><a href="\" class="nav-link
+                                    {{ session('rout') == 'home' ? 'tn-active' : '' }}">Главная</a></li>
                             &nbsp&nbsp&nbsp&nbsp
                             <li class="nav-item"><a href="\login"
                                     class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Войти</a></li>

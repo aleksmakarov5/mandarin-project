@@ -13,6 +13,7 @@ use App\Http\Controllers\api\SparePartController;
 use App\Http\Controllers\api\ChatController;
 use App\Http\Controllers\api\MailController;
 use App\Http\Controllers\api\ApplicationController;
+use App\Http\Controllers\api\AiController;
 
 
 
@@ -214,6 +215,11 @@ Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function
         ->name('api.notifycount.temp');
     Route::get('/application/{id}/{user_id}', [NotifyCountController::class, 'application'])
         ->name('api.notifycount.application');
+});
+Route::group(['namespace' => 'AI', 'prefix' => 'ai'], function () {
+
+    Route::get('/get_data', [AiController::class, 'get_data'])
+        ->name('api.ai.get_data');
 });
 
 
