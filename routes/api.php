@@ -218,8 +218,10 @@ Route::group(['namespace' => 'NotifyCount', 'prefix' => 'notifycount'], function
 });
 Route::group(['namespace' => 'AI', 'prefix' => 'ai'], function () {
 
-    Route::get('/get_data', [AiController::class, 'get_data'])
+    Route::post('/get_data', [AiController::class, 'getAi'])
         ->name('api.ai.get_data');
+    Route::post('/send_data', [AiController::class, 'sendAi'])
+        ->name('api.ai.send_data');
 });
 
 
