@@ -31,8 +31,10 @@ class AiController extends Controller
         ])
             ->asForm()
             ->post('http://localhost:8000/assess', [
-                'archive_url' => 'https://mandarin-portal.ru/storage/files/' . $data['id_application'] . '/' . $data['location'],
-                'app_id' => $data['id_application'],
+                // 'archive_url' => 'https://mandarin-portal.ru/storage/files/' . $data['id_application'] . '/' . $data['location'],
+                // 'app_id' => $data['id_application'],
+                'archive_url' => 'https://mandarin-portal.ru/storage/files/8003/foto_13-03-26.zip',
+                'app_id' => '8003',
                 'accident_date' => '15.01.2025',
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
