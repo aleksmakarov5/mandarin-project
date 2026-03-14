@@ -12,28 +12,33 @@ class AiController extends Controller
     {
         $data = $request->all();
         $file = "storage/files/test1.txt";
-        file_put_contents($file, json_encode($data));
+        $text = '';
+        foreach ($data as $key => $value) {
+            $text .= $key . ': ' . $value . "\n";
+        }
+        file_put_contents($file, $text);
         return $data;
     }
-    public function sendAi()
+    public function sendAi(Request $request)
     {
+        $data = $this->validate($request, [
+            'id_application' => 'required',
+            'location' => 'required'
+        ]);
         $response = Http::withHeaders([
             'X-Api-Key' => '164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe'
 
         ])
             ->asForm()
             ->post('http://localhost:8000/assess', [
-                'archive_url' => 'https://mandarin-portal.ru/storage/files/8003/foto_13-03-26.zip',
-                'app_id' => '8003',
+                'archive_url' => 'https://mandarin-portal.ru/storage/files/' . $data['id_application'] . '/' . $data['location'],
+                'app_id' => $data['id_application'],
                 'accident_date' => '15.01.2025',
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
         dd($response->json());
 
-        // $data = $this->validate($request, [
-        //     'id_application' => 'required',
-        //     'location' => 'required'
-        // ]);
+
 
         // $ch = curl_init('http://localhost:8000/assess' );
         // curl_setopt(
