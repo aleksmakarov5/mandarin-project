@@ -21,13 +21,13 @@ class AiController extends Controller
             'X-Api-Key' => '164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe'
 
         ])
-            ->withQueryParameters([
+            ->asForm()
+            ->post('http://localhost:8000/assess', [
                 'archive_url' => 'https://mandarin-portal.ru/storage/files/7889/foto_06-03-26_100303.zip',
                 'app_id' => '7748',
                 'accident_date' => '15.01.2025',
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
-            ])
-            ->post('http://localhost:8000/assess');
+            ]);
         dd($response);
 
         // $data = $this->validate($request, [
