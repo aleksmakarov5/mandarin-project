@@ -55,4 +55,14 @@ class AiController extends Controller
         // curl -X POST http://localhost:8000/assess   -H "X-Api-Key: 164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe"   -F "app_id=CASE-2025-001234"   -F "archive_url=https://mandarin-portal.ru/storage/files/7889/foto_06-03-26_100303.zip"   -F "accident_date=15.01.2025"   -F "callback_url=https://your-crm.com/api/damage-result"
         // return $data;
     }
+    public function getData($id)
+    {
+        $response = Http::withHeaders([
+            'X-Api-Key' => '164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe'
+
+        ])
+
+            ->get('http://localhost:8000//result/' . $id);
+        dd($response->json());
+    }
 }
