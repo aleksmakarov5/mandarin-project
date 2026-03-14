@@ -28,7 +28,7 @@ class AiController extends Controller
                 'accident_date' => '15.01.2025',
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
-        dd($response);
+        dd($response->json());
 
         // $data = $this->validate($request, [
         //     'id_application' => 'required',
