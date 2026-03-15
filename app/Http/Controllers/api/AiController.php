@@ -7,6 +7,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use App\Models\application;
 use App\Models\attachment;
+use App\Models\User;
+
+use App\Events\MessageSent;
+use DefStudio\Telegraph\Models\TelegraphChat;
+use DefStudio\Telegraph\Keyboard\Button;
+use DefStudio\Telegraph\Keyboard\Keyboard;
 
 class AiController extends Controller
 {
@@ -41,6 +47,14 @@ class AiController extends Controller
         $attach->file_size = filesize($file);
         $attach->file_name = 'AIresult.txt';
         $attach->save();
+        $user = User::find(2);
+        $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
+        $id = $data['app_id'];
+        $ch = $new_chat->html(
+            "По заявке {$id} получено новое сообщение от страховой компании "
+
+        )
+            ->send();
         return $data;
     }
     public function sendAi(Request $request)
