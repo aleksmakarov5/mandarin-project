@@ -27,7 +27,9 @@ class AiController extends Controller
             // $text .= $damage['name'] . ': ' . $damage['catalog_id'] . "\n";
             $text .= $i++ . ": " . $damage['name'] . ': ' . $damage['catalog_id'] . "\n\n";
         }
-        $text .= "\n\nЗаключение\n\n\n" . $data['result']['summary'];
+        $text .= "\n\nЗаключение\n\n\n" . $data['result']['summary'] . "\n\n\n";
+        $text .= json_encode($data);
+
 
 
         file_put_contents($file, $text);
