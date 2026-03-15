@@ -268,7 +268,7 @@ class ApplicationController extends Controller
 
 
             )->orderBy('applications.id', 'desc')->paginate(2000);
-        } elseif (Gate::allows('admin') || Gate::allows('km')) {
+        } elseif (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh')) {
 
 
             $applications = application::where(function ($query) {
