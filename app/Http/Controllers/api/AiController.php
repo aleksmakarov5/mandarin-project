@@ -41,38 +41,35 @@ class AiController extends Controller
         $attach->save();
         return $data;
     }
-    public function sendAi()
+    public function sendAi(Request $request)
     {
-        // $data = $this->validate($request, [
-        //     'app_id' => 'required',
-        //     'location' => 'required'
-        // ]);
-        // $app = application::find($data['app_id']);
-        // if (!$app->vin)
-        //     return 202;
-        // if (!$app->DTPdate)
-        //     return 203;
+        $data = $this->validate($request, [
+            'app_id' => 'required',
+            'location' => 'required'
+        ]);
+        $app = application::find($data['app_id']);
+        if (!$app->vin)
+            return 202;
+        if (!$app->DTPdate)
+            return 203;
 
-        $app = application::find(8009);
         $response = Http::withHeaders([
             'X-Api-Key' => '164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe'
 
         ])
             ->asForm()
             ->post('http://localhost:8000/assess', [
-                'archive_url' => 'https://mandarin-portal.ru/storage/files/' . $app->id . '/' . 'foto_13-03-26_040306.zip',
+                'archive_url' => 'https://mandarin-portal.ru/storage/files/' . $app->id . '/' . $data['location'],
                 'app_id' => $app->id,
                 'accident_date' => $app->DTPdate,
                 'vin' => $app->vin,
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
-        dd($response->object());
         if ($response->json()['status'] == 'accepted')
             return 200;
         else
             return 201;
     }
-
     public function getData($id)
     {
         $response = Http::withHeaders([

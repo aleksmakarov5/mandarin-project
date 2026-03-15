@@ -220,7 +220,7 @@ Route::group(['namespace' => 'AI', 'prefix' => 'ai'], function () {
 
     Route::post('/get_data', [AiController::class, 'getAi'])
         ->name('api.ai.get_data');
-    Route::get('/send_data', [AiController::class, 'sendAi'])
+    Route::post('/send_data', [AiController::class, 'sendAi'])
         ->name('api.ai.send_data');
     Route::get('/show/{id}', [AiController::class, 'getData'])
         ->name('api.ai.show');
