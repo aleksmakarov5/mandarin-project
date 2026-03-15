@@ -81,8 +81,8 @@ class AiController extends Controller
                 'vin' => $app->vin,
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
-        if ($response->json()['status'] == 'accepted')
-            return 200;
+        if ($response->json())
+            return json_encode($response->json());
         else
             return 201;
     }
