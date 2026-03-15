@@ -73,7 +73,8 @@ export default {
                         this.text = "Анализ фото не проведен. Ошибка сервера";
                     else {
                         this.text =
-                            "Данные для анализа отправлены. Ожидайте ответа в чате<br>".response.data;
+                            "Данные для анализа отправлены. Ожидайте ответа в чате<br>" +
+                            response.data;
                         this.show_send = true;
                     }
                 })
