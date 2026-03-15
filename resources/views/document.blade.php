@@ -37,7 +37,7 @@
 
 
 
-                        <div class="card" style="width: 20rem;">
+                        <div class="card" style="width: 25rem;">
                             <div class="row g-0">
                                 <div class="col-md-4">
                                     <a @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
@@ -73,25 +73,32 @@
             </div>
 
             <div class="col-md-8">
-                <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img src="/storage/img/edit.png"
-                        width="30" alt="edit">
-                </a>
-                <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
-                    href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img src="/storage/img/delete.png"
-                        width="30" alt="delete">
-                </a>
-                <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
-                        src="/storage/img/download.png" width="30" alt="Скачать">
-                </a>
-                @if (!$doc->sto_view)
-                    <a href="/doc_show/{{ $doc->id }}"><img src="/storage/img/hide.png" width="30"
-                            title="Скрыто для СТО. Нажмите для показа">
+                <div>
+                    <a href="/document/{{ $id }}/doc_edit/{{ $doc->id }}"><img src="/storage/img/edit.png"
+                            width="30" alt="edit">
                     </a>
-                @else
-                    <a href="/doc_hide/{{ $doc->id }}"><img src="/storage/img/show.png" width="30"
-                            title="Показано для СТО. Нажмите для скрытия">
+                    <a onclick="if (!confirm('Точно удалить документ <{{ $doc->file_name }}?>')) return false"
+                        href="/document/{{ $id }}/doc_delete/{{ $doc->id }}"><img src="/storage/img/delete.png"
+                            width="30" alt="delete">
                     </a>
-                @endif
+                    <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
+                            src="/storage/img/download.png" width="30" alt="Скачать">
+                    </a>
+                    @if (!$doc->sto_view)
+                        <a href="/doc_show/{{ $doc->id }}"><img src="/storage/img/hide.png" width="30"
+                                title="Скрыто для СТО. Нажмите для показа">
+                        </a>
+                    @else
+                        <a href="/doc_hide/{{ $doc->id }}"><img src="/storage/img/show.png" width="30"
+                                title="Показано для СТО. Нажмите для скрытия">
+                        </a>
+                    @endif
+                    @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                            pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                            pathinfo($doc->location, PATHINFO_EXTENSION) == '7z')
+                        <ai-analiz :app_id="{{ json_encode($id) }}" :location="{{ json_encode($doc->location) }}" />
+                    @endif
+                </div>
                 <div class="card-body">
                     @if (isset($document_edit->id))
                         @if ($document_edit->id == $doc->id)
@@ -447,7 +454,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif

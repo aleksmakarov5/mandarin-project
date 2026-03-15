@@ -26,6 +26,7 @@ import AnswerMail from "./components/AnswerMail.vue";
 import DatePay from "./components/DatePay.vue";
 import FileUpload from "./components/FileUpload.vue";
 import Warehouses from "./components/Warehouses.vue";
+import AiAnaliz from "./components/AiAnaliz.vue";
 import InventoryItems from "./components/InventoryItems.vue";
 import Counterparties from "./components/Counterparties.vue";
 
@@ -63,6 +64,7 @@ const app = createApp({
         Warehouses,
         InventoryItems,
         Counterparties,
+        AiAnaliz,
     },
 });
 app.mount("#app");
