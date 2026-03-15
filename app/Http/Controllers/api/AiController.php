@@ -82,7 +82,7 @@ class AiController extends Controller
                 'callback_url' => 'https://mandarin-portal.ru/api/ai/get_data'
             ]);
         if ($response->json())
-            return json_encode($response->json());
+            return $response->json();
         else
             return 201;
     }
