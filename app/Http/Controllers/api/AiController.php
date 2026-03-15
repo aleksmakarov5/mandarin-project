@@ -14,13 +14,21 @@ class AiController extends Controller
     {
         $data = $request->all();
         $file = "storage/files/" . $data['app_id'] . "/AIresult.txt";
-        // $text = '';
+        $text = '';
 
         // foreach ($data as $key => $value) {
         //     $text .= $key . ': ' . $value . "\n";
         // }
 
-        file_put_contents($file, json_encode($data));
+        // file_put_contents($file, json_encode($data));
+        $text .= $data['app_id'] . '\n\n\nПовреждения\n\n\n';
+        foreach ($data['damages'] as $damage) {
+            $text .= $damage['name'] . ': ' . $damage['catalog_id'] . "\n";
+        }
+        $text .= "\n\n\Заключение\n\n\n" . $data['summary'];
+
+
+
         $attach = new attachment();
         $attach->message_id = 0;
         $attach->id_application = $data['app_id'];
