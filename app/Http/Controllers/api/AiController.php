@@ -54,6 +54,7 @@ class AiController extends Controller
         $attach->mime_type = 'txt';
         $attach->file_size = filesize($file);
         $attach->file_name = 'AIresult.txt';
+        $attach->sto_view = 1;
         $attach->save();
         $user = User::find(2);
         $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
