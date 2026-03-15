@@ -335,7 +335,7 @@
                             <th>
                                 <a
                                     :href="
-                                        'https://euroauto.ru/firms/all/' +
+                                        'https://opt.euroauto.ru/search/' +
                                         sparepart.part_number +
                                         '/'
                                     "
