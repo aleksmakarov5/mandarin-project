@@ -98,6 +98,7 @@
                             pathinfo($doc->location, PATHINFO_EXTENSION) == '7z')
                         <ai-analiz :app_id="{{ json_encode($id) }}" :location="{{ json_encode($doc->location) }}" />
                     @endif
+
                 </div>
                 <div class="card-body">
                     @if (isset($document_edit->id))
@@ -172,10 +173,16 @@
                 </div>
 
                 <div class="col-md-8">
-
-                    <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
-                            src="/storage/img/download.png" width="35" alt="Скачать">
-                    </a>
+                    <div>
+                        <a href="/storage/files/{{ $id }}/{{ $doc->location }}" download><img
+                                src="/storage/img/download.png" width="35" alt="Скачать">
+                        </a>
+                        @if (pathinfo($doc->location, PATHINFO_EXTENSION) == 'zip' ||
+                                pathinfo($doc->location, PATHINFO_EXTENSION) == 'rar' ||
+                                pathinfo($doc->location, PATHINFO_EXTENSION) == '7z')
+                            <ai-analiz :app_id="{{ json_encode($id) }}" :location="{{ json_encode($doc->location) }}" />
+                        @endif
+                    </div>
                     <div class="card-body">
                         @if (isset($document_edit->id))
                             @if ($document_edit->id == $doc->id)
@@ -191,7 +198,8 @@
                                 </h5>
                             @endif
                         @else
-                            <h5 class="card-title">{{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
+                            <h5 class="card-title">
+                                {{ $doc->file_name == 'image001.png' ? 'Номер телефона' : $doc->file_name }}
                             </h5>
                         @endif
                         <p class="file-size">
@@ -266,8 +274,8 @@
                     <th scope="col">Акт первичного осмотра</th>
 
                     <th scope="col" colspan=2>
-                        <file-upload :id_app="{{ $id }}" :status_id="20" :load_name="'Акт первичного осмотра'"
-                            :load_location="'Акт_первичного_осмотра'" />
+                        <file-upload :id_app="{{ $id }}" :status_id="20"
+                            :load_name="'Акт первичного осмотра'" :load_location="'Акт_первичного_осмотра'" />
                         {{-- @include('document.form_scan', ['status_id' => 20]) --}}
                     </th>
                     <th></th>
@@ -454,7 +462,7 @@
                                     :subject="{{ json_encode('ПЗН ' . $application->CarModel . ' ' . $application->gnz . ' ' . ($application->ub_type ? 'Каско' : 'Осаго') . ' zn-' . $application->id . '!') }}"
                                     :attach="{{ json_encode(isset($attach) ? $attach : []) }}" :app_id="{{ $id }}"
                                     :text="{{ json_encode("Добрый день!<br><br>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     Просьба составить ПЗН.<br><br>  <i>Тему письма не изменять </i>") }}"
                                     :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="105" />
                             </div>
                         @endif
