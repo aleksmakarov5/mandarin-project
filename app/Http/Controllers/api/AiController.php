@@ -28,7 +28,7 @@ class AiController extends Controller
         $text .= "\n\n\Заключение\n\n\n" . $data['summary'];
 
 
-
+        file_put_contents($file, $text);
         $attach = new attachment();
         $attach->message_id = 0;
         $attach->id_application = $data['app_id'];
