@@ -23,11 +23,11 @@ class AiController extends Controller
         // file_put_contents($file, json_encode($data));
         $text .= $data['app_id'] . '\n\n\nПовреждения\n\n\n';
         $i = 1;
-        foreach ($data['damages'] as $damage) {
+        foreach ($data['result']['damages'] as $damage) {
             // $text .= $damage['name'] . ': ' . $damage['catalog_id'] . "\n";
             $text .= $i++ . "\n\n";
         }
-        $text .= "\n\n\Заключение\n\n\n" . $data['summary'];
+        $text .= "\n\n\Заключение\n\n\n" . $data['result']['summary'];
 
 
         file_put_contents($file, $text);
