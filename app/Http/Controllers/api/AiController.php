@@ -51,7 +51,7 @@ class AiController extends Controller
         $new_chat = TelegraphChat::where('chat_id', '=', $user->telegram_id)->first();
         $id = $data['app_id'];
         $ch = $new_chat->html(
-            "По заявке {$id} получено новое сообщение от страховой компании "
+            "По заявке {$id} получены данные анализа ИИ "
 
         )
             ->send();
