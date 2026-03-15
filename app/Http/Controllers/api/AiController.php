@@ -25,9 +25,15 @@ class AiController extends Controller
         // foreach ($data as $key => $value) {
         //     $text .= $key . ': ' . $value . "\n";
         // }
-
+        $text .= $data['app_id'];
         // file_put_contents($file, json_encode($data));
-        $text .= $data['app_id'] . "\n\n\nПовреждения\n\n\n";
+        if (isset($data['result']['car_info']['brand']))
+            $text .= "\n\n\nМарка: " . $data['result']['car_info']['brand'] . "\n";
+        if (isset($data['result']['car_info']['vin']))
+            $text .= "\n\n\ВИН: " . $data['result']['car_info']['vin'] . "\n";
+        if (isset($data['result']['car_info']['year']))
+            $text .= "\n\n\Год выпуска: " . $data['result']['car_info']['year'] . "\n";
+        $text .=   "\n\n\nПовреждения\n\n\n";
         $i = 1;
         foreach ($data['result']['damages'] as $damage) {
             // $text .= $damage['name'] . ': ' . $damage['catalog_id'] . "\n";
