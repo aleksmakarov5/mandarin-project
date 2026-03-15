@@ -115,7 +115,7 @@
                 @foreach ($our_companies as $company)
                     <tr>
                         <td onclick="window.location.href='/mailbox/0/{{ $company->id }}/0'; return false">
-                            <div class="mail_index">{{ $company->our_name }}</div>
+                            <div class="mail_index">{{ $company->our_name }}|{{ $company->our_email }}</div>
                         </td>
                     </tr>
                 @endforeach
