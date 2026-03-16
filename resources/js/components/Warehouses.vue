@@ -1,10 +1,36 @@
-<style></style>
+<style>
+.tbl {
+    width: 100%;
+}
+.face {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 10px;
+    background-color: white;
+    padding: 20px;
+    overflow-y: scroll;
+    position: absolute;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    z-index: 7;
+}
+.back-face {
+    overflow-y: scroll;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(128, 128, 128, 0.513);
+}
+</style>
 
 <template>
-    <table class="table">
+    <table class="tbl">
         <tr>
             <td>
-                <a href="" class="btn nav-link">Приход</a>
+                <a class="nav-link">Приход</a>
             </td>
             <td>
                 <a href="" class="nav-link">Расход</a>
@@ -13,7 +39,7 @@
                 <a href="" class="nav-link">ОСВ</a>
             </td>
             <td>
-                <a href="" class="nav-link">Номенклатура</a>
+                <inventory-items :inventory_items="inventory_items" />
             </td>
         </tr>
     </table>
