@@ -37,6 +37,7 @@
     max-height: 60%;
     overflow-y: scroll;
     padding: 10px;
+    z-index: 12;
 }
 </style>
 
@@ -49,6 +50,10 @@
     ></div>
 
     <div v-if="showIncome" class="face">
+        <div class="list" v-if="error">
+            {{ error }}
+        </div>
+        <div v-if="error" class="back-face" @click="error = ''"></div>
         <div class="form-group">
             <label class="labl">Дата</label>
             <input type="date" class="inp" v-model="created_at" />
@@ -249,6 +254,7 @@ export default {
             app_id: "",
             comment: "",
             created_at: "",
+            error: "",
         };
     },
     mounted() {},
@@ -322,6 +328,10 @@ export default {
                 })
                 .then((res) => {
                     location.reload();
+                })
+                .catch((error) => {
+                    // console.log(error.response.data.message);
+                    this.error = error.response.data.message;
                 });
         },
     },
