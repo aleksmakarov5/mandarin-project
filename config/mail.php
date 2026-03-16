@@ -87,6 +87,7 @@ return [
             'auth_mode'  => null,
             'verify_peer'       => false,
         ],
+
         'sharoiko' => [
             'transport' => 'smtp',
             'url' => env('MAIL_URL'),
