@@ -8,6 +8,6 @@
             // dd($warehouses);
         @endphp
         <warehouses :warehouses="{{ json_encode($warehouses) }}" :counterparties="{{ json_encode($counterparties) }}"
-            :inventory_items="{{ json_encode($inventory_items) }}" />
+            :inventory_items="{{ json_encode($inventory_items) }}" :ware_houses="{{ json_encode($ware_houses) }}" />
     </div>
 @endsection

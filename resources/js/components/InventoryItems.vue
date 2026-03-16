@@ -1,12 +1,5 @@
 <style>
-.font-table {
-    font-size: large;
-    width: 100%;
-    border-style: double;
-}
-.font-table td {
-    border-style: double;
-}
+
 </style>
 
 <template>
@@ -18,16 +11,19 @@
                 <th>Кат. номер</th>
                 <th>Название</th>
                 <th>Авто</th>
+                <th>Комментарий</th>
             </tr>
             <tr v-for="item in inventoryItems">
                 <td>{{ item.part_number }}</td>
                 <td>{{ item.part_name }}</td>
                 <td>{{ item.car_model }}</td>
+                <td>{{item.description}}</td>
             </tr>
             <tr>
                 <th><input type="text" placeholder="Кат. номер" v-model="part_number"/></th>
                 <th><input type="text" placeholder="Название" v-model="part_name"/></th>
                 <th><input type="text" placeholder="Авто" v-model="car_model"></th>
+                <th><input type="text" placeholder="Комментарий" v-model="description"></th>
                 <th>
                     <input class="nav-link" type="button" value="Добавить" @click="addItem()"></input>
                 </th>
@@ -46,7 +42,8 @@ export default {
             inventoryItems: this.inventory_items,
             part_name: '',
             part_number: '',
-            car_model:'',
+            car_model: '',
+            description: '',
         };
     },
     mounted() {},
@@ -54,11 +51,11 @@ export default {
         addItem()
         {
 let formData = new FormData();
-            formData.append('name', this.name);
-            formData.append('city', this.city);
-            formData.append('company', this.company);
-            formData.append('email', this.email);
-            axios.post(`/api/mail/addUser`, formData,
+            formData.append('part_name', this.part_name);
+            formData.append('part_number', this.part_number);
+            formData.append('car_model', this.car_model);
+            formData.append('description', this.description);
+            axios.post(`/api/inventory_items/addItem`, formData,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data',
@@ -67,11 +64,10 @@ let formData = new FormData();
             )
                 .then(res => {
                     // console.log(res.data);
-                    this.getBook();
-                    this.name = '';
-                    this.city = '';
-                    this.company = '';
-                    this.email = '';
+                     this.part_name = '';
+                    this.part_number = '';
+                    this.car_model = '';
+                    this.description = '';
                     this.inventoryItems.unshift(res.data)
                 })
         },

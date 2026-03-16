@@ -14,6 +14,7 @@ use App\Http\Controllers\api\ChatController;
 use App\Http\Controllers\api\MailController;
 use App\Http\Controllers\api\ApplicationController;
 use App\Http\Controllers\api\AiController;
+use App\Http\Controllers\api\WarehouseController;
 
 
 
@@ -224,6 +225,12 @@ Route::group(['namespace' => 'AI', 'prefix' => 'ai'], function () {
         ->name('api.ai.send_data');
     Route::get('/show/{id}', [AiController::class, 'getData'])
         ->name('api.ai.show');
+});
+
+Route::group(['namespace' => 'InventoryItems', 'prefix' => 'inventory_items'], function () {
+    Route::post('/addItem', [WarehouseController::class, 'addItem'])->name('api.inventory_items.create');
+    Route::post('/addIncome', [WarehouseController::class, 'addIncome'])->name('api.inventory_items.addIncome');
+    Route::get('/get/{id}', [WarehouseController::class, 'getInventoryItem'])->name('api.inventory_items.getInventoryItem');
 });
 
 

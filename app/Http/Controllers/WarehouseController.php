@@ -30,9 +30,11 @@ class WarehouseController extends Controller
         }
         $inventory_items = inventory_items::all();
         $counterparties = counterparty::all();
+        $ware_houses = warehouses::all();
 
 
         return view('warehouse', [
+            'ware_houses' => $ware_houses,
             'warehouses' => $warehouses,
             'inventory_items' => $inventory_items,
             'counterparties' => $counterparties

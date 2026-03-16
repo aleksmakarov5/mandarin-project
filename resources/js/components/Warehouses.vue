@@ -2,6 +2,14 @@
 .tbl {
     width: 100%;
 }
+.font-table {
+    font-size: large;
+    width: 100%;
+    border-style: double;
+}
+.font-table td {
+    border-style: double;
+}
 .face {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 10px;
@@ -9,10 +17,10 @@
     padding: 20px;
     overflow-y: scroll;
     position: absolute;
-    top: 10%;
+    top: 5%;
     left: 10%;
     width: 80%;
-    height: 80%;
+    height: 90%;
     z-index: 7;
 }
 .back-face {
@@ -30,10 +38,18 @@
     <table class="tbl">
         <tr>
             <td>
-                <a class="nav-link">Приход</a>
+                <income
+                    :inventory_items="inventory_items"
+                    :warehouses="ware_houses"
+                    :counterparties="counterparties"
+                />
             </td>
             <td>
-                <a href="" class="nav-link">Расход</a>
+                <expence
+                    :inventory_items="inventory_items"
+                    :warehouses="ware_houses"
+                    :counterparties="counterparties"
+                />
             </td>
             <td>
                 <a href="" class="nav-link">ОСВ</a>
@@ -76,13 +92,17 @@
 <script>
 import InventoryItems from "../components/InventoryItems.vue";
 import Counterparties from "../components/Counterparties.vue";
+import Income from "./Income.vue";
+import Expence from "./Expence.vue";
 
 export default {
     components: {
         InventoryItems,
         Counterparties,
+        Income,
+        Expence,
     },
-    props: ["warehouses", "inventory_items", "counterparties"],
+    props: ["warehouses", "inventory_items", "counterparties", "ware_houses"],
     data() {
         return {};
     },
