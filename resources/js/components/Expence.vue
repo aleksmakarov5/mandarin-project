@@ -75,7 +75,7 @@
                 @click="warehouses_show = !warehouses_show"
             ></div>
             <div class="list" v-if="warehouses_show">
-                <table class="font-table" id="warehouses">
+                <table class="editable" id="warehouses">
                     <tr>
                         <th>Название</th>
                     </tr>
@@ -120,7 +120,7 @@
                     @click="items_show = !items_show"
                 ></div>
                 <div class="list" v-if="items_show">
-                    <table class="font-table" id="items">
+                    <table class="editable" id="items">
                         <tr>
                             <th>Кат. номер</th>
                             <th>Наименование</th>
@@ -189,7 +189,7 @@
                     @click="counterpartie_show = !counterpartie_show"
                 ></div>
                 <div class="list" v-if="counterpartie_show">
-                    <table class="font-table" id="counterparties">
+                    <table class="editable" id="counterparties">
                         <tr>
                             <th>Название</th>
                         </tr>
