@@ -624,8 +624,8 @@ class WordController extends Controller
                     $summ_nds = $application->nds ? (isset($estimate->add_pay) ? $estimate->add_pay : 0) + $nds : (isset($estimate->add_pay) ? $estimate->add_pay : 0);
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
 
-                    $templateProcessor->setValue('nds', $nds);
-                    $templateProcessor->setValue('summ_nds', $summ_nds);
+                    $templateProcessor->setValue('nds', in_money($nds));
+                    $templateProcessor->setValue('summ_nds', in_money($summ_nds));
                     $templateProcessor->setValue('price_repair_full', in_money(isset($estimate->add_pay) ? $estimate->add_pay : 0));
                     $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
                 }
@@ -699,6 +699,12 @@ class WordController extends Controller
                     $fio = $fio[0] . ' ' . mb_substr($fio[1], 0, 1, 'UTF-8') . '. ' . mb_substr($fio[2], 0, 1, 'UTF-8') . '.';
                 }
 
+                $templateProcessor->setValue('dolzh', $application->dolzh);
+                $templateProcessor->setValue('ogrnip', $application->ogrnip);
+                $templateProcessor->setValue('Buh', $application->Buh);
+                $templateProcessor->setValue('Ip_name', $application->Ip_name);
+                $templateProcessor->setValue('Director', $application->director);
+
                 $number = $id;
                 // dd($number);
                 $sch_number = 'MG-' . $id . "/" . mb_substr($application->city, 0, 1);
@@ -708,7 +714,7 @@ class WordController extends Controller
 
                 if (isset($estimate->price_repair)) {
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
-                    $templateProcessor->setValue('price_repair_full', in_money($estimate->add_pay));
+                    $templateProcessor->setValue('price_repair_full', in_money($application->nds ? $estimate->add_pay : $estimate->add_pay - $nds));
                     $templateProcessor->setValue('summ_nds', in_money($summ_nds));
                     $templateProcessor->setValue('nds', in_money($nds));
                     $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));

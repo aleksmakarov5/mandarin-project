@@ -588,7 +588,10 @@
                                             </tr>
                                             <tr align=center>
                                                 <th>
-                                                    сумма (без НДС):<br>
+                                                    @if ($app->nds)
+
+                                                        сумма (без НДС):<br>
+                                                    @endif
                                                     сумма (включая НДС):
 
                                                 </th>
@@ -621,8 +624,12 @@
                                         <tr>
                                             <td>
                                                 <div class="alert alert-success">
-                                                    {{ in_money($sum_teor) }}
-                                                    р. <br>
+                                                    @if ($app->nds)
+
+                                                        {{ in_money($sum_teor) }}
+                                                        р. <br>
+                                                    @endif
+
                                                     {{ in_money($app->nds ? $sum_teor * 1.05 : $sum_teor) }} р.
                                                 </div>
                                             </td>
