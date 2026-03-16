@@ -1,4 +1,21 @@
 <style>
+.chat-button {
+    position: fixed;
+    bottom: 5px;
+    left: 5px;
+    padding: 10px;
+    background-color: #6b6969;
+    color: white;
+    border-radius: 25px;
+    border: none;
+    cursor: pointer;
+    z-index: 10;
+}
+
+.chat-button:hover {
+    background-color: #eb6700;
+    color: white;
+}
 .chat-content {
     overflow-y: scroll;
     display: flex;
