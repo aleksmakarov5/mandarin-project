@@ -1723,26 +1723,27 @@ class ImapController extends Controller
         if (mb_strpos('_' . $subject, 'Уведомление о появлении нового лота') == 0 && mb_strpos('_' . $subject, 'Повторное уведомление о новом лоте') == 0) {
             $app_number = date('dmY_hms');
             $subject = mb_strtoupper($subject);
+            $subject = ' ' + $subject;
             $subject = str_replace('РЕЗУЛЬТАТ', '', $subject);
             // dd($subject);
             $start = 0;
             $st = 0;
-            if (mb_strpos('_' . $subject, 'ПР') != 0) {
+            if (mb_strpos('_' . $subject, ' ПР') != 0) {
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $start = mb_strpos($subject, 'ПР');
+                $start = mb_strpos($subject, ' ПР') + 1;
                 $st = 1;
                 // $app_number = 'ПР' . $app_number;
             }
-            if (mb_strpos('_' . $subject, 'AT') != 0) {
+            if (mb_strpos('_' . $subject, ' AT') != 0) {
                 // dd($subject);
-                $start = mb_strpos($subject, 'AT');
+                $start = mb_strpos($subject, ' AT') + 1;
                 $st = 1;
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
                 // $app_number = 'АТ' . $app_number;
             }
-            if (mb_strpos('_' . $subject, 'АТ') != 0) {
+            if (mb_strpos('_' . $subject, ' АТ') != 0) {
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $start = mb_strpos($subject, 'АТ');
+                $start = mb_strpos($subject, ' АТ') + 1;
                 $st = 1;
                 // $app_number = 'АТ' . $app_number;
             }
