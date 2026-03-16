@@ -143,8 +143,9 @@ class WordController extends Controller
             if (isset($mrk_n[2]))
                 $mrk_name .= ' ' . mb_substr($mrk_n[2], 0, 1, 'UTF-8') . '.';
         }
-        $nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) * 0.05;
-        $summ_nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) + $nds;
+        $nds = str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full);
+        $nds = $application->nds ? $nds * 0.05 : $nds / 1.05 * 0.05;
+        $summ_nds = $application->nds ? str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full) + $nds : str2number($application->ub_type ? $estimate->price_repair_half : $estimate->price_repair_full);
         //dd($application);
         $fio = '';
         if ($application->director) {
@@ -378,8 +379,8 @@ class WordController extends Controller
             $estimate = estimate::where('id_application', '=', $id)->first();
             $price_repair_half = $price_repair + str2number((isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)) + $price_sp_half;
             $price_repair_full = $price_repair + str2number((isset($estimate->price_zip) ? str2number($estimate->price_zip) : 0)) + $price_sp_full;
-            $nds = str2number($application->ub_type ? $price_repair_half : $price_repair_full) * 0.05;
-            $summ_nds = str2number($application->ub_type ? $price_repair_half : $price_repair_full) + $nds;
+            $nds = $application->nds ? (str2number($application->ub_type ? $price_repair_half : $price_repair_full) * 0.05) : (str2number($application->ub_type ? $price_repair_half : $price_repair_full) / 1.05  * 0.05);
+            $summ_nds = $application->nds ? str2number($application->ub_type ? $price_repair_half : $price_repair_full) + $nds : str2number($application->ub_type ? $price_repair_half : $price_repair_full);
 
 
             $price_repair_full_md2 = $price_sp_full_md2 +
@@ -618,8 +619,9 @@ class WordController extends Controller
                 $estimate = estimate::where('id_application', '=', $id)->first();
 
                 if (isset($estimate->price_repair)) {
-                    $nds = (isset($estimate->add_pay) ? $estimate->add_pay : 0) * 0.05;
-                    $summ_nds = (isset($estimate->add_pay) ? $estimate->add_pay : 0) + $nds;
+                    $nds = (isset($estimate->add_pay) ? $estimate->add_pay : 0);
+                    $nds = $application->nds ? $nds * 0.05 : $nds / 1.05 * 0.05;
+                    $summ_nds = $application->nds ? (isset($estimate->add_pay) ? $estimate->add_pay : 0) + $nds : (isset($estimate->add_pay) ? $estimate->add_pay : 0);
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
 
                     $templateProcessor->setValue('nds', $nds);

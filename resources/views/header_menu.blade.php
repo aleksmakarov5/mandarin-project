@@ -363,6 +363,19 @@
                                                 target="_blank" class="nav-link">Emex</a>
                                         </td>
                                     </tr>
+                                    <tr>
+
+                                        <td colspan="2">
+                                            <a href="/applications/{{ $id }}/update_nds" class="nav-link"
+                                                style="font-size: 10px;">
+                                                @if ($app->nds)
+                                                    Сумма+НДС
+                                                @else
+                                                    Сумма, включая НДС
+                                                @endif
+                                            </a>
+                                        </td>
+                                    </tr>
                                     @if (isset($app->pred_phone))
                                         <tr>
                                             <td colspan="2">
@@ -610,7 +623,7 @@
                                                 <div class="alert alert-success">
                                                     {{ in_money($sum_teor) }}
                                                     р. <br>
-                                                    {{ in_money($sum_teor * 1.05) }} р.
+                                                    {{ in_money($app->nds ? $sum_teor * 1.05 : $sum_teor) }} р.
                                                 </div>
                                             </td>
                                             <td>

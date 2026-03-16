@@ -62,6 +62,16 @@ use Jenssegers\Date\Date;
 
 class ApplicationController extends Controller
 {
+    public function update_nds($id)
+    {
+        $application = application::find($id);
+        if ($application->nds)
+            $application->nds = 0;
+        else
+            $application->nds = 1;
+        $application->save();
+        return redirect()->back();
+    }
 
     public function configure($applications)
     {

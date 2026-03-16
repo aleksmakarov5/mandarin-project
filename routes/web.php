@@ -173,6 +173,8 @@ Route::middleware("auth:web")->group(
         Route::get('/application/{id}', [ApplicationController::class, 'application'])->name('application');
         Route::get('applications/{id}/edit', [ApplicationController::class, 'edit'])
             ->name('applications.edit');
+        Route::get('applications/{id}/update_nds', [ApplicationController::class, 'update_nds'])
+            ->name('applications.update_nds');
         Route::get('applications/{id}/send_mrk/{id_MRK}', [ApplicationController::class, 'send_mrk'])
             ->name('applications.send_mrk');
         Route::get('applications/{id}/change_status/{variant}', [ApplicationController::class, 'change_status'])
