@@ -263,7 +263,6 @@ class ImapController extends Controller
                         $notify->id_application = $id;
                         $notify->id_text = 3;
                         $notify->link = "/application/";
-
                         $notify_id = $notify->id;
                         $status_application = new status_application;
                         $status_application->id_user = $user->id;
@@ -376,6 +375,21 @@ class ImapController extends Controller
                     $notify_id = $notify->id;
                     $status_message = new status_message;
                     $status_message->id_user = $applications->id_MRK;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+
+                    $notify->save();
+                }
+                if ($applications->id_spm) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_spm;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_spm;
                     $status_message->id_application = $id;
                     $status_message->is_readed = false;
                     $status_message->save();
@@ -609,6 +623,21 @@ class ImapController extends Controller
                     $notify_id = $notify->id;
                     $status_message = new status_message;
                     $status_message->id_user = $applications->id_MRK;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+
+                    $notify->save();
+                }
+                if ($applications->id_spm) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_spm;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_spm;
                     $status_message->id_application = $id;
                     $status_message->is_readed = false;
                     $status_message->save();
@@ -943,7 +972,21 @@ class ImapController extends Controller
 
                 $notify->save();
             }
+            if ($applications->id_spm) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_spm;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_spm;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
 
+                $notify->save();
+            }
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')->first();
@@ -1311,6 +1354,21 @@ class ImapController extends Controller
 
                 $notify->save();
             }
+            if ($applications->id_spm) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_spm;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_spm;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
+                $notify->save();
+            }
 
             $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
                 ->select('notifies.*', 'text_notifies.text')->first();
@@ -1630,6 +1688,21 @@ class ImapController extends Controller
                 $notify_id = $notify->id;
                 $status_message = new status_message;
                 $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
+                $notify->save();
+            }
+            if ($applications->id_spm) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_spm;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_spm;
                 $status_message->id_application = $id;
                 $status_message->is_readed = false;
                 $status_message->save();
@@ -2072,6 +2145,21 @@ class ImapController extends Controller
                 $notify_id = $notify->id;
                 $status_message = new status_message;
                 $status_message->id_user = $applications->id_MRK;
+                $status_message->id_application = $id;
+                $status_message->is_readed = false;
+                $status_message->save();
+
+                $notify->save();
+            }
+            if ($applications->id_spm) {
+                $notify = new notify;
+                $notify->id_user = $applications->id_spm;
+                $notify->id_application = $id;
+                $notify->id_text = 1;
+                $notify->link = "/mail/";
+                $notify_id = $notify->id;
+                $status_message = new status_message;
+                $status_message->id_user = $applications->id_spm;
                 $status_message->id_application = $id;
                 $status_message->is_readed = false;
                 $status_message->save();
