@@ -1062,7 +1062,7 @@ class ImapController extends Controller
         echo $subject . '<br>';
 
         $applications = application::firstOrCreate(
-            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5],
+            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 3],
             [
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 5,

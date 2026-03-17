@@ -12,6 +12,8 @@ class EaController extends Controller
 {
     public function auth()
     {
+        $response = Http::get('https://autolansopt.ru/api/rest/v1/part/86650S1010');
+        dd($response->json());
         $id = 7646;
         $spareparts = SparePart::where('id_application', '=', $id)
             // ->select('spare_parts.*')
@@ -31,7 +33,7 @@ class EaController extends Controller
         $token = $response->json()['data']['token'];
         foreach ($spareparts as $sparepart) {
 
-            $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $sparepart->part_number);
+            $response = Http::get('https://emex.ru/api/search/search?detailNum=86650S1010');
             $max = 0;
             foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
                 if ($offer['bestPrice']['value'] > $max) {
