@@ -948,6 +948,18 @@ class MainController extends Controller
                     }
                 }
             }
+            if (mb_strtoupper(pathinfo($location, PATHINFO_EXTENSION)) == "PDF") {
+                rename($dir . '/' . $image, 'storage/files/' . $id . '/' . $image);
+                $attach = new attachment();
+                $attach->id_application = $id;
+                $attach->name = $image;
+                $attach->location =  $image;
+                $attach->id_message = 0;
+                $attach->file_size = filesize(
+                    'storage/files/' . $id . '/' . $image
+                );
+                $attach->save();
+            }
         }
         $images = scandir($dir);
         // asort($images);

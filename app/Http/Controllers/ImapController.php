@@ -1725,25 +1725,28 @@ class ImapController extends Controller
             $subject = mb_strtoupper($subject);
             $subject = ' ' + $subject;
             $subject = str_replace('РЕЗУЛЬТАТ', '', $subject);
+            $subject = str_replace('НАПРАВЛНИЕН', '', $subject);
+
+            $subject = str_replace('СТАТУС', '', $subject);
             // dd($subject);
             $start = 0;
             $st = 0;
-            if (mb_strpos('_' . $subject, ' ПР') != 0) {
+            if (mb_strpos('_' . $subject, 'ПР') != 0) {
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $start = mb_strpos($subject, ' ПР') + 1;
+                $start = mb_strpos($subject, 'ПР');
                 $st = 1;
                 // $app_number = 'ПР' . $app_number;
             }
-            if (mb_strpos('_' . $subject, ' AT') != 0) {
+            if (mb_strpos('_' . $subject, 'AT') != 0) {
                 // dd($subject);
-                $start = mb_strpos($subject, ' AT') + 1;
+                $start = mb_strpos($subject, 'AT');
                 $st = 1;
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
                 // $app_number = 'АТ' . $app_number;
             }
-            if (mb_strpos('_' . $subject, ' АТ') != 0) {
+            if (mb_strpos('_' . $subject, 'АТ') != 0) {
                 // $app_number = preg_replace('/[^0-9]/', '', $subject);
-                $start = mb_strpos($subject, ' АТ') + 1;
+                $start = mb_strpos($subject, 'АТ');
                 $st = 1;
                 // $app_number = 'АТ' . $app_number;
             }
