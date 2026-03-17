@@ -15,6 +15,7 @@ use App\Http\Controllers\api\MailController;
 use App\Http\Controllers\api\ApplicationController;
 use App\Http\Controllers\api\AiController;
 use App\Http\Controllers\api\WarehouseController;
+use App\Http\Controllers\api\EaController;
 
 
 
@@ -194,6 +195,10 @@ Route::group(['namespace' => 'SparePart', 'prefix' => 'sparepart'], function () 
         'update_all'
     ])->name('api.sparepart.update_all');
     Route::delete('/{id}', [SparePartController::class, 'destroy']);
+    Route::post('/procen', [
+        SparePartController::class,
+        'procen'
+    ])->name('api.sparepart.procen');
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
 });
@@ -232,6 +237,10 @@ Route::group(['namespace' => 'InventoryItems', 'prefix' => 'inventory_items'], f
     Route::post('/addIncome', [WarehouseController::class, 'addIncome'])->name('api.inventory_items.addIncome');
     Route::get('/get/{id}', [WarehouseController::class, 'getInventoryItem'])->name('api.inventory_items.getInventoryItem');
 });
+Route::group(['namespace' => 'EuroAvto', 'prefix' => 'euroavto'], function () {
+    route::get('/auth', [EaController::class, 'auth'])->name('api.euroavto.auth');
+});
+
 
 
 

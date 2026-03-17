@@ -5,6 +5,20 @@
             <a :href="'/SparePart/' + app_id + '/doc_load'" class="nav-link"
                 >Загрузить данные из калькуляции</a
             >
+            <a href="" v-if="show_proc" @click.prevent="procen()"
+                ><img
+                    src="/storage/img/proc.png"
+                    width="30"
+                    title="Проценка З/Ч. Поиск цен оригинал и аналог на EMEX.RU Поиск цен Б/У на opt.euroavto.ru"
+                />
+            </a>
+            <a href="" v-else @click.prevent="">
+                <img
+                    src="/storage/img/loading.png"
+                    width="30"
+                    title="Идет отправка"
+                />
+            </a>
             <table class="editable" @blur="changeEditSparePartId(null)">
                 <thead>
                     <tr>
@@ -536,6 +550,7 @@ export default {
             summ_ic_half: this.in_summ_ic_half,
             name_Cr: "",
             show: true,
+            show_proc: true,
         };
     },
 
@@ -543,6 +558,22 @@ export default {
         // this.getSpareParts()
     },
     methods: {
+        procen() {
+            this.show_proc = !this.show_proc;
+            axios
+                .post("/api/sparepart/procen", {
+                    app_id: this.app_id,
+                })
+                .then((res) => {
+                    this.show_proc = true;
+
+                    location.reload();
+                    // this.getSpareParts(res);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
+        },
         getSpareParts(res) {
             this.spareparts = res.data[0];
             this.summ_ic_full = res.data[1];
