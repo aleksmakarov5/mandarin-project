@@ -37,6 +37,16 @@
     height: 100%;
     background-color: rgba(128, 128, 128, 0.513);
 }
+.list1 {
+    position: absolute;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    border-radius: 5px;
+    background-color: white;
+    width: 70%;
+    max-height: 60%;
+    overflow-y: scroll;
+    padding: 10px;
+}
 </style>
 
 <template>

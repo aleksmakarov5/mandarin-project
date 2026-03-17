@@ -28,16 +28,6 @@
     height: 35px;
     font-size: 16px;
 }
-.list {
-    position: absolute;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    border-radius: 5px;
-    background-color: white;
-    width: 70%;
-    max-height: 60%;
-    overflow-y: scroll;
-    padding: 10px;
-}
 </style>
 
 <template>
@@ -72,7 +62,7 @@
                 class="back-face"
                 @click="items_show = !items_show"
             ></div>
-            <div class="list" v-if="items_show">
+            <div class="list1" v-if="items_show">
                 <table class="editable" id="items">
                     <tr>
                         <th>Кат. номер</th>
@@ -136,7 +126,7 @@
                 class="back-face"
                 @click="warehouses_show = !warehouses_show"
             ></div>
-            <div class="list" v-if="warehouses_show">
+            <div class="list1" v-if="warehouses_show">
                 <table class="editable" id="warehouses">
                     <tr>
                         <th>Название</th>
@@ -176,7 +166,7 @@
                 class="back-face"
                 @click="counterpartie_show = !counterpartie_show"
             ></div>
-            <div class="list" v-if="counterpartie_show">
+            <div class="list1" v-if="counterpartie_show">
                 <table class="editable" id="counterparties">
                     <tr>
                         <th>Название</th>
