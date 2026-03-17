@@ -12,7 +12,7 @@ class EaController extends Controller
 {
     public function auth()
     {
-        $response = Http::get('https://autolansopt.ru/api/rest/v1/part/86650S1010');
+        $response = Http::get('https://emex.ru/api/search/search?detailNum=86650S1010&latitude=55.753960&longitude=37.620393&showAll=true');
         dd($response->json());
         $id = 7646;
         $spareparts = SparePart::where('id_application', '=', $id)
