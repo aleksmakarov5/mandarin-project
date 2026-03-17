@@ -306,6 +306,26 @@ class SparePartController extends Controller
                         }
                     }
                     $sparepart->price_used = $max;
+                    $response = Http::withHeaders(
+                        [
+                            'Accept' => 'application/json',
+                            'Authorization' => 'Bearer ' . $token
+
+                        ]
+                    )
+                        ->asForm()
+                        ->get('https://whls.euroauto.ru/api/offers/products/manufacturers/' . $id . '/new', [
+                            'code' => $sparepart->part_number,
+
+                        ]);
+                    $max = 0;
+                    foreach ($response->json()['data']['offers'] as $offer) {
+                        if ($offer['price'] > $max) {
+                            $max = $offer['price'];
+                        }
+                    }
+                    if ($max)
+                        $sparepart->price_original = $max;
                 }
                 $sparepart->save();
             }
