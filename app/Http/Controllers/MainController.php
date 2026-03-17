@@ -960,6 +960,11 @@ class MainController extends Controller
                     'storage/files/' . $id . '/' . $image
                 );
                 $attach->save();
+                $attach_old = attachment::where('id_application', $id)->where('location', $location)->first();
+                if ($attach_old) {
+                    Storage::delete('public/files/' . $id . '/' . $attach_old->location);
+                    $attach_old->delete();
+                }
             }
         }
         $images = scandir($dir);
