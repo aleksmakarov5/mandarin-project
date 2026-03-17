@@ -238,9 +238,10 @@ class SparePartController extends Controller
                 $max = 0;
                 if (isset($response->json()['searchResult']['makes']['list']))
                     foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
-                        if ($offer['bestPrice']['value'] > $max) {
-                            $max = $offer['bestPrice']['value'];
-                        }
+                        if (isset($offer['bestPrice']['value']))
+                            if ($offer['bestPrice']['value'] > $max) {
+                                $max = $offer['bestPrice']['value'];
+                            }
                     }
                 $model = '';
                 if (isset($response->json()['searchResult']['make']))
