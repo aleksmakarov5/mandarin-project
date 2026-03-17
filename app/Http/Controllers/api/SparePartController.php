@@ -247,9 +247,9 @@ class SparePartController extends Controller
                     $model = $response->json()['searchResult']['make'];
 
 
-                if ($sparepart->price_ic_full > $max) $sparepart->price_analogue = $max * 1.2;
+                if ($sparepart->price_ic_full > $max) $sparepart->price_analogue = $max * 1.1;
                 else
-                    $sparepart->price_original = $max * 1.2;
+                    $sparepart->price_original = $max * 1.1;
                 if (isset($response->json()['searchResult']['replaceNum'])) {
                     $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $response->json()['searchResult']['replaceNum']);
                     $max = 0;
@@ -258,7 +258,7 @@ class SparePartController extends Controller
                             $max = $offer['bestPrice']['value'];
                         }
                     }
-                    $sparepart->price_analogue = $max * 1.2;
+                    $sparepart->price_analogue = $max * 1.1;
                 }
                 $response = Http::withHeaders(
                     [
