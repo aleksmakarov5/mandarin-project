@@ -952,7 +952,7 @@ class MainController extends Controller
                 rename($dir . '/' . $image, 'storage/files/' . $id . '/' . $image);
                 $attach = new attachment();
                 $attach->id_application = $id;
-                $attach->name = $image;
+                $attach->file_name = $image;
                 $attach->location =  $image;
                 $attach->id_message = 0;
                 $attach->file_size = filesize(
