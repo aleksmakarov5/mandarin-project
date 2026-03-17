@@ -231,60 +231,34 @@ class SparePartController extends Controller
             ]);
         $token = $response->json()['data']['token'];
         foreach ($spareparts as $sparepart) {
+            if (!mb_strpos('_' . mb_strtoupper($sparepart->part_number), 'МЕЛКИЕ')) {
 
-            $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $sparepart->part_number);
+                $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $sparepart->part_number);
 
-            $max = 0;
-            if (isset($response->json()['searchResult']['makes']['list']))
-                foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
-                    if ($offer['bestPrice']['value'] > $max) {
-                        $max = $offer['bestPrice']['value'];
-                    }
-                }
-            $model = '';
-            if (isset($response->json()['searchResult']['make']))
-                $model = $response->json()['searchResult']['make'];
-
-
-
-            $sparepart->price_original = $max;
-            if (isset($response->json()['searchResult']['replaceNum'])) {
-                $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $response->json()['searchResult']['replaceNum']);
                 $max = 0;
-                foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
-                    if ($offer['bestPrice']['value'] > $max) {
-                        $max = $offer['bestPrice']['value'];
-                    }
-                }
-                $sparepart->price_analogue = $max;
-            }
-            $response = Http::withHeaders(
-                [
-                    'Accept' => 'application/json',
-                    'Authorization' => 'Bearer ' . $token
-
-                ]
-            )
-                ->asForm()
-                ->get('https://whls.euroauto.ru/api/products/manufacturers/codes', [
-                    'code' => $sparepart->part_number,
-                ]);
-            $id = 0;
-
-            if (isset($response->json()['data'][0]['manufacturer']['id'])) {
-                $id = $response->json()['data'][0]['manufacturer']['id'];
-                if ($model) {
-                    foreach ($response->json()['data'] as $manufactirer) {
-                        if (mb_strtoupper($manufactirer['manufacturer']['name']) == mb_strtoupper($model)) {
-                            $id = $manufactirer['manufacturer']['id'];
-                            break;
+                if (isset($response->json()['searchResult']['makes']['list']))
+                    foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
+                        if ($offer['bestPrice']['value'] > $max) {
+                            $max = $offer['bestPrice']['value'];
                         }
                     }
+                $model = '';
+                if (isset($response->json()['searchResult']['make']))
+                    $model = $response->json()['searchResult']['make'];
+
+
+
+                $sparepart->price_original = $max;
+                if (isset($response->json()['searchResult']['replaceNum'])) {
+                    $response = Http::get('https://emex.ru/api/search/search?detailNum=' . $response->json()['searchResult']['replaceNum']);
+                    $max = 0;
+                    foreach ($response->json()['searchResult']['makes']['list'] as $offer) {
+                        if ($offer['bestPrice']['value'] > $max) {
+                            $max = $offer['bestPrice']['value'];
+                        }
+                    }
+                    $sparepart->price_analogue = $max;
                 }
-            }
-            if ($id) {
-
-
                 $response = Http::withHeaders(
                     [
                         'Accept' => 'application/json',
@@ -293,19 +267,47 @@ class SparePartController extends Controller
                     ]
                 )
                     ->asForm()
-                    ->get('https://whls.euroauto.ru/api/offers/products/manufacturers/' . $id . '/used', [
+                    ->get('https://whls.euroauto.ru/api/products/manufacturers/codes', [
                         'code' => $sparepart->part_number,
-
                     ]);
-                $max = 0;
-                foreach ($response->json()['data']['offers'] as $offer) {
-                    if ($offer['price'] > $max) {
-                        $max = $offer['price'];
+                $id = 0;
+
+                if (isset($response->json()['data'][0]['manufacturer']['id'])) {
+                    $id = $response->json()['data'][0]['manufacturer']['id'];
+                    if ($model) {
+                        foreach ($response->json()['data'] as $manufactirer) {
+                            if (mb_strtoupper($manufactirer['manufacturer']['name']) == mb_strtoupper($model)) {
+                                $id = $manufactirer['manufacturer']['id'];
+                                break;
+                            }
+                        }
                     }
                 }
-                $sparepart->price_used = $max;
+                if ($id) {
+
+
+                    $response = Http::withHeaders(
+                        [
+                            'Accept' => 'application/json',
+                            'Authorization' => 'Bearer ' . $token
+
+                        ]
+                    )
+                        ->asForm()
+                        ->get('https://whls.euroauto.ru/api/offers/products/manufacturers/' . $id . '/used', [
+                            'code' => $sparepart->part_number,
+
+                        ]);
+                    $max = 0;
+                    foreach ($response->json()['data']['offers'] as $offer) {
+                        if ($offer['price'] > $max) {
+                            $max = $offer['price'];
+                        }
+                    }
+                    $sparepart->price_used = $max;
+                }
+                $sparepart->save();
             }
-            $sparepart->save();
         }
         $res = $this->show($id);
         return $res;
