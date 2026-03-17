@@ -2,10 +2,6 @@
 .tbl {
     width: 100%;
 }
-.editable {
-    width: 100%;
-    border-collapse: collapse;
-}
 
 .font-table {
     font-size: large;
