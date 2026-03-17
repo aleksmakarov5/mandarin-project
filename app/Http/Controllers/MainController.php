@@ -948,7 +948,7 @@ class MainController extends Controller
                     }
                 }
             }
-            if (mb_strtoupper(pathinfo($location, PATHINFO_EXTENSION)) == "PDF") {
+            if (mb_strtoupper(pathinfo($image, PATHINFO_EXTENSION)) == "PDF") {
                 rename($dir . '/' . $image, 'storage/files/' . $id . '/' . $image);
                 $attach = new attachment();
                 $attach->id_application = $id;
