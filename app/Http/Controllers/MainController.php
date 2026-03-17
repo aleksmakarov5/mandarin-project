@@ -955,6 +955,7 @@ class MainController extends Controller
                 $attach->file_name = $image;
                 $attach->location =  $image;
                 $attach->message_id = 0;
+                $attach->mime_type = pathinfo($image, PATHINFO_EXTENSION);
                 $attach->file_size = filesize(
                     'storage/files/' . $id . '/' . $image
                 );
