@@ -263,11 +263,15 @@ export default{
         editMessage()
         {
             let mess = document.getElementById('message_new');
+
+            this.message = mess.innerHTML;
+
+        },
+        pasteText() {
+            let mess = document.getElementById('message_new');
 mess.innerHTML =mess.innerHTML.replace(/<[a-z][^>]*>/ig, function(str) {
 return str.toLowerCase().substring(1, 3) == 'br' ? str: '';
 })
-            this.message = mess.innerHTML;
-
         },
         sendMessage() {
             this.can_send = false;
