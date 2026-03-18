@@ -252,8 +252,8 @@ class SparePartController extends Controller
                     $model = $response->json()['searchResult']['make'];
 
 
-
-                $sparepart->price_original = $max;
+                if ($max)
+                    $sparepart->price_original = $max;
                 if (isset($response->json()['searchResult']['analogs'])) {
                     $max = 0;
                     foreach ($response->json()['searchResult']['analogs'] as $offer) {
@@ -262,7 +262,8 @@ class SparePartController extends Controller
                                 $max = $offer['offers'][0]['price']['value'];
                             }
                     }
-                    $sparepart->price_analogue = $max;
+                    if ($max)
+                        $sparepart->price_analogue = $max;
                 }
 
                 $response = Http::withHeaders(
@@ -310,19 +311,8 @@ class SparePartController extends Controller
                             $max = $offer['price'];
                         }
                     }
-                    $sparepart->price_used = $max;
-                    $response = Http::withHeaders(
-                        [
-                            'Accept' => 'application/json',
-                            'Authorization' => 'Bearer ' . $token
-
-                        ]
-                    )
-                        ->asForm()
-                        ->get('https://whls.euroauto.ru/api/offers/products/manufacturers/' . $id . '/new', [
-                            'code' => $sparepart->part_number,
-
-                        ]);
+                    if ($max)
+                        $sparepart->price_used = $max;
                 }
                 $sparepart->save();
             }
