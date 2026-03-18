@@ -3848,7 +3848,7 @@ class ApplicationController extends Controller
                 || (mb_strpos($file, 'Мандарин') != 0) && (!(mb_strpos($file, 'одометра')) && (mb_strpos($file, 'НАПРАВЛЕНИЕ') == 0))
                 || (mb_strpos($file, "1\t") && !mb_strpos($file, 'НАПРАВЛЕНИЕ'))
             ) {
-
+                // dd($file);
                 // $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);
                 $file = str_replace("\n\n", '<br/>', $file);
@@ -3864,7 +3864,39 @@ class ApplicationController extends Controller
                 $file = str_replace("/\u{A0}/", '', $file);
                 // dd($file);
 
+                $application_start = mb_strpos($file, 'Марка, модель ');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
 
+                $applications['CarModel'] = $application_array[1];
+
+                $application_start = mb_strpos($file, 'Регистр');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['gnz'] = $application_array[1];
+                $application_start = mb_strpos($file, '№ кузова');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+
+
+                $applications['vin'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Дата выпуска');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mnf_year'] = $application_array[1];
+                $application_start = mb_strpos($file, 'одометра');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['mileage'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Собственник');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['ClientName'] = $application_array[1];
+                $application_start = mb_strpos($file, 'Дата:');
+                $application = mb_substr($file, $application_start);
+                $application_array = explode('<br/>', $application);
+                $applications['DTPdate'] = $application_array[1];
+                // dd($applications);
                 // dd($applications['numberInsuranceCompanyApplication']);
                 $estimate_start = mb_strpos($file, 'стоимость запчастей');
                 $estimate = mb_substr($file, $estimate_start);
