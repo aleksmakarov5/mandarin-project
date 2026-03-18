@@ -18,6 +18,13 @@ if (!function_exists('show_hours')) {
         return ' часов';
     }
 }
+if (!function_exists('make_date')) {
+    function make_date($date)
+    {
+        $date = date('d.m.Y', strtotime($date));
+        return $date;
+    }
+}
 if (!function_exists('show_days')) {
     function show_days($count_days)
     {

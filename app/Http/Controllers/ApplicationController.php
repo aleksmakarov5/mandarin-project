@@ -3895,7 +3895,7 @@ class ApplicationController extends Controller
                 $application_start = mb_strpos($file, 'Дата:');
                 $application = mb_substr($file, $application_start);
                 $application_array = explode('<br/>', $application);
-                $applications['DTPdate'] = $application_array[1];
+                $applications['DTPdate'] = make_date($application_array[1]);
                 // dd($applications);
                 // dd($applications['numberInsuranceCompanyApplication']);
                 $estimate_start = mb_strpos($file, 'стоимость запчастей');
