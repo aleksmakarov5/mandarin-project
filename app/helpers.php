@@ -21,7 +21,20 @@ if (!function_exists('show_hours')) {
 if (!function_exists('make_date')) {
     function make_date($date)
     {
-        $date = date('d.m.Y', strtotime($date));
+        $date = str_replace(' января ', '.01.', $date);
+        $date = str_replace(' февраля ', '.02.', $date);
+        $date = str_replace(' марта ', '.03.', $date);
+        $date = str_replace(' апреля ', '.04.', $date);
+        $date = str_replace(' мая ', '.05.', $date);
+        $date = str_replace(' июня ', '.06.', $date);
+        $date = str_replace(' июля ', '.07.', $date);
+        $date = str_replace(' августа ', '.08.', $date);
+        $date = str_replace(' сентября ', '.09.', $date);
+        $date = str_replace(' октября ', '.10.', $date);
+        $date = str_replace(' ноября ', '.11.', $date);
+        $date = str_replace(' декабря ', '.12.', $date);
+        $date = str_replace('г.', '', $date);
+        // $date = date('d.m.Y', strtotime($date));
         return $date;
     }
 }
