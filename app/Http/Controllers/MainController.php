@@ -903,7 +903,7 @@ class MainController extends Controller
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
                 // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
                 chmod($new_name, 0777);
-                $command = "7z e '" . $new_name . "' '" . $dir . "'";
+                $command = "7z l '" . $new_name . "' '" . $dir . "'";
                 // $command = "whoami";
 
                 exec("whoami ", $out);
