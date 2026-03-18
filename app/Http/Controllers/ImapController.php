@@ -327,7 +327,7 @@ class ImapController extends Controller
             $user = User::find(2);
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
-            if ($applications->id_status != 27) {
+            if ($applications->id_status != 29) {
 
                 $users = user::join('user_roles', function ($join) {
                     $join->on('user_roles.id_user', '=', 'users.id')
@@ -575,7 +575,7 @@ class ImapController extends Controller
             $user = User::find(2);
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
-            if ($applications->id_status != 27) {
+            if ($applications->id_status != 29) {
                 $users = user::join('user_roles', function ($join) {
                     $join->on('user_roles.id_user', '=', 'users.id')
                         ->where('user_roles.id_group', '=', 2);
@@ -919,7 +919,7 @@ class ImapController extends Controller
         $user = User::find(2);
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
-        if ($applications->id_status != 27) {
+        if ($applications->id_status != 29) {
             $users = user::join('user_roles', function ($join) {
                 $join->on('user_roles.id_user', '=', 'users.id')
                     ->where('user_roles.id_group', '=', 2);
@@ -1300,7 +1300,7 @@ class ImapController extends Controller
         $user = User::find(2);
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
-        if ($applications->id_status != 27) {
+        if ($applications->id_status != 29) {
             $users = user::join('user_roles', function ($join) {
                 $join->on('user_roles.id_user', '=', 'users.id')
                     ->where('user_roles.id_group', '=', 2);
@@ -1652,7 +1652,7 @@ class ImapController extends Controller
         $user = User::find(2);
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
-        if ($applications->id_status != 27) {
+        if ($applications->id_status != 29) {
             $users = user::join('user_roles', function ($join) {
                 $join->on('user_roles.id_user', '=', 'users.id')
                     ->where('user_roles.id_group', '=', 2);
@@ -2113,7 +2113,7 @@ class ImapController extends Controller
         $user = User::find(2);
         // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
         $notify_id = 0;
-        if ($applications->id_status != 27) {
+        if ($applications->id_status != 29) {
             $users = user::join('user_roles', function ($join) {
                 $join->on('user_roles.id_user', '=', 'users.id')
                     ->where('user_roles.id_group', '=', 2);
