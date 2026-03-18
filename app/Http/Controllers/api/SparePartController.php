@@ -257,7 +257,7 @@ class SparePartController extends Controller
                 if (isset($response->json()['searchResult']['analogs'])) {
                     $max = 0;
                     foreach ($response->json()['searchResult']['analogs'] as $offer) {
-                        if (isset($offer['price']['value']))
+                        if (isset($offer['offers'][0]['price']['value']))
                             if ($offer['offers'][0]['price']['value'] > $max) {
                                 $max = $offer['offers'][0]['price']['value'];
                             }
