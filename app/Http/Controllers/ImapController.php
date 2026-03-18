@@ -1070,7 +1070,7 @@ class ImapController extends Controller
                 'gnz' => $gnz,
                 'vin' => $vin,
                 'ub_type' => $ub_type,
-                'our_company' => 6,
+                'our_company' => 3,
                 'ic_answer_date' => null,
                 'ClientName' => $client,
                 'ub_number' => $ub_number,
