@@ -323,14 +323,6 @@ class SparePartController extends Controller
                             'code' => $sparepart->part_number,
 
                         ]);
-                    $max = 0;
-                    foreach ($response->json()['data']['offers'] as $offer) {
-                        if ($offer['price'] > $max) {
-                            $max = $offer['price'];
-                        }
-                    }
-                    if ($max)
-                        $sparepart->price_original = $max;
                 }
                 $sparepart->save();
             }
