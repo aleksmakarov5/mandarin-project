@@ -1028,7 +1028,7 @@ class ImapController extends Controller
         } else {
             // $subject = str_replace(' ', '', $subject);
             if ($start = mb_strpos('_' . $subject, 'SGZA')) {
-                $app_number = mb_substr($subject, $start, 23);
+                $app_number = mb_substr($subject, $start + 1, 23);
                 if (mb_strpos($app_number, '_'))
                     $app_number = mb_substr(
                         $app_number,
