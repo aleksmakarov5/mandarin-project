@@ -152,7 +152,7 @@
      <input type="text" v-model="subject" size="100"></input>
      <br>
 <label for="text">Текст сообщения</label>
-<div id="message_new" contenteditable class="new_message"  @keyup="editMessage()" >
+<div id="message_new" contenteditable class="new_message"  @keyup="editMessage()" @paste="pasteText()">
 <span v-html="text"></span>
 <!-- <table v-if="location[0]">
     <tr>
@@ -268,10 +268,12 @@ export default{
 
         },
         pasteText() {
+
             let mess = document.getElementById('message_new');
+            setTimeout(() => {
 mess.innerHTML =mess.innerHTML.replace(/<[a-z][^>]*>/ig, function(str) {
 return str.toLowerCase().substring(1, 3) == 'br' ? str: '';
-})
+})}, 500);
         },
         sendMessage() {
             this.can_send = false;
