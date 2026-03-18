@@ -272,7 +272,7 @@ export default{
             let mess = document.getElementById('message_new');
             setTimeout(() => {
 mess.innerHTML =mess.innerHTML.replace(/<[a-z][^>]*>/ig, function(str) {
-return str.toLowerCase().substring(1, 3) == 'br' ? str: '';
+return str.toLowerCase().substring(1, 3) == 'br' ? str: ' ';
 })}, 500);
         },
         sendMessage() {
