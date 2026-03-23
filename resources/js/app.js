@@ -29,6 +29,7 @@ import Warehouses from "./components/Warehouses.vue";
 import AiAnaliz from "./components/AiAnaliz.vue";
 import InventoryItems from "./components/InventoryItems.vue";
 import Counterparties from "./components/Counterparties.vue";
+import DropDown from "./components/DropDown.vue";
 
 const app1 = createApp({
     components: {
@@ -72,6 +73,7 @@ app.mount("#app");
 const nb = createApp({
     components: {
         NotifyButtons,
+        DropDown,
     },
 });
 nb.mount("#nb");

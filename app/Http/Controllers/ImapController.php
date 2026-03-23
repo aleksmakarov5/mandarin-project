@@ -2275,7 +2275,7 @@ class ImapController extends Controller
                                     $reso = 1;
                             }
 
-                            if ($sogaz) {
+                            if (mb_strpos($body_html, 'sogaz') !== false || $sogaz) {
                                 echo "Sogaz <br>";
                                 $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                             }
@@ -2405,7 +2405,7 @@ class ImapController extends Controller
                                 $vsk = 1;
                         }
 
-                        if ($sogaz) {
+                        if (mb_strpos($body_html, 'sogaz') !== false || $sogaz) {
                             echo "Sogaz <br>";
                             $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         }
@@ -2534,7 +2534,7 @@ class ImapController extends Controller
 
                                 $vsk = 1;
                         }
-                        if ($sogaz) {
+                        if (mb_strpos($body_html, 'sogaz') !== false || $sogaz) {
                             echo "Sogaz <br>";
                             $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         }
@@ -2664,7 +2664,7 @@ class ImapController extends Controller
 
                                 $vsk = 1;
                         }
-                        if ($sogaz) {
+                        if (mb_strpos($body_html, 'sogaz') !== false || $sogaz) {
                             echo "Sogaz <br>";
                             $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
                         }

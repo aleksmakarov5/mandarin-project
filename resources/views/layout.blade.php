@@ -234,15 +234,25 @@
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
                                 <li class="nav-item"><a href="\warehouse"
                                         class="nav-link {{ session('rout') == 'warehouse' ? 'tn-active' : '' }}">Склад</a></li>
-                                <li class="nav-item"><a href="\reports"
-                                        class="nav-link {{ session('rout') == 'reports' ? 'tn-active' : '' }}">Отчеты</a></li>
-                            @endcan
+                                <li class="nav-item"><drop-down :name="{{ json_encode('Финансы') }}"
+                                        :items="{{ json_encode([
+                                            'vypiska' => 'Загрузить выписку',
+                                            'zp_ved' => 'Зарплатная ведомость',
+                                            'dds/show' => 'ДДС',
+                                        ]) }}" />
+                                </li>
 
-
-
-
-                            &nbsp&nbsp&nbsp&nbsp
-                            <li class="nav-item"><a href="\logout"
+                                <li class="nav-item"><drop-down :name="{{ json_encode('Справочники') }}"
+                                        :items="{{ json_encode([
+                                            'zp_ved' => 'Сотрудники',
+                                            'all_report' => 'Адресная книга',
+                                            'ic' => 'Страховые компании',
+                                            'il' => 'Юридические лица',
+                                            'count' => 'Контрагениы',
+                                            'nomenc' => 'Номенклатура',
+                                        ]) }}" />
+                                </li>
+                            @endcan &nbsp&nbsp&nbsp&nbsp <li class="nav-item"><a href="\logout"
                                     class="nav-link {{ request()->routeIs('login') ? 'tn-active' : '' }}">Выйти</a></li>
                         @endauth
                         @guest('web')

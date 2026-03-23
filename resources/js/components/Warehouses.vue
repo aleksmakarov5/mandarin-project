@@ -26,12 +26,13 @@
 }
 .back-face {
     overflow-y: scroll;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(128, 128, 128, 0.513);
+    z-index: 6;
 }
 .list1 {
     position: absolute;
