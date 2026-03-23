@@ -996,7 +996,7 @@ class ImapController extends Controller
 
     public function sogaz_parse($subject, $email, $from, $to, $attachments, $our_company, $uid)
     {
-        $our_company = 6;
+        // $our_company = 6;
 
         $gnz = ' ';
         $app_number = ' ';
@@ -2537,8 +2537,7 @@ class ImapController extends Controller
                         if (mb_strpos($body_html, 'sogaz') !== false || $sogaz) {
                             echo "Sogaz <br>";
                             $this->sogaz_parse($subject, $message, $from, $to, $attachments, $our_company, $uid);
-                        }
-                        if (mb_strpos($body_html, 'vsk.ru') !== false || $vsk == 1) {
+                        } elseif (mb_strpos($body_html, 'vsk.ru') !== false || $vsk == 1) {
                             $this->vsk_parse($subject, $message, $from, $to, $attachments, $our_company, $uid, 1);
                         } elseif (mb_strpos($body_html, 'ingos') !== false || $ingos == 1) {
                             echo "Ingos";
