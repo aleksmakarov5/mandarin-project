@@ -36,8 +36,22 @@ class EaController extends Controller
 
 
             ]);
+        $response = Http::withHeaders([])
+            ->asForm()
+            ->post('https://emex.ru', [
+                'name' => '4079092',
+                'password' => '225aff48'
+
+
+                // 'substLevel' => 'OriginalOnly',
+                // // 'substFilter' => 'FilterOriginalAndReplacements',
+                // 'maxADDays' => '3',
+                // 'maxOneDetailOffersCount' => '3'
+
+
+            ]);
         // dd($response->json());
-        dd($response->json());
+        dd($response);
         if (isset($response->json()['searchResult']['analogs'])) {
             $max = 0;
             foreach ($response->json()['searchResult']['analogs'] as $offer) {

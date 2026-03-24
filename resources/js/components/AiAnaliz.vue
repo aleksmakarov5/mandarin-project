@@ -42,7 +42,7 @@
 
 <script>
 export default {
-    props: ["app_id", "location"],
+    props: ["app_id", "location", "user_id"],
 
     data() {
         return {
@@ -60,6 +60,7 @@ export default {
                 .post("/api/ai/send_data", {
                     app_id: this.app_id,
                     location: this.location,
+                    user_id: this.user_id,
                 })
                 .then((response) => {
                     this.show_answer = true;
