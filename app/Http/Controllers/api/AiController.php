@@ -124,7 +124,8 @@ class AiController extends Controller
     {
         $data = $this->validate($request, [
             'app_id' => 'required',
-            'location' => 'required'
+            'location' => 'required',
+            'user_id' => 'required'
         ]);
         $app = application::find($data['app_id']);
         if (!$app->vin)
