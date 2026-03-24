@@ -69,7 +69,6 @@ class AiController extends Controller
         $attach->file_name = 'AIresult.txt';
         $attach->sto_view = 1;
         $attach->save();
-        $user = User::find(2);
         $to = $data['user_id'];
         $id = $data['app_id'];
         $chat = new chat;
@@ -85,13 +84,13 @@ class AiController extends Controller
         $chat_recs->save();
         $notify = new notify;
         $notify->id_user = $to;
-        $notify->id_application = $data['id_application'];
+        $notify->id_application = $id;
         $notify->id_text = 2;
         $notify->link = "/chat/";
 
         $status_chat = new status_chat;
         $status_chat->id_user = $to;
-        $status_chat->id_application = $data['id_application'];
+        $status_chat->id_application = $id;
         $status_chat->is_readed = false;
         $status_chat->save();
         $notification = DB::table('notifies')->where('notifies.id', '=', $notify->id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
@@ -113,7 +112,7 @@ class AiController extends Controller
         // }
         if ($recipient->email_notify) {
             $message = 'Получены данные анализа ИИ';
-            Mail::to($recipient->email)->queue(new newmessage($data['id_application'], 'Системное оповещение', $message));
+            Mail::to($recipient->email)->queue(new newmessage($id, 'Системное оповещение', $message));
         }
 
 
