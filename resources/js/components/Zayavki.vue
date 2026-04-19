@@ -702,7 +702,7 @@ export default {
         },
         showDays(count_days) {
             count_days = count_days % 100;
-            if (count_days > 10 && count_days < 20) return " дней";
+            if (count_days >= 10 && count_days < 20) return " дней";
             count_days = count_days % 10;
             if (count_days == 1) {
                 return " день";
