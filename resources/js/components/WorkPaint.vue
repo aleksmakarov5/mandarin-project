@@ -217,9 +217,7 @@ export default {
                     name: this.name_Cr,
                     price: this.price_Cr,
                     count_hours: this.count_hours_Cr,
-                    summ:
-                        this.makeCount(this.price_Cr) *
-                        this.makeCount(this.count_hours_Cr),
+                    summ: this.price_Cr * this.count_hours_Cr,
                 })
                 .then((res) => {
                     this.getWorks(res);
