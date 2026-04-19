@@ -206,10 +206,7 @@ export default {
             this.changeEditWorkId(null);
         },
         createWork() {
-            console.log(
-                this.makeCount(this.price_Cr) *
-                    this.makeCount(this.count_hours_Cr)
-            );
+            console.log(this.price_Cr * this.count_hours_Cr);
             console.log(this.makeCount(this.price_Cr));
             axios
                 .post(`/api/work/create_paint`, {
