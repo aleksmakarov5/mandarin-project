@@ -3344,7 +3344,7 @@ class ApplicationController extends Controller
 
 
 
-        return view('application.sms', ['id' => $id, 'href' => $href]);
+        return view('application.sms', ['id' => $id, 'href' => $href, 'text' => $text]);
     }
 
     public function data_load(Request $request, $id)
