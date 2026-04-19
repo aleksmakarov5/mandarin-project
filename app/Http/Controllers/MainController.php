@@ -119,7 +119,7 @@ class MainController extends Controller
                 $max_hour = $start->diffInHours($end_date);
                 $current = Carbon::now();
                 $count_hour =  $max_hour - $current->diffInHours($start);
-                echo $application->id . ' ' . $application->count_hour . '<br>';
+                echo $application->id . ' ' . $count_hour . '<br>';
                 if ($count_hour <= -48) {
                     $application->id_status = 27;
                     $application->save();
