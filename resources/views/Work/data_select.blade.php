@@ -256,7 +256,7 @@
                                     @endif
                                 </td>
                                 <td> {{ session('works_paint')[$i + 1] }}
-                                    @if (!is_numeric(str_replace(' ', '', session('works')[$i + 1])))
+                                    @if (!is_numeric(str_replace(' ', '', session('works_paint')[$i + 1])))
                                         <br>
                                         <a href="/work_edit_paint/{{ $id }}/{{ $i + 1 }}/1"><img
                                                 src="/storage/img/left.png" alt="Влево" width=25px
