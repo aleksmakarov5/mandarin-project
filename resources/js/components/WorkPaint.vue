@@ -221,6 +221,10 @@ export default {
                     this.name_Cr = "";
                     this.price_Cr = "";
                     this.count_hours_Cr = "";
+                    console.log(
+                        this.makeCount(this.price_Cr) *
+                            this.makeCount(this.count_hours_Cr)
+                    );
                 });
         },
         makeMoney(n) {
