@@ -621,7 +621,7 @@ class SparePartController extends Controller
 
             }
             // dd($SpareParts);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -665,7 +665,7 @@ class SparePartController extends Controller
 
             $file = html_entity_decode(strip_tags($file, ['br']));
             if ($app->id_insuranceCompany == 1 || $app->id_insuranceCompany == 5) {
-                dd($file);
+                // dd($file);
                 $file = str_replace("\u{A0}", '<br/>', $file);
                 $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
