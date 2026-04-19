@@ -165,7 +165,7 @@ class ApplicationController extends Controller
             $application->count = $count;
             $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
             $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
-            $application->summ_ic_full = Number::Currency(isset($estimates->price_repair_full) ? (float) $estimates->price_repair_full : $summ_ic_full + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0), 'RUR', 'ru');
+            $application->summ_ic_full = Number::Currency((isset($estimates->price_repair_full) ? (float) $estimates->price_repair_full : $summ_ic_full) + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0), 'RUR', 'ru');
             $application->summ_service = Number::Currency($summ_service, 'RUR', 'ru');
             $application->summ_full =
                 Number::Currency($summ_service + $summ_order, 'RUR', 'ru');
