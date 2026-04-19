@@ -408,8 +408,12 @@ class SparePartController extends Controller
             }
             //dd($request['iskl']);
             else {
-                exec('chmod 755 "storage/files/' . $id . '/' . $request['location'] . '"');
-                rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                try {
+                    rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                } catch (Exception $e) {
+                    rename('storage/files/' . $id . '/ ' . $request['location'], 'storage/files/' . $id . '/work.pdf');
+                }
+
                 exec('pdftohtml storage/files/' . $id . '/work.pdf  -p -i');
                 rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
             }
