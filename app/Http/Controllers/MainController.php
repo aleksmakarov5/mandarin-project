@@ -109,16 +109,18 @@ class MainController extends Controller
         $appplications =  application::join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
             ->select('applications.*', 'application_statuses.time')->get();
         foreach ($appplications as $application) {
+            $max_hour = 0;
+            $count_hour = 0;
             if ($application->id_status == 11) {
                 $end_date = WorkCalendar::create($application->check_date);
                 $end_date->addWorkDays($application->time);
 
                 $start = WorkCalendar::create($application->check_date);
-                $application->max_hour = $start->diffInHours($end_date);
+                $max_hour = $start->diffInHours($end_date);
                 $current = Carbon::now();
-                $application->count_hour =  $application->max_hour - $current->diffInHours($start);
+                $count_hour =  $max_hour - $current->diffInHours($start);
                 echo $application->id . ' ' . $application->count_hour . '<br>';
-                if ($application->count_hour <= -48) {
+                if ($count_hour <= -48) {
                     $application->id_status = 27;
                     $application->save();
                 }
