@@ -44,6 +44,7 @@ Route::get('/about',  [MainController::class, 'about']);
 
 Route::get('/review',  [MainController::class, 'review'])->name('review');
 Route::get('/new_application',  [MainController::class, 'new_application'])->name('new_application');
+Route::get('/app_to_temp',  [MainController::class, 'app_to_temp'])->name('app_to_temp');
 Route::post('/review/check',  [MainController::class, 'review_check']);
 Route::get('/mail_recieve',  [ImapController::class, 'recieve'])->name('mail_recive');
 Route::get('/mail_send',  [ImapController::class, 'send'])->name('mail_send');

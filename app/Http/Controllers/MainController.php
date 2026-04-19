@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 
 use App\Models\doc_status;
 use App\Models\OurCompany;
+use Tochka\Calendar\WorkCalendar;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
@@ -18,6 +19,7 @@ use App\Models\user_role;
 use App\Jobs\QueueSenderEmФail;
 use App\Mail\user\appnotify;
 use \ConvertApi\ConvertApi;
+use Carbon\Carbon;
 use \ZanySoft\Zip\Facades\Zip;
 use Selective\Rar\RarFileReader;
 use SplFileObject;
@@ -102,6 +104,22 @@ class MainController extends Controller
         return redirect()->route('review');
     }
 
+    public function app_to_temp()
+    {
+        $appplications =  application::all();
+        foreach ($appplications as $application) {
+            if ($application->id_status == 11) {
+                $end_date = WorkCalendar::create($application->check_date);
+                $end_date->addWorkDays($application->time + 2);
+
+                $start = WorkCalendar::create($application->check_date);
+                $application->max_hour = $start->diffInHours($end_date);
+                $current = Carbon::now();
+                $application->count_hour =  $application->max_hour - $current->diffInHours($start);
+                echo $application->id . ' ' . $application->count_hour . '<br>';
+            }
+        }
+    }
 
     public function message()
     {
