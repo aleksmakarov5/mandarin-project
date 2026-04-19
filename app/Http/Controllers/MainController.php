@@ -106,7 +106,8 @@ class MainController extends Controller
 
     public function app_to_temp()
     {
-        $appplications =  application::all();
+        $appplications =  application::join('application_statuses', 'applications.id_status', '=', 'application_statuses.id')
+            ->select('applications.*', 'application_statuses.time')->get();
         foreach ($appplications as $application) {
             if ($application->id_status == 11) {
                 $end_date = WorkCalendar::create($application->check_date);
