@@ -1043,7 +1043,7 @@ class ApplicationController extends Controller
                     $end_date->addWorkDays($application->time);
 
                     $start = WorkCalendar::create($application->check_date);
-                    $application->max_hour = $start->diffInHours($end_date);
+                    $application->max_hour = $start->diffInDays($end_date);
                     $application->count_hour =  $application->max_hour - $current->diffInDays($start);
                     $application->created = $application->created_at->toFormattedDateString();
                     $application->count_five = 5 - $current->diffInHours($application->check_date);
