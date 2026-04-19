@@ -1012,7 +1012,7 @@ class ImapController extends Controller
             $start = mb_strpos($email->getHTMLBody(), "Заявление");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 11));
             $app_number = trim($body[0]);
-            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMT]/', '', $app_number);
+            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMTXХТT]/', '', $app_number);
             $start = mb_strpos($email->getHTMLBody(), "VIN");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 5));
             $vin = trim($body[0]);
@@ -1062,7 +1062,7 @@ class ImapController extends Controller
         echo $subject . '<br>';
 
         $applications = application::firstOrCreate(
-            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 3],
+            ['numberInsuranceCompanyApplication' => $app_number, 'id_insuranceCompany' => 5],
             [
                 'numberInsuranceCompanyApplication' => $app_number,
                 'id_insuranceCompany' => 5,
