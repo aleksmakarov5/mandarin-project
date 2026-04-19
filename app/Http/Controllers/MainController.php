@@ -131,10 +131,10 @@ class MainController extends Controller
             $max_hour = 0;
             $count_hour = 0;
             if ($application->id_status == 2) {
-                $end_date = WorkCalendar::create($application->check_date);
+                $end_date = WorkCalendar::create($application->created_at);
                 $end_date->addWorkDays($application->time);
 
-                $start = WorkCalendar::create($application->check_date);
+                $start = WorkCalendar::create($application->created_at);
                 $max_hour = $start->diffInHours($end_date);
                 $current = Carbon::now();
                 $count_hour =  $max_hour - $current->diffInHours($start);
