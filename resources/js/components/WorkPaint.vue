@@ -210,6 +210,7 @@ export default {
                 this.makeCount(this.price_Cr) *
                     this.makeCount(this.count_hours_Cr)
             );
+            console.log(this.makeCount(this.price_Cr));
             axios
                 .post(`/api/work/create_paint`, {
                     id_application: this.app_id,
