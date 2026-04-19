@@ -408,9 +408,9 @@ class SparePartController extends Controller
             }
             //dd($request['iskl']);
             else {
-                try {
+                if (file_exists('storage/files/' . $id . '/' . $request['location'])) {
                     rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-                } catch (Exception $e) {
+                } else {
                     rename('storage/files/' . $id . '/ ' . $request['location'], 'storage/files/' . $id . '/work.pdf');
                 }
 
