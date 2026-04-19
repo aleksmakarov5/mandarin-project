@@ -110,7 +110,7 @@ class MainController extends Controller
         foreach ($appplications as $application) {
             if ($application->id_status == 11) {
                 $end_date = WorkCalendar::create($application->check_date);
-                $end_date->addWorkDays($application->time + 2);
+                $end_date->addWorkDays($application->time);
 
                 $start = WorkCalendar::create($application->check_date);
                 $application->max_hour = $start->diffInHours($end_date);
