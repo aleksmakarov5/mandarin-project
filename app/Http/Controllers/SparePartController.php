@@ -446,7 +446,7 @@ class SparePartController extends Controller
         $file = html_entity_decode($file);
 
 
-        // dd($file);
+        dd($file);
         $app = Application::findorfail($id);
         if ($request['id_ic'])
             $app->id_insuranceCompany = 3;

@@ -1862,6 +1862,68 @@ class ImapController extends Controller
             $user = User::find(2);
             // Mail_send::to('aleksmakarov5@yandex.ru')->queue(new appnotify($id));
             $notify_id = 0;
+            if ($applications->id_status != 29) {
+                $users = user::join('user_roles', function ($join) {
+                    $join->on('user_roles.id_user', '=', 'users.id')
+                        ->where('user_roles.id_group', '=', 2);
+                })
+                    ->join('role_companies', function ($join) use ($our_company) {
+                        $join->on('role_companies.id_role', '=', 'user_roles.id')->where('role_companies.id_company', '=', $our_company);
+                    })
+
+                    ->select('users.*')
+                    ->get();
+                foreach ($users as $user) {
+                    $notify = new notify;
+                    $notify->id_user = $user->id;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $user->id;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+                    $url = "https://mandarin-portal.ru/mail/" . $id;
+
+                    $notify->save();
+                }
+                if ($applications->id_MRK) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_MRK;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_MRK;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+
+                    $notify->save();
+                }
+                if ($applications->id_spm) {
+                    $notify = new notify;
+                    $notify->id_user = $applications->id_spm;
+                    $notify->id_application = $id;
+                    $notify->id_text = 1;
+                    $notify->link = "/mail/";
+                    $notify_id = $notify->id;
+                    $status_message = new status_message;
+                    $status_message->id_user = $applications->id_spm;
+                    $status_message->id_application = $id;
+                    $status_message->is_readed = false;
+                    $status_message->save();
+
+                    $notify->save();
+                }
+
+                $notification = DB::table('notifies')->where('notifies.id', '=', $notify_id)->join('text_notifies', 'text_notifies.id', '=', 'notifies.id_text')
+                    ->select('notifies.*', 'text_notifies.text')->first();
+                broadcast(new MessageSent($notification));
+            }
             // if ($applications->id_status != 27) {
             //     $users = user::join('user_roles', function ($join) {
             //     $join->on('user_roles.id_user', '=', 'users.id')
