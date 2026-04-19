@@ -1037,25 +1037,26 @@ class ImapController extends Controller
                     );
                 $ub_type = true;
             } else {
-                $app_number =  preg_replace('/[^0-9№DPAONBDMT]/', '', $subject);
             }
-            // if ($start = mb_strpos($subject, 'XXX')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'TTT')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'xxx')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'ttt')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'ТТТ')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'ттт')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'ХХХ')) {
-            //     $app_number = mb_substr($subject, $start);
-            // } else if ($start = mb_strpos($subject, 'ххх')) {
-            //     $app_number = mb_substr($subject, $start);
-            // }
+            if ($start = mb_strpos($subject, 'XXX')) {
+                $app_number = mb_substr($subject, $start);
+            } else if ($start = mb_strpos($subject, 'TTT')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'xxx')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'ttt')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'ТТТ')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'ттт')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'ХХХ')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            } else if ($start = mb_strpos($subject, 'ххх')) {
+                $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
+            }
+            // $app_number =  preg_replace('/[^0-9№DPAONBDMTТХX]/', '', $subject);
+            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMTXХТT]/', '', $app_number);
             // dd($subject);
             // dd($app_number);
         }
@@ -1209,7 +1210,7 @@ class ImapController extends Controller
                 $attach->file_size = $attachment->getSize();
                 $attach->file_name = $attachment->getFilename();
                 $attach->save();
-                if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление')) {
+                if (mb_strripos('_' . $filename, 'Направление') || mb_strripos('_' . $filename, 'направление') || mb_strripos('_' . $filename, 'Naprav')) {
                     $history = new history;
                     $history->id_user = 1;
                     $history->id_application = $applications->id;
