@@ -218,10 +218,10 @@ export default {
                 })
                 .then((res) => {
                     this.getWorks(res);
+                    this.name_Cr = "";
+                    this.price_Cr = "";
+                    this.count_hours_Cr = "";
                 });
-            this.name_Cr = "";
-            this.price_Cr = "";
-            this.count_hours_Cr = "";
         },
         makeMoney(n) {
             return (
