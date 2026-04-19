@@ -1012,7 +1012,7 @@ class ImapController extends Controller
             $start = mb_strpos($email->getHTMLBody(), "Заявление");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 11));
             $app_number = trim($body[0]);
-            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMTXХТT]/', '', $app_number);
+            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMT]/', '', $app_number);
             $start = mb_strpos($email->getHTMLBody(), "VIN");
             $body = explode('<br>', mb_substr($email->getHTMLBody(), $start + 5));
             $vin = trim($body[0]);
@@ -1028,7 +1028,7 @@ class ImapController extends Controller
         } else {
             // $subject = str_replace(' ', '', $subject);
             if ($start = mb_strpos('_' . $subject, 'SGZA')) {
-                $app_number = mb_substr($subject, $start + 1, 23);
+                $app_number = mb_substr('_' . $subject, $start, 23);
                 if (mb_strpos($app_number, '_'))
                     $app_number = mb_substr(
                         $app_number,
@@ -1056,7 +1056,7 @@ class ImapController extends Controller
                 $app_number = mb_substr($subject, $start, mb_strpos($subject, ",") - $start);
             }
             // $app_number =  preg_replace('/[^0-9№DPAONBDMTТХX]/', '', $subject);
-            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMTXХТT]/', '', $app_number);
+            $app_number =  preg_replace('/[^0-9№SGZDAPONBDMT]/', '', $app_number);
             // dd($subject);
             // dd($app_number);
         }
