@@ -139,7 +139,7 @@ class ApplicationController extends Controller
                         (float) str_replace(' ', '', $estimates->price_repair_full) -
                         $summ_order -
                         $summ_service -
-                        $application->sertificat;
+                        $application->sertificat + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0);
                     // dd($estimates);
                     if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0)
                         $proc = round(($eco_delta_full / ((float) str_replace(' ', '', $estimates->price_repair_full))) * 100);
