@@ -206,7 +206,10 @@ export default {
             this.changeEditWorkId(null);
         },
         createWork() {
-            console.log(this.price_Cr * this.count_hours_Cr);
+            console.log(
+                this.makeCount(this.price_Cr) *
+                    this.makeCount(this.count_hours_Cr)
+            );
             console.log(this.makeCount(this.price_Cr));
             axios
                 .post(`/api/work/create_paint`, {
@@ -214,7 +217,9 @@ export default {
                     name: this.name_Cr,
                     price: this.price_Cr,
                     count_hours: this.count_hours_Cr,
-                    summ: this.price_Cr * this.count_hours_Cr,
+                    summ:
+                        this.makeCount(this.price_Cr) *
+                        this.makeCount(this.count_hours_Cr),
                 })
                 .then((res) => {
                     this.getWorks(res);
@@ -233,7 +238,7 @@ export default {
         makeCount(n) {
             return parseFloat(n)
                 .toFixed(2)
-                .replace(/(\d)(?=(\d{3})+\.)/g, "$1 ");
+                .replace(/(\d)(?=(\d{3})+\.\,)/g, "$1 ");
         },
         editName(id) {
             let name = document.getElementById("name_" + id);
