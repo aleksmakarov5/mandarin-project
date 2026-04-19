@@ -174,6 +174,7 @@ class WordController extends Controller
         $templateProcessor->setValue('in_face', $application->in_face);
         $templateProcessor->setValue('vin', $application->vin);
         $templateProcessor->setValue('city', $application->city);
+        $templateProcessor->setValue('vtch', $application->nds ? '' : 'в т.ч.  ');
         $templateProcessor->setValue('pass_ser', $application->ClientPasport ?? "______");
         $templateProcessor->setValue('pass_num', $application->ClientPasport_number ?? "_____________");
         $templateProcessor->setValue('pass_date',  $application->ClientPasport_date ? Date::parse($application->ClientPasport_date)->format('j F Yг.') : "___ _______________ 20_____г.");
@@ -625,6 +626,7 @@ class WordController extends Controller
                     $templateProcessor->setValue('zn_num', $estimate->zn_number);
 
                     $templateProcessor->setValue('nds', in_money($nds));
+                    $templateProcessor->setValue('vtch', $application->nds ? '' : 'в т.ч.  ');
                     $templateProcessor->setValue('summ_nds', in_money($summ_nds));
                     $templateProcessor->setValue('price_repair_full', in_money(isset($estimate->add_pay) ? $estimate->add_pay : 0));
                     $templateProcessor->setValue('summ_str', $this->num2str($summ_nds));
