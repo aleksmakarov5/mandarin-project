@@ -9,6 +9,7 @@ use App\Models\user_filter;
 use App\Models\mrk_filters;
 use App\Models\attachment;
 use \ZanySoft\Zip\Facades\Zip;
+use Tochka\Calendar\WorkCalendar;
 use \Golchha21\ReSmushIt\Facades\Optimize;
 
 class ApplicationController extends Controller
@@ -123,6 +124,16 @@ class ApplicationController extends Controller
             'load_location' => 'required',
         ]);
         $id = $data['id_app'];
+        if ($request->status_id == 35) {
+            $app = application::find($id);
+            $today = WorkCalendar::now();
+            $today->addWorkDays(10);
+            $app->view_date = $today;
+            $app->id_status = 13;
+            $app->save();
+        }
+
+
         $exif = 0;
         // return $data;
         if ($request->File('file')) {
