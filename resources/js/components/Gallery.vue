@@ -1,6 +1,6 @@
 <style>
 .gal_img {
-    margin: 15px;
+    margin: 10px;
     overflow: hidden;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     border-radius: 5px;
@@ -31,10 +31,10 @@
 .gal_show img {
     display: block;
     margin: auto;
+    height: 99%;
     max-width: 99%;
     max-height: 99%;
     border-radius: 5px;
-    align: center;
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
 .move_left {
@@ -86,6 +86,7 @@
     font-weight: bold;
 }
 .gal_show_button img {
+    background-color: white;
     margin: 5px;
 }
 .gal_show_button img:hover {
@@ -135,6 +136,12 @@
                     width="30px"
                     title="Скопировать в другой архив"
                 />
+                <img
+                    v-if="doc_type == 30"
+                    src="/storage/img/add.png"
+                    width="30px"
+                    title="Добавить запись в акт скрытых повреждений"
+                />
             </div>
         </div>
         <div class="close" @click="current = -1">
@@ -152,7 +159,7 @@
 
 <script>
 export default {
-    props: ["app_id", "images", "dir", "name", "location"],
+    props: ["app_id", "images", "dir", "name", "location", "doc_type"],
 
     data() {
         return {

@@ -1169,8 +1169,10 @@ class MainController extends Controller
                 $img[] = $nam;
             }
         }
+        $attach =  attachment::find($doc_id);
+        $doc_type = $attach->id_status;
         if (pathinfo($location, PATHINFO_EXTENSION) != 'zip') {
-            $attach =  attachment::find($doc_id);
+
             $attach->file_name = pathinfo($attach->file_name, PATHINFO_FILENAME) . '.zip';
             $attach->location = pathinfo($location, PATHINFO_FILENAME) . '.zip';
             $attach->save();
@@ -1181,7 +1183,15 @@ class MainController extends Controller
         $zip->close();
         $images = $img;
         // dd($images);
-        return view('gallery_new', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location, 'hide_menu' => $hide_menu]);
+        return view('gallery_new', [
+            'images' => $images,
+            'id' => $id,
+            'dir' => $dir,
+            'name' => $name,
+            'location' => $location,
+            'hide_menu' => $hide_menu,
+            'doc_type' => $doc_type
+        ]);
     }
 
     public function photo_destroy(request $request)
