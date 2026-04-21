@@ -75,6 +75,30 @@
     font-size: 24px;
     font-weight: bold;
 }
+.gal_show_button {
+    padding: 5px;
+    position: absolute;
+    display: flex;
+    top: 90;
+    left: 0;
+    z-index: 13;
+
+    font-weight: bold;
+}
+.gal_show_button img {
+    margin: 5px;
+}
+.gal_show_button img:hover {
+    width: 50px;
+}
+.close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 8;
+
+    font-weight: bold;
+}
 .close img:hover {
     width: 30px;
 }
@@ -100,6 +124,18 @@
     <div class="gal_show" v-if="current >= 0">
         <div class="gal_show_name">
             {{ images[current] }}
+            <div class="gal_show_button">
+                <img
+                    src="/storage/img/delete.png"
+                    width="30px"
+                    title="Удалить картину"
+                />
+                <img
+                    src="/storage/img/move.png"
+                    width="30px"
+                    title="Скопировать в другой архив"
+                />
+            </div>
         </div>
         <div class="close" @click="current = -1">
             <img src="/storage/img/close.png" width="20px" />
