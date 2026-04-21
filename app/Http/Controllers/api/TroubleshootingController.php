@@ -27,7 +27,8 @@ class TroubleshootingController extends Controller
             'PartName' => 'nullable',
             'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
-            'Сonclusion' => 'nullable'
+            'Сonclusion' => 'nullable',
+            'img' => 'nullable'
         ]);
 
         foreach ($data as $key => $value) {
@@ -48,7 +49,8 @@ class TroubleshootingController extends Controller
             'PartName' => 'nullable',
             'Work' => 'nullable',
             'ExpertApinion' => 'nullable',
-            'Сonclusion' => 'nullable'
+            'Сonclusion' => 'nullable',
+            'img' => 'nullable'
         ]);
 
         foreach ($data as $key => $val) {

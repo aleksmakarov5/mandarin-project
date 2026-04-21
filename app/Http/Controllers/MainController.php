@@ -1182,6 +1182,8 @@ class MainController extends Controller
         $zip->add($dir);
         $zip->close();
         $images = $img;
+        $troubleshootings = DB::table('troubleshootings')->where('id_application', '=', $id)->get();
+
         // dd($images);
         return view('gallery_new', [
             'images' => $images,
@@ -1190,7 +1192,8 @@ class MainController extends Controller
             'name' => $name,
             'location' => $location,
             'hide_menu' => $hide_menu,
-            'doc_type' => $doc_type
+            'doc_type' => $doc_type,
+            'troubleshootings' => $troubleshootings
         ]);
     }
 

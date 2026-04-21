@@ -19,6 +19,15 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 2;
 }
+.back_close_tr {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 5;
+}
 .gal_show {
     position: fixed;
     top: 1%;
@@ -103,6 +112,19 @@
 .close img:hover {
     width: 30px;
 }
+.show_tr {
+    position: fixed;
+    top: 10%;
+    left: 10%;
+    width: 80%;
+    height: 80%;
+    z-index: 6;
+    align: center;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    overflow-y: scroll;
+}
 </style>
 <template>
     <center>
@@ -138,6 +160,7 @@
                 />
                 <img
                     v-if="doc_type == 30"
+                    @click="show_troubleshootings = true"
                     src="/storage/img/add.png"
                     width="30px"
                     title="Добавить запись в акт скрытых повреждений"
@@ -155,15 +178,44 @@
         </div>
         <img :src="'/' + dir + '/' + images[current]" :alt="images[current]" />
     </div>
+
+    <div
+        class="back_close_tr"
+        v-if="show_troubleshootings"
+        @click="show_troubleshootings = false"
+    ></div>
+    <div v-if="show_troubleshootings" class="show_tr">
+        <troubleshootings
+            :app_id="app_id"
+            :in_troubleshootings="Troubleshootings"
+            :in_img="images[current]"
+            @getTroubleshutings="thisGetTroubleshutings"
+        />
+    </div>
 </template>
 
 <script>
+import Troubleshootings from "./Troubleshootings.vue";
 export default {
-    props: ["app_id", "images", "dir", "name", "location", "doc_type"],
+    components: {
+        Troubleshootings,
+    },
+
+    props: [
+        "app_id",
+        "images",
+        "dir",
+        "name",
+        "location",
+        "doc_type",
+        "troubleshootings",
+    ],
 
     data() {
         return {
             current: -1,
+            show_troubleshootings: false,
+            Troubleshootings: this.troubleshootings,
         };
     },
 
@@ -181,6 +233,9 @@ export default {
         });
     },
     methods: {
+        thisGetTroubleshutings(data) {
+            this.Troubleshootings = data;
+        },
         makeCurrent(key) {
             this.current = key;
             console.log(this.current);

@@ -220,7 +220,7 @@ class WordController extends Controller
             $i = 1;
 
             foreach ($troubleshooting as $trouble) {
-                $array[] = array('id_row' => $i, 'PartName' => $trouble->PartName . ' - ' . $trouble->Сonclusion, 'Work' => $trouble->Work);
+                $array[] = array('id_row' => $i, 'PartName' => $trouble->PartName . ($trouble->img != '' ? ' (' . $trouble->img . ')' : '') . ' - ' . $trouble->Сonclusion, 'Work' => $trouble->Work);
                 $i++;
             }
             // dd($array);
