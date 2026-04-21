@@ -1042,6 +1042,147 @@ class MainController extends Controller
         }
         return view('gallery', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location, 'hide_menu' => $hide_menu]);
     }
+    public function gallery_new(request $request, $id, $location, $name, $doc_id)
+    {
+        $hide_menu = $request->get('hide_menu');
+        $location = str_replace('%20', ' ', $location);
+        $name = str_replace('%20', ' ', $name);
+        $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
+        // dd($dir . "." . pathinfo($location, PATHINFO_EXTENSION));
+        chmod($dir . "." . pathinfo($location, PATHINFO_EXTENSION), 0777);
+
+        if (!is_dir($dir)) {
+            if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
+                $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
+                $zip->extract($dir);
+                $zip->close();
+            } else if (pathinfo($location, PATHINFO_EXTENSION) == 'rar') {
+                mkdir($dir, 0777, true);
+                chmod($dir, 0777);
+                if (!is_dir('storage/files/' . $id . '/temp')) {
+
+                    mkdir('storage/files/' . $id . '/temp', 0777, true);
+                    chmod('storage/files/' . $id . '/temp', 0777);
+                }
+
+                // dd(pathinfo($location, PATHINFO_EXTENSION));
+                // echo ("unrar x " . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . " " . $dir);
+                $new_name = 'storage/photo.rar';
+                // rename($dir . "." . pathinfo($location, PATHINFO_EXTENSION), $new_name);
+
+                exec("cp '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' '" . $new_name . "'");
+                // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+                // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
+                chmod($new_name, 0777);
+                $command = "unrar e '" . $new_name . "' '" . $dir . "'";
+                // $command = "whoami";
+
+                exec("whoami ", $out);
+                exec($command, $output);
+                if (Auth::user()->id == 2) {
+                    try {
+                        rmdir($dir);
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                    if (!is_dir($dir))
+                        dd($command, $out, $output);
+                }
+
+                // dd("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+
+                // exec("unrar x '" . $dir);
+            } else if (pathinfo($location, PATHINFO_EXTENSION) == "7z") {
+                mkdir($dir, 0777, true);
+                exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
+            }
+        }
+        $images = scandir($dir);
+
+        chmod($dir, 0777);
+        foreach ($images as $image) {
+            if (is_dir($dir . '/' . $image)) {
+
+                // chmod($dir . '/' . $image, 0777);
+                if ($image != '..' && $image != '.') {
+                    $img = scandir($dir . '/' . $image);
+                    foreach ($img as $i) {
+                        if ($i != '..' && $i != '.' && $i != '__MACOSX') {
+                            // chmod($dir . '/' . $image . '/' . $i, 0777);
+                            if (!is_dir($dir . '/' . $image . '/' . $i))
+                                rename($dir . '/' . $image . '/' . $i, $dir . '/' . $i);
+                        }
+                    }
+                    try {
+                        rmdir($dir . '/' . $image);
+                    } catch (\Exception $e) {
+                        // dd($e);
+                    }
+                }
+            }
+            if (mb_strtoupper(pathinfo($image, PATHINFO_EXTENSION)) == "PDF") {
+                rename($dir . '/' . $image, 'storage/files/' . $id . '/' . $image);
+                $attach = new attachment();
+                $attach->id_application = $id;
+                $attach->file_name = $image;
+                $attach->location =  $image;
+                $attach->message_id = 0;
+                $attach->mime_type = pathinfo($image, PATHINFO_EXTENSION);
+                $attach->file_size = filesize(
+                    'storage/files/' . $id . '/' . $image
+                );
+                $attach->save();
+                $attach_old = attachment::where('id_application', $id)->where('location', $location)->first();
+                if ($attach_old) {
+                    Storage::delete('public/files/' . $id . '/' . $attach_old->location);
+                    $attach_old->delete();
+                }
+            }
+        }
+        $images = scandir($dir);
+        // asort($images);
+        // dd($images);
+        // dd($dir);
+        try {
+            rmdir($dir);
+        } catch (\Exception $e) {
+            // dd($e);
+        }
+        $i = 0;
+        $img = [];
+        foreach ($images as $image) {
+            $nam = '';
+
+            if ($image != '..' && $image != '.') {
+                $i++;
+                if ($i < 10)
+                    $nam = 'IMG_000' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 100)
+                    $nam = 'IMG_00' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 1000)
+                    $nam = 'IMG_0' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else
+                    $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+
+
+                rename($dir . '/' . $image, $dir . '/' . $nam);
+                $img[] = $nam;
+            }
+        }
+        if (pathinfo($location, PATHINFO_EXTENSION) != 'zip') {
+            $attach =  attachment::find($doc_id);
+            $attach->file_name = pathinfo($attach->file_name, PATHINFO_FILENAME) . '.zip';
+            $attach->location = pathinfo($location, PATHINFO_FILENAME) . '.zip';
+            $attach->save();
+        }
+        Storage::delete('public/files/' . $id . '/' . $location);
+        $zip = Zip::create($dir . '.zip');
+        $zip->add($dir);
+        $zip->close();
+        $images = $img;
+        // dd($images);
+        return view('gallery_new', ['images' => $images, 'id' => $id, 'dir' => $dir, 'name' => $name, 'location' => $location, 'hide_menu' => $hide_menu]);
+    }
 
     public function photo_destroy(request $request)
     {

@@ -286,7 +286,7 @@ Route::middleware("auth:web")->group(
         Route::post('document_deliting/{id}', [MainController::class, 'document_deliting'])->name('document_deliting');
         Route::post('document/{id}/doc_update/{doc_id}', [MainController::class, 'doc_update'])->name('doc_update');
         Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
-        Route::get('/gallery/{id}/{location}/{name}', [MainController::class, 'gallery'])->name('gallery');
+        Route::get('/gallery_new/{id}/{location}/{name}/{doc_id}', [MainController::class, 'gallery_new'])->name('gallery_new');
         Route::post('/photo_destroy', [MainController::class, 'photo_destroy'])->name('photo_destroy');
         Route::post('/doc_status_change', [MainController::class, 'doc_status_change'])->name('doc_status_change');
 

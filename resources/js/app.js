@@ -30,6 +30,7 @@ import AiAnaliz from "./components/AiAnaliz.vue";
 import InventoryItems from "./components/InventoryItems.vue";
 import Counterparties from "./components/Counterparties.vue";
 import DropDown from "./components/DropDown.vue";
+import Gallery from "./components/Gallery.vue";
 
 const app1 = createApp({
     components: {
@@ -66,6 +67,7 @@ const app = createApp({
         InventoryItems,
         Counterparties,
         AiAnaliz,
+        Gallery,
     },
 });
 app.mount("#app");

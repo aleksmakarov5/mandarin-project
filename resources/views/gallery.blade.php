@@ -1,6 +1,6 @@
 @extends('header_menu')
 @section('title')
-{{ $id }} Галерея
+    {{ $id }} Галерея
 @endsection
 
 @section('gallery')
@@ -14,7 +14,7 @@
             <div class="row">
                 @foreach ($images as $key => $image)
                     @if ($image != '.' && $image != '..')
-                        <div class="col-sm-6 col-md-4">
+                        <div class="col-sm-6 col-md-1">
                             <a class="lightbox" href="/{{ $dir }}/{{ $image }}">
                                 <img src="/{{ $dir }}/{{ $image }}" alt="{{ $image }}">
                             </a>
@@ -38,6 +38,4 @@
         </div>
 
     </div>
-
-
 @endsection
