@@ -124,7 +124,19 @@ export default {
         };
     },
 
-    mounted() {},
+    mounted() {
+        document.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                this.current = -1;
+            }
+            if (e.key === "ArrowLeft") {
+                this.moveLeft();
+            }
+            if (e.key === "ArrowRight") {
+                this.moveRight();
+            }
+        });
+    },
     methods: {
         makeCurrent(key) {
             this.current = key;
