@@ -20,6 +20,7 @@
     overflow-y: scroll;
     display: flex;
     flex-direction: column-reverse;
+    z-index: 10;
 }
 .contact-list {
     position: absolute;
