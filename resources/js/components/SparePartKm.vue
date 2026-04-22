@@ -497,6 +497,11 @@
                                 class="w-100"
                             />
                         </td>
+                        <td scope="col">
+                            <a @click.prevent="createMD()" class="nav-link">
+                                Мелкие детали</a
+                            >
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -672,6 +677,10 @@ export default {
                     this.getSpareParts(res);
                 });
             this.changeEditSparePartId(null);
+        },
+        createMD() {
+            this.name_Cr = "Мелкие детали 2%";
+            this.createSparePart();
         },
 
         createSparePart() {
