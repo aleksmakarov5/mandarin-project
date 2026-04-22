@@ -1190,6 +1190,7 @@ class MainController extends Controller
             'id' => $id,
             'dir' => $dir,
             'name' => $name,
+            'doc_id' => $doc_id,
             'location' => $location,
             'hide_menu' => $hide_menu,
             'doc_type' => $doc_type,

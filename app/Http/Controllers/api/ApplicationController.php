@@ -11,6 +11,8 @@ use App\Models\attachment;
 use \ZanySoft\Zip\Facades\Zip;
 use Tochka\Calendar\WorkCalendar;
 use \Golchha21\ReSmushIt\Facades\Optimize;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\DB;
 
 class ApplicationController extends Controller
 {
@@ -300,5 +302,54 @@ class ApplicationController extends Controller
         } else {
             return false;
         }
+    }
+
+    public function photo_destroy(request $request)
+    {
+        // dd($request);
+        $dir = $request->dir;
+        $name = $request->name;
+        $location = $request->location;
+        $image = $request->image;
+        $doc_id = $request->doc_id;
+        $id = $request->app_id;
+        unlink($dir . '/' . $image);
+
+        $images = scandir($dir);
+
+        $i = 0;
+        $img = [];
+        foreach ($images as $image) {
+            $nam = '';
+
+            if ($image != '..' && $image != '.') {
+                $i++;
+                if ($i < 10)
+                    $nam = 'IMG_000' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 100)
+                    $nam = 'IMG_00' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 1000)
+                    $nam = 'IMG_0' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else
+                    $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+
+
+                rename($dir . '/' . $image, $dir . '/' . $nam);
+                $img[] = $nam;
+            }
+        }
+        Storage::delete('public/files/' . $id . '/' . $location);
+        $zip = Zip::create($dir . '.zip');
+        $zip->add($dir);
+        $zip->close();
+        $attach =  attachment::find($doc_id);
+        $attach->file_size = filesize($dir . '.zip');
+        $attach->save();
+
+
+        $images = $img;
+
+        // dd($images);
+        return $images;
     }
 }

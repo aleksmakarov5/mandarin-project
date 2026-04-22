@@ -100,6 +100,7 @@
 }
 .gal_show_button img:hover {
     width: 50px;
+    cursor: pointer;
 }
 .close {
     position: absolute;
@@ -125,6 +126,19 @@
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     overflow-y: scroll;
 }
+.delete_but {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.delete_but img:hover {
+    width: 50px;
+    cursor: pointer;
+}
 </style>
 <template>
     <center>
@@ -140,6 +154,14 @@
                     width="100%"
                     @click="makeCurrent(key)"
                 />
+                <div class="delete_but">
+                    <img
+                        @click="deletePhoto(image)"
+                        src="/storage/img/delete.png"
+                        width="30px"
+                        title="Удалить картину"
+                    />
+                </div>
             </div>
         </div>
     </div>
@@ -149,6 +171,7 @@
             {{ images[current] }}
             <div class="gal_show_button">
                 <img
+                    @click="deletePhoto(images[current])"
                     src="/storage/img/delete.png"
                     width="30px"
                     title="Удалить картину"
@@ -203,11 +226,12 @@ export default {
 
     props: [
         "app_id",
-        "images",
+        "in_images",
         "dir",
         "name",
         "location",
         "doc_type",
+        "doc_id",
         "troubleshootings",
     ],
 
@@ -216,6 +240,7 @@ export default {
             current: -1,
             show_troubleshootings: false,
             Troubleshootings: this.troubleshootings,
+            images: this.in_images,
         };
     },
 
@@ -233,6 +258,24 @@ export default {
         });
     },
     methods: {
+        deletePhoto(image) {
+            if (confirm("Вы уверены, что хотите удалить картину?")) {
+                axios
+                    .post("/api/application/photo_destroy", {
+                        app_id: this.app_id,
+                        image: image,
+                        dir: this.dir,
+                        location: this.location,
+                        doc_id: this.doc_id,
+                    })
+                    .then((response) => {
+                        // console.log(response);
+                        this.images = response.data;
+                        this.current = -1;
+                        location.reload();
+                    });
+            }
+        },
         thisGetTroubleshutings(data) {
             this.Troubleshootings = data;
         },
