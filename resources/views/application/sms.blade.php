@@ -4,14 +4,17 @@
 @endsection
 @section('main_content')
     <center>
-
-        <div>
-            {{ $text }}
-        </div>
-        <a class="nav-link" href="{{ $href }}">---Перейти к отправке---</a>
-        <br>
         <div id="app">
-            Загрузить скриншот <file-upload :id_app="{{ $id }}" :status_id="35" :load_name="'Скриншот СМС'"
-                :load_location="'Скриншот_СМС'" /></div>
+            <div style="position: relative;">
+                <div>
+                    {{ $text }}
+                </div>
+                <a class="nav-link" href="{{ $href }}">---Перейти к отправке---</a>
+                <br>
+
+                Загрузить скриншот <file-upload :id_app="{{ $id }}" :status_id="35"
+                    :load_name="'Скриншот СМС'" :load_location="'Скриншот_СМС'" />
+            </div>
+        </div>
     </center>
 @endsection
