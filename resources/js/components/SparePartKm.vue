@@ -679,7 +679,7 @@ export default {
             this.changeEditSparePartId(null);
         },
         createMD() {
-            this.name_Cr = "Мелкие детали 2%";
+            this.name_Cr = "МЕЛКИЕ ДЕТАЛИ (2%)";
             this.createSparePart();
         },
 
