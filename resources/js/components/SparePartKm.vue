@@ -469,7 +469,10 @@
                             <td scope="col">
                                 <a
                                     @click.prevent="
-                                        deletesparepart(sparepart.id)
+                                        deletesparepart(
+                                            sparepart.id,
+                                            sparepart.name
+                                        )
                                     "
                                 >
                                     <img
@@ -588,8 +591,8 @@ export default {
             this.summ_ic_half = res.data[5];
             this.delta_res_half = res.data[6];
         },
-        deletesparepart(id) {
-            if (confirm("Точно удалить?")) {
+        deletesparepart(id, name) {
+            if (confirm("Точно удалить <<" + name + ">>?")) {
                 axios.delete(`/api/sparepart/${id}`).then((res) => {
                     this.getSpareParts(res);
                 });
@@ -679,8 +682,27 @@ export default {
             this.changeEditSparePartId(null);
         },
         createMD() {
-            this.name_Cr = "МЕЛКИЕ ДЕТАЛИ (2%)";
-            this.createSparePart();
+            let n = -1;
+            let sum = 0;
+            for (let i = 0; i < this.spareparts.length; i++) {
+                if (
+                    this.spareparts[i].name.includes("МЕЛКИЕ ДЕТАЛИ") ||
+                    this.spareparts[i].name.includes("мелкие детали") ||
+                    this.spareparts[i].name.includes("Мелкие Детали")
+                ) {
+                    n = i;
+                }
+            }
+            // console.log(sum);
+            if (n != -1) {
+                this.deletesparepart(
+                    this.spareparts[n].id,
+                    this.spareparts[n].name
+                );
+            } else {
+                this.name_Cr = "МЕЛКИЕ ДЕТАЛИ (2%)";
+                this.createSparePart();
+            }
         },
 
         createSparePart() {
