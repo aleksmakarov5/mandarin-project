@@ -147,7 +147,7 @@ class ApplicationController extends Controller
             $zip_path = 'storage/files/' . $id . '/' . $request->load_location . "_" . date('d-m-y') . '.zip';
 
             $file = $request->file('file');
-            if ($file->getClientOriginalExtension() != 'png' && $file->getClientOriginalExtension() != 'webp') {
+            if ($file->getClientOriginalExtension() != 'webp') {
                 if ($file->getClientOriginalExtension() == 'pdf') {
                     $zip_bool = false;
                     // dd($file);
