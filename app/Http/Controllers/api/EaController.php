@@ -8,10 +8,44 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\SparePart;
 
+
 class EaController extends Controller
 {
     public function auth()
     {
+
+
+
+        // class Customer
+        // {
+        //     public $UserName;
+        //     public $Password;
+        //     public $SubCustomerId;
+        //     public $CustomerId;
+        // }
+
+        // $host = "http://ws.emex.ru/EmExService.asmx";
+        // $username = "3812520";
+        // $password = "Raptor16!";
+
+
+        // $client = new SoapClient($host);
+        // $customer = new Customer();
+        // $customer->UserName = $username;
+        // $customer->Password = $password;
+        // $params = array("Customer" => $customer);
+
+        // $resLogin = $client->Login($params);
+
+        // dd($resLogin);
+
+
+
+
+
+
+
+
         $response = Http::withHeaders([
             'content-type' => 'application/json',
         ])

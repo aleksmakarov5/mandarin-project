@@ -14,39 +14,43 @@
             </thead>
             <tbody>
                 <template v-for="(troubleshooting, index) in troubleshootings">
-                    <tr @click="changeEditTroubleshootingId(index)">
+                    <tr>
                         <td scope="col">
                             {{ index + 1 }}
                         </td>
                         <td
                             :id="'Part_Name_' + troubleshooting.id"
                             contenteditable
-                            @blur="editPartName(troubleshooting.id)"
-                            @keydown.enter="editPartName(troubleshooting.id)"
+                            @blur="editPartName(troubleshooting.id, index)"
+                            @keydown.enter="
+                                editPartName(troubleshooting.id, index)
+                            "
                         >
                             {{ troubleshooting.PartName }}
                         </td>
                         <td
                             :id="'Сonclusion_' + troubleshooting.id"
                             contenteditable
-                            @blur="editСonclusion(troubleshooting.id)"
-                            @keydown.enter="editСonclusion(troubleshooting.id)"
+                            @blur="editСonclusion(troubleshooting.id, index)"
+                            @keydown.enter="
+                                editСonclusion(troubleshooting.id, index)
+                            "
                         >
                             {{ troubleshooting.Сonclusion }}
                         </td>
                         <td
                             :id="'Work_' + troubleshooting.id"
                             contenteditable
-                            @blur="editWork(troubleshooting.id)"
-                            @keydown.enter="editWork(troubleshooting.id)"
+                            @blur="editWork(troubleshooting.id, index)"
+                            @keydown.enter="editWork(troubleshooting.id, index)"
                         >
                             {{ troubleshooting.Work }}
                         </td>
                         <td
                             :id="'img_' + troubleshooting.id"
                             contenteditable
-                            @blur="editImg(troubleshooting.id)"
-                            @keydown.enter="editImg(troubleshooting.id)"
+                            @blur="editImg(troubleshooting.id, index)"
+                            @keydown.enter="editImg(troubleshooting.id, index)"
                         >
                             {{ troubleshooting.img }}
                         </td>
@@ -127,14 +131,14 @@ export default {
         isEdit(id) {
             return this.EditTroubleshootingId === id;
         },
-        updateTroubleshooting(id) {
+        updateTroubleshooting(id, index) {
             axios
                 .post(`/api/troubleshootings/${id}/update`, {
                     id_application: this.app_id,
-                    PartName: this.PartName,
-                    Work: this.Work,
-                    Сonclusion: this.Сonclusion,
-                    img: this.img,
+                    PartName: this.troubleshootings[index].PartName,
+                    Work: this.troubleshootings[index].Work,
+                    Сonclusion: this.troubleshootings[index].Сonclusion,
+                    img: this.troubleshootings[index].img,
                 })
                 .then((res) => {
                     this.getTroubleshutings(res);
@@ -154,29 +158,29 @@ export default {
                 });
         },
 
-        editPartName(id) {
+        editPartName(id, index) {
             let part_name = document.getElementById("Part_Name_" + id);
-            this.PartName = part_name.innerText;
+            this.troubleshootings[index].PartName = part_name.innerText;
 
-            this.updateTroubleshooting(id);
+            this.updateTroubleshooting(id, index);
         },
-        editImg(id) {
+        editImg(id, index) {
             let Img = document.getElementById("img_" + id);
-            this.img = Img.innerText;
+            this.troubleshootings[index].img = Img.innerText;
 
-            this.updateTroubleshooting(id);
+            this.updateTroubleshooting(id, index);
         },
-        editСonclusion(id) {
+        editСonclusion(id, index) {
             let сon = document.getElementById("Сonclusion_" + id);
-            this.Сonclusion = сon.innerText;
+            this.troubleshootings[index].Сonclusion = сon.innerText;
 
-            this.updateTroubleshooting(id);
+            this.updateTroubleshooting(id, index);
         },
-        editWork(id) {
+        editWork(id, index) {
             let wor = document.getElementById("Work_" + id);
-            this.Work = wor.innerText;
+            this.troubleshootings[index].Work = wor.innerText;
 
-            this.updateTroubleshooting(id);
+            this.updateTroubleshooting(id, index);
         },
     },
 };
