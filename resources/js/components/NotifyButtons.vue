@@ -1,6 +1,6 @@
 <style>
 .badge-yellow {
-    background-color: rgb(245, 233, 16);
+    background-color: rgb(245, 195, 16);
 }
 </style>
 <template>
