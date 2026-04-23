@@ -64,13 +64,13 @@
                 )
                 ->get();
             // dd($applications);
-            $count_applications = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $count_directions = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $count_failures = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_applications = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
+            $count_directions = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
+            $count_failures = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
 
-            $count_archive = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $count_priem = ['application' => 0, 'chat' => 0, 'message' => 0];
-            $count_temp = ['application' => 0, 'chat' => 0, 'message' => 0];
+            $count_archive = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
+            $count_priem = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
+            $count_temp = ['application' => 0, 'chat' => 0, 'message' => 0, 'app' => 0];
             foreach ($applications as $application) {
                 if ($application->status < 12 && $application->status != 6 && $application->status != 7) {
                     if ($application->app) {
@@ -82,6 +82,9 @@
                     if ($application->message) {
                         $count_applications['message']++;
                     }
+                    if ($application->status == 1) {
+                        $count_applications['app']++;
+                    }
                 }
                 if ($application->status > 11 && $application->status < 25) {
                     if ($application->app) {
@@ -92,6 +95,9 @@
                     }
                     if ($application->message) {
                         $count_directions['message']++;
+                    }
+                    if ($application->status == 12) {
+                        $count_directions['app']++;
                     }
                 }
                 if ($application->status > 5 && $application->status < 8) {
@@ -223,6 +229,7 @@
                                         class="nav-link {{ session('rout') == 'archive' ? 'tn-active' : '' }}">Архив</a>
                                     <notify-buttons :user="{{ Auth::user()->id }}" :pi=`archive`
                                         :count_in="{{ json_encode($count_archive) }}"></notify-buttons>
+
                                 </li>
                                 <li class="nav-item"><a href="\temp"
                                         class="nav-link {{ session('rout') == 'temp' ? 'tn-active' : '' }}">Корзина</a>
