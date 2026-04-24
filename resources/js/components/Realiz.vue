@@ -5,6 +5,7 @@
             <th>Название</th>
             <th>Сумма</th>
             <th>Организация</th>
+            <th>Контрагент</th>
         </tr>
         <tr v-for="attachment in attachments">
             <td>
@@ -29,6 +30,9 @@
             </td>
             <td>
                 {{ attachment.our_name }}
+            </td>
+            <td>
+                {{ attachment.ic_name }}
             </td>
         </tr>
     </table>

@@ -1249,8 +1249,9 @@ class MainController extends Controller
             })
             ->join('applications', 'attachments.id_application', '=', 'applications.id')
             ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
 
-            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay', 'our_companies.our_name')
+            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay', 'our_companies.our_name', 'insurance_companies.name as ic_name')
 
 
             ->get();
