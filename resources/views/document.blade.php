@@ -33,6 +33,23 @@
         <div class="row">
             @can('company')
                 @foreach ($document as $doc)
+                    @php
+                        if (mb_strpos($doc->location, '%') !== false) {
+                            try {
+                                rename(
+                                    'storage/files/' . $id . '/' . $doc->location,
+                                    'storage/files/' .
+                                        $id .
+                                        '/' .
+                                        ($doc->location = str_replace('%', '', $doc->location)),
+                                );
+                                $doc->location = str_replace('%', '', $doc->location);
+                            } catch (\Throwable $th) {
+                                //throw $th;
+                            }
+                        }
+
+                    @endphp
                     @if (pathinfo($doc->location, PATHINFO_EXTENSION) != 'gif')
 
 
