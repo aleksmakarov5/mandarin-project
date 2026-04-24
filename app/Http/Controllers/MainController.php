@@ -1242,8 +1242,8 @@ class MainController extends Controller
     public function realiz()
     {
         session(['rout' => 'finance']);
-        $attachments = attachment::where('id_status', 39)
-            ->orwhere('id_status', '=', 40)
+        $attachments = attachment::where('attachments.id_status', 39)
+            ->orwhere('attachments.id_status', '=', 40)
             ->leftjoin('estimates', function ($join) {
                 $join->on('attachments.id_application', '=', 'estimates.id_application')->where('estimates.price_repair_full', '<>', '0');
             })
