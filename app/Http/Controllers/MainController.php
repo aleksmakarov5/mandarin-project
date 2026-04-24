@@ -1239,4 +1239,20 @@ class MainController extends Controller
     {
         return redirect()->back();
     }
+    public function realiz()
+    {
+        session(['rout' => 'finance']);
+        $attachments = attachment::where('id_status', 39)
+            ->orwhere('id_status', '=', 40)
+            ->join('estimates', 'attachments.id_application', '=', 'estimates.id_application')
+            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay')
+            ->get();
+        foreach ($attachments as $attachment) {
+            $attachment->pdf_name = pathinfo($attachment->file_name, PATHINFO_FILENAME) . '.pdf';
+            $attachment->pdf_location = pathinfo($attachment->location, PATHINFO_FILENAME) . '.pdf';
+        }
+        return view('realiz', [
+            'attachments' => $attachments,
+        ]);
+    }
 }

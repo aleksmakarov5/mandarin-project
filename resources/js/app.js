@@ -31,6 +31,7 @@ import InventoryItems from "./components/InventoryItems.vue";
 import Counterparties from "./components/Counterparties.vue";
 import DropDown from "./components/DropDown.vue";
 import Gallery from "./components/Gallery.vue";
+import Realiz from "./components/Realiz.vue";
 
 const app1 = createApp({
     components: {
@@ -68,6 +69,7 @@ const app = createApp({
         Counterparties,
         AiAnaliz,
         Gallery,
+        Realiz,
     },
 });
 app.mount("#app");

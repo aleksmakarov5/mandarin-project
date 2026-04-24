@@ -239,7 +239,8 @@
                                         class="nav-link {{ session('rout') == 'message' ? 'tn-active' : '' }}">Почта</a></li>
                                 <li class="nav-item"><a href="\warehouse"
                                         class="nav-link {{ session('rout') == 'warehouse' ? 'tn-active' : '' }}">Склад</a></li>
-                                <li class="nav-item"><drop-down :name="{{ json_encode('Финансы') }}"
+                                <li class="nav-item {{ session('rout') == 'finance' ? '' : '' }}"><drop-down
+                                        :name="{{ json_encode('Финансы') }}"
                                         :items="{{ json_encode([
                                             'vypiska' => 'Загрузить выписку',
                                             'zp_ved' => 'Зарплатная ведомость',
