@@ -621,13 +621,15 @@ class MainController extends Controller
             // echo 'zip';
             // dd(pathinfo($document->location, PATHINFO_EXTENSION));
             // Storage::delete('public/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
-            $att = scandir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
-            foreach ($att as $file) {
-                if ($file != '.' && $file != '..') {
-                    unlink('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME) . '/' . $file);
+            if (is_dir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME))) {
+                $att = scandir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
+                foreach ($att as $file) {
+                    if ($file != '.' && $file != '..') {
+                        unlink('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME) . '/' . $file);
+                    }
                 }
+                rmdir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
             }
-            rmdir('storage/files/' . $id . '/' . pathinfo($document->location, PATHINFO_FILENAME));
         }
         Storage::delete('public/files/' . $id . '/' . $document->location);
         $document->delete();
