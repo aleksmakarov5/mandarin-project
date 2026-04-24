@@ -5,7 +5,7 @@
 @section('main_content')
     <div id="app">
         @php
-            dd($attachments);
+            // dd($attachments);
         @endphp
         <realiz :attachments="{{ json_encode($attachments) }}" />
 
