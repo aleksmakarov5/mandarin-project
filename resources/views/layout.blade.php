@@ -161,9 +161,7 @@
                 <div class='user'>
 
                     <a href="/personal" class="nav-link {{ session('rout') == 'personal' ? 'tn-active' : '' }}">
-                        @if (isset(Auth::user()->avatar))
-                            <img src="{{ Auth::user()->avatar }}" class="avatar">
-                        @endif
+
                         {{ Auth::user()->name }}
                     </a>
 
