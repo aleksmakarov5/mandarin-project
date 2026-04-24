@@ -18,6 +18,7 @@ class attachment extends Model
         'file_size',
         'location',
         'sto_view',
-        'id_ic'
+        'id_ic',
+        'is_parsed'
     ];
 }
