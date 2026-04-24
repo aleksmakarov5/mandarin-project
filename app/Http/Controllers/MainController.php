@@ -1244,7 +1244,7 @@ class MainController extends Controller
         session(['rout' => 'finance']);
         $attachments = attachment::where('id_status', 39)
             ->orwhere('id_status', '=', 40)
-            ->дуаеjoin('estimates', 'attachments.id_application', '=', 'estimates.id_application')
+            ->leftjoin('estimates', 'attachments.id_application', '=', 'estimates.id_application')
             ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay')
             ->get();
         foreach ($attachments as $attachment) {
