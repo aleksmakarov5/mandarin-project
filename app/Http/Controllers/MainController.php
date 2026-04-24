@@ -1245,7 +1245,7 @@ class MainController extends Controller
         $attachments = attachment::where('id_status', 39)
             ->orwhere('id_status', '=', 40)
             ->leftjoin('estimates', 'attachments.id_application', '=', 'estimates.id_application')
-            ->where('estimates.price_repair_full', '<>', '0')
+            ->where('estimates.price_repair_full', '>', '0')
             ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay')
 
             ->get();
