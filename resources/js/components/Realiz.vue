@@ -4,6 +4,7 @@
         <tr>
             <th>Название</th>
             <th>Сумма</th>
+            <th>Организация</th>
         </tr>
         <tr v-for="attachment in attachments">
             <td>
@@ -25,6 +26,9 @@
             </td>
             <td v-else>
                 {{ makeMoney(attachment.add_pay) }}
+            </td>
+            <td>
+                {{ attachment.our_name }}
             </td>
         </tr>
     </table>

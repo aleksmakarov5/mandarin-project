@@ -1247,8 +1247,11 @@ class MainController extends Controller
             ->leftjoin('estimates', function ($join) {
                 $join->on('attachments.id_application', '=', 'estimates.id_application')->where('estimates.price_repair_full', '<>', '0');
             })
+            ->join('applications', 'attachments.id_application', '=', 'applications.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
 
-            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay')
+            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay', 'our_companies.our_name')
+
 
             ->get();
         foreach ($attachments as $attachment) {
