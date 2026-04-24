@@ -292,6 +292,7 @@ Route::middleware("auth:web")->group(
 
 
         Route::get('/showdoc/{id}', [MainController::class, 'showdoc'])->name('showdoc');
+        Route::get('/realiz', [MainController::class, 'realiz'])->name('realiz');
         Route::get('/download/{id}/{location}', [MainController::class, 'download'])->name('download');
 
         Route::get('export_hda/{id}/{status_id}', [WordController::class, 'export_hda'])->name('export_hda');
