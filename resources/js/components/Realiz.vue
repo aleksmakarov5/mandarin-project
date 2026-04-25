@@ -1,11 +1,18 @@
 <style></style>
 <template>
-    <a v-if="all" @click.prevent="all = !all" class="nav-link"
-        >Показывать все</a
-    >
-    <a v-else @click.prevent="all = !all" class="nav-link"
+    <a v-if="all" @click.prevent="editAll()" class="nav-link">Показывать все</a>
+    <a v-else @click.prevent="editAll()" class="nav-link"
         >Показывать невыгруженные</a
     >
+    <a
+        v-if="selected_attachments.length && !creating"
+        @click.prevent="makeArhive()"
+        class="nav-link"
+        >Подготовить архив</a
+    >
+    <a v-if="arhive" :href="arhive" class="nav-link">Скачать архив</a>
+    <img v-if="creating" src="/storage/img/loading.png" alt="" width="50" />
+
     <table class="editable">
         <tr>
             <th>Название</th>
@@ -13,7 +20,11 @@
             <th>Организация</th>
             <th>Контрагент</th>
         </tr>
-        <tr v-for="attachment in attachments">
+        <tr
+            v-for="attachment in attachments"
+            :style="docSelected(attachment.id)"
+            @click="editAttach(attachment.id)"
+        >
             <template v-if="!all">
                 <td>
                     <a
@@ -77,16 +88,32 @@
 </template>
 <script>
 export default {
-    props: ["attachments"],
+    props: ["in_attachments"],
     data() {
         return {
+            attachments: this.in_attachments,
             all: false,
+            selected_attachments: [],
+            arhive: null,
+            creating: false,
         };
     },
     mounted() {
-        console.log(this.attachments);
+        // console.log(this.attachments);
     },
     methods: {
+        editAll() {
+            this.all = !this.all;
+            if (!this.all) {
+                this.selected_attachments = [];
+            } else {
+                for (let i = 0; i <= this.attachments.length; i++) {
+                    if (!this.attachments[i].is_parsed) {
+                        this.selected_attachments.push(this.attachments[i].id);
+                    }
+                }
+            }
+        },
         makeMoney(n) {
             if (!n) n = 0;
             return (
@@ -94,6 +121,41 @@ export default {
                     .toFixed(2)
                     .replace(/(\d)(?=(\d{3})+\.)/g, "$1 ") + " р."
             );
+        },
+        editAttach(id) {
+            this.arhive = null;
+            if (this.selected_attachments.includes(id)) {
+                this.selected_attachments.splice(
+                    this.selected_attachments.indexOf(id),
+                    1
+                );
+            } else {
+                this.selected_attachments.push(id);
+            }
+        },
+        docSelected(id) {
+            if (this.selected_attachments.includes(id)) {
+                return "background-color: lightblue; cursor: pointer;";
+            } else {
+                return " cursor: pointer;";
+            }
+        },
+        makeArhive() {
+            this.creating = true;
+            axios
+                .post("/api/application/makeArhive", {
+                    attachments: this.selected_attachments,
+                })
+                .then((response) => {
+                    this.arhive = response.data[0];
+                    this.attachments = response.data[1];
+                    this.selected_attachments = [];
+                    this.creating = false;
+                })
+                .catch((error) => {
+                    console.log(error);
+                    this.creating = false;
+                });
         },
     },
 };

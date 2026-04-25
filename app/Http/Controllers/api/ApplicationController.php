@@ -352,4 +352,37 @@ class ApplicationController extends Controller
         // dd($images);
         return $images;
     }
+    public function makeArhive(request $request)
+    {
+        $attachments = $request->attachments;
+        $dir = '/storage/uploads_'  . date('d-m-y_hms');
+        $zip = Zip::create($dir . '.zip');
+
+        foreach ($attachments as $attachment) {
+            $attach =  attachment::find($attachment);
+            $attach->is_parsed = 1;
+            $attach->save();
+            $zip->add('storage/files/' . $attach->id_application . '/' . pathinfo($attach->location, PATHINFO_FILENAME) . '.pdf');
+        }
+        $zip->close();
+        $attachments = attachment::where('attachments.id_status', 39)
+            ->orwhere('attachments.id_status', '=', 40)
+            ->leftjoin('estimates', function ($join) {
+                $join->on('attachments.id_application', '=', 'estimates.id_application')->where('estimates.price_repair_full', '<>', '0');
+            })
+            ->join('applications', 'attachments.id_application', '=', 'applications.id')
+            ->join('our_companies', 'applications.our_company', '=', 'our_companies.id')
+            ->join('insurance_companies', 'applications.id_insuranceCompany', '=', 'insurance_companies.id')
+
+            ->select('attachments.*', 'estimates.price_repair_full', 'estimates.add_pay', 'our_companies.our_name', 'insurance_companies.name as ic_name')
+
+
+            ->get();
+        foreach ($attachments as $attachment) {
+            $attachment->pdf_name = pathinfo($attachment->file_name, PATHINFO_FILENAME) . '.pdf';
+            $attachment->pdf_location = pathinfo($attachment->location, PATHINFO_FILENAME) . '.pdf';
+        }
+        $arhive = $dir . '.zip';
+        return [$arhive, $attachments];
+    }
 }

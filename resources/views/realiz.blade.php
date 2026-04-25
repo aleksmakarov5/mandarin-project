@@ -7,7 +7,7 @@
         @php
             // dd($attachments);
         @endphp
-        <realiz :attachments="{{ json_encode($attachments) }}" />
+        <realiz :in_attachments="{{ json_encode($attachments) }}" />
 
     </div>
 @endsection

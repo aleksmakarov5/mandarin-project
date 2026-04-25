@@ -71,6 +71,7 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     Route::post('/add_mrk_filters', [ApplicationController::class, 'add_mrk_filters']);
     Route::post('/delete_mrk_filters', [ApplicationController::class, 'delete_mrk_filters']);
     Route::post('/file_upload', [ApplicationController::class, 'file_upload']);
+    Route::post('/makeArhive', [ApplicationController::class, 'makeArhive']);
     Route::post('/photo_destroy', [ApplicationController::class, 'photo_destroy'])->name('photo_destroy');
 
     // Route::post('/', 'StoreController');
