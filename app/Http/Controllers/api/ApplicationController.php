@@ -355,10 +355,8 @@ class ApplicationController extends Controller
     public function makeArhive(request $request)
     {
         $attachments = $request->attachments;
-        $dir = '/storage/uploads_'  . date('d-m-y_hms');
-        if (!is_dir($dir)) {
-            mkdir($dir);
-        }
+        $dir = 'storage/uploads_'  . date('d-m-y_hms');
+
 
         $zip = Zip::create($dir . '.zip');
 
@@ -386,7 +384,7 @@ class ApplicationController extends Controller
             $attachment->pdf_name = pathinfo($attachment->file_name, PATHINFO_FILENAME) . '.pdf';
             $attachment->pdf_location = pathinfo($attachment->location, PATHINFO_FILENAME) . '.pdf';
         }
-        rmdir($dir);
+        // rmdir($dir);
         $arhive = $dir . '.zip';
         return [$arhive, $attachments];
     }
