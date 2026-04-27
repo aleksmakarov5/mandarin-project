@@ -26,7 +26,12 @@
         <option value="2026" selected>2026</option>
     </select>
     <button class="nav-link" @click="showZP()">Показать</button>
-    <h1>Зарплатная ведомость МРК</h1>
+    <h1>
+        Зарплатная ведомость МРК
+        <span v-if="start"
+            >c {{ formatDate(start) }} по {{ formatDate(finish) }}</span
+        >
+    </h1>
     <table class="editable">
         <tr>
             <th>№</th>
@@ -80,6 +85,62 @@
             </template>
         </template>
     </table>
+    <h1>
+        Зарплатная ведомость Наставники
+        <span v-if="start"
+            >c {{ formatDate(start) }} по {{ formatDate(finish) }}</span
+        >
+    </h1>
+    <table class="editable">
+        <tr>
+            <th>№</th>
+            <th>Сумма от СК</th>
+            <th>З/Ч</th>
+            <th>Работы</th>
+            <th>Остаток</th>
+            <th>%</th>
+            <th>ЗП</th>
+        </tr>
+        <template v-for="(aps, key) in apps_spm">
+            <template v-if="!gate || user_id == key">
+                <tr
+                    v-if="key != 0"
+                    class="click"
+                    @click="show_spm[key] = !show_spm[key]"
+                >
+                    <td colspan="5">
+                        <h3>{{ aps[0].spm_name }}</h3>
+                    </td>
+                    <td><h5>--</h5></td>
+                    <td>
+                        <h2>{{ makeMoney(summ_spm[key]) }}</h2>
+                    </td>
+                </tr>
+                <tr v-for="application in aps" v-if="show_spm[key]">
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.id }}
+                    </td>
+                    <td>
+                        {{ application.summ_ic_full }}
+                    </td>
+                    <td>
+                        {{ application.summ_order }}
+                    </td>
+                    <td>
+                        {{ application.summ_service }}
+                    </td>
+
+                    <td>
+                        {{ application.eco_delta_full }}
+                    </td>
+                    <td>10%</td>
+                    <td>
+                        {{ makeMoney(application.eco_delta_full * 0.1) }}
+                    </td>
+                </tr>
+            </template>
+        </template>
+    </table>
 </template>
 <script>
 export default {
@@ -90,8 +151,13 @@ export default {
             mounth: "",
             year: "",
             apps: "",
+            apps_spm: "",
             summ: [],
+            summ_spm: [],
+            show_spm: [],
             show: [],
+            $start: "",
+            $finish: "",
         };
     },
     methods: {
@@ -105,7 +171,11 @@ export default {
                 })
                 .then((res) => {
                     // console.log(res.data);
-                    this.apps = res.data;
+                    this.start = res.data[0];
+                    this.finish = res.data[1];
+                    this.apps = res.data[2];
+                    this.apps_spm = res.data[3];
+                    console.log(this.apps_spm);
                     for (let key in this.apps) {
                         let summ = 0;
                         // console.log(this.apps[key]);
@@ -119,6 +189,27 @@ export default {
                         }
                         this.summ[key] = summ;
                         this.show[key] = false;
+                        // console.log(summ);
+                    }
+                    for (let key in this.apps_spm) {
+                        let summ = 0;
+                        // console.log(this.apps[key]);
+                        for (let i in this.apps_spm[key]) {
+                            if (key) {
+                                summ =
+                                    parseFloat(summ) +
+                                    parseFloat(
+                                        this.apps_spm[key][i].eco_delta_full
+                                    ) *
+                                        parseFloat(
+                                            this.getMrkProc(
+                                                this.apps_spm[key][i]
+                                            )
+                                        );
+                            }
+                            this.summ_spm[key] = summ;
+                            this.show_spm[key] = false;
+                        }
                         // console.log(summ);
                     }
                 });
@@ -138,7 +229,7 @@ export default {
                 .replace(/(\d)(?=(\d{3})+\.\,)/g, "$1 ");
         },
         getMrkProc(app) {
-            console.log(app);
+            // console.log(app);
             let proc = 0;
             if (!app.mrk_proc) {
                 proc = parseFloat(app.def_mrk_proc);
@@ -149,6 +240,7 @@ export default {
             proc /= 100;
             return proc;
         },
+
         makeMoney(n) {
             if (!n) n = 0;
             return (
@@ -156,6 +248,15 @@ export default {
                     .toFixed(2)
                     .replace(/(\d)(?=(\d{3})+\.)/g, "$1 ") + " р."
             );
+        },
+        formatDate(date) {
+            let options = {
+                year: "numeric",
+                month: "numeric",
+                day: "numeric",
+            };
+            if (date) return new Date(date).toLocaleString("ru", options);
+            else return "";
         },
     },
 };

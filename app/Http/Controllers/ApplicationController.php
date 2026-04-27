@@ -206,7 +206,7 @@ class ApplicationController extends Controller
             ->get();
 
         $applications = $this->configure($applications);
-        return $applications->groupBy('id_MRK');
+        return [$date_start, $date_finish, $applications->groupBy('id_MRK'), $applications->groupBy('id_spm')];
     }
 
     public function applications(Request $request)
