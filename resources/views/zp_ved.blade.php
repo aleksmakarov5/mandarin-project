@@ -1,6 +1,6 @@
 @extends('layout')
 @section('title')
-    Реализации
+    Зарплатная ведомость
 @endsection
 @section('main_content')
     <div id="app">

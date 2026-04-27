@@ -180,20 +180,25 @@ class ApplicationController extends Controller
     public function show_zp(Request $request)
     {
         $mounth = $request->mounth - 1;
-        $date_start = date($request->year . '-' . $mounth . '-25');
+        $date_start = date($request->year . '-' . $mounth . '-26');
         $date_finish = date($request->year . '-' . $request->mounth . '-25');
-        $applications = application::where('applications.zp_date', '>', $date_start)
+        $applications = application::where('applications.zp_date', '>=', $date_start)
             ->where('applications.zp_date', '<=', $date_finish)
             ->leftjoin('users as mrks', 'applications.id_MRK', '=', 'mrks.id')
             ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->with('spareparts')
             ->with('works')
-            ->with('estimate')
-            ->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
+            ->with('estimate');
+        if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator')) {
+        } else {
+            $applications->where('id_MRK', '=', Auth::user()->id)->orwhere('id_spm', '=', Auth::user()->id);
+        }
+
+        $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
             ->get();
 
         $applications = $this->configure($applications);
-        return json_encode($applications->groupBy('id_MRK'));
+        return $applications->groupBy('id_MRK');
     }
 
     public function applications(Request $request)

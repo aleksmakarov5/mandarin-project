@@ -4,7 +4,8 @@
 }
 </style>
 <template>
-    <select v-model="mounth" class="form-cont">
+    <label for="mounth">Месяц</label>
+    <select v-model="mounth" class="form-cont" placeholder="Месяц">
         <option value="01">Январь</option>
         <option value="02">Февраль</option>
         <option value="03">Март</option>
@@ -18,7 +19,9 @@
         <option value="11">Ноябрь</option>
         <option value="12">Декабрь</option>
     </select>
-    <select v-model="year" class="form-cont">
+
+    <label for="year">Год</label>
+    <select v-model="year" id="year" class="form-cont" placeholder="Год">
         <option value="2025">2025</option>
         <option value="2026" selected>2026</option>
     </select>
