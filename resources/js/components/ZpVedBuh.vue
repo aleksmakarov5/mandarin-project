@@ -78,7 +78,7 @@
 </template>
 <script>
 export default {
-    props: [],
+    props: ["user_id"],
     data() {
         return {
             applications: "",

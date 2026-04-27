@@ -191,7 +191,7 @@ class ApplicationController extends Controller
             ->with('estimate');
         if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator')) {
         } else {
-            $applications->where('id_MRK', '=', Auth::user()->id)->orwhere('id_spm', '=', Auth::user()->id);
+            $applications->where('id_MRK', '=', $request->user_id)->orwhere('id_spm', '=', $request->user_id);
         }
 
         $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
