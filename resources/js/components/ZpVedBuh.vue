@@ -38,41 +38,46 @@
             <th>ЗП</th>
         </tr>
         <template v-for="(aps, key) in apps">
-            <tr class="click" @click="show[key] = !show[key]">
-                <td colspan="5">
-                    <h3>{{ aps[0].mrk_name }}</h3>
-                </td>
-                <td><h5>--</h5></td>
-                <td>
-                    <h2>{{ makeMoney(summ[key]) }}</h2>
-                </td>
-            </tr>
-            <tr v-for="application in aps" v-if="show[key]">
-                <td class="click" @click="openApplication(application.id)">
-                    {{ application.id }}
-                </td>
-                <td>
-                    {{ application.summ_ic_full }}
-                </td>
-                <td>
-                    {{ application.summ_order }}
-                </td>
-                <td>
-                    {{ application.summ_service }}
-                </td>
+            <template v-if="!gate || user_id == key">
+                <tr class="click" @click="show[key] = !show[key]">
+                    <td colspan="5">
+                        <h3>{{ aps[0].mrk_name }}</h3>
+                    </td>
+                    <td><h5>--</h5></td>
+                    <td>
+                        <h2>{{ makeMoney(summ[key]) }}</h2>
+                    </td>
+                </tr>
+                <tr v-for="application in aps" v-if="show[key]">
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.id }}
+                    </td>
+                    <td>
+                        {{ application.summ_ic_full }}
+                    </td>
+                    <td>
+                        {{ application.summ_order }}
+                    </td>
+                    <td>
+                        {{ application.summ_service }}
+                    </td>
 
-                <td>
-                    {{ application.eco_delta_full }}
-                </td>
-                <td>{{ makeCount(getMrkProc(application) * 100) }}%</td>
-                <td>
-                    {{
-                        makeMoney(
-                            countZPmin(application.eco_delta_full, application)
-                        )
-                    }}
-                </td>
-            </tr>
+                    <td>
+                        {{ application.eco_delta_full }}
+                    </td>
+                    <td>{{ makeCount(getMrkProc(application) * 100) }}%</td>
+                    <td>
+                        {{
+                            makeMoney(
+                                countZPmin(
+                                    application.eco_delta_full,
+                                    application
+                                )
+                            )
+                        }}
+                    </td>
+                </tr>
+            </template>
         </template>
     </table>
 </template>
