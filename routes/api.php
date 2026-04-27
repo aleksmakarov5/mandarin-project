@@ -13,6 +13,7 @@ use App\Http\Controllers\api\SparePartController;
 use App\Http\Controllers\api\ChatController;
 use App\Http\Controllers\api\MailController;
 use App\Http\Controllers\api\ApplicationController;
+use App\Http\Controllers\ApplicationController as AppCont;
 use App\Http\Controllers\api\AiController;
 use App\Http\Controllers\api\WarehouseController;
 use App\Http\Controllers\api\EaController;
@@ -76,6 +77,7 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     Route::post('/update_sp_date', [ApplicationController::class, 'update_sp_date']);
     Route::post('/update_comment', [ApplicationController::class, 'update_comment']);
     Route::post('/photo_destroy', [ApplicationController::class, 'photo_destroy'])->name('photo_destroy');
+    Route::post('/show_zp', [AppCont::class, 'show_zp']);
 
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');

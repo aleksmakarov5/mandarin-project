@@ -75,24 +75,20 @@ class ApplicationController extends Controller
 
     public function configure($applications)
     {
-        $Spareparts = SparePart::get()->groupBy('id_application');
-        $Estimates = estimate::get()->groupBy('id_application');
-        $Works = work::get()->groupBy('id_application');
+        // $Spareparts = SparePart::get()->groupBy('id_application');
+        // $Estimates = estimate::get()->groupBy('id_application');
+        // $Works = work::get()->groupBy('id_application');
         foreach ($applications as $application) {
-            if (isset($Spareparts[$application->id]))
-                $spareparts = $Spareparts[$application->id];
-            else
-                $spareparts = $application->spareparts;
-            if (isset($Estimates[$application->id])) {
-                $estimates = $Estimates[$application->id][0];
-                if ($application->ub_type)
-                    $estimates->price_repair_full = $estimates->price_repair_half;
-            } else
-                $estimates = $application->estimates;
-            if (isset($Works[$application->id]))
-                $Works_serv = $Works[$application->id];
-            else
-                $Works_serv = $application->works;
+
+            $spareparts = $application->spareparts;
+
+
+
+            $estimates = $application->estimate;
+            if ($application->ub_type)
+                $estimates->price_repair_full = $estimates->price_repair_half;
+            // return $estimates;
+            $Works_serv = $application->works;
             $summ_service = 0;
             $summ_service_ic = 0;
             foreach ($Works_serv as $work) {
@@ -139,6 +135,7 @@ class ApplicationController extends Controller
                         (float) str_replace(' ', '', $estimates->price_repair_full) -
                         $summ_order -
                         $summ_service -
+                        $estimates->price_zip -
                         $application->sertificat + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0);
                     // dd($estimates);
                     if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0)
@@ -163,7 +160,7 @@ class ApplicationController extends Controller
 
             $count['message'] = $application->status_messages->count();
             $application->count = $count;
-            $application->eco_delta_full = Number::Currency($eco_delta_full, 'RUR', 'ru');
+            $application->eco_delta_full = str2number($eco_delta_full);
             $application->summ_order = Number::Currency($summ_order, 'RUR', 'ru');
             $application->summ_ic_full = Number::Currency((isset($estimates->price_repair_full) ? (float) $estimates->price_repair_full : $summ_ic_full) + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0), 'RUR', 'ru');
             $application->summ_service = Number::Currency($summ_service, 'RUR', 'ru');
@@ -172,8 +169,33 @@ class ApplicationController extends Controller
             $application->proc = $proc;
             // dd($application, $estimates->price_repair_full);
         }
+
         return $applications;
     }
+
+    public function zp_ved(Request $request)
+    {
+        return view('zp_ved');
+    }
+    public function show_zp(Request $request)
+    {
+        $mounth = $request->mounth - 1;
+        $date_start = date($request->year . '-' . $mounth . '-25');
+        $date_finish = date($request->year . '-' . $request->mounth . '-25');
+        $applications = application::where('applications.zp_date', '>', $date_start)
+            ->where('applications.zp_date', '<=', $date_finish)
+            ->leftjoin('Users as mrks', 'applications.id_MRK', '=', 'mrks.id')
+            ->leftjoin('Users as spms', 'applications.id_spm', '=', 'spms.id')
+            ->with('spareparts')
+            ->with('works')
+            ->with('estimate')
+            ->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
+            ->get();
+
+        $applications = $this->configure($applications);
+        return json_encode($applications->groupBy('id_MRK'));
+    }
+
     public function applications(Request $request)
     {
         // Excel::store(new UsersExport, 'public/files/users.xlsx');
@@ -2104,7 +2126,6 @@ class ApplicationController extends Controller
             )->orderBy('applications.id', 'desc')
                 ->paginate(300);
         }
-        $applications = $this->configure($applications);
         session(['rout' => 'directions']);
         //echo (session('rout'));
 
@@ -2212,6 +2233,8 @@ class ApplicationController extends Controller
                 // dd($application);
             }
         }
+        $applications = $this->configure($applications);
+
         $city = city::all();
         // dd($applications);
         return view('applications', ['applications' => $applications, 'only_me' => $only_me, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
