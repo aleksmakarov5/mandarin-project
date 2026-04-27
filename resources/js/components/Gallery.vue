@@ -274,10 +274,9 @@ export default {
                         this.current = -1;
                         if ("caches" in window) {
                             caches.keys().then(function (cacheNames) {
+                                console.log(cacheNames);
                                 cacheNames.forEach(function (cacheName) {
                                     caches.delete(cacheName);
-
-                                    console.log(cacheName);
                                 });
                             });
                         }
