@@ -40,7 +40,7 @@
             $summ_service = $summ_service + (float) str_replace(' ', '', $work->price_service);
             $summ_service_ic = $summ_service_ic + (float) str_replace(' ', '', $work->summ);
             $summ_pzn +=
-                $work->count_hours_pzn == 0
+                $work->count_hours_pzn == 0 || $work->count_hours_pzn == null
                     ? str2number($work->summ)
                     : str2number($work->count_hours_pzn) * str2number($work->price);
         }
@@ -737,126 +737,17 @@
 
             <header class="d-flex justify-content-center py-3">
                 <ul class="nav nav-pills">
+                    {{-- <li>
+                        <status-dro-dow :app="{{ json_encode($app) }}" :status="{{ json_encode($status) }}"
+                            :id="{{ json_encode($id) }}" :f_status="{{ json_encode($f_status) }}"
+                            :attach_statuses="{{ json_encode($attach_statuses) }}" />
+                    </li> --}}
                     <li>
                         <nav>
                             <ul class="dropbtn">
                                 <li><a href="" class="active">Статус</a>
                                     <ul class="submenu">
-                                        {{-- @can('service')
-                                            <li><a href="#">Передать
-                                                    МРК</a></li>
-                                        @endcan --}}
-                                        {{-- @can('mrk')
-                                            @if (isset($app->id_service))
-                                                <li><a href="#">Передать на СТО</a></li>
-                                            @endif
 
-                                            @if ($app->id_status == 9)
-                                                <li><a href="/answer_true_sel/{{ $id }}">Подготовить
-                                                        ответ</a>
-                                                </li>
-                                            @endif
-                                            @if ($app->id_status == 3)
-                                                <li><a href="/applications/{{ $id }}/change_status/1">Передать
-                                                        запчастисту
-                                                    </a></li>
-                                                <li><a href="/applications/{{ $id }}/change_status/2">Принять
-                                                        в
-                                                        работу</a>
-                                                </li>
-
-                                                <li><a href="/applications/{{ $id }}/change_status/4">Отклонить
-                                                    </a></li>
-                                            @endif
-
-                                            @if ($app->id_status > 11 && $app->id_status < 22)
-                                                <li><a href="/answer_ic_mrk/{{ $id }}">Отправить в страховую
-                                                        акт
-                                                        скрытых
-                                                        повреждений</a>
-                                                </li>
-                                            @endif
-                                        @endcan --}}
-                                        {{-- @can('km')
-                                            @if ($app->id_status == 6 || $app->id_status == 7)
-                                                <li><a href="/applications/{{ $id }}/change_status_km/1">Принять
-                                                        в
-                                                        работу</a>
-                                                </li>
-                                                <li><a href="/applications/{{ $id }}/change_status_km/2">Подготовить
-                                                        отказ</a></li>
-                                            @endif
-                                        @endcan --}}
-
-                                        {{-- @can('spm')
-                                            @if ($app->id_status == 4)
-                                                <li><a href="/applications/{{ $id }}/send_mrk/{{ $app->id_MRK }}">Передать
-                                                        МРК</a></li>
-                                            @endif
-                                        @endcan --}}
-                                        {{-- @can('admin')
-                                            @if ($app->id_status == 2 && $app->id_MRK)
-                                                <li><a href="/applications/{{ $app->id }}/send_mrk/{{ $app->id_MRK }}">Передать
-                                                        МРК</a></li>
-                                            @endif
-                                            @if ($app->id_status == 5 || $app->id_status == 1)
-                                                <li><a href="/answer_ic/{{ $id }}">Подготовить ответ в
-                                                        ск</a></li>
-                                                <br>
-                                            @endif
-                                            @if ($app->id_status == 10)
-                                                <li><a href="/answer_ic_true/{{ $id }}">Подготовить ответ в
-                                                        ск</a></li>
-                                                <br>
-                                            @endif
-                                            @if ($app->id_status == 21)
-                                                <li><a href="/answer_ic_sch/{{ $id }}">Отправить счет и ПЗН в
-                                                        СК</a>
-                                                </li>
-                                                <br>
-                                            @endif
-                                            @if ($app->id_status == 25 || $app->id_status == 26 || $app->id_status == 27)
-                                                <li><a href="/applications/{{ $id }}/change_st/2">Вернуть в
-                                                        работу</a>
-                                                </li>
-                                                <br>
-                                            @endif
-                                        @endcan --}}
-
-                                        {{-- <li><a href="">Установить статус</a>
-                                            @can('admin')
-                                                @if ($app->id_status == 3)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id == 2)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">{{ $stat->StatusName }}</a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcan
-                                            @canany(['mrk', 'admin', 'km'])
-                                                @if ($app->id_status > 2 && $app->id_status < 26)
-                                                    <ul class="submenu">
-                                                        @foreach ($status as $stat)
-                                                            @if ($stat->id > 7 && $stat->id < 26)
-                                                                <li><a
-                                                                        href="/applications/{{ $id }}/change_st/{{ $stat->id }}">
-                                                                        <div class="td_round  {{ $stat->status_theme }}">
-                                                                            {{ $stat->StatusName }}</div>
-                                                                    </a>
-                                                                </li>
-                                                            @endif
-                                                        @endforeach
-                                                    </ul>
-                                                @endif
-                                            @endcanany
-
-
-
-                                        </li> --}}
                                         @if ($app->id_status < 12)
                                             @if ($app->id_insuranceCompany == 4)
                                                 <li><a onclick="if (!confirm('Изменить статус?')) return false"
@@ -875,16 +766,24 @@
                                             </li>
                                         @endif
                                         @if ($app->id_status == 12 || $app->id_status == 14)
-                                            <li><a @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату планируемого осмотра ')"
+                                            <li>
+                                                @if (!$app->view_date)
+                                                    <check-date-view :id_app="{{ $id }}"
+                                                        :status="{{ json_encode($status[12]) }}"
+                                                        :app_status="{{ $app->id_status }}" />
+                                                @else
+                                                    <a @if (!$app->view_date) onclick="alert('Необходимо на вкладке <<Основная информация>> \n указать дату планируемого осмотра ')"
                                                     @else
                                                  onclick="if (!confirm('Изменить статус?')) return false"
                                                     href="/applications/{{ $id }}/change_st/13" @endif
-                                                    @if ($app->id_status == 14) title="Дефектовка проведена, Т/С выдан клиенту до поступления запчастей"
+                                                        @if ($app->id_status == 14) title="Дефектовка проведена, Т/С выдан клиенту до поступления запчастей"
                                                     @else
                                                         title="Клиент вызван на ремонт" @endif>
-                                                    <div class="td_round  {{ $status[12]->status_theme }}">
-                                                        {{ $status[12]->StatusName }}</div>
-                                                </a>
+                                                        <div class="td_round  {{ $status[12]->status_theme }}">
+                                                            {{ $status[12]->StatusName }}</div>
+                                                    </a>
+                                                @endif
+
                                             </li>
                                         @endif
                                         @if ($app->id_status == 13)
@@ -1009,7 +908,7 @@
                             </a>
                         </li>
                     @endif
-                    @if ($app->id_insuranceCompany == 4 && !Gate::allows('administrator'))
+                    @if ($app->id_insuranceCompany == 4)
                         <li>
                             <div class="td_round  {{ $status[19]->status_theme }}">
                                 ----</div>
@@ -1045,6 +944,14 @@
                                     href="/applications/{{ $id }}/change_st/108">
                                     <div class="td_round  {{ $f_status[7]->FinStatusTheme }}">
                                         {{ $f_status[7]->FinStatusName }}</div>
+                                </a>
+                            </li>
+                        @endif
+                        @if ($app->finance_statuses_id == 9)
+                            <li><a onclick="if (!confirm('Изменить статус?')) return false"
+                                    href="/applications/{{ $id }}/change_st/111">
+                                    <div class="td_round  {{ $f_status[9]->FinStatusTheme }}">
+                                        {{ $f_status[9]->FinStatusName }}</div>
                                 </a>
                             </li>
                         @endif

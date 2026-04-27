@@ -30,8 +30,10 @@ import AiAnaliz from "./components/AiAnaliz.vue";
 import InventoryItems from "./components/InventoryItems.vue";
 import Counterparties from "./components/Counterparties.vue";
 import DropDown from "./components/DropDown.vue";
+import StatusDroDow from "./components/StatusDroDow.vue";
 import Gallery from "./components/Gallery.vue";
 import Realiz from "./components/Realiz.vue";
+import CheckDateView from "./components/CheckDateView.vue";
 
 const app1 = createApp({
     components: {
@@ -70,6 +72,8 @@ const app = createApp({
         AiAnaliz,
         Gallery,
         Realiz,
+        CheckDateView,
+        StatusDroDow,
     },
 });
 app.mount("#app");

@@ -1038,6 +1038,7 @@ class ImapController extends Controller
                 $ub_type = true;
             } else {
             }
+            $subject = '_' . $subject;
             if ($start = mb_strpos($subject, 'XXX')) {
                 $app_number = mb_substr($subject, $start);
             } else if ($start = mb_strpos($subject, 'TTT')) {
