@@ -335,8 +335,8 @@ class ApplicationController extends Controller
                     $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
 
 
-                rename($dir . '/' . $image, $dir . '/' . $nam);
-                $img[] = $nam;
+                // rename($dir . '/' . $image, $dir . '/' . $nam);
+                $img[] = $image;
             }
         }
         Storage::delete('public/files/' . $id . '/' . $location);

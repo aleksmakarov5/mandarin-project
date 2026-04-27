@@ -1052,7 +1052,7 @@ class MainController extends Controller
         $dir = 'storage/files/' . $id . '/' . pathinfo($location, PATHINFO_FILENAME);
         // dd($dir . "." . pathinfo($location, PATHINFO_EXTENSION));
         // chmod($dir . "." . pathinfo($location, PATHINFO_EXTENSION), 0777);
-
+        $attach =  attachment::find($doc_id);
         if (!is_dir($dir)) {
             if (pathinfo($location, PATHINFO_EXTENSION) == 'zip') {
                 $zip = Zip::open($dir . '.' . pathinfo($location, PATHINFO_EXTENSION));
@@ -1152,6 +1152,7 @@ class MainController extends Controller
         }
         $i = 0;
         $img = [];
+
         foreach ($images as $image) {
             $nam = '';
 
@@ -1166,19 +1167,22 @@ class MainController extends Controller
                 else
                     $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
 
-
-                rename($dir . '/' . $image, $dir . '/' . $nam);
-                $img[] = $nam;
+                if (!$attach->is_parsed) {
+                    rename($dir . '/' . $image, $dir . '/' . $nam);
+                    $img[] = $nam;
+                } else
+                    $img[] = $image;
             }
         }
-        $attach =  attachment::find($doc_id);
+
         $doc_type = $attach->id_status;
         if (pathinfo($location, PATHINFO_EXTENSION) != 'zip') {
 
             $attach->file_name = pathinfo($attach->file_name, PATHINFO_FILENAME) . '.zip';
             $attach->location = pathinfo($location, PATHINFO_FILENAME) . '.zip';
-            $attach->save();
         }
+        $attach->is_parsed = 1;
+        $attach->save();
         Storage::delete('public/files/' . $id . '/' . $location);
         $zip = Zip::create($dir . '.zip');
         $zip->add($dir);
