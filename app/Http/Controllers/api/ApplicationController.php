@@ -13,6 +13,7 @@ use Tochka\Calendar\WorkCalendar;
 use \Golchha21\ReSmushIt\Facades\Optimize;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use App\Models\chat;
 
 class ApplicationController extends Controller
 {
@@ -387,5 +388,48 @@ class ApplicationController extends Controller
         // rmdir($dir);
         $arhive = $dir . '.zip';
         return [$arhive, $attachments];
+    }
+
+    public function update_view_date(request $request)
+    {
+        $id = $request->id;
+        $application = application::find($id);
+        $application->view_date = date('Y-m-d H:i:s');
+        $application->id_status = 13;
+        $application->save();
+        return true;
+    }
+    public function update_sp_date(request $request)
+    {
+        $id = $request->id;
+        $application = application::find($id);
+        $application->view_date = date('Y-m-d H:i:s');
+        $application->save();
+        return true;
+    }
+    public function update_comment(request $request)
+    {
+        $id = $request->id;
+        $application = application::find($id);
+        $chat = new chat;
+
+
+        $chat->id_application = $id;
+        $chat->from = $request->user_id;
+        $chat->to = 0;
+        $chat->message = "Договор с клиентом не подписан по следующей причине: <br>" . $request->comment;
+        $chat->save();
+        $application->id_status = $request->id_status;
+        $application->save();
+        return true;
+    }
+    public function update_status(request $request)
+    {
+        $id = $request->id;
+        $status = $request->status;
+        $application = application::find($id);
+        $application->status = $status;
+        $application->save();
+        return true;
     }
 }
