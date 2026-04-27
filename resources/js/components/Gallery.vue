@@ -270,7 +270,7 @@ export default {
                     })
                     .then((response) => {
                         // console.log(response);
-                        this.images = response.data;
+                        this.images = "";
                         this.current = -1;
                         location.reload();
                     });
