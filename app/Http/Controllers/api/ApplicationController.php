@@ -320,25 +320,25 @@ class ApplicationController extends Controller
 
         $i = 0;
         $img = [];
-        // foreach ($images as $image) {
-        //     $nam = '';
+        foreach ($images as $image) {
+            $nam = '';
 
-        //     if ($image != '..' && $image != '.') {
-        //         $i++;
-        //         if ($i < 10)
-        //             $nam = 'IMG_000' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
-        //         else if ($i < 100)
-        //             $nam = 'IMG_00' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
-        //         else if ($i < 1000)
-        //             $nam = 'IMG_0' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
-        //         else
-        //             $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+            if ($image != '..' && $image != '.') {
+                $i++;
+                if ($i < 10)
+                    $nam = 'IMG_000' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 100)
+                    $nam = 'IMG_00' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else if ($i < 1000)
+                    $nam = 'IMG_0' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
+                else
+                    $nam = 'IMG_' . $i . '.' . pathinfo($image, PATHINFO_EXTENSION);
 
 
-        //         rename($dir . '/' . $image, $dir . '/' . $nam);
-        //         $img[] = $nam;
-        //     }
-        // }
+                rename($dir . '/' . $image, $dir . '/' . $nam);
+                $img[] = $nam;
+            }
+        }
         Storage::delete('public/files/' . $id . '/' . $location);
         $zip = Zip::create($dir . '.zip');
         $zip->add($dir);
