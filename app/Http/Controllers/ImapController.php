@@ -763,7 +763,7 @@ class ImapController extends Controller
         $keyboard = [];
         $i = 0;
         foreach ($attachments as $attachment) {
-            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPG') {
+            if (pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpg' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPG' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'JPEG' || pathinfo($attachment->getFilename(), PATHINFO_EXTENSION) == 'jpeg') {
                 $dir = 'storage/files/' . $id . '/foto' . "_" . date('d-m-y');
                 if (!is_dir($dir)) {
                     mkdir($dir, 0777, true);
