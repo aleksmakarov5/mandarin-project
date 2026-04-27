@@ -95,6 +95,7 @@ export default {
                 .post(`/api/application/show_zp`, {
                     mounth: this.mounth,
                     year: this.year,
+                    user_id: this.user_id,
                 })
                 .then((res) => {
                     // console.log(res.data);
