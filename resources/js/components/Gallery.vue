@@ -274,14 +274,14 @@ export default {
                         this.current = -1;
                         if ("caches" in window) {
                             caches.keys().then(function (cacheNames) {
-                                console.log(cacheNames);
+                                // console.log(cacheNames);
                                 cacheNames.forEach(function (cacheName) {
                                     caches.delete(cacheName);
                                 });
                             });
                         }
 
-                        // location.reload(true);
+                        location.reload(true);
                     });
             }
         },
