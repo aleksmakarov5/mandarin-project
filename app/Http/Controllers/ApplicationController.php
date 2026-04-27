@@ -175,7 +175,12 @@ class ApplicationController extends Controller
 
     public function zp_ved(Request $request)
     {
-        return view('zp_ved');
+        $gate = 0;
+        if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator')) {
+        } else {
+            $gate = 1;
+        }
+        return view('zp_ved', ['gate' => $gate]);
     }
     public function show_zp(Request $request)
     {
@@ -189,12 +194,11 @@ class ApplicationController extends Controller
             ->with('spareparts')
             ->with('works')
             ->with('estimate');
-        if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator')) {
-        } else {
-            $applications->where('id_MRK', '=', $request->user_id)->orwhere('id_spm', '=', $request->user_id);
+        if ($request->gate) {
+            $applications = $applications->where('id_MRK', '=', $request->user_id)->orwhere('id_spm', '=', $request->user_id);
         }
 
-        $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
+        $applications = $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
             ->get();
 
         $applications = $this->configure($applications);

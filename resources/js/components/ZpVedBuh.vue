@@ -78,7 +78,7 @@
 </template>
 <script>
 export default {
-    props: ["user_id"],
+    props: ["user_id", "gate"],
     data() {
         return {
             applications: "",
@@ -96,6 +96,7 @@ export default {
                     mounth: this.mounth,
                     year: this.year,
                     user_id: this.user_id,
+                    gate: this.gate,
                 })
                 .then((res) => {
                     // console.log(res.data);

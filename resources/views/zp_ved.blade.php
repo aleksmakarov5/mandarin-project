@@ -7,6 +7,6 @@
         @php
             // dd($attachments);
         @endphp
-        <zp-ved-buh :user_id="{{ json_encode(Auth::user()->id) }}" />
+        <zp-ved-buh :user_id="{{ json_encode(Auth::user()->id) }}" :gate="{{ json_encode($gate) }}" />
     </div>
 @endsection
