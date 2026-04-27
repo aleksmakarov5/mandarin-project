@@ -195,7 +195,11 @@ class ApplicationController extends Controller
             ->with('works')
             ->with('estimate');
         if ($request->gate) {
-            $applications = $applications->where('id_MRK', '=', $request->user_id)->orwhere('id_spm', '=', $request->user_id);
+            $applications = $applications->where(function ($query) use ($request) {
+                $query
+                    ->where('applications.id_MRK', '=', $request->user_id)
+                    ->orwhere('applications.id_spm', '=', $request->user_id);
+            });
         }
 
         $applications = $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
