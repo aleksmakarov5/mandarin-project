@@ -68,7 +68,7 @@
                     </td>
 
                     <td>
-                        {{ application.eco_delta_full }}
+                        {{ makeMoney(application.eco_delta_full) }}
                     </td>
                     <td>{{ makeCount(getMrkProc(application) * 100) }}%</td>
                     <td>
@@ -131,7 +131,7 @@
                     </td>
 
                     <td>
-                        {{ application.eco_delta_full }}
+                        {{ makeMoney(application.eco_delta_full) }}
                     </td>
                     <td>10%</td>
                     <td>
