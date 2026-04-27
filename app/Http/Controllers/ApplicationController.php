@@ -184,8 +184,8 @@ class ApplicationController extends Controller
         $date_finish = date($request->year . '-' . $request->mounth . '-25');
         $applications = application::where('applications.zp_date', '>', $date_start)
             ->where('applications.zp_date', '<=', $date_finish)
-            ->leftjoin('Users as mrks', 'applications.id_MRK', '=', 'mrks.id')
-            ->leftjoin('Users as spms', 'applications.id_spm', '=', 'spms.id')
+            ->leftjoin('users as mrks', 'applications.id_MRK', '=', 'mrks.id')
+            ->leftjoin('users as spms', 'applications.id_spm', '=', 'spms.id')
             ->with('spareparts')
             ->with('works')
             ->with('estimate')
