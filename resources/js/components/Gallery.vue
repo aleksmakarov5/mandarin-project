@@ -273,7 +273,7 @@ export default {
                         this.images = response.data;
                         this.current = -1;
                         if ("caches" in window) {
-                            console.log(caches);
+                            console.log(caches.keys);
                             caches.keys().then(function (cacheNames) {
                                 cacheNames.forEach(function (cacheName) {
                                     caches.delete(cacheName);
