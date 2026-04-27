@@ -273,6 +273,7 @@ export default {
                         this.images = response.data;
                         this.current = -1;
                         if ("caches" in window) {
+                            console.log("caches");
                             caches.keys().then(function (cacheNames) {
                                 cacheNames.forEach(function (cacheName) {
                                     caches.delete(cacheName);
@@ -280,7 +281,7 @@ export default {
                             });
                         }
 
-                        location.reload(true);
+                        // location.reload(true);
                     });
             }
         },
