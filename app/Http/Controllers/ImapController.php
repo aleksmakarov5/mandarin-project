@@ -675,13 +675,14 @@ class ImapController extends Controller
 
         $subject = str_replace('fwd:', '', $subject);
         $subject = str_replace('re:', '', $subject);
+        $subject = '_' . $subject;
         $start_pos = mb_strpos($subject, '707-');
         $subject = mb_substr($subject, $start_pos);
         $subject = preg_replace("/\t/", ' ', $subject);
         $subject = trim($subject);
         $finish_pos = mb_strpos($subject, ' ');
         // dd($start_pos);
-        $app_number = mb_substr($subject, 0, $finish_pos);
+        $app_number = mb_substr($subject, 0, $finish_pos ? $finish_pos : 17);
         $app_number = trim($app_number);
         $find707 = mb_strpos($app_number, '-');
         if (!$find707) {
