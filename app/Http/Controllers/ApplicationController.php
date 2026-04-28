@@ -135,7 +135,6 @@ class ApplicationController extends Controller
                         (float) str_replace(' ', '', $estimates->price_repair_full) -
                         $summ_order -
                         $summ_service -
-                        $estimates->price_zip -
                         $application->sertificat + (isset($estimates->add_pay) ? (float)$estimates->add_pay : 0);
                     // dd($estimates);
                     if (((float) str_replace(' ', '', $estimates->price_repair_full)) != 0)
