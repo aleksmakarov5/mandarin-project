@@ -34,12 +34,15 @@
     </h1>
     <table class="editable">
         <tr>
-            <th colspan="5">ФИО</th>
+            <th colspan="7">ФИО</th>
             <th>% по умолч</th>
             <th>Итого</th>
         </tr>
         <tr>
             <th>№</th>
+
+            <th>Авто</th>
+            <th>ГРЗ</th>
             <th>Сумма от СК</th>
             <th>З/Ч</th>
             <th>Работы</th>
@@ -50,7 +53,7 @@
         <template v-for="(aps, key) in apps">
             <template v-if="!gate || user_id == key">
                 <tr class="click" @click="show[key] = !show[key]">
-                    <td colspan="5">
+                    <td colspan="7">
                         <h3>{{ aps[0].mrk_name }}</h3>
                     </td>
                     <td>
@@ -63,6 +66,12 @@
                 <tr v-for="application in aps" v-if="show[key]">
                     <td class="click" @click="openApplication(application.id)">
                         {{ application.id }}
+                    </td>
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.CarModel }}
+                    </td>
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.gnz }}
                     </td>
                     <td>
                         {{ application.summ_ic_full }}
@@ -119,12 +128,15 @@
     </h1>
     <table class="editable">
         <tr>
-            <th colspan="5">ФИО</th>
+            <th colspan="7">ФИО</th>
             <th>% по умолч</th>
             <th>Итого</th>
         </tr>
         <tr>
             <th>№</th>
+
+            <th>Авто</th>
+            <th>ГРЗ</th>
             <th>Сумма от СК</th>
             <th>З/Ч</th>
             <th>Работы</th>
@@ -139,7 +151,7 @@
                     class="click"
                     @click="show_spm[key] = !show_spm[key]"
                 >
-                    <td colspan="5">
+                    <td colspan="7">
                         <h3>{{ aps[0].spm_name }}</h3>
                     </td>
                     <td><h5>10%</h5></td>
@@ -150,6 +162,12 @@
                 <tr v-for="application in aps" v-if="show_spm[key]">
                     <td class="click" @click="openApplication(application.id)">
                         {{ application.id }}
+                    </td>
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.CarModel }}
+                    </td>
+                    <td class="click" @click="openApplication(application.id)">
+                        {{ application.gnz }}
                     </td>
                     <td>
                         {{ application.summ_ic_full }}
