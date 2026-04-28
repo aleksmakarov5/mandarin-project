@@ -48,7 +48,9 @@
                     <td colspan="5">
                         <h3>{{ aps[0].mrk_name }}</h3>
                     </td>
-                    <td><h5>--</h5></td>
+                    <td>
+                        <h5>{{ aps[0].def_mrk_proc }}%</h5>
+                    </td>
                     <td>
                         <h2>{{ makeMoney(summ[key]) }}</h2>
                     </td>
@@ -70,7 +72,26 @@
                     <td>
                         {{ makeMoney(application.eco_delta_full) }}
                     </td>
-                    <td>{{ makeCount(getMrkProc(application) * 100) }}%</td>
+                    <td
+                        class="click"
+                        v-if="!edit_proc[application.id]"
+                        @click="
+                            !gate
+                                ? (edit_proc[application.id] =
+                                      !edit_proc[application.id])
+                                : ''
+                        "
+                    >
+                        {{ parseInt(getMrkProc(application) * 100) }}%
+                    </td>
+                    <td v-else>
+                        <input
+                            type="text"
+                            v-model="proc[application.id]"
+                            @blur="editProc(application.id)"
+                            @keydown.enter="editProc(application.id)"
+                        />
+                    </td>
                     <td>
                         {{
                             makeMoney(
@@ -111,7 +132,7 @@
                     <td colspan="5">
                         <h3>{{ aps[0].spm_name }}</h3>
                     </td>
-                    <td><h5>--</h5></td>
+                    <td><h5>10%</h5></td>
                     <td>
                         <h2>{{ makeMoney(summ_spm[key]) }}</h2>
                     </td>
@@ -158,9 +179,68 @@ export default {
             show: [],
             $start: "",
             $finish: "",
+            edit_proc: [],
+            proc: [],
         };
     },
     methods: {
+        getRes(res) {
+            this.start = res.data[0];
+            this.finish = res.data[1];
+            this.apps = res.data[2];
+            this.apps_spm = res.data[3];
+            // console.log(this.apps_spm);
+            for (let key in this.apps) {
+                let summ = 0;
+                // console.log(this.apps[key]);
+                for (let i in this.apps[key]) {
+                    summ =
+                        parseFloat(summ) +
+                        parseFloat(this.apps[key][i].eco_delta_full) *
+                            parseFloat(this.getMrkProc(this.apps[key][i]));
+
+                    this.edit_proc[this.apps[key][i].id] = false;
+                    this.proc[this.apps[key][i].id] = parseInt(
+                        this.getMrkProc(this.apps[key][i]) * 100
+                    );
+                }
+                this.summ[key] = summ;
+                this.show[key] = false;
+                // console.log(summ);
+            }
+            for (let key in this.apps_spm) {
+                let summ = 0;
+                // console.log(this.apps[key]);
+                for (let i in this.apps_spm[key]) {
+                    if (key) {
+                        summ =
+                            parseFloat(summ) +
+                            parseFloat(this.apps_spm[key][i].eco_delta_full) *
+                                parseFloat(
+                                    this.getMrkProc(this.apps_spm[key][i])
+                                );
+                    }
+                    this.summ_spm[key] = summ;
+                    this.show_spm[key] = false;
+                }
+                // console.log(summ);
+            }
+        },
+        editProc(id) {
+            axios
+                .post(`/api/application/edit_proc`, {
+                    id: id,
+                    mrk_proc: this.proc[id],
+                    mounth: this.mounth,
+                    year: this.year,
+                    user_id: this.user_id,
+                    gate: this.gate,
+                })
+                .then((res) => {
+                    // console.log(res.data);
+                    this.getRes(res);
+                });
+        },
         showZP() {
             axios
                 .post(`/api/application/show_zp`, {
@@ -171,47 +251,7 @@ export default {
                 })
                 .then((res) => {
                     // console.log(res.data);
-                    this.start = res.data[0];
-                    this.finish = res.data[1];
-                    this.apps = res.data[2];
-                    this.apps_spm = res.data[3];
-                    console.log(this.apps_spm);
-                    for (let key in this.apps) {
-                        let summ = 0;
-                        // console.log(this.apps[key]);
-                        for (let i in this.apps[key]) {
-                            summ =
-                                parseFloat(summ) +
-                                parseFloat(this.apps[key][i].eco_delta_full) *
-                                    parseFloat(
-                                        this.getMrkProc(this.apps[key][i])
-                                    );
-                        }
-                        this.summ[key] = summ;
-                        this.show[key] = false;
-                        // console.log(summ);
-                    }
-                    for (let key in this.apps_spm) {
-                        let summ = 0;
-                        // console.log(this.apps[key]);
-                        for (let i in this.apps_spm[key]) {
-                            if (key) {
-                                summ =
-                                    parseFloat(summ) +
-                                    parseFloat(
-                                        this.apps_spm[key][i].eco_delta_full
-                                    ) *
-                                        parseFloat(
-                                            this.getMrkProc(
-                                                this.apps_spm[key][i]
-                                            )
-                                        );
-                            }
-                            this.summ_spm[key] = summ;
-                            this.show_spm[key] = false;
-                        }
-                        // console.log(summ);
-                    }
+                    this.getRes(res);
                 });
         },
         countZPmin(eco_delta_full, app) {

@@ -78,6 +78,7 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     Route::post('/update_comment', [ApplicationController::class, 'update_comment']);
     Route::post('/photo_destroy', [ApplicationController::class, 'photo_destroy'])->name('photo_destroy');
     Route::post('/show_zp', [AppCont::class, 'show_zp']);
+    Route::post('/edit_proc', [AppCont::class, 'edit_proc']);
 
     // Route::post('/', 'StoreController');
     // Route::put('/{id}', 'UpdateController');
