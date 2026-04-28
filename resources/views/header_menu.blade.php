@@ -711,7 +711,9 @@
                                                             if ($app->mrk_proc) {
                                                                 $zp = ($eco_delta_full * $app->mrk_proc) / 100;
                                                             } else {
-                                                                $zp = $eco_delta_full * Auth::user()->def_mrk_proc;
+                                                                $zp =
+                                                                    ($eco_delta_full * Auth::user()->def_mrk_proc) /
+                                                                    100;
                                                             }
                                                         }
                                                         if ($app->id_spm == Auth::user()->id) {
