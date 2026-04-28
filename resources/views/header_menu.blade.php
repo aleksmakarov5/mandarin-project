@@ -711,15 +711,21 @@
                                                             if ($app->mrk_proc) {
                                                                 $zp = ($eco_delta_full * $app->mrk_proc) / 100;
                                                             } else {
-                                                                $zp =
-                                                                    ($eco_delta_full * Auth::user()->def_mrk_proc) /
-                                                                    100;
+                                                                if (!$app->id_spm) {
+                                                                    $zp =
+                                                                        ($eco_delta_full *
+                                                                            (Auth::user()->def_mrk_proc + 4)) /
+                                                                        100;
+                                                                } else {
+                                                                    $zp =
+                                                                        ($eco_delta_full * Auth::user()->def_mrk_proc) /
+                                                                        100;
+                                                                }
                                                             }
                                                         }
                                                         if ($app->id_spm == Auth::user()->id) {
                                                             $zp = $eco_delta_full * 0.1;
                                                         }
-
                                                     @endphp
                                                     {{ in_money($zp) }} р.
                                                 </div>
