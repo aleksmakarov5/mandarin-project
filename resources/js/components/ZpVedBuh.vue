@@ -34,6 +34,11 @@
     </h1>
     <table class="editable">
         <tr>
+            <th colspan="5">ФИО</th>
+            <th>% по умолч</th>
+            <th>Итого</th>
+        </tr>
+        <tr>
             <th>№</th>
             <th>Сумма от СК</th>
             <th>З/Ч</th>
@@ -113,6 +118,11 @@
         >
     </h1>
     <table class="editable">
+        <tr>
+            <th colspan="5">ФИО</th>
+            <th>% по умолч</th>
+            <th>Итого</th>
+        </tr>
         <tr>
             <th>№</th>
             <th>Сумма от СК</th>
