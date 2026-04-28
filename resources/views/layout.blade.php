@@ -13,13 +13,13 @@
     <meta charset="utf-8">
 
 
-    {{--
+
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/carousel/">
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link href="https://fonts.googleapis.com/css?family=Droid+Sans:400,700" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/baguettebox.js/1.8.1/baguetteBox.min.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"> --}}
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
     <!-- Favicons -->
     <link rel="apple-touch-icon" href="/storage/img/favicons/image_36.png" sizes="180x180">
     <link rel="icon" href="/storage/img/favicons/image_36.png" sizes="32x32" type="image/png">
