@@ -705,11 +705,21 @@
                                                                                     @else
                                                                                     alert alert-danger @endif
                                                                                     ">
-                                                    @if ($app->our_company == 2)
-                                                        {{ in_money(($eco_delta_full * 13) / 100) }} р.
-                                                    @else
-                                                        {{ in_money(($eco_delta_full * 20) / 100) }} р.
-                                                    @endif
+                                                    @php
+                                                        $zp = 0;
+                                                        if ($app->id_MRK == Auth::user()->id) {
+                                                            if ($app->mrk_proc) {
+                                                                $zp = ($eco_delta_full * $app->mrk_proc) / 100;
+                                                            } else {
+                                                                $zp = $eco_delta_full * Auth::user()->def_mrk_proc;
+                                                            }
+                                                        }
+                                                        if ($app->id_spm == Auth::user()->id) {
+                                                            $zp = $eco_delta_full * 0.1;
+                                                        }
+
+                                                    @endphp
+                                                    {{ in_money($zp) }} р.
                                                 </div>
                                             </td>
                                         @endcan
