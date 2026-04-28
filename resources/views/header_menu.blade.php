@@ -225,7 +225,13 @@
                     $summ_ic_full - $summ_order - $summ_service - $app->sertificat - $estimates->price_zip;
             }
         } else {
-            $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
+            $eco_delta_full =
+                $summ_ic_full +
+                $summ_service_ic -
+                $summ_order -
+                $summ_service -
+                $app->sertificat -
+                $estimates->price_zip;
             if ($summ_ic_full + $summ_service_ic != 0) {
             }
         }
