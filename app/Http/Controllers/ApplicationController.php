@@ -3525,7 +3525,7 @@ class ApplicationController extends Controller
         //     $phone = 'open?addresses=' . $phone . ',' . $phone1;
         // }
 
-        $href = "sms://" . $phone . ";?&body=" . $text;
+        $href = "sms://" . $phone . "?&body=" . $text;
         // dd($href);
         // $href = "tel:+79815609071";
         // $href = "ya.ru";
