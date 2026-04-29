@@ -221,17 +221,10 @@
                     );
                 }
             } else {
-                $eco_delta_full =
-                    $summ_ic_full - $summ_order - $summ_service - $app->sertificat - $estimates->price_zip;
+                $eco_delta_full = $summ_ic_full - $summ_order - $summ_service - $app->sertificat;
             }
         } else {
-            $eco_delta_full =
-                $summ_ic_full +
-                $summ_service_ic -
-                $summ_order -
-                $summ_service -
-                $app->sertificat -
-                $estimates->price_zip;
+            $eco_delta_full = $summ_ic_full + $summ_service_ic - $summ_order - $summ_service - $app->sertificat;
             if ($summ_ic_full + $summ_service_ic != 0) {
             }
         }
