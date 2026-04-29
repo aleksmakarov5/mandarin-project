@@ -289,7 +289,7 @@ class ApplicationController extends Controller
     public function zp_ved(Request $request)
     {
         $gate = 0;
-        if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator')) {
+        if (Gate::allows('admin') || Gate::allows('km') || Gate::allows('buh') || Gate::allows('administrator') || Auth::user()->id == 16) {
         } else {
             $gate = 1;
         }
