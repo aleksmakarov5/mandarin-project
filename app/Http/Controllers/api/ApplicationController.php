@@ -149,7 +149,7 @@ class ApplicationController extends Controller
 
             $file = $request->file('file');
             if ($file->getClientOriginalExtension() != 'webp') {
-                if ($file->getClientOriginalExtension() == 'pdf') {
+                if ($file->getClientOriginalExtension() == 'pdf' || $file->getClientOriginalExtension() == 'png' || $file->getClientOriginalExtension() == 'PDF' || $file->getClientOriginalExtension() == 'PNG') {
                     $zip_bool = false;
                     // dd($file);
                     $upload_folder = '' . $id;
