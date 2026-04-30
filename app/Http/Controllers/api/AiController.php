@@ -129,8 +129,8 @@ class AiController extends Controller
         $app = application::find($data['app_id']);
         if (!$app->vin)
             return 202;
-        if (!$app->DTPdate)
-            return 203;
+        // if (!$app->DTPdate)
+        //     return 203;
 
         $response = Http::withHeaders([
             'X-Api-Key' => '164350b2f1b353f206d0b90c23a8a5fd248d1b0ec4013639f1aa655b1d0ac0fe'
