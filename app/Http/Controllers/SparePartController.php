@@ -73,7 +73,20 @@ class SparePartController extends Controller
     public function SparePart($id)
     {
         $eco = '';
-
+        $estimates = estimate::firstOrCreate(
+            ['id_application' => $id],
+            [
+                'id_application' => $id,
+                'price_sp_full' => 0,
+                'price_sp_half' => 0,
+                'price_repair' => 0,
+                'price_paint' => 0,
+                'price_zip' => 0,
+                'price_work' => 0,
+                'price_repair_full' => 0,
+                'price_repair_half' => 0
+            ]
+        );
         $spareparts = DB::table('spare_parts')
             ->where('id_application', '=', $id)
             ->leftJoin(
@@ -85,7 +98,7 @@ class SparePartController extends Controller
             ->select('spare_parts.*', 'sparepart_statuses.StatusName')
             ->get();
         $app = application::where('id', '=', $id)->first();
-        $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
+        // $estimates = DB::table('estimates')->where('id_application', '=', $id)->first();
         // dd($estimates);
 
         $Works_serv = DB::table('works')
@@ -179,6 +192,7 @@ class SparePartController extends Controller
             $summ_service = $summ_service + str2number($work->price_service);
         }
         $delta = $summ_service - $summ_ic;
+        // dd($Works_ic);
         // $estimates->fact = $summ_service + $summ_order;
         $statuses = sparepart_status::all();
         return view('SparePart.index', [
