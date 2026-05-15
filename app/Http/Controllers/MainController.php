@@ -1076,7 +1076,8 @@ class MainController extends Controller
                 // exec("bsdtar -xf '" . $dir . "." . pathinfo($location, PATHINFO_EXTENSION) . "' -C '" . $dir . "'");
                 // exec("bsdtar -xf '" . $new_name . "' -C '" . $dir . "'", $output);
                 chmod($new_name, 0777);
-                $command = "7z t " . $new_name . " '" . $dir . "'";
+                $password = "Ma8546821987!";
+                $command = "echo '$password' | sudo7z t '" . $new_name . "' -o'" . $dir . "'";
                 // $command = "whoami";
 
                 exec("whoami ", $out);
