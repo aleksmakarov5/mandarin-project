@@ -22,7 +22,7 @@
     left: 10%;
     width: 80%;
     height: 90%;
-    z-index: 7;
+    z-index: 27;
 }
 .back-face {
     overflow-y: scroll;
@@ -43,6 +43,7 @@
     max-height: 60%;
     overflow-y: scroll;
     padding: 10px;
+    z-index: 7;
 }
 </style>
 
