@@ -421,9 +421,9 @@
     <div :class="`d_round ${status[19].status_theme}`">----</div>
 
     <!-- Цикл для статусов 101–111 -->
-    <template v-for="i in 11" :key="`status-${i + 101}`">
+    <template v-for="i in 11" :key="`status-${i + 100}`">
       <a
-        @click.prevent="changeStatus(i + 101, 'Изменить статус?')"
+        @click.prevent="changeStatus(i + 100, 'Изменить статус?')"
 
       >
         <div :class="`d_round ${f_status[i - 1].FinStatusTheme}`">
@@ -437,7 +437,7 @@
   <template v-else>
     <template v-if="[3, 5, 7, 9, 10].includes(app.finance_statuses_id)">
       <a
-        @click.prevent="changeStatus(app.finance_statuses_id + 101, 'Изменить статус?')"
+        @click.prevent="changeStatus(app.finance_statuses_id + 100, 'Изменить статус?')"
       >
          <div :class="`d_round ${f_status[app.finance_statuses_id-1].FinStatusTheme}`">
           {{ f_status[app.finance_statuses_id-1].FinStatusName }}
