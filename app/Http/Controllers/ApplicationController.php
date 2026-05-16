@@ -3950,7 +3950,7 @@ class ApplicationController extends Controller
             $html = 'works.html';
             $file = file_get_contents('storage/files/' . $id . '/' . $html);
             $file = html_entity_decode(strip_tags($file, ['br']));
-
+            // dd($file);
 
 
 
@@ -3962,7 +3962,7 @@ class ApplicationController extends Controller
             if (
                 mb_strpos($file, 'Эксперт: _______________/') != 0
             ) {
-                // dd($file);
+
                 $application_start = mb_strpos($file, 'транспортного средств');
                 $application = mb_substr($file, $application_start);
                 $application_array = explode('<br/>', $application);
@@ -4131,7 +4131,7 @@ class ApplicationController extends Controller
             } else {
                 if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
                     if (mb_strpos($file, 'НАПРАВЛЕНИЕ')) {
-
+                        // dd($file);
                         $file = preg_replace("(\u{A0})", ' ', $file);
                         $application_start = mb_strpos($file, 'Марка/модель');
                         $application = mb_substr($file, $application_start);
@@ -4170,6 +4170,7 @@ class ApplicationController extends Controller
                         // dd($file);
                         // dd($applications);
                     } else {
+                        // dd($file);
                         $application_start = mb_strpos($file, 'Марка, модель');
                         $estimate_start = mb_strpos($file, 'стоимость узлов и деталей');
                         $estimate_end = mb_strlen($file);
@@ -4257,6 +4258,7 @@ class ApplicationController extends Controller
 
                             $parse = mb_substr($file, $parse_start);
                             $parse = explode('<br/>', $parse);
+
                             $applications['ClientName'] = $parse[1];
                             $parse_start = mb_strpos($file, 'Контактный тел.');
                             $parse = mb_substr($file, $parse_start);
@@ -4286,51 +4288,128 @@ class ApplicationController extends Controller
                             }
                             // dd($applications, $file, $parse);
                         } else {
-                            $parse_start = mb_strpos($file, 'Марка, модель');
-                            if (!$parse_start)
-                                $parse_start = mb_strpos($file, 'Марка, модель');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['CarModel'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'VIN/кузов');
-                            if (!$parse_start)
-                                $parse_start = mb_strpos($file, 'VIN / кузов');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['vin'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Регистр. знак');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['gnz'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Пробег, км');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['mileage'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Цвет, тип окраски');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['Color'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Год выпуска');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['mnf_year'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
-                            if (!$parse_start)
-                                $parse_start = mb_strpos($file, 'Дата ДТП');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['DTPdate'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Собственник');
-                            $parse = mb_substr($file, $parse_start);
-                            $parse = explode('<br/>', $parse);
-                            $applications['ClientName'] = $parse[1];
-                            $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
-                            if (!$parse_start)
-                                $parse_start = mb_strpos($file, 'ПТС/свид.о рег.');
-                            $parse = mb_substr($file, $parse_start);
+                            if (mb_strpos($file, "АПЭКС")) {
+                                $parse_start = mb_strpos($file, 'Транспортное средство') + 22;
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Марка, модель');
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
 
-                            $parse = explode('<br/>', $parse);
-                            $applications['vehicle_passport'] = $parse[1];
+                                $applications['CarModel'] = $parse[0];
+
+
+                                $parse_start = mb_strpos($file, 'VIN') + 8;
+
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['vin'] = $parse[0];
+                                $parse_start = mb_strpos($file, 'регистрационный знак') + 21;
+
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['gnz'] = $parse[0];
+
+                                $parse_start = mb_strpos($file, 'пробег') + 12;
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['mileage'] = $parse[0];
+
+                                $parse_start = mb_strpos($file, 'Цвет,');
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+                                // dd($parse);
+
+                                $parse_start = mb_strpos($file, 'дата выпуска') + 14;
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode(',', $parse);
+
+                                $applications['mnf_year'] = $parse[0];
+
+                                $parse_start = mb_strpos($file, 'Дата проведения экспертизы');
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['DTPdate'] = make_date($parse[1]);
+                                $parse_start = mb_strpos($file, 'Собственник');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Потерпевший');
+                                $parse = mb_substr($file, $parse_start);
+                            } else {
+
+                                $parse_start = mb_strpos($file, 'Марка, модель');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Марка, модель');
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['CarModel'] = $parse[1];
+                                $parse_start = mb_strpos($file, 'VIN/кузов');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'VIN / кузов');
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['vin'] = $parse[1];
+                                $parse_start = mb_strpos($file, 'Регистр. знак');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Государственный регистрационный знак');
+                                // dd($parse_start);
+                                $parse = mb_substr($file, $parse_start);
+                                // dd($parse);
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['gnz'] = $parse[1];
+
+                                $parse_start = mb_strpos($file, 'Пробег, км');
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
+                                $applications['mileage'] = $parse[1];
+
+                                $parse_start = mb_strpos($file, 'Цвет,');
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+                                $applications['Color'] = $parse[1];
+                                $parse_start = mb_strpos($file, 'Год выпуска');
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+                                $applications['mnf_year'] = $parse[1];
+                                $parse_start = mb_strpos($file, 'Дата происшествия / ДТП');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Дата ДТП');
+                                $parse = mb_substr($file, $parse_start);
+                                $parse = explode('<br/>', $parse);
+                                $applications['DTPdate'] = make_date($parse[1]);
+                                $parse_start = mb_strpos($file, 'Собственник');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Потерпевший');
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+
+                                $applications['ClientName'] = $parse[1];
+
+                                $parse_start = mb_strpos($file, 'Свид. о рег. / ПТС');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'ПТС/свид.о рег.');
+
+
+
+                                $parse = mb_substr($file, $parse_start);
+
+                                $parse = explode('<br/>', $parse);
+                                if ($parse_start)
+                                    $applications['vehicle_passport'] = $parse[1];
+                            }
                         }
                     }
                 } else if ($app->id_insuranceCompany == 3) {

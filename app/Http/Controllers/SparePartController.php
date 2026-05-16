@@ -470,9 +470,131 @@ class SparePartController extends Controller
         if ($request['id_ic'])
             $app->id_insuranceCompany = 3;
         $id_ic = $app->id_insuranceCompany;
+
+
         if (mb_strpos($file, 'zn-'))
             $app->id_insuranceCompany = 1;
 
+        if (mb_strpos($file, 'Фаворит')) {
+
+            $file = str_replace("\u{A0}", ' ', $file);
+
+            $id_ic = 3;
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            $SparePart_start = mb_strpos($file, ' ый номер ') + 15;
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, 'Итого с износом');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start, $SparePart_end - $SparePart_start);
+            $SparePart_array = explode('<br/>', $SparePart);
+            $uns = 0;
+            $key = 0;
+
+            $temp = $SparePart_array;
+            $SparePart_array = [];
+            foreach ($temp as $value) {
+                if (($key) % 9 != 0 && ($key) % 9 != 8) {
+                    if (($key) % 9 == 7 && ($key + 8) < count($temp)) {
+                        if (((int)$temp[$key + 1 - $uns] - 1) != (int)$temp[$key > 9 ? $key - 7 - $uns : 0]) {
+                            $SparePart_array[] = trim($temp[$key - $uns]) . trim($temp[$key + 1 - $uns]);
+                        } else {
+                            $SparePart_array[] = trim($temp[$key - $uns]);
+                            $key++;
+                            $uns++;
+                        }
+                    } else
+                        $SparePart_array[] = $temp[$key - $uns];
+                }
+                $key++;
+            }
+
+
+
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+            }
+        } else if (mb_strpos($file, 'АПЭКС')) {
+
+            $file = str_replace("\u{A0}", ' ', $file);
+            // dd($file);
+            $id_ic = 107;
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            $SparePart_start = mb_strpos($file, '-во <br/>') + 21;
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, '*-');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start, $SparePart_end - $SparePart_start);
+            $SparePart_array = explode('<br/>', $SparePart);
+            $uns = 0;
+            $key = 0;
+
+            // dd($SparePart_array, $uns);
+            foreach ($SparePart_array as $value) {
+                if (($key - $uns) % 8 == 0) {
+
+                    if (trim($SparePart_array[$key])) {
+                        $SparePart_array[$key - 6] = $SparePart_array[$key - 6] . ' ' . $SparePart_array[$key];
+                        unset($SparePart_array[$key]);
+                        $uns++;
+                    }
+                }
+                $key++;
+            }
+            $temp = $SparePart_array;
+            $SparePart_array = [];
+            foreach ($temp as $value) {
+
+                $SparePart_array[] = $value;
+            }
+
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+            }
+        } else
         if (mb_strpos($file, "1\t")) {
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
@@ -1048,8 +1170,6 @@ class SparePartController extends Controller
                 // dd($SpareParts);
             }
         }
-
-
 
 
 

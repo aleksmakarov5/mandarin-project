@@ -21,6 +21,10 @@ if (!function_exists('show_hours')) {
 if (!function_exists('make_date')) {
     function make_date($date)
     {
+        $findG = mb_strpos($date, 'г');
+        if ($findG) {
+            $date = mb_substr($date, 0, $findG);
+        }
         $date = str_replace(' января ', '.01.', $date);
         $date = str_replace(' февраля ', '.02.', $date);
         $date = str_replace(' марта ', '.03.', $date);

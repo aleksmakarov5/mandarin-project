@@ -47,6 +47,18 @@
                     <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 7] }}">
                 @endfor
             @endif
+            @if ($id_ic == 107)
+                @for ($i = 1, $j = 1; $i <= count($SpareParts) - 8; $i += 8, $j++)
+                    <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i + 1] }}">
+                    <input type="hidden" name="price_ic_full[{{ $j }}]" value="{{ $SpareParts[$i + 5] }}">
+                    <input type="hidden" name="price[{{ $j }}]" value="{{ $SpareParts[$i + 2] }}">
+                    <input type="hidden" name="iznos[{{ $j }}]" value="{{ $SpareParts[$i + 3] }}">
+                    <input type="hidden" name="count[{{ $j }}]" value="{{ $SpareParts[$i + 4] }}">
+                    <input type="hidden" name="part_number[{{ $j }}]"
+                        value="@php echo mb_strpos($SpareParts[$i + 1], 'БН') || mb_strpos($SpareParts[$i ], 'бн') || $SpareParts[$i ] == 'БН' ? $SpareParts[$i ] . " " . $j : $SpareParts[$i ] @endphp">
+                    <input type="hidden" name="price_ic_half[{{ $j }}]" value="{{ $SpareParts[$i + 6] }}">
+                @endfor
+            @endif
             @if ($id_ic == 3)
                 @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
                     <input type="hidden" name="name[{{ $j }}]" value="{{ $SpareParts[$i] }}">
@@ -230,6 +242,44 @@ echo mb_strpos($SpareParts[$i], 'БН') ||
                             </tr>
                         @endfor
                     @endif
+                    @if ($id_ic == 107)
+                        @for ($i = 1, $j = 1; $i <= count($SpareParts) - 8; $i += 8)
+                            @php
+                                $pr = 0;
+                                $iss = 0;
+                                //    dd($SP);
+                                foreach ($SP as $s) {
+                                    if (trim($s->part_number) == trim($SpareParts[$i + 1])) {
+                                        $iss = 1;
+                                        $pr = str2number($s->price_ic_full);
+                                        // echo $iss;
+                                    }
+                                }
+                            @endphp
+                            <tr>
+                                <td> {{ $j++ }} </td>
+                                <td @if ($iss == 1) style=background-color:grey @endif>
+                                    @php echo mb_strpos($SpareParts[$i], 'БН') || mb_strpos($SpareParts[$i], 'бн') || $SpareParts[$i ] == 'БН'|| !$SpareParts[$i]   ? $SpareParts[$i] . " " . $j : $SpareParts[$i] @endphp
+                                    <input type="checkbox" name='iskl[{{ $i }}]' value={{ $i }}>
+                                </td>
+                                <td> {{ $SpareParts[$i + 1] }}<input type="checkbox" name='iskl[{{ $i + 1 }}]'
+                                        value={{ $i + 1 }}> </td>
+                                <td @if ($pr > str2number($SpareParts[$i + 3])) style=background-color:red @endif>
+                                    {{ $SpareParts[$i + 2] }}<input type="checkbox" name='iskl[{{ $i + 2 }}]'
+                                        value={{ $i + 2 }}> </td>
+                                <td> {{ $SpareParts[$i + 3] }} <input type="checkbox" name='iskl[{{ $i + 3 }}]'
+                                        value={{ $i + 3 }}>
+                                </td>
+                                <td> {{ $SpareParts[$i + 4] }}<input type="checkbox" name='iskl[{{ $i + 4 }}]'
+                                        value={{ $i + 4 }}> </td>
+                                <td> {{ $SpareParts[$i + 5] }}<input type="checkbox" name='iskl[{{ $i + 5 }}]'
+                                        value={{ $i + 5 }}> </td>
+                                <td> {{ $SpareParts[$i + 6] }}<input type="checkbox" name='iskl[{{ $i + 6 }}]'
+                                        value={{ $i + 6 }}> </td>
+
+                            </tr>
+                        @endfor
+                    @endif
                     {{-- @if ($id_ic == 7)
                         @for ($i = 1; $i < count($SpareParts) - 8; $i += 8)
                             @php
@@ -269,7 +319,7 @@ echo mb_strpos($SpareParts[$i], 'БН') ||
                         @endfor
                     @endif --}}
                     @if ($id_ic == 3)
-                        @for ($i = 0, $j = 1; $i < count($SpareParts) - 7; $i += 7, $j++)
+                        @for ($i = 0, $j = 1; $i <= count($SpareParts) - 7; $i += 7, $j++)
                             @php
                                 $pr = 0;
                                 $iss = 0;
