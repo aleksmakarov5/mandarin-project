@@ -265,7 +265,7 @@ class WorkController extends Controller
             // dd($works, $work_array);
             $works = make_work($works);
             session(['works' => $works]);
-        } elseif ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0)) {
+        } elseif ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0) && mb_strpos($file, 'Источник') == 0) {
             $work_start = mb_strpos($file, 'н-час') + 14;
             if ($work_start) {
                 // echo $work_start . 'Раб_Старт<br /><br />';

@@ -474,9 +474,9 @@ class SparePartController extends Controller
 
         if (mb_strpos($file, 'zn-'))
             $app->id_insuranceCompany = 1;
-        if ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0)) {
+        if ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0) && mb_strpos($file, 'Источник') == 0) {
             $SparePart_start = mb_strpos($file, 'износом, Рубли');
-
+            // dd($file);
             // dd($SparePart_start);
             if ($SparePart_start) {
                 $file = str_replace("\u{A0}", '<br/>', $file);
