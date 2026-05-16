@@ -535,6 +535,69 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
+        } else
+        if (mb_strpos($file, 'РАВТ')) {
+
+            $file = str_replace("\u{A0}", '<br/>', $file);
+            // dd($file);
+            $id_ic = 4;
+
+            $file = html_entity_decode(strip_tags($file, ['br']));
+            $file = str_replace("\t", '', $file);
+            $file = str_replace("\n", ' ', $file);
+            $SparePart_start = mb_strpos($file, 'износом, руб.') + 19;
+            if (!$SparePart_start)
+                $SparePart_start = mb_strpos($file, 'ПО КАТАЛОГУ');
+            // echo $SparePart_start . 'Раб_Старт<br /><br />';
+            $iskl = $request['iskl'];
+            if ($request['reset']) {
+                $iskl = [];
+            }
+
+            $SparePart_end = mb_strpos($file, 'стоимость узлов и деталей');
+            // echo $SparePart_end . 'Раб_фин<br /><br />';
+            $SparePart = mb_substr($file, $SparePart_start, $SparePart_end - $SparePart_start);
+
+
+            $SparePart_array = explode('<br/>', $SparePart);
+
+            $uns = 0;
+            $key = 0;
+
+            // foreach ($SparePart_array as $value) {
+            //     if (($key - $uns) % 8 == 0) {
+
+            //         if (trim($SparePart_array[$key])) {
+            //             $SparePart_array[$key - 6] = $SparePart_array[$key - 6] . ' ' . $SparePart_array[$key];
+            //             unset($SparePart_array[$key]);
+            //             $uns++;
+            //         }
+            //     }
+            //     $key++;
+            // }
+            $temp = $SparePart_array;
+            $SparePart_array = [];
+            foreach ($temp as $key => $value) {
+                if ($key % 9 == 0 || $key % 9 == 3) {
+                } else
+                    $SparePart_array[] = $value;
+            }
+            // dd($SparePart_array);
+            $j = 0;
+            $reset = 0;
+            $SpareParts = [];
+            for ($i = 0; $i < count($SparePart_array); $i++) {
+                $SparePart_array[$i] = trim($SparePart_array[$i]);
+                if ($request['iskl']) {
+                    foreach ($iskl as $key => $value) {
+                        if ($i == $value) {
+                            $i++;
+                            $reset++;
+                        }
+                    }
+                }
+                $SpareParts[$j++] = $SparePart_array[$i];
+            }
         } else if (mb_strpos($file, 'АПЭКС')) {
 
             $file = str_replace("\u{A0}", ' ', $file);

@@ -3962,7 +3962,6 @@ class ApplicationController extends Controller
             if (
                 mb_strpos($file, 'Эксперт: _______________/') != 0
             ) {
-
                 $application_start = mb_strpos($file, 'транспортного средств');
                 $application = mb_substr($file, $application_start);
                 $application_array = explode('<br/>', $application);
@@ -4252,6 +4251,7 @@ class ApplicationController extends Controller
                         $file = preg_replace("/\u{A0}/", ' ', $file);
                         // dd($loc);
                         if (mb_strpos($loc, 'правле') != false) {
+
                             $parse_start = mb_strpos($file, 'СТРАХОВАТЕЛЬ');
                             if (!$parse_start)
                                 $parse_start = mb_strpos($file, 'ПОТЕРПЕВШИЙ');
@@ -4342,17 +4342,19 @@ class ApplicationController extends Controller
                                     $parse_start = mb_strpos($file, 'Потерпевший');
                                 $parse = mb_substr($file, $parse_start);
                             } else {
-
+                                // dd($file);
                                 $parse_start = mb_strpos($file, 'Марка, модель');
                                 if (!$parse_start)
                                     $parse_start = mb_strpos($file, 'Марка, модель');
                                 $parse = mb_substr($file, $parse_start);
                                 $parse = explode('<br/>', $parse);
-
+                                // dd($parse);
                                 $applications['CarModel'] = $parse[1];
                                 $parse_start = mb_strpos($file, 'VIN/кузов');
                                 if (!$parse_start)
                                     $parse_start = mb_strpos($file, 'VIN / кузов');
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'VIN/Кузов');
                                 $parse = mb_substr($file, $parse_start);
 
                                 $parse = explode('<br/>', $parse);
@@ -4361,6 +4363,9 @@ class ApplicationController extends Controller
                                 $parse_start = mb_strpos($file, 'Регистр. знак');
                                 if (!$parse_start)
                                     $parse_start = mb_strpos($file, 'Государственный регистрационный знак');
+
+                                if (!$parse_start)
+                                    $parse_start = mb_strpos($file, 'Регистрационный знак');
                                 // dd($parse_start);
                                 $parse = mb_substr($file, $parse_start);
                                 // dd($parse);
@@ -4377,7 +4382,8 @@ class ApplicationController extends Controller
                                 $parse = mb_substr($file, $parse_start);
 
                                 $parse = explode('<br/>', $parse);
-                                $applications['Color'] = $parse[1];
+                                if ($parse_start)
+                                    $applications['Color'] = $parse[1];
                                 $parse_start = mb_strpos($file, 'Год выпуска');
                                 $parse = mb_substr($file, $parse_start);
 
@@ -4693,7 +4699,7 @@ class ApplicationController extends Controller
                     // dd($applications);
                 } else if ($app->id_insuranceCompany == 7) {
                     // $file = str_replace("/\u{000D}", '<br/>', $file);
-                    // dd($file);
+
 
                     $file = preg_replace("(\u{A0})", ' ', $file);
 

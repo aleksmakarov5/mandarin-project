@@ -174,3 +174,21 @@ if (!function_exists('appNotification')) {
         return $count;
     }
 }
+if (!function_exists('make_work')) {
+    function make_work($works)
+    {
+        $count = count($works);
+        for ($i = 0; $i < $count; $i++) {
+            if ($i % 4 == 0 && !(int)$works[$i + 1]) {
+                $works[$i - 4] = $works[$i - 4] . ' ' . $works[$i];
+                for ($j = $i + 1; $j < $count; $j++) {
+                    $works[$j - 1] = $works[$j];
+                }
+                unset($works[$count]);
+                $count--;
+                $i--;
+            }
+        }
+        return $works;
+    }
+}
