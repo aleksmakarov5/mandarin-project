@@ -571,8 +571,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        }
-        if (mb_strpos($file, 'РАВТ')) {
+        } elseif (mb_strpos($file, 'РАВТ')) {
 
             $file = str_replace("\u{A0}", '<br/>', $file);
             // dd($file);
@@ -634,8 +633,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        }
-        if (mb_strpos($file, 'АПЭКС')) {
+        } elseif (mb_strpos($file, 'АПЭКС')) {
 
             $file = str_replace("\u{A0}", ' ', $file);
             // dd($file);
@@ -694,8 +692,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        }
-        if (mb_strpos($file, "1\t")) {
+        } elseif (mb_strpos($file, "1\t")) {
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
             for ($i = 1; $i < 300; $i++) {
@@ -733,8 +730,7 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
             // dd($SpareParts);
-        }
-        if ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
+        } elseif ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
             // dd($file);
             $file = str_replace("</td>", '<br/>', $file);
             $id_ic = 100;
@@ -774,8 +770,7 @@ class SparePartController extends Controller
                 // dd($SpareParts);
                 // dd($SparePart_array);
             }
-        }
-        if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
+        } elseif ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
@@ -814,8 +809,7 @@ class SparePartController extends Controller
                 // dd($SpareParts);
                 // dd($SparePart_array);
             }
-        }
-        if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
+        } elseif ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -865,8 +859,7 @@ class SparePartController extends Controller
 
             }
             // dd($SpareParts);
-        }
-        if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
+        } elseif (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -941,8 +934,7 @@ class SparePartController extends Controller
                 }
                 // dd($SparePart_array);
                 $id_ic = 1;
-            }
-            if (($app->id_insuranceCompany == 3)) { {
+            } elseif (($app->id_insuranceCompany == 3)) { {
 
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
