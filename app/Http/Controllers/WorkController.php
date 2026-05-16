@@ -265,6 +265,41 @@ class WorkController extends Controller
             // dd($works, $work_array);
             $works = make_work($works);
             session(['works' => $works]);
+        } elseif ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0)) {
+            $work_start = mb_strpos($file, 'н-час') + 14;
+            if ($work_start) {
+                // echo $work_start . 'Раб_Старт<br /><br />';
+
+
+                $work_end = mb_strpos($file, 'стоимость ремонта/замены:');
+
+                // echo $work_end . 'Раб_фин<br /><br />';
+                $work = mb_substr($file, $work_start, $work_end - $work_start - 24);
+                $work_array = explode('<br/>', $work);
+                // dd($work_array);
+                $j = 0;
+
+                for ($i = 0; $i < count($work_array) - 1; $i++) {
+                    if (
+                        trim($work_array[$i]) == "Наименование" ||
+                        trim($work_array[$i]) == "Норматив," ||
+                        trim($work_array[$i]) == "Сумма, руб."
+                        ||
+                        trim($work_array[$i]) == "Цена ед., руб." ||
+                        trim($work_array[$i]) == "н-час"
+
+
+                    ) {
+                    } else
+
+
+                        $works[$j++] = $work_array[$i];
+                    // echo $work_array[$i] . '<br />';
+                }
+                // dd($works);
+                $works = make_work($works);
+                session(['works' => $works]);
+            }
         } elseif ((mb_strpos($file, 'Фаворит') != 0)) {
 
             $id_ic = 1;
@@ -274,7 +309,14 @@ class WorkController extends Controller
             $file = str_replace("\n", ' ', $file);
 
             $file = str_replace("\u{A0}", ' ', $file);
-            $file = mb_substr($file, mb_strpos($file, 'Стоимость ремонтных воздействий'));
+            $start = 'Стоимость ремонтных воздействий';
+            if (!$start)
+                $start = 'Работы';
+            // $start = mb_strpos($file, $start);
+            // dd($start);
+
+            $file = mb_substr($file, mb_strpos($file, $start));
+            dd($file);
             $work_start = mb_strpos($file, 'Сумма');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -293,6 +335,8 @@ class WorkController extends Controller
                     trim($work_array[$i]) == "Наименование" ||
                     trim($work_array[$i]) == "Норматив," ||
                     trim($work_array[$i]) == "Сумма, руб." ||
+                    trim($work_array[$i]) == "Сумма, Рубли" ||
+                    trim($work_array[$i]) == "износом, Рубли" ||
                     trim($work_array[$i]) == "Сумма" ||
                     trim($work_array[$i]) == "1,00"
                     || trim($work_array[$i]) == "1"

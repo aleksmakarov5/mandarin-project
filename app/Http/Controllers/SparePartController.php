@@ -474,11 +474,47 @@ class SparePartController extends Controller
 
         if (mb_strpos($file, 'zn-'))
             $app->id_insuranceCompany = 1;
+        if ((mb_strpos($file, 'по определению стоимости восстановительного ремонта транспортного средства') != 0)) {
+            $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
-        if (mb_strpos($file, 'Фаворит')) {
+            // dd($SparePart_start);
+            if ($SparePart_start) {
+                $file = str_replace("\u{A0}", '<br/>', $file);
+                $SparePart_start = mb_strpos($file, 'износом, Рубли');
+                // dd($file);
+                // echo $SparePart_start . 'Раб_Старт<br /><br />';
+                $iskl = $request['iskl'];
+                if ($request['reset']) {
+                    $iskl = [];
+                }
+
+                $SparePart_end = mb_strpos($file, 'ИТОГО');
+                // echo $SparePart_end . 'Раб_фин<br /><br />';
+                $SparePart = mb_substr($file, $SparePart_start + 14, $SparePart_end - $SparePart_start + 14);
+                // dd($SparePart);
+                $SparePart_array = explode('<br/>', $SparePart);
+                $j = 0;
+                $reset = 0;
+                $SpareParts = [];
+                for ($i = 0; $i < count($SparePart_array); $i++) {
+                    if ($request['iskl']) {
+                        foreach ($iskl as $key => $value) {
+                            if ($i == $value) {
+                                $i++;
+                                $reset++;
+                            }
+                        }
+                    }
+                    $SpareParts[$j++] = $SparePart_array[$i];
+                    // echo $SparePart_array[$i] . '<br />';
+                }
+                // dd($SpareParts);
+                $id_ic = 1;
+            }
+        } elseif (mb_strpos($file, 'Фаворит')) {
 
             $file = str_replace("\u{A0}", ' ', $file);
-
+            // dd($file);
             $id_ic = 3;
 
             $file = html_entity_decode(strip_tags($file, ['br']));
@@ -535,7 +571,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        } else
+        }
         if (mb_strpos($file, 'РАВТ')) {
 
             $file = str_replace("\u{A0}", '<br/>', $file);
@@ -598,7 +634,8 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        } else if (mb_strpos($file, 'АПЭКС')) {
+        }
+        if (mb_strpos($file, 'АПЭКС')) {
 
             $file = str_replace("\u{A0}", ' ', $file);
             // dd($file);
@@ -657,7 +694,7 @@ class SparePartController extends Controller
                 }
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
-        } else
+        }
         if (mb_strpos($file, "1\t")) {
             $id_ic = 7;
             $file = str_replace("</td>", '<br/>', $file);
@@ -696,7 +733,8 @@ class SparePartController extends Controller
                 $SpareParts[$j++] = $SparePart_array[$i];
             }
             // dd($SpareParts);
-        } else if ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
+        }
+        if ((mb_strpos($file, 'Эксперт: _______________/') != 0)) {
             // dd($file);
             $file = str_replace("</td>", '<br/>', $file);
             $id_ic = 100;
@@ -736,7 +774,8 @@ class SparePartController extends Controller
                 // dd($SpareParts);
                 // dd($SparePart_array);
             }
-        } else if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
+        }
+        if ((mb_strpos($file, 'Ананьин') != 0) || (mb_strpos($file, 'Мандарин') != 0)) {
             $file = str_replace("</td>", '<br/>', $file);
 
             $file = html_entity_decode(strip_tags($file, ['br']));
@@ -775,7 +814,8 @@ class SparePartController extends Controller
                 // dd($SpareParts);
                 // dd($SparePart_array);
             }
-        } else if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
+        }
+        if ((mb_strpos($file, 'одометр') != 0) && !(mb_strpos($file, 'одометра'))) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -825,7 +865,8 @@ class SparePartController extends Controller
 
             }
             // dd($SpareParts);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
+        }
+        if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
 
@@ -900,7 +941,8 @@ class SparePartController extends Controller
                 }
                 // dd($SparePart_array);
                 $id_ic = 1;
-            } else if (($app->id_insuranceCompany == 3)) { {
+            }
+            if (($app->id_insuranceCompany == 3)) { {
 
                     $SparePart_start = mb_strpos($file, 'износом, Рубли');
 
