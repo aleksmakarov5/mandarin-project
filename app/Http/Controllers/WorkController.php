@@ -316,7 +316,7 @@ class WorkController extends Controller
             // dd($start);
 
             $file = mb_substr($file, mb_strpos($file, $start));
-            dd($file);
+            // dd($file);
             $work_start = mb_strpos($file, 'Сумма');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
