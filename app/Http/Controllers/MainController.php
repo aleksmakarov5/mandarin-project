@@ -289,6 +289,7 @@ class MainController extends Controller
         //         ->get();
         // }
         // dd($mail);
+        $sign = OurCompany::where('id', '=', $id)->first()->sign;
         session(['rout' => 'message']);
         // dd($rewiew->all()) ;
         return view('mail.show', [
@@ -298,7 +299,8 @@ class MainController extends Controller
             'body' => $body,
             'company_id' => $id,
             'mail' => $mail,
-            'id' => $id
+            'id' => $id,
+            'sign' => $sign
         ]);
     }
 

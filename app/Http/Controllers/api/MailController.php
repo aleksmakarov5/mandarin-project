@@ -20,7 +20,8 @@ class MailController extends Controller
 {
     public function mail_sent(Request $request)
     {
-        $application = application::findOrFail($request->id_application);
+        if ($request->id_application)
+            $application = application::findOrFail($request->id_application);
         clearstatcache();
         $size = 0;
         if (isset($request->location[0]))
@@ -34,9 +35,15 @@ class MailController extends Controller
             $data["email"] = $request->to;
             $data["title"] = $request->subject;
             $data["body"] = $request->message;
-            $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
-            $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
-            $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+            if ($request->id_application) {
+                $data["from"] = OurCompany::where('id', '=', $application->our_company)->first()->our_email;
+                $data["name"] = OurCompany::where('id', '=', $application->our_company)->first()->our_name;
+                $data["mailer"] = OurCompany::where('id', '=', $application->our_company)->first()->our_mailer;
+            } else {
+                $data["from"] = OurCompany::where('id', '=', $request->from)->first()->our_email;
+                $data["name"] = OurCompany::where('id', '=', $request->from)->first()->our_name;
+                $data["mailer"] = OurCompany::where('id', '=', $request->from)->first()->our_mailer;
+            }
             $files = [];
             $id = $request->id_application;
             if (isset($request->location[0]))
@@ -62,10 +69,10 @@ class MailController extends Controller
             });
             // $application->id_status = 25;
             $messages = new message();
-            $messages->mailbox_id = $application->our_company;
+            $messages->mailbox_id = $application->our_company ? $application->our_company : $request->from;
             $messages->type = 1;
             $messages->subject = $request->subject;
-            $messages->application_id = $request->id_application;
+            $messages->application_id = $request->id_application ? $request->id_application : null;
             $messages->body_html = $request->message;
             $messages->message_date = date('Y-m-d H:i:s');
             $messages->save();
@@ -253,34 +260,36 @@ class MailController extends Controller
                 $address->save();
             }
         }
-        $history = new history;
-        $history->id_user = $request->user_id;
-        $history->id_application = $request->id_application;
+        if ($request->id_application) {
+            $history = new history;
+            $history->id_user = $request->user_id;
+            $history->id_application = $request->id_application;
 
 
-        $status = $request->app_status;
-        if ($status > 100 && $status < 200) {
-            $application->finance_statuses_id = $status - 100;
-            $application->ic_answer_date = date('Y-m-d H:i:s');
-            $history->id_status = $status - 100;
-            $history->is_fin = true;
-        } elseif ($status == 200) {
+            $status = $request->app_status;
+            if ($status > 100 && $status < 200) {
+                $application->finance_statuses_id = $status - 100;
+                $application->ic_answer_date = date('Y-m-d H:i:s');
+                $history->id_status = $status - 100;
+                $history->is_fin = true;
+            } elseif ($status == 200) {
 
-            $application->ic_answer_date = date('Y-m-d H:i:s');
-            if ($application->id_status <= 11) {
+                $application->ic_answer_date = date('Y-m-d H:i:s');
+                if ($application->id_status <= 11) {
 
+                    $application->check_date = date('Y-m-d H:i:s');
+                    $application->id_status = 11;
+                }
+                $history->id_status = $status;
+            } else {
+                $application->id_status = $status;
                 $application->check_date = date('Y-m-d H:i:s');
-                $application->id_status = 11;
+                $history->id_status = $status;
             }
-            $history->id_status = $status;
-        } else {
-            $application->id_status = $status;
-            $application->check_date = date('Y-m-d H:i:s');
-            $history->id_status = $status;
+            $application->ic_answer = false;
+            $history->save();
+            $application->save();
         }
-        $application->ic_answer = false;
-        $history->save();
-        $application->save();
         return $request;
     }
     public function book()

@@ -7,7 +7,11 @@
     </div>
     <div class="mailbox">
         <div class="message-list">
-            <a href="#" class="msg_but"><img src="/storage/img/new_mail.png" width="20" alt="Ответить"></a>
+            <div id="app">
+                <new-mail :to="{{ json_encode([]) }}" :from="{{ json_encode($id) }}" :subject=""
+                    :attach="{{ json_encode([]) }}" :app_id="0"
+                    :sign="{{ json_encode(isset($sign) ? $sign : '') }}" :status="200" />
+            </div>
             <table id ="messages">
                 <thead>
 
