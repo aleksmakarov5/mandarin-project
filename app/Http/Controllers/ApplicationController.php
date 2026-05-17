@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\application;
 use App\Models\chat_attachment;
 use App\Models\work;
+use App\Models\period_filter;
 use RtfHtmlPhp\Document;
 use App\Jobs\QueueSenderChat;
 use DefStudio\Telegraph\Models\TelegraphChat;
@@ -1488,6 +1489,19 @@ class ApplicationController extends Controller
                     $query->orWhere('id_MRK', '=', null);
             });
         }
+        $period_filter = period_filter::firstOrCreate(
+            [
+                'id_user' => Auth::user()->id,
+
+            ]
+
+        );
+
+        // if ($period_filter->start_date != null)
+        //     $applications->where('applications.check_date', '>=', $period_filter->start_date);
+        // if ($period_filter->end_date != null)
+        //     $applications->where('applications.check_date', '<=', $period_filter->end_date);
+
         $applications = $applications->select(
             'applications.*',
             'insurance_companies.name',
@@ -1516,7 +1530,7 @@ class ApplicationController extends Controller
         }
         $applications = $this->configure($applications);
         $city = city::all();
-        return view('applications', ['applications' => $applications, 'city' => $city, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
+        return view('applications', ['applications' => $applications, 'city' => $city, 'period_filter' => $period_filter, 'filter' => user_filter::where('id_user', '=', auth::user()->id)->get()],);
     }
 
     public function temp()

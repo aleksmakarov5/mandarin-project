@@ -42,6 +42,11 @@
             $mrk_filter = App\Models\mrk_filters::where('id_user', '=', Auth::user()->id)->get();
 
         @endphp
+        @if (session('rout') == 'archive')
+            <period-filter :id_user="{{ json_encode(Auth::user()->id) }}"
+                :period_filter_in="{{ json_encode($period_filter) }}" />
+            </period-filter>
+        @endif
         <zayavki :user_id={{ Auth::user()->id }} :in_applications="{{ json_encode($applications->all()) }}"
             :rout=`{{ $rout }}` :city="{{ json_encode($city) }}" :filter="{{ json_encode($filter) }}"
             :mrk="{{ json_encode($mrk) }}" :mrk_filter="{{ json_encode($mrk_filter) }}" />

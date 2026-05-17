@@ -35,6 +35,7 @@ import Gallery from "./components/Gallery.vue";
 import Realiz from "./components/Realiz.vue";
 import CheckDateView from "./components/CheckDateView.vue";
 import ZpVedBuh from "./components/ZpVedBuh.vue";
+import PeriodFilter from "./components/PeriodFilter.vue";
 
 const app1 = createApp({
     components: {
@@ -76,6 +77,7 @@ const app = createApp({
         CheckDateView,
         StatusDroDow,
         ZpVedBuh,
+        PeriodFilter,
     },
 });
 app.mount("#app");

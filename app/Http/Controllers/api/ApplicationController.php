@@ -14,6 +14,7 @@ use \Golchha21\ReSmushIt\Facades\Optimize;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use App\Models\chat;
+use App\Models\period_filter;
 
 class ApplicationController extends Controller
 {
@@ -43,6 +44,29 @@ class ApplicationController extends Controller
             'id_user' => 'required'
         ]);
         $user_filter = user_filter::firstOrCreate(['id_user' => $data['id_user'], 'id_city' => $data['id_city']]);
+
+        return true;
+    }
+    public function period_filter(Request $request)
+    {
+
+        $data = $this->validate($request, [
+            'id_user' => 'required',
+            'start_date' => 'nullable',
+            'end_date' => 'nullable',
+        ]);
+        $period_filter = period_filter::updateOrCreate(
+            [
+                'id_user' => $data['id_user'],
+
+            ],
+            [
+
+                'id_user' => $data['id_user'],
+                'start_date' => $data['start_date'],
+                'end_date' => $data['end_date']
+            ]
+        );
 
         return true;
     }

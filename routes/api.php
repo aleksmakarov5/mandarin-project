@@ -70,6 +70,7 @@ Route::group(['namespace' => 'Application', 'prefix' => 'application'], function
     Route::post('/add_mrk_filter', [ApplicationController::class, 'add_mrk_filter']);
     Route::post('/delete_mrk_filter', [ApplicationController::class, 'delete_mrk_filter']);
     Route::post('/add_mrk_filters', [ApplicationController::class, 'add_mrk_filters']);
+    Route::post('/period_filter', [ApplicationController::class, 'period_filter']);
     Route::post('/delete_mrk_filters', [ApplicationController::class, 'delete_mrk_filters']);
     Route::post('/file_upload', [ApplicationController::class, 'file_upload']);
     Route::post('/makeArhive', [ApplicationController::class, 'makeArhive']);
