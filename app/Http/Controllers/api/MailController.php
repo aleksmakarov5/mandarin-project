@@ -69,7 +69,7 @@ class MailController extends Controller
             });
             // $application->id_status = 25;
             $messages = new message();
-            $messages->mailbox_id = $application->our_company ? $application->our_company : $request->from;
+            $messages->mailbox_id = isset($application->our_company) ? $application->our_company : $request->from;
             $messages->type = 1;
             $messages->subject = $request->subject;
             $messages->application_id = $request->id_application ? $request->id_application : null;

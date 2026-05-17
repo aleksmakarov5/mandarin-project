@@ -300,7 +300,7 @@ return str.toLowerCase().substring(1, 3) == 'br' ? str: ' ';
 
                 formData.append('message', this.message)
                 formData.append('id_application', this.app_id)
-                formData.append('user_id', this.from)
+                formData.append('from', this.from)
                 formData.append('subject', this.subject)
                 formData.append('app_status', this.status)
                 axios.post(`/api/mail/send`, formData,
