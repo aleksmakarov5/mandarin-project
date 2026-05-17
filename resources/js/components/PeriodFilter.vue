@@ -1,6 +1,6 @@
 <style></style>
 <template>
-    <table class="table">
+    <table class="editable">
         <tr>
             <th>Начало периода</th>
             <th>Конец периода</th>

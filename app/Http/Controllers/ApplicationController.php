@@ -1496,11 +1496,13 @@ class ApplicationController extends Controller
             ]
 
         );
-
-        // if ($period_filter->start_date != null)
-        //     $applications->where('applications.check_date', '>=', $period_filter->start_date);
-        // if ($period_filter->end_date != null)
-        //     $applications->where('applications.check_date', '<=', $period_filter->end_date);
+        // dd($period_filter);
+        if ($period_filter->start_date != null) {
+            // dd($period_filter);
+            $applications->where('applications.check_date', '>', $period_filter->start_date);
+        }
+        if ($period_filter->end_date != null)
+            $applications->where('applications.check_date', '<', $period_filter->end_date);
 
         $applications = $applications->select(
             'applications.*',
