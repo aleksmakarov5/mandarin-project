@@ -94,9 +94,12 @@ class ImapController extends Controller
             $model = $model ? $model : ' ';
             $vin = $vin ? $vin : ' ';
             $gnz = $gnz ? $gnz : ' ';
-            $start_pos = mb_strpos($text, '29.%20%');
+
+            $start_pos = mb_strpos($text, '%20%24');
+
             $final_post = mb_strpos($text, '%231');
-            $number = mb_substr($text, $start_pos + 9, $final_post - $start_pos - 9);
+            $number = mb_substr($text, $start_pos + 6, $final_post - $start_pos - 6);
+            // dd((int)$number);
             echo $number . '<br>';
             $city = 1;
             if ($our_company == 2)
