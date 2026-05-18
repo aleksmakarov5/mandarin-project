@@ -1499,7 +1499,7 @@ class WorkController extends Controller
                     // echo $work_array[$i] . '<br />';
                 }
 
-                $works = make_work($works);
+                // $works = make_work($works);
                 session(['works' => $works]);
 
                 $work_start = mb_strpos($file, 'Окраска');
