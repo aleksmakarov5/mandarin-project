@@ -1548,7 +1548,7 @@ class WorkController extends Controller
                     // echo $work_array[$i] . '<br />';
                 }
                 // dd($works);
-                $works = make_work($works);
+                // $works = make_work($works);
                 session(['works_paint' => $works]);
             }
         }
