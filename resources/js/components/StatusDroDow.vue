@@ -435,8 +435,15 @@
 
   <!-- Блоки для finance_statuses_id -->
   <template v-else>
-    <template v-if="[3, 5, 7, 9, 10].includes(app.finance_statuses_id)">
-      <a
+    <template v-if="[2,3, 5, 7, 9, 10].includes(app.finance_statuses_id)">
+      <a v-if="app.finance_statuses_id==2"
+        @click.prevent="changeStatus(108, 'Изменить статус?')"
+      >
+         <div :class="`d_round ${f_status[8].FinStatusTheme}`">
+          {{ f_status[8].FinStatusName }}
+        </div>
+      </a>
+        <a
         @click.prevent="changeStatus(app.finance_statuses_id + 101, 'Изменить статус?')"
       >
          <div :class="`d_round ${f_status[app.finance_statuses_id].FinStatusTheme}`">
