@@ -1006,7 +1006,7 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0 && mb_strpos($file, 'АВТОТЕХ') == 0 && mb_strpos($file, 'АВТО-ЭКСПЕРТ') == 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
             $file = str_replace("</td>", '<br/>', $file);
@@ -1056,6 +1056,7 @@ class WorkController extends Controller
                     $works[$j++] = $work_array[$i];
                 // echo $work_array[$i] . '<br />';
             }
+            session(['works' => $works]);
             $work_start = mb_strpos($file, 'Окраска');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -1099,7 +1100,7 @@ class WorkController extends Controller
             }
             // dd($works);
 
-            $works = make_work($works);
+            // $works = make_work($works);
             session(['works' => $works]);
         } else {
 
