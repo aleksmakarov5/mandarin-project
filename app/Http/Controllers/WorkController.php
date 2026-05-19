@@ -1006,7 +1006,7 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0 && mb_strpos($file, 'АВТОТЕХ') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
             $file = str_replace("</td>", '<br/>', $file);
@@ -1014,7 +1014,7 @@ class WorkController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
-            dd($file);
+            // dd($file);
             $work_start = mb_strpos($file, 'Норматив, н-');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -1102,10 +1102,11 @@ class WorkController extends Controller
             $works = make_work($works);
             session(['works' => $works]);
         } else {
-            $file = html_entity_decode(strip_tags($file, ['br']));
-            $file = preg_replace("/\u{A0}/", ' ', $file);
-            $file = preg_replace("/\n/", ' ', $file);
+
             if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
+                $file = html_entity_decode(strip_tags($file, ['br']));
+                $file = preg_replace("/\u{A0}/", ' ', $file);
+                $file = preg_replace("/\n/", ' ', $file);
                 $work_start = mb_strpos($file, 'н-час');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -1139,6 +1140,10 @@ class WorkController extends Controller
                 $works = make_work($works);
                 session(['works' => $works]);
             } else if (($app->id_insuranceCompany == 3) || ($app->id_insuranceCompany == 7)) {
+
+                $file = html_entity_decode(strip_tags($file, ['br']));
+                $file = preg_replace("/\u{A0}/", ' ', $file);
+                $file = preg_replace("/\n/", ' ', $file);
                 $work_start = mb_strpos($file, 'н-час');
                 if ($work_start) {
                     // echo $work_start . 'Раб_Старт<br /><br />';
