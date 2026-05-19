@@ -1278,142 +1278,6 @@ class WorkController extends Controller
                     session(['works_paint' => $works]);
                 } else {
                     if (!file_exists('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt')) {
-                        // rename('storage/files/' . $id . '/' . $request['location'], 'storage/files/' . $id . '/work.pdf');
-                        // exec('base64 -i storage/files/' . $id . '/work.pdf > storage/files/' . $id . '/output.txt');
-                        // rename('storage/files/' . $id . '/work.pdf', 'storage/files/' . $id . '/' . $request['location']);
-                        // $output = file_get_contents('storage/files/' . $id . '/output.txt');
-                        // $data = array(
-                        //     "mimeType" => "application/pdf",
-                        //     "languageCodes" => ["*"],
-                        //     "model" => "table",
-                        //     "content" => $output
-                        // );
-                        // $header = array(
-                        //     "Content-Type" => "application/json",
-                        //     "Accept" => "application/json",
-                        //     "Authorization" => "Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2",
-                        //     "x-folder-id" => "b1gcnqkpepfcp6fulsah",
-                        //     "x-data-logging-enabled" => "true"
-                        // );
-
-                        // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/recognizeTextAsync');
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_HTTPHEADER,
-                        //     array(
-                        //         'Content-Type:application/json',
-                        //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                        //         'x-folder-id: b1gcnqkpepfcp6fulsah',
-                        //         'x-data-logging-enabled: true'
-                        //     )
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_POST,
-                        //     1
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_POSTFIELDS,
-                        //     json_encode($data, JSON_UNESCAPED_UNICODE)
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_RETURNTRANSFER,
-                        //     true
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_SSL_VERIFYPEER,
-                        //     false
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_HEADER,
-                        //     false
-                        // );
-                        // $res = curl_exec($ch);
-                        // curl_close($ch);
-
-                        // $res = json_decode($res, JSON_UNESCAPED_UNICODE);
-
-                        // // echo $res['id'];
-
-                        // $ch = curl_init('https://ocr.api.cloud.yandex.net/ocr/v1/getRecognition?operationId=' . $res['id']);
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_RETURNTRANSFER,
-                        //     true
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_HTTPHEADER,
-                        //     array(
-                        //         'Content-Type:application/json',
-                        //         'Authorization: Api-Key AQVNwD4aqhqRFt7PCZNt1WEmpma_qrsqyLCuxtm2',
-                        //         'x-folder-id: b1gcnqkpepfcp6fulsah',
-                        //         'x-data-logging-enabled: true'
-                        //     )
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_SSL_VERIFYPEER,
-                        //     false
-                        // );
-                        // curl_setopt(
-                        //     $ch,
-                        //     CURLOPT_HEADER,
-                        //     false
-                        // );
-                        // $html = curl_exec($ch);
-                        // $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                        // if (isset($html['error']['httpCode']))
-                        //     while (isset($html['error'])) {
-                        //         // echo ($html['error']['httpCode'] . '<br>');
-                        //         $html = curl_exec($ch);
-                        //         $html = json_decode($html, JSON_UNESCAPED_UNICODE);
-                        //     }
-                        // $html = curl_exec($ch);
-                        // $html = explode("}}", $html);
-                        // curl_close($ch);
-                        // $file = [];
-                        // $i = 0;
-                        // foreach ($html as $result) {
-                        //     $result .= '}}';
-                        //     $result = json_decode($result, JSON_UNESCAPED_UNICODE);
-                        //     $j = 0;
-                        //     if (isset($result['result']['textAnnotation']['tables'])) {
-                        //         foreach ($result['result']['textAnnotation']['tables'] as $table) {
-                        //             $k = 0;
-                        //             foreach ($table['cells'] as $cell) {
-                        //                 $file[$i][$j][$cell['rowIndex']][$cell['columnIndex']] = $cell['text'];
-                        //                 $k++;
-                        //             }
-                        //             $j++;
-                        //         }
-                        //     }
-                        //     $i++;
-                        //     $file[$i++] = $result['result']['textAnnotation']['tables'];
-                        // }
-                        // $file = json_encode($file);
-                        // $works = $file;
-
-                        // return view('Work.data_select_ocr', ['works' => $works, 'id' => $id, 'location' => $request['location'], 'reset' => $reset]);
-                        // file_put_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt', $file);
-                        // foreach ($file as $page)
-                        //     foreach ($page as $table) {
-                        //         echo '<table border =1>';
-                        //         echo '<tr><td>Удалить - Объединить с предыдущей </td></tr>';
-                        //         foreach ($table as $row) {
-                        //             echo '<tr>';
-                        //             foreach ($row as $cell) {
-                        //                 echo '<td>' . $cell . '</td>';
-                        //             }
-                        //             echo '<td>Удалить строку</td></tr>';
-                        //         }
-                        //         echo '</table>';
-                        //     }
-                        // dd($file);
                     }
                     $file = file_get_contents('storage/files/' . $id . '/' . pathinfo($request['location'], PATHINFO_FILENAME) . '.txt');
                     $file = json_decode($file, JSON_UNESCAPED_UNICODE);
@@ -1453,8 +1317,9 @@ class WorkController extends Controller
                     // // dd($works);
 
                 }
-            } else if ($app->id_insuranceCompany == 4) {
-                dd($file);
+            }
+            if ($app->id_insuranceCompany == 4) {
+
                 $work_start = mb_strpos($file, 'Норматив, н-');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
