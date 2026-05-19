@@ -437,7 +437,7 @@
   <template v-else>
     <template v-if="[3, 5, 7, 9, 10].includes(app.finance_statuses_id)">
       <a
-        @click.prevent="changeStatus(app.finance_statuses_id + 100, 'Изменить статус?')"
+        @click.prevent="changeStatus(app.finance_statuses_id + 101, 'Изменить статус?')"
       >
          <div :class="`d_round ${f_status[app.finance_statuses_id].FinStatusTheme}`">
           {{ f_status[app.finance_statuses_id].FinStatusName }}
