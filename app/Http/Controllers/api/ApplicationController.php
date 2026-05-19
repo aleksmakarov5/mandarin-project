@@ -418,7 +418,7 @@ class ApplicationController extends Controller
     {
         $id = $request->id;
         $application = application::find($id);
-        $application->view_date = date('Y-m-d H:i:s');
+        $application->view_date = $request->view_date;
         $application->id_status = 13;
         $application->save();
         return true;
