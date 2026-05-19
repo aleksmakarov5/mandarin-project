@@ -1006,7 +1006,7 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0 && mb_strpos($file, 'АВТОТЕХ') == 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
             $file = str_replace("</td>", '<br/>', $file);
@@ -1014,6 +1014,7 @@ class WorkController extends Controller
             $file = html_entity_decode(strip_tags($file, ['br']));
             $file = str_replace("\t", '', $file);
             $file = str_replace("\n", ' ', $file);
+            dd($file);
             $work_start = mb_strpos($file, 'Норматив, н-');
             // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -1324,7 +1325,7 @@ class WorkController extends Controller
                 $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);
                 $file = str_replace("\n", ' ', $file);
-                dd($file);
+                // dd($file);
                 $work_start = mb_strpos($file, 'Норматив, н-');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
