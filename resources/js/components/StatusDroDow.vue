@@ -439,8 +439,8 @@
       <a
         @click.prevent="changeStatus(app.finance_statuses_id + 100, 'Изменить статус?')"
       >
-         <div :class="`d_round ${f_status[app.finance_statuses_id-1].FinStatusTheme}`">
-          {{ f_status[app.finance_statuses_id-1].FinStatusName }}
+         <div :class="`d_round ${f_status[app.finance_statuses_id].FinStatusTheme}`">
+          {{ f_status[app.finance_statuses_id].FinStatusName }}
         </div>
       </a>
     </template>
