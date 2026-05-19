@@ -1101,7 +1101,7 @@ class WorkController extends Controller
             // dd($works);
 
             // $works = make_work($works);
-            session(['works' => $works]);
+            session(['works_paint' => $works]);
         } else {
 
             if ($app->id_insuranceCompany == 5 || $app->id_insuranceCompany == 1) {
