@@ -858,7 +858,7 @@ class SparePartController extends Controller
                 // echo $SparePart_array[$i] . '<br />';
 
             }
-            dd($SpareParts);
+            // dd($SpareParts);
         } elseif (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
