@@ -427,7 +427,7 @@ class ApplicationController extends Controller
     {
         $id = $request->id;
         $application = application::find($id);
-        $application->wait_sp = date('Y-m-d');
+        $application->wait_sp = $request->sp_date;
         $application->save();
         return true;
     }
