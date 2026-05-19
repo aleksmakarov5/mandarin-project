@@ -1324,7 +1324,7 @@ class WorkController extends Controller
                 $file = html_entity_decode(strip_tags($file, ['br']));
                 $file = str_replace("\t", '', $file);
                 $file = str_replace("\n", ' ', $file);
-                dd($file);
+
                 $work_start = mb_strpos($file, 'Норматив, н-');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
@@ -1333,7 +1333,7 @@ class WorkController extends Controller
                 // echo $work_end . 'Раб_фин<br /><br />';
                 $work = mb_substr($file, $work_start + 11, $work_end - $work_start - 24);
                 $work_array = explode('<br/>', $work);
-                // dd($work_array);
+                dd($work_array);
                 $j = 0;
 
                 for ($i = 0; $i < count($work_array) - 1; $i++) {
