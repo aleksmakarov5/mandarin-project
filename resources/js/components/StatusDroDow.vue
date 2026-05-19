@@ -213,7 +213,7 @@
                                 <td>
                                     <div class="form-float">
                                         <input
-                                            type="datetime-local"
+                                            type="date"
                                             v-model="sp_date"
                                             id="sp_date"
                                             class="form-cont"
