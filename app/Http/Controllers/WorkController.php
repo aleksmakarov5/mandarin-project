@@ -1454,7 +1454,7 @@ class WorkController extends Controller
 
                 }
             } else if ($app->id_insuranceCompany == 4) {
-                // dd($file);
+                dd($file);
                 $work_start = mb_strpos($file, 'Норматив, н-');
                 // echo $work_start . 'Раб_Старт<br /><br />';
 
