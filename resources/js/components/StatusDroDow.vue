@@ -443,7 +443,7 @@
           {{ f_status[7].FinStatusName }}
         </div>
       </a>
-        <a
+        <a v-else
         @click.prevent="changeStatus(app.finance_statuses_id + 101, 'Изменить статус?')"
       >
          <div :class="`d_round ${f_status[app.finance_statuses_id].FinStatusTheme}`">
