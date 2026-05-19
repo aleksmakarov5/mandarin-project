@@ -1006,7 +1006,7 @@ class WorkController extends Controller
 
 
             // dd($SparePart_array);
-        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0) {
+        } else if (mb_strpos($file, 'до сотен') != 0 && mb_strpos($file, 'Новгород') == 0 && mb_strpos($file, 'АВС-Экспертиза') == 0 && mb_strpos($file, 'АВТОТЕХ') == 0) {
             // $file = str_replace("\u{A0}\u{A0}", '<br/>', $file);
             // $file = str_replace("\u{A0}", ' ', $file);
             $file = str_replace("</td>", '<br/>', $file);
