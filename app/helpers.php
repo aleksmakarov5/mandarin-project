@@ -178,7 +178,7 @@ if (!function_exists('make_work')) {
     function make_work($works)
     {
         $count = count($works);
-        for ($i = 4; $i < $count; $i++) {
+        for ($i = 4; $i < $count - 1; $i++) {
             if ($i % 4 == 0 && !(int)$works[$i + 1]) {
                 $works[$i - 4] = $works[$i - 4] . ' ' . $works[$i];
                 for ($j = $i + 1; $j < $count; $j++) {
