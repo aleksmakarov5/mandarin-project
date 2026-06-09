@@ -230,6 +230,9 @@ class ApplicationController extends Controller
                     case 3:
                         $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
                         break;
+                    case 4:
+                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_sto);
+                        break;
                 }
             }
 
@@ -321,6 +324,7 @@ class ApplicationController extends Controller
                     ->orwhere('applications.id_spm', '=', $request->user_id);
             });
         }
+
 
         $applications = $applications->select('applications.*', 'mrks.name as mrk_name', 'mrks.def_mrk_proc', 'spms.def_zap_proc', 'spms.name as spm_name')
             ->get();
