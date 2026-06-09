@@ -231,7 +231,7 @@ class ApplicationController extends Controller
                         $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_used);
                         break;
                     case 4:
-                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_sto);
+                        $summ_order = $summ_order + (float) str_replace(' ', '', $sparepart->price_service);
                         break;
                 }
             }
