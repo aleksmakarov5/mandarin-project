@@ -201,7 +201,7 @@ class ApplicationController extends Controller
 
             $estimates = $application->estimate;
             if ($application->ub_type)
-                $estimates->price_repair_full = $estimates->price_repair_half;
+                $estimates->price_repair_full = $estimates->price_repair_half ? $estimates->price_repair_half : 0;
             // return $estimates;
             $Works_serv = $application->works;
             $summ_service = 0;
