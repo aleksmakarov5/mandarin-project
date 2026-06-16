@@ -367,7 +367,7 @@
                 $subject = $application->numberInsuranceCompanyApplication . ' zn-' . $application->id . '!';
             }
             if ($application->id_insuranceCompany == 1) {
-                $to[$i++] = 'OKunnikova@vsk.ru';
+                $to[$i++] = 'smeta_szfo@vsk.ru';
             }
             if ($application->id_insuranceCompany == 5) {
                 $to[$i++] = 'Malygin.Leonid@sogaz.ru';
@@ -584,7 +584,7 @@
             $subject = $application->numberInsuranceCompanyApplication . ' zn-' . $application->id . '!';
         }
         if ($application->id_insuranceCompany == 1) {
-            $to[$i++] = 'OKunnikova@vsk.ru';
+            $to[$i++] = 'smeta_szfo@vsk.ru';
         }
         if ($application->id_insuranceCompany == 5) {
             $to[$i++] = 'Malygin.Leonid@sogaz.ru';
