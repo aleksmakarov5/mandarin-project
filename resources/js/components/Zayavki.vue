@@ -11,7 +11,9 @@
     background-color: #fff;
     background-clip: padding-box;
     border-radius: 0.25rem;
-    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    transition:
+        border-color 0.15s ease-in-out,
+        box-shadow 0.15s ease-in-out;
 }
 .green1 {
     background-color: palegreen;
@@ -293,7 +295,7 @@
                         :class="
                             classColor(
                                 application.count_hour,
-                                application.finance_statuses_id
+                                application.finance_statuses_id,
                             )
                         "
                     >
@@ -345,7 +347,7 @@
                                         <template v-else>
                                             {{
                                                 showHours(
-                                                    application.count_hour
+                                                    application.count_hour,
                                                 )
                                             }}
                                         </template>
@@ -404,7 +406,7 @@
                                         <span>
                                             {{
                                                 showHours(
-                                                    application.count_hour_f
+                                                    application.count_hour_f,
                                                 )
                                             }}
                                         </span>
@@ -565,6 +567,9 @@
                                 />
                             </a>
                         </td>
+                        <td>
+                            {{ application.vin }}
+                        </td>
                     </tr>
                 </template>
             </tbody>
@@ -616,7 +621,7 @@ export default {
                     .then((res) => {
                         this.city_selected.splice(
                             this.city_selected.indexOf(id),
-                            1
+                            1,
                         );
                     });
             } else {
@@ -674,7 +679,7 @@ export default {
                 axios.delete("/api/application/" + id).then((res) => {
                     this.applications = this.applications.splice(
                         this.applications.indexOf(id),
-                        1
+                        1,
                     );
                 });
             } else return false;
